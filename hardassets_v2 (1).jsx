@@ -6,8 +6,21 @@ const fmt=n=>{if(n==null||isNaN(n))return"$0";const a=Math.abs(n);return a>=1e6?
 const fP=n=>(n>=0?"+":"")+n.toFixed(2)+"%";
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const mm={};
-const sv=async(k,d)=>{try{if(window.storage){await window.storage.set(k,JSON.stringify(d));return;}}catch(e){}mm[k]=JSON.stringify(d)};
-const lo=async k=>{try{if(window.storage){const r=await window.storage.get(k);if(r&&r.value)return JSON.parse(r.value);return null;}}catch(e){return null;}return mm[k]?JSON.parse(mm[k]):null};
+let db=null;let fbReady=false;
+function initFirebase(){
+if(fbReady)return;
+try{
+if(!window.firebase)return;
+window.firebase.initializeApp({apiKey:"AIzaSyDhZVIzQ1d9urU0oqZjmAEn5px9uz02e5c",authDomain:"hardassets.firebaseapp.com",projectId:"hardassets",storageBucket:"hardassets.firebasestorage.app",messagingSenderId:"584271534897",appId:"1:584271534897:web:33b0334ce7676ba2032e10"});
+db=window.firebase.firestore();
+fbReady=true;
+}catch(e){console.log("FB init:",e)}
+}
+const userKey=email=>email.replace(/[.#$/\[\]]/g,"_").toLowerCase();
+const fbSave=async(email,d)=>{if(!db||!email||email==="guest")return;try{await db.collection("users").doc(userKey(email)).set({data:JSON.stringify(d),updated:new Date().toISOString()},{merge:true})}catch(e){console.log("save err",e)}};
+const fbLoad=async(email)=>{if(!db||!email||email==="guest")return null;try{const doc=await db.collection("users").doc(userKey(email)).get();if(doc.exists){const r=doc.data();return r.data?JSON.parse(r.data):null}return null}catch(e){console.log("load err",e);return null}};
+const sv=async(k,d)=>{try{mm[k]=JSON.stringify(d)}catch(e){}};
+const lo=async k=>{return mm[k]?JSON.parse(mm[k]):null};
 const STYPES=["Multifamily","Office","Industrial","Retail","Self-Storage","BTR","Mobile Home Parks","Mixed-Use","Hotels","Data Centers","Student Housing","Senior Living","Medical Office","Land","Debt/Credit Fund","Diversified"];
 const ACLS=["Precious Metals","Real Estate","Equities","Crypto","Commodities","Fixed Income","Private Credit","Alternatives","Venture/PE","Cash","Other"];
 const STS=["Active","Realized","Hold","Watchlist","Exited"];
@@ -470,13 +483,33 @@ return (<div style={{background:T.bg,minHeight:"100vh",display:"flex",alignItems
 </Cd></div></div>);
 }
 export default function App(){
-const[page,setPage]=useState("home");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);
-const save=useCallback(d=>{try{sv("ha-v4",d)}catch(e){}},[]);
+const[page,setPage]=useState("home");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[fbLoaded,setFbLoaded]=useState(false);const[syncing,setSyncing]=useState(false);
+useEffect(()=>{
+const s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";s1.async=true;
+const s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";s2.async=true;
+s1.onload=()=>{document.head.appendChild(s2)};
+s2.onload=()=>{initFirebase();setFbLoaded(true)};
+document.head.appendChild(s1);
+const t=setTimeout(()=>setFbLoaded(true),5000);
+return()=>clearTimeout(t);
+},[]);
+const handleLogin=useCallback(async(u)=>{
+setUser(u);setPage("app");
+if(u.email&&u.email!=="guest"&&fbReady){
+setSyncing(true);
+try{const saved=await fbLoad(u.email);if(saved){setData(saved)}}catch(e){}
+setSyncing(false);
+}
+},[]);
+const save=useCallback(d=>{
+sv("ha-v4",d);
+if(user&&user.email&&user.email!=="guest"){fbSave(user.email,d)}
+},[user]);
 if(page==="home") return <HomePage onNav={setPage}/>;
 if(page==="contact") return <ContactPg onNav={setPage}/>;
-if(page==="login"&&!user) return <LoginPg onLogin={u=>{setUser(u);setPage("app")}} onBack={()=>setPage("home")}/>;
+if(page==="login"&&!user) return <LoginPg onLogin={handleLogin} onBack={()=>setPage("home")}/>;
 return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
-<div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>{setUser(null);setPage("home")}}/><div style={{display:"flex",alignItems:"center",gap:14}}>{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span><button onClick={()=>{setUser(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
+<div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>{setUser(null);setPage("home")}}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
 <div style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span>{t.label}</button>)}</div>
 <div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
 </div>);
