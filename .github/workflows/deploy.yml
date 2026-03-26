@@ -23,7 +23,7 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
-      - run: mkdir -p dist/app && cp dist/app.html dist/app/index.html
+      - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

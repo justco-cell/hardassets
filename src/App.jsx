@@ -421,89 +421,292 @@ return <div key={cls} style={{marginBottom:10}}>
 const TABS=[{key:"metals",label:"Metals",icon:"\u25C6"},{key:"synd",label:"RE Syndications",icon:"\u25EB"},{key:"crypto",label:"Crypto",icon:"\u24B8"},{key:"deal",label:"Deal Analyzer",icon:"\u229E"},{key:"port",label:"Portfolio",icon:"\u25C9"}];
 const GIc=()=> <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>;
 const Lg=({big,onClick})=> <div onClick={onClick} style={{display:"flex",alignItems:"center",gap:10,cursor:onClick?"pointer":"default"}}><div style={{width:big?42:32,height:big?42:32,borderRadius:9,background:"linear-gradient(135deg,"+T.gld+","+T.gldD+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:big?20:16,fontWeight:900,color:T.bg}}>H</div><div><div style={{fontSize:big?22:16,fontWeight:800,color:T.txt}}>HardAssets<span style={{color:T.gld}}>.io</span></div><div style={{fontSize:9,color:T.txM,letterSpacing:2,textTransform:"uppercase"}}>Track Everything That Holds Value</div></div></div>;
+
+function useReveal(){
+  const ref=useRef(null);const[vis,setVis]=useState(false);
+  useEffect(()=>{if(!ref.current)return;const o=new IntersectionObserver(([e])=>{if(e.isIntersecting){setVis(true);o.disconnect()}},{threshold:.15,rootMargin:"0px 0px -40px 0px"});o.observe(ref.current);return()=>o.disconnect()},[]);
+  return[ref,vis];
+}
+function Rv({children,delay=0,style={}}){const[ref,vis]=useReveal();return <div ref={ref} style={{opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(30px)",transition:"opacity .7s cubic-bezier(.25,.1,.25,1) "+delay+"s, transform .7s cubic-bezier(.25,.1,.25,1) "+delay+"s",...style}}>{children}</div>}
+
 function HomePage({onNav}){
-return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,sans-serif"}}>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"20px 40px",borderBottom:"1px solid "+T.bdr}}><Lg/><div style={{display:"flex",gap:20,alignItems:"center"}}><button onClick={()=>onNav("contact")} style={{background:"none",border:"none",color:T.txD,fontSize:13,cursor:"pointer"}}>Contact</button><button onClick={()=>onNav("login")} style={{background:"none",border:"none",color:T.gld,fontSize:13,cursor:"pointer",fontWeight:600}}>Login</button><Bt onClick={()=>onNav("login")}>Get Started Free</Bt></div></div>
-<div style={{textAlign:"center",padding:"80px 40px 40px"}}><div style={{fontSize:11,color:T.gld,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:16}}>The Portfolio Dashboard for Real Asset Investors</div><h1 style={{fontSize:46,fontWeight:900,lineHeight:1.1,margin:"0 auto",maxWidth:650}}>Track Everything That <span style={{color:T.gld}}>Holds Value</span></h1><p style={{fontSize:16,color:T.txD,maxWidth:500,margin:"20px auto 0",lineHeight:1.6}}>Gold. Silver. Real estate syndications. Crypto. Commodities. One dashboard for hard asset investors.</p><div style={{marginTop:28,display:"flex",gap:12,justifyContent:"center"}}><Bt onClick={()=>onNav("login")} style={{padding:"14px 32px",fontSize:15}}>Start Tracking Free</Bt><Bt ghost onClick={()=>onNav("contact")} style={{padding:"14px 32px",fontSize:15}}>Contact Us</Bt></div></div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:12,padding:"20px 40px 40px",maxWidth:1050,margin:"0 auto"}}>{[["Precious Metals","Track gold, silver, platinum"],["RE Syndications","LP positions, rate %, IRR"],["Deal Analyzer","Cash flow, cap rate, DSCR"],["Crypto","BTC, ETH, SOL tracker"],["Portfolio","Full allocation + risk"]].map(([t,d],i)=> <Cd key={i} style={{padding:16,textAlign:"center"}}><div style={{fontSize:13,fontWeight:700,color:T.txt,marginBottom:4}}>{t}</div><div style={{fontSize:11,color:T.txD,lineHeight:1.4}}>{d}</div></Cd>)}</div>
-<div style={{borderTop:"1px solid "+T.bdr,padding:"18px 40px",display:"flex",justifyContent:"space-between",marginTop:20}}><span style={{fontSize:11,color:T.txM}}>2026 HardAssets.io</span><span style={{fontSize:11,color:T.txM}}>info@hardassets.io</span></div>
-</div>);
+  const S={nav:{position:"sticky",top:0,zIndex:100,padding:"16px 40px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",background:"rgba(6,13,27,.85)",borderBottom:"1px solid "+T.bdr},
+    link:{background:"none",border:"none",color:T.txD,fontSize:13,cursor:"pointer"},
+    loginLink:{background:"none",border:"none",color:T.gld,fontSize:13,cursor:"pointer",fontWeight:600},
+    badge:{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 16px",borderRadius:20,border:"1px solid "+T.bdr,background:T.bgC,fontSize:11,color:T.gld,letterSpacing:1.5,textTransform:"uppercase",fontWeight:600,marginBottom:24},
+    dot:{width:6,height:6,borderRadius:"50%",background:T.grn,animation:"pulse 2s infinite"},
+    mockup:{background:T.bgC,border:"1px solid "+T.bdr,borderRadius:12,overflow:"hidden",boxShadow:"0 40px 80px rgba(0,0,0,.5)"},
+    bar:{display:"flex",alignItems:"center",gap:6,padding:"10px 16px",background:T.bgI,borderBottom:"1px solid "+T.bdr},
+    mdot:w=>({width:8,height:8,borderRadius:"50%",background:w}),
+    mstat:{background:T.bgI,borderRadius:8,padding:"12px 14px",border:"1px solid "+T.bdr},
+    section:{padding:"80px 40px",maxWidth:1100,margin:"0 auto"},
+    sLabel:{fontSize:11,color:T.gld,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:12},
+    sTitle:{fontSize:"clamp(28px,3.5vw,42px)",fontWeight:800,letterSpacing:"-.5px",marginBottom:16,lineHeight:1.15},
+    card:{background:T.bgC,border:"1px solid "+T.bdr,borderRadius:12,padding:28,transition:"all .3s"},
+    trustCard:{background:T.bgC,border:"1px solid "+T.bdr,borderRadius:12,padding:24},
+    fq:{display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer",fontSize:15,fontWeight:600,padding:"20px 0",borderBottom:"1px solid "+T.bdr}};
+
+  const[openFaq,setOpenFaq]=useState(null);
+  const faqs=[
+    ["Is HardAssets.io really free?","Yes. The core dashboard with all features is completely free. No credit card required. We plan to offer premium features in the future, but the current product is free."],
+    ["How is my data secured?","Your data is stored in Google Cloud Firestore with AES-256 encryption. Authentication uses Google Identity Services. All data transmission uses HTTPS/TLS."],
+    ["Do you connect to my bank accounts?","No. HardAssets.io is a manual-entry tracker. You add holdings yourself or import from Excel/CSV. Zero risk of unauthorized access to financial accounts."],
+    ["Can I import from a spreadsheet?","Yes. Every tab supports CSV export. Upload your file or manually enter your holdings."],
+    ["What asset types can I track?","Precious metals (12 form types), RE syndications (16 deal types), crypto (13+ coins), plus 11 asset classes in the master portfolio."],
+    ["Can I use it on my phone?","Yes. Fully responsive and works on any device. Your data syncs across all devices via your account."]
+  ];
+
+  return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,sans-serif"}}>
+    <style>{`@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}`}</style>
+
+    {/* Nav */}
+    <nav style={S.nav}>
+      <Lg onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}/>
+      <div style={{display:"flex",gap:20,alignItems:"center"}}>
+        <button onClick={()=>onNav("contact")} style={S.link}>Contact</button>
+        <button onClick={()=>onNav("login")} style={S.loginLink}>Login</button>
+        <Bt onClick={()=>onNav("login")}>Get Started Free</Bt>
+      </div>
+    </nav>
+
+    {/* Hero */}
+    <div style={{textAlign:"center",padding:"80px 40px 60px",position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:-200,left:"50%",transform:"translateX(-50%)",width:800,height:600,background:"radial-gradient(ellipse,rgba(212,168,67,.06) 0%,transparent 60%)",pointerEvents:"none"}}/>
+      <div style={{position:"relative"}}>
+        <Rv><div style={S.badge}><div style={S.dot}/> Free to use — No credit card required</div></Rv>
+        <Rv delay={.1}><h1 style={{fontSize:"clamp(36px,5.5vw,62px)",fontWeight:900,lineHeight:1.05,letterSpacing:-1.5,maxWidth:720,margin:"0 auto 20px"}}>Track Everything<br/>That <span style={{color:T.gld}}>Holds Value</span></h1></Rv>
+        <Rv delay={.2}><p style={{fontSize:"clamp(16px,1.8vw,19px)",color:T.txD,maxWidth:540,margin:"0 auto 36px",lineHeight:1.6}}>Gold. Silver. Real estate syndications. Crypto. Commodities. The only portfolio dashboard built specifically for hard asset investors.</p></Rv>
+        <Rv delay={.3}><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:50}}>
+          <Bt onClick={()=>onNav("login")} style={{padding:"14px 32px",fontSize:15}}>Start Tracking Free →</Bt>
+          <Bt ghost onClick={()=>document.getElementById("features")?.scrollIntoView({behavior:"smooth"})} style={{padding:"14px 32px",fontSize:15}}>See Features</Bt>
+        </div></Rv>
+
+        {/* Dashboard Mockup */}
+        <Rv delay={.4}><div style={{maxWidth:960,margin:"0 auto"}}>
+          <div style={S.mockup}>
+            <div style={S.bar}><div style={S.mdot("#ef4444")}/><div style={S.mdot("#f59e0b")}/><div style={S.mdot("#10b981")}/><div style={{marginLeft:12,padding:"4px 12px",background:T.bg,borderRadius:6,fontSize:11,color:T.txM,fontFamily:"monospace",flex:1,textAlign:"center"}}>hardassets.io/dashboard</div></div>
+            <div style={{padding:16,display:"grid",gap:10}}>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
+                {[["Total Portfolio","$1.24M",T.gldB],["Hard Assets %","72.4%",T.grn],["Est. Annual Income","$47.2K",T.grn],["Avg Risk","4.8/10",T.gld]].map(([l,v,c],i)=>
+                  <div key={i} style={S.mstat}><div style={{fontSize:9,color:T.txM,textTransform:"uppercase",letterSpacing:1,fontFamily:"monospace"}}>{l}</div><div style={{fontSize:18,fontWeight:800,color:c,marginTop:4}}>{v}</div></div>
+                )}
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:10}}>
+                <div style={{...S.mstat,padding:12}}>
+                  <div style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr",gap:8,paddingBottom:8,borderBottom:"1px solid "+T.bdr,marginBottom:6}}>
+                    {["Asset","Value","Gain","Risk"].map(h=><div key={h} style={{fontSize:9,color:T.txM,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</div>)}
+                  </div>
+                  {[["Gold (Physical)","$265K","+43.2%","3",T.gld],["Silver (Physical)","$96K","+33.3%","4",T.txD],["Takoma Towers LP","$75K","8% rate","6",T.blu],["Blue Owl RE VI","$150K","6% rate","5",T.blu],["Bitcoin","$34K","+94.3%","8","#f97316"]].map(([a,v,g,r,c],i)=>
+                    <div key={i} style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr",gap:8,padding:"5px 0",borderBottom:"1px solid "+T.bdr+"33"}}>
+                      <div style={{fontSize:11,fontFamily:"monospace",color:c}}>{a}</div>
+                      <div style={{fontSize:11,fontFamily:"monospace"}}>{v}</div>
+                      <div style={{fontSize:11,fontFamily:"monospace",color:g.includes("+")?T.grn:T.gldB}}>{g}</div>
+                      <div style={{fontSize:11,fontFamily:"monospace",color:T.txD}}>{r}</div>
+                    </div>
+                  )}
+                </div>
+                <div style={{...S.mstat,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <svg viewBox="0 0 120 120" width="110" height="110"><circle cx="60" cy="60" r="48" fill="none" stroke={T.bdr} strokeWidth="16"/><circle cx="60" cy="60" r="48" fill="none" stroke={T.gld} strokeWidth="16" strokeDasharray="90 212" strokeDashoffset="-18" strokeLinecap="round"/><circle cx="60" cy="60" r="48" fill="none" stroke={T.blu} strokeWidth="16" strokeDasharray="60 242" strokeDashoffset="-108" strokeLinecap="round"/><circle cx="60" cy="60" r="48" fill="none" stroke={T.grn} strokeWidth="16" strokeDasharray="42 260" strokeDashoffset="-168" strokeLinecap="round"/><circle cx="60" cy="60" r="48" fill="none" stroke="#f97316" strokeWidth="16" strokeDasharray="28 274" strokeDashoffset="-210" strokeLinecap="round"/><text x="60" y="56" textAnchor="middle" fill={T.txt} fontSize="13" fontWeight="800" fontFamily="system-ui">$1.24M</text><text x="60" y="70" textAnchor="middle" fill={T.txM} fontSize="7" fontFamily="monospace">TOTAL</text></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div></Rv>
+      </div>
+    </div>
+
+    {/* Stats */}
+    <div style={{padding:"50px 40px",borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr,background:T.bgI}}>
+      <div style={{maxWidth:900,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:32,textAlign:"center"}}>
+        {[["5","Asset Classes"],["16","RE Deal Types"],["13","Crypto Coins"],["100%","Free to Use"]].map(([n,l],i)=>
+          <Rv key={i} delay={i*.1}><div style={{fontSize:34,fontWeight:900,fontFamily:"monospace",color:T.gldB}}>{n}</div><div style={{fontSize:12,color:T.txM,marginTop:4}}>{l}</div></Rv>
+        )}
+      </div>
+    </div>
+
+    {/* Features Bento */}
+    <div id="features" style={S.section}>
+      <div style={{textAlign:"center"}}>
+        <Rv><div style={S.sLabel}>Features</div></Rv>
+        <Rv delay={.1}><div style={S.sTitle}>Everything You Need in One <span style={{color:T.gld}}>Dashboard</span></div></Rv>
+        <Rv delay={.2}><p style={{fontSize:16,color:T.txD,maxWidth:540,margin:"0 auto",lineHeight:1.6}}>No more juggling spreadsheets across asset classes.</p></Rv>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:14,marginTop:40}}>
+        <Rv><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◆</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Precious Metals Tracker</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Track physical gold, silver, platinum & palladium with cost basis, spot price, and real-time gain/loss. See allocation by metal type.</p><div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:14}}>{["1oz Coins","Bars","Rounds","Junk Silver","ETFs","Numismatic"].map(t=><span key={t} style={{padding:"4px 10px",borderRadius:6,fontSize:10,background:T.bgI,border:"1px solid "+T.bdr,color:T.txM,fontFamily:"monospace"}}>{t}</span>)}</div></div></Rv>
+        <Rv delay={.1}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◫</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>RE Syndication LP Tracker</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Monitor LP positions with rate %, projected IRR, and sponsor tracking across 16 deal types.</p></div></Rv>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginTop:14}}>
+        <Rv><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>⊞</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Deal Analyzer</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Full cash flow calculator with CoC, Cap Rate, DSCR, and quick pass/fail tests.</p></div></Rv>
+        <Rv delay={.1}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>Ⓒ</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Crypto Portfolio</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Track BTC, ETH, SOL & 10+ coins with cost basis, current price, and risk scoring.</p></div></Rv>
+        <Rv delay={.2}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◉</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Master Portfolio</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Complete allocation across 11 asset classes with targets, risk scoring & income estimates.</p></div></Rv>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:10,marginTop:14}}>
+        {[["📊","Excel Import"],["📥","CSV Export"],["🎯","Risk Ratings"],["📝","Notes"],["✏️","Inline Edit"],["☁️","Cloud Sync"]].map(([ic,lb],i)=>
+          <Rv key={i} delay={i*.05}><div style={{...S.card,textAlign:"center",padding:18}}><div style={{fontSize:18,marginBottom:6}}>{ic}</div><div style={{fontSize:11,fontWeight:600}}>{lb}</div></div></Rv>
+        )}
+      </div>
+    </div>
+
+    {/* How it works */}
+    <div style={{padding:"80px 40px",background:T.bgI,borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr}}>
+      <div style={{maxWidth:1100,margin:"0 auto",textAlign:"center"}}>
+        <Rv><div style={S.sLabel}>How It Works</div></Rv>
+        <Rv delay={.1}><div style={S.sTitle}>Start Tracking in <span style={{color:T.gld}}>60 Seconds</span></div></Rv>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:32,marginTop:40}}>
+          {[["1","Sign Up Free","Create an account with Google or email. Your data syncs across all devices."],["2","Add Your Assets","Enter holdings manually or import from CSV. Metals, RE, crypto, anything."],["3","See the Full Picture","View allocation charts, risk scores, income projections — all in one dashboard."]].map(([n,t,d],i)=>
+            <Rv key={i} delay={i*.1}><div style={{textAlign:"center",padding:"28px 20px"}}>
+              <div style={{width:48,height:48,borderRadius:"50%",border:"2px solid "+T.gld,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:800,color:T.gld,margin:"0 auto 18px",fontFamily:"monospace"}}>{n}</div>
+              <h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>{t}</h3>
+              <p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>{d}</p>
+            </div></Rv>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* Security */}
+    <div style={S.section}>
+      <div style={{textAlign:"center"}}>
+        <Rv><div style={S.sLabel}>Security & Trust</div></Rv>
+        <Rv delay={.1}><div style={S.sTitle}>Your Data, <span style={{color:T.gld}}>Protected</span></div></Rv>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,marginTop:36}}>
+        {[["🔒","Encrypted Storage","AES-256 encryption via Google Cloud Firestore."],["🔑","Google Auth","Secure sign-in via Google. We never see your password."],["👁️","Read-Only","Manual entry only. Zero risk of unauthorized transactions."],["🚫","No Selling Data","Your portfolio data is never shared or sold. Period."]].map(([ic,t,d],i)=>
+          <Rv key={i} delay={i*.1}><div style={S.trustCard}><h4 style={{fontSize:14,fontWeight:700,marginBottom:6}}>{ic} {t}</h4><p style={{fontSize:12,color:T.txD,lineHeight:1.5}}>{d}</p></div></Rv>
+        )}
+      </div>
+    </div>
+
+    {/* Built For */}
+    <div style={{padding:"80px 40px",background:T.bgI,borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr}}>
+      <div style={{maxWidth:900,margin:"0 auto",textAlign:"center"}}>
+        <Rv><div style={S.sLabel}>Built For</div></Rv>
+        <Rv delay={.1}><div style={S.sTitle}>Investors Who <span style={{color:T.gld}}>Think Different</span></div></Rv>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,marginTop:36}}>
+          {[["🥇","Precious Metals Stackers","Track every coin, bar, and round with real cost basis across gold, silver, platinum."],["🏢","RE Syndication LPs","Monitor LP positions across sponsors and deal types with rate tracking and IRR projections."],["📊","Hard Asset Allocators","See complete allocation across physical and alternative assets with target comparison and risk scoring."]].map(([ic,t,d],i)=>
+            <Rv key={i} delay={i*.1}><div style={{...S.card,textAlign:"center",padding:28}}><div style={{fontSize:28,marginBottom:12}}>{ic}</div><h3 style={{fontSize:15,fontWeight:700,marginBottom:6}}>{t}</h3><p style={{fontSize:12,color:T.txD,lineHeight:1.5}}>{d}</p></div></Rv>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* FAQ */}
+    <div style={S.section}>
+      <div style={{textAlign:"center"}}>
+        <Rv><div style={S.sLabel}>FAQ</div></Rv>
+        <Rv delay={.1}><div style={S.sTitle}>Common Questions</div></Rv>
+      </div>
+      <div style={{maxWidth:680,margin:"36px auto 0"}}>
+        {faqs.map(([q,a],i)=>
+          <Rv key={i} delay={i*.05}><div style={S.fq} onClick={()=>setOpenFaq(openFaq===i?null:i)}>
+            <span>{q}</span><span style={{color:T.txM,fontSize:20,transition:"transform .3s",transform:openFaq===i?"rotate(45deg)":"none"}}>+</span>
+          </div>
+          <div style={{maxHeight:openFaq===i?200:0,overflow:"hidden",transition:"max-height .4s ease",fontSize:14,color:T.txD,lineHeight:1.6,paddingBottom:openFaq===i?16:0}}>{a}</div></Rv>
+        )}
+      </div>
+    </div>
+
+    {/* Final CTA */}
+    <div style={{padding:"80px 40px",textAlign:"center",position:"relative"}}>
+      <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:300,background:"radial-gradient(ellipse,rgba(212,168,67,.08),transparent)",pointerEvents:"none"}}/>
+      <div style={{position:"relative"}}>
+        <Rv><div style={{fontSize:"clamp(28px,4vw,46px)",fontWeight:800,lineHeight:1.15}}>Ready to See Your<br/><span style={{color:T.gld}}>Complete Picture?</span></div></Rv>
+        <Rv delay={.1}><p style={{fontSize:16,color:T.txD,maxWidth:460,margin:"16px auto 32px",lineHeight:1.6}}>Join investors who track gold, real estate, crypto, and more in one unified dashboard. Free forever.</p></Rv>
+        <Rv delay={.2}><Bt onClick={()=>onNav("login")} style={{padding:"16px 40px",fontSize:17}}>Start Tracking Free →</Bt></Rv>
+        <Rv delay={.3}><div style={{marginTop:14,fontSize:12,color:T.txM}}>No credit card · Free forever · 60-second setup</div></Rv>
+      </div>
+    </div>
+
+    {/* Footer */}
+    <div style={{borderTop:"1px solid "+T.bdr,padding:"50px 40px 24px"}}>
+      <div style={{maxWidth:1100,margin:"0 auto"}}>
+        <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:40,marginBottom:36}}>
+          <div><Lg/><p style={{fontSize:13,color:T.txD,marginTop:12,lineHeight:1.5,maxWidth:280}}>The portfolio dashboard built for investors who believe in hard assets.</p></div>
+          <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Product</h4>{["Features","How It Works","Security","FAQ"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>document.getElementById(l.toLowerCase().replace(/ /g,""))?.scrollIntoView({behavior:"smooth"})}>{l}</div>)}</div>
+          <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Asset Classes</h4>{["Precious Metals","RE Syndications","Crypto","Deal Analyzer"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("login")}>{l}</div>)}</div>
+          <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Company</h4><div style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("contact")}>Contact Us</div><div style={{fontSize:13,color:T.txD,padding:"4px 0"}}>info@hardassets.io</div></div>
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid "+T.bdr,paddingTop:20,fontSize:11,color:T.txM}}>
+          <div>© 2026 HardAssets.io. All rights reserved.</div>
+          <div style={{display:"flex",gap:20}}><span>Privacy Policy</span><span>Terms of Service</span></div>
+        </div>
+      </div>
+    </div>
+  </div>);
 }
+
 function ContactPg({onNav}){
-const[f,sF]=useState({name:"",email:"",msg:""});const[sent,setSent]=useState(false);
-return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,sans-serif"}}>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"20px 40px",borderBottom:"1px solid "+T.bdr}}><Lg onClick={()=>onNav("home")}/><Bt ghost onClick={()=>onNav("home")}>Back</Bt></div>
-<div style={{maxWidth:440,margin:"60px auto",padding:"0 20px"}}><h2 style={{fontSize:24,fontWeight:800,marginBottom:24}}>Get in Touch</h2>
-{sent? <Cd style={{textAlign:"center",padding:32}}><div style={{fontSize:16,fontWeight:700,color:T.grn}}>Message Sent!</div><div style={{color:T.txD,fontSize:12,marginTop:6}}>We will reply to {f.email}</div></Cd>:
-<Cd style={{padding:22}}><div style={{display:"flex",flexDirection:"column",gap:12}}><div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})} placeholder="Your name"/></div><div><Lb>Email</Lb><In value={f.email} onChange={v=>sF({...f,email:v})} placeholder="you@email.com"/></div><div><Lb>Message</Lb><textarea value={f.msg} onChange={e=>sF({...f,msg:e.target.value})} placeholder="How can we help?" rows={4} style={{width:"100%",background:T.bgI,border:"1px solid "+T.bdr,borderRadius:8,color:T.txt,padding:10,fontSize:13,outline:"none",resize:"vertical",fontFamily:"system-ui",boxSizing:"border-box"}}/></div><Bt onClick={()=>{if(f.name&&f.email&&f.msg)setSent(true)}} style={{width:"100%",padding:"11px 0"}}>Send to info@hardassets.io</Bt></div></Cd>}
-</div></div>);
+  const[f,sF]=useState({name:"",email:"",msg:""});const[sent,setSent]=useState(false);
+  return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,sans-serif"}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"20px 40px",borderBottom:"1px solid "+T.bdr}}><Lg onClick={()=>onNav("home")}/><Bt ghost onClick={()=>onNav("home")}>Back</Bt></div>
+    <div style={{maxWidth:440,margin:"60px auto",padding:"0 20px"}}><h2 style={{fontSize:24,fontWeight:800,marginBottom:24}}>Get in Touch</h2>
+    {sent? <Cd style={{textAlign:"center",padding:32}}><div style={{fontSize:16,fontWeight:700,color:T.grn}}>Message Sent!</div><div style={{color:T.txD,fontSize:12,marginTop:6}}>We will reply to {f.email}</div></Cd>:
+    <Cd style={{padding:22}}><div style={{display:"flex",flexDirection:"column",gap:12}}><div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})} placeholder="Your name"/></div><div><Lb>Email</Lb><In value={f.email} onChange={v=>sF({...f,email:v})} placeholder="you@email.com"/></div><div><Lb>Message</Lb><textarea value={f.msg} onChange={e=>sF({...f,msg:e.target.value})} placeholder="How can we help?" rows={4} style={{width:"100%",background:T.bgI,border:"1px solid "+T.bdr,borderRadius:8,color:T.txt,padding:10,fontSize:13,outline:"none",resize:"vertical",fontFamily:"system-ui",boxSizing:"border-box"}}/></div><Bt onClick={()=>{if(f.name&&f.email&&f.msg)setSent(true)}} style={{width:"100%",padding:"11px 0"}}>Send to info@hardassets.io</Bt></div></Cd>}
+    </div></div>);
 }
+
 function LoginPg({onLogin,onBack}){
-const[mode,setMode]=useState("login");const[email,setEmail]=useState("");const[pass,setPass]=useState("");const[name,setName]=useState("");const[err,setErr]=useState("");
-const gBtnRef=useRef(null);const doneRef=useRef(false);
-const onLoginRef=useRef(onLogin);
-onLoginRef.current=onLogin;
-useEffect(()=>{
-if(doneRef.current)return;
-const render=()=>{
-if(!window.google||!window.google.accounts||!gBtnRef.current||doneRef.current)return;
-doneRef.current=true;
-window.google.accounts.id.initialize({
-client_id:"159487463622-ol75fn02c9cg8gmd2h4bpk36gaga3rcf.apps.googleusercontent.com",
-ux_mode:"popup",
-callback:(response)=>{
-try{
-const p=JSON.parse(atob(response.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));
-onLoginRef.current({email:p.email,name:p.name||p.email.split("@")[0],picture:p.picture,method:"google"});
-}catch(e){}
+  const[mode,setMode]=useState("login");const[email,setEmail]=useState("");const[pass,setPass]=useState("");const[name,setName]=useState("");const[err,setErr]=useState("");
+  const gBtnRef=useRef(null);const doneRef=useRef(false);
+  const onLoginRef=useRef(onLogin);
+  onLoginRef.current=onLogin;
+  useEffect(()=>{
+    if(doneRef.current)return;
+    const render=()=>{
+      if(!window.google||!window.google.accounts||!gBtnRef.current||doneRef.current)return;
+      doneRef.current=true;
+      window.google.accounts.id.initialize({
+        client_id:"159487463622-ol75fn02c9cg8gmd2h4bpk36gaga3rcf.apps.googleusercontent.com",
+        ux_mode:"popup",
+        callback:(response)=>{try{const p=JSON.parse(atob(response.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));onLoginRef.current({email:p.email,name:p.name||p.email.split("@")[0],picture:p.picture,method:"google"})}catch(e){}}
+      });
+      window.google.accounts.id.renderButton(gBtnRef.current,{theme:"outline",size:"large",width:340,text:"signin_with"});
+    };
+    if(window.google&&window.google.accounts){render();return;}
+    const id=setInterval(()=>{if(window.google&&window.google.accounts){clearInterval(id);render()}},300);
+    return()=>clearInterval(id);
+  },[]);
+  const sub=()=>{if(!email||!pass){setErr("Fill all fields");return;}if(mode==="signup"&&!name){setErr("Enter name");return;}onLogin({email,name:name||email.split("@")[0]})};
+  return (<div style={{background:T.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"system-ui,sans-serif"}}>
+    <div style={{position:"relative",width:380}}><div style={{textAlign:"center",marginBottom:32}}><Lg big onClick={onBack}/></div>
+    <Cd style={{padding:26}}>
+    <div ref={gBtnRef} style={{marginBottom:14,display:"flex",justifyContent:"center",minHeight:44}}/>
+    <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}><div style={{flex:1,height:1,background:T.bdr}}/><span style={{fontSize:11,color:T.txM}}>or sign in with email</span><div style={{flex:1,height:1,background:T.bdr}}/></div>
+    <div style={{display:"flex",marginBottom:18,borderRadius:8,overflow:"hidden",border:"1px solid "+T.bdr}}>{["login","signup"].map(m=> <button key={m} onClick={()=>{setMode(m);setErr("")}} style={{flex:1,padding:"9px 0",background:mode===m?T.gld+"18":"transparent",color:mode===m?T.gld:T.txM,border:"none",fontSize:12,fontWeight:700,cursor:"pointer",textTransform:"uppercase",letterSpacing:1}}>{m==="login"?"Sign In":"Sign Up"}</button>)}</div>
+    <div style={{display:"flex",flexDirection:"column",gap:10}}>{mode==="signup"&&<div><Lb>Name</Lb><In value={name} onChange={setName} placeholder="Your name"/></div>}<div><Lb>Email</Lb><In value={email} onChange={setEmail} placeholder="you@email.com"/></div><div><Lb>Password</Lb><In value={pass} onChange={setPass} placeholder="********" type="password"/></div>{err&&<div style={{color:T.red,fontSize:12}}>{err}</div>}<Bt onClick={sub} style={{width:"100%",padding:"11px 0",marginTop:4,fontSize:13}}>{mode==="login"?"Sign In":"Create Account"}</Bt></div>
+    <div style={{textAlign:"center",marginTop:14}}><button onClick={()=>onLogin({email:"guest",name:"Guest"})} style={{background:"none",border:"none",color:T.txM,fontSize:12,cursor:"pointer",textDecoration:"underline"}}>Continue as guest</button></div>
+    </Cd></div></div>);
 }
-});
-window.google.accounts.id.renderButton(gBtnRef.current,{theme:"outline",size:"large",width:340,text:"signin_with"});
-};
-if(window.google&&window.google.accounts){render();return;}
-const id=setInterval(()=>{if(window.google&&window.google.accounts){clearInterval(id);render()}},300);
-return()=>clearInterval(id);
-},[]);
-const sub=()=>{if(!email||!pass){setErr("Fill all fields");return;}if(mode==="signup"&&!name){setErr("Enter name");return;}onLogin({email,name:name||email.split("@")[0]})};
-return (<div style={{background:T.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"system-ui,sans-serif"}}>
-<div style={{position:"relative",width:380}}><div style={{textAlign:"center",marginBottom:32}}><Lg big onClick={onBack}/></div>
-<Cd style={{padding:26}}>
-<div ref={gBtnRef} style={{marginBottom:14,display:"flex",justifyContent:"center",minHeight:44}}/>
-<div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}><div style={{flex:1,height:1,background:T.bdr}}/><span style={{fontSize:11,color:T.txM}}>or sign in with email</span><div style={{flex:1,height:1,background:T.bdr}}/></div>
-<div style={{display:"flex",marginBottom:18,borderRadius:8,overflow:"hidden",border:"1px solid "+T.bdr}}>{["login","signup"].map(m=> <button key={m} onClick={()=>{setMode(m);setErr("")}} style={{flex:1,padding:"9px 0",background:mode===m?T.gld+"18":"transparent",color:mode===m?T.gld:T.txM,border:"none",fontSize:12,fontWeight:700,cursor:"pointer",textTransform:"uppercase",letterSpacing:1}}>{m==="login"?"Sign In":"Sign Up"}</button>)}</div>
-<div style={{display:"flex",flexDirection:"column",gap:10}}>{mode==="signup"&&<div><Lb>Name</Lb><In value={name} onChange={setName} placeholder="Your name"/></div>}<div><Lb>Email</Lb><In value={email} onChange={setEmail} placeholder="you@email.com"/></div><div><Lb>Password</Lb><In value={pass} onChange={setPass} placeholder="********" type="password"/></div>{err&&<div style={{color:T.red,fontSize:12}}>{err}</div>}<Bt onClick={sub} style={{width:"100%",padding:"11px 0",marginTop:4,fontSize:13}}>{mode==="login"?"Sign In":"Create Account"}</Bt></div>
-<div style={{textAlign:"center",marginTop:14}}><button onClick={()=>onLogin({email:"guest",name:"Guest"})} style={{background:"none",border:"none",color:T.txM,fontSize:12,cursor:"pointer",textDecoration:"underline"}}>Continue as guest</button></div>
-</Cd></div></div>);
-}
+
 export default function App(){
-const[page,setPage]=useState("login");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[syncing,setSyncing]=useState(false);
-useEffect(()=>{
-const loadScript=(src)=>{if(document.querySelector('script[src="'+src+'"]'))return Promise.resolve();return new Promise(r=>{const s=document.createElement("script");s.src=src;s.onload=r;s.onerror=r;document.head.appendChild(s)})};
-loadScript("https://accounts.google.com/gsi/client");
-loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js").then(()=>loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js")).then(()=>initFirebase());
-},[]);
-const handleLogin=useCallback(async(u)=>{
-setUser(u);setPage("app");
-if(u.email&&u.email!=="guest"){
-setSyncing(true);
-const tryLoad=async(retries)=>{
-if(fbReady){try{const saved=await fbLoad(u.email);if(saved){setData(saved)}}catch(e){}}
-else if(retries>0){await new Promise(r=>setTimeout(r,500));return tryLoad(retries-1)}
-};
-await tryLoad(10);
-setSyncing(false);
-}
-},[]);
-const save=useCallback(d=>{
-sv("ha-v4",d);
-if(user&&user.email&&user.email!=="guest"){fbSave(user.email,d)}
-},[user]);
-if(page==="home"){window.location.href="/";return null}
-if(page==="contact") return <ContactPg onNav={(p)=>p==="home"?window.location.href="/":setPage(p)}/>;
-if(page==="login"&&!user) return <LoginPg onLogin={handleLogin} onBack={()=>window.location.href="/"}/>;
-return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
-<div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>{setUser(null);window.location.href="/"}}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);window.location.href="/"}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
-<div style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span>{t.label}</button>)}</div>
-<div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
-</div>);
+  const[page,setPage]=useState("home");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[syncing,setSyncing]=useState(false);
+  useEffect(()=>{
+    const loadScript=(src)=>{if(document.querySelector('script[src="'+src+'"]'))return Promise.resolve();return new Promise(r=>{const s=document.createElement("script");s.src=src;s.onload=r;s.onerror=r;document.head.appendChild(s)})};
+    loadScript("https://accounts.google.com/gsi/client");
+    loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js").then(()=>loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js")).then(()=>initFirebase());
+  },[]);
+  const handleLogin=useCallback(async(u)=>{
+    setUser(u);setPage("app");
+    if(u.email&&u.email!=="guest"){
+      setSyncing(true);
+      const tryLoad=async(retries)=>{
+        if(fbReady){try{const saved=await fbLoad(u.email);if(saved){setData(saved)}}catch(e){}}
+        else if(retries>0){await new Promise(r=>setTimeout(r,500));return tryLoad(retries-1)}
+      };
+      await tryLoad(10);
+      setSyncing(false);
+    }
+  },[]);
+  const save=useCallback(d=>{
+    sv("ha-v4",d);
+    if(user&&user.email&&user.email!=="guest"){fbSave(user.email,d)}
+  },[user]);
+  if(page==="home") return <HomePage onNav={setPage}/>;
+  if(page==="contact") return <ContactPg onNav={setPage}/>;
+  if(page==="login"&&!user) return <LoginPg onLogin={handleLogin} onBack={()=>setPage("home")}/>;
+  return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
+    <div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>{setUser(null);setPage("home")}}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
+    <div style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span>{t.label}</button>)}</div>
+    <div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
+  </div>);
 }
