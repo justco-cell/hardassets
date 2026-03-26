@@ -476,7 +476,7 @@ return (<div style={{background:T.bg,minHeight:"100vh",display:"flex",alignItems
 </Cd></div></div>);
 }
 export default function App(){
-const[page,setPage]=useState("home");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[syncing,setSyncing]=useState(false);
+const[page,setPage]=useState("login");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[syncing,setSyncing]=useState(false);
 useEffect(()=>{
 const loadScript=(src)=>{if(document.querySelector('script[src="'+src+'"]'))return Promise.resolve();return new Promise(r=>{const s=document.createElement("script");s.src=src;s.onload=r;s.onerror=r;document.head.appendChild(s)})};
 loadScript("https://accounts.google.com/gsi/client");
@@ -498,11 +498,11 @@ const save=useCallback(d=>{
 sv("ha-v4",d);
 if(user&&user.email&&user.email!=="guest"){fbSave(user.email,d)}
 },[user]);
-if(page==="home") return <HomePage onNav={setPage}/>;
-if(page==="contact") return <ContactPg onNav={setPage}/>;
-if(page==="login"&&!user) return <LoginPg onLogin={handleLogin} onBack={()=>setPage("home")}/>;
+if(page==="home"){window.location.href="/";return null}
+if(page==="contact") return <ContactPg onNav={(p)=>p==="home"?window.location.href="/":setPage(p)}/>;
+if(page==="login"&&!user) return <LoginPg onLogin={handleLogin} onBack={()=>window.location.href="/"}/>;
 return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
-<div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>{setUser(null);setPage("home")}}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
+<div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>{setUser(null);window.location.href="/"}}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);window.location.href="/"}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
 <div style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span>{t.label}</button>)}</div>
 <div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
 </div>);
