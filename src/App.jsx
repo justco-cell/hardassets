@@ -26,6 +26,8 @@ const ACLS=["Precious Metals","Real Estate","Equities","Crypto","Commodities","F
 const STS=["Active","Realized","Hold","Watchlist","Exited"];
 const COINS=["BTC","ETH","SOL","ADA","DOT","AVAX","MATIC","LINK","XRP","DOGE","Other"];
 const MFORMS=["1oz Coins","1oz Rounds","1oz Bars","5oz Bars","10oz Bars","100oz Bars","1kg Bars","Kilo Bars","Junk Silver","Numismatic","ETF/Fund","Other"];
+const OZ_PER={"1oz Coins":1,"1oz Rounds":1,"1oz Bars":1,"5oz Bars":5,"10oz Bars":10,"100oz Bars":100,"1kg Bars":32.1507,"Kilo Bars":32.1507,"Junk Silver":0.715,"Numismatic":1,"ETF/Fund":1,"Other":1};
+const getOz=(form)=>OZ_PER[form]||1;
 const DEF={
 metals:[{id:"m1",metal:"Gold",form:"1oz Coins",qty:10,costPer:1850,spot:2650,risk:3,notes:""},{id:"m2",metal:"Silver",form:"100oz Bars",qty:3,costPer:2400,spot:3200,risk:4,notes:""}],
 syndications:[{id:"s1",name:"Takoma Towers",sponsor:"Schweb Partners",invested:75000,rate:8,projIRR:15,status:"Active",type:"Multifamily",risk:6,notes:""},{id:"s2",name:"Blue Owl RE VI",sponsor:"Blue Owl",invested:150000,rate:6,projIRR:14,status:"Active",type:"Diversified",risk:5,notes:""}],
@@ -60,17 +62,23 @@ r.forEach(row => lines.push(row.map(c=>typeof c==="string"&&c.includes(",")?'"'+
 const csv = lines.join("\n");
 const b=new Blob([csv],{type:"text/csv"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=fn;a.click();URL.revokeObjectURL(u)
 }
+function CsvImp({onImport,label}){
+const ref=useRef(null);
+const handle=e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const text=ev.target.result;const lines=text.split("\n").map(l=>l.trim()).filter(Boolean);if(lines.length<2)return;const headers=lines[0].split(",").map(h=>h.replace(/"/g,"").trim());const rows=lines.slice(1).map(l=>{const vals=l.split(",").map(v=>v.replace(/"/g,"").trim());const obj={};headers.forEach((h,i)=>{obj[h]=vals[i]||""});return obj});onImport(rows)};reader.readAsText(file);e.target.value=""};
+return <><input ref={ref} type="file" accept=".csv,.txt" onChange={handle} style={{display:"none"}}/><Bt ghost sm onClick={()=>ref.current?.click()}>{label||"Import"}</Bt></>
+}
 function MetalsTab({data,sd,save}){
 const[sa,sSa]=useState(false);const[ei,sEi]=useState(null);
 const[f,sF]=useState({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:"",risk:"3",notes:""});
 const it=data.metals||[];
-const tC=it.reduce((s,h)=>s+h.qty*h.costPer,0);const tV=it.reduce((s,h)=>s+h.qty*h.spot,0);
+const tC=it.reduce((s,h)=>s+h.qty*h.costPer,0);const tV=it.reduce((s,h)=>s+h.qty*getOz(h.form)*h.spot,0);
 const g=tV-tC;const gP=tC>0?(g/tC)*100:0;
-const byM=it.reduce((a,h)=>{a[h.metal]=(a[h.metal]||0)+h.qty*h.spot;return a},{});
+const byM=it.reduce((a,h)=>{a[h.metal]=(a[h.metal]||0)+h.qty*getOz(h.form)*h.spot;return a},{});
 const pie=Object.entries(byM).map(([name,value])=>({name,value}));
 const add=()=>{if(!f.form||!f.qty||!f.costPer||!f.spot)return;const u={...data,metals:[...it,{id:uid(),metal:f.metal,form:f.form,qty:+f.qty,costPer:+f.costPer,spot:+f.spot,risk:+f.risk||null,notes:f.notes}]};sd(u);save(u);sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:"",risk:"3",notes:""});sSa(false)};
 const up=(id,k,v)=>{const u={...data,metals:it.map(h=>h.id===id?{...h,[k]:v}:h)};sd(u);save(u)};
 const rm=id=>{const u={...data,metals:it.filter(h=>h.id!==id)};sd(u);save(u)};
+const imp=(rows)=>{const newM=rows.map(r=>({id:uid(),metal:r.Metal||r.metal||"Gold",form:r.Form||r.form||"1oz Coins",qty:+(r.Qty||r.qty||0),costPer:+(r["Cost/Unit"]||r.Cost||r.costPer||r.cost||0),spot:+(r["Spot/oz"]||r.Spot||r.spot||r.Current||r.current||0),risk:+(r.Risk||r.risk||3),notes:r.Notes||r.notes||""})).filter(m=>m.qty>0);const u={...data,metals:[...it,...newM]};sd(u);save(u)};
 const sE=()=>{if(!ei)return;const u={...data,metals:it.map(h=>h.id===ei.id?ei:h)};sd(u);save(u);sEi(null)};
 return(<div>
 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
@@ -80,15 +88,16 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Cost","Spot","Value","Gain","Risk"],it.map(h=>[h.metal,h.form,h.qty,h.costPer,h.spot,h.qty*h.spot,(h.qty*h.spot)-(h.qty*h.costPer),h.risk||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Holdings</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Oz/Unit","Cost","Spot/oz","Value","Gain","Risk"],it.map(h=>[h.metal,h.form,h.qty,getOz(h.form),h.costPer,h.spot,h.qty*getOz(h.form)*h.spot,(h.qty*getOz(h.form)*h.spot)-(h.qty*h.costPer),h.risk||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
-<thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Metal","Form","Qty","Cost","Current","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
-<tbody>{it.map(h=>{const v=h.qty*h.spot,c=h.qty*h.costPer,gl=v-c;return(
+<thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Metal","Form","Qty","Oz","Cost/Unit","Spot/oz","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
+<tbody>{it.map(h=>{const oz=getOz(h.form),v=h.qty*oz*h.spot,c=h.qty*h.costPer,gl=v-c;return(
 <tr key={h.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
 <EC value={h.metal} onChange={v=>up(h.id,"metal",v)} color={h.metal==="Gold"?T.gld:T.txD}/>
 <EC value={h.form} onChange={v=>up(h.id,"form",v)}/>
 <EC value={h.qty} onChange={v=>up(h.id,"qty",v)} type="number"/>
+<TD color={T.txD}>{oz}</TD>
 <EC value={h.costPer} onChange={v=>up(h.id,"costPer",v)} type="number" color={T.txD}/>
 <EC value={h.spot} onChange={v=>up(h.id,"spot",v)} type="number"/>
 <TD color={T.gldB} bold>{fmt(v)}</TD>
@@ -112,10 +121,11 @@ return(<div>
 <div style={{display:"flex",flexDirection:"column",gap:12}}>
 <div><Lb>Metal</Lb><Sl value={f.metal} onChange={v=>sF({...f,metal:v})} options={["Gold","Silver","Platinum","Palladium"]} style={{width:"100%"}}/></div>
 <div><Lb>Form</Lb><Sl value={f.form} onChange={v=>sF({...f,form:v})} options={MFORMS} style={{width:"100%"}}/></div>
+{f.form&&<div style={{padding:6,background:T.bgI,borderRadius:6,fontSize:11,color:T.txD}}>{getOz(f.form)} oz per unit{f.qty&&f.spot?(" · Total oz: "+(+f.qty*getOz(f.form)).toFixed(2)+" · Value: "+fmt(+f.qty*getOz(f.form)*(+f.spot))):""}</div>}
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-<div><Lb>Qty</Lb><In value={f.qty} onChange={v=>sF({...f,qty:v})} type="number"/></div>
+<div><Lb>Qty (units)</Lb><In value={f.qty} onChange={v=>sF({...f,qty:v})} type="number"/></div>
 <div><Lb>Cost/Unit</Lb><In value={f.costPer} onChange={v=>sF({...f,costPer:v})} prefix="$" type="number"/></div>
-<div><Lb>Current</Lb><In value={f.spot} onChange={v=>sF({...f,spot:v})} prefix="$" type="number"/></div>
+<div><Lb>Spot $/oz</Lb><In value={f.spot} onChange={v=>sF({...f,spot:v})} prefix="$" type="number"/></div>
 </div>
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
 <div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})} placeholder="Optional"/></div>
@@ -126,10 +136,11 @@ return(<div>
 {ei&&<div style={{display:"flex",flexDirection:"column",gap:12}}>
 <div><Lb>Metal</Lb><Sl value={ei.metal} onChange={v=>sEi({...ei,metal:v})} options={["Gold","Silver","Platinum","Palladium"]} style={{width:"100%"}}/></div>
 <div><Lb>Form</Lb><Sl value={ei.form} onChange={v=>sEi({...ei,form:v})} options={MFORMS} style={{width:"100%"}}/></div>
+{ei.form&&<div style={{padding:6,background:T.bgI,borderRadius:6,fontSize:11,color:T.txD}}>{getOz(ei.form)} oz per unit{ei.qty&&ei.spot?(" · Total oz: "+(ei.qty*getOz(ei.form)).toFixed(2)+" · Value: "+fmt(ei.qty*getOz(ei.form)*ei.spot)):""}</div>}
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-<div><Lb>Qty</Lb><In value={ei.qty} onChange={v=>sEi({...ei,qty:+v})} type="number"/></div>
-<div><Lb>Cost</Lb><In value={ei.costPer} onChange={v=>sEi({...ei,costPer:+v})} prefix="$" type="number"/></div>
-<div><Lb>Current</Lb><In value={ei.spot} onChange={v=>sEi({...ei,spot:+v})} prefix="$" type="number"/></div>
+<div><Lb>Qty (units)</Lb><In value={ei.qty} onChange={v=>sEi({...ei,qty:+v})} type="number"/></div>
+<div><Lb>Cost/Unit</Lb><In value={ei.costPer} onChange={v=>sEi({...ei,costPer:+v})} prefix="$" type="number"/></div>
+<div><Lb>Spot $/oz</Lb><In value={ei.spot} onChange={v=>sEi({...ei,spot:+v})} prefix="$" type="number"/></div>
 </div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
@@ -152,6 +163,7 @@ const pie=Object.entries(byT).map(([name,value])=>({name,value}));
 const add=()=>{if(!f.name||!f.invested)return;const u={...data,syndications:[...it,{id:uid(),name:f.name,sponsor:f.sponsor,invested:+f.invested,rate:+(f.rate||0),projIRR:+(f.projIRR||0),status:f.status,type:f.type,risk:+f.risk||null,notes:f.notes}]};sd(u);save(u);sF({name:"",sponsor:"",invested:"",rate:"",projIRR:"",status:"Active",type:"Multifamily",risk:"5",notes:""});sSa(false)};
 const up=(id,k,v)=>{const u={...data,syndications:it.map(d=>d.id===id?{...d,[k]:v}:d)};sd(u);save(u)};
 const rm=id=>{const u={...data,syndications:it.filter(d=>d.id!==id)};sd(u);save(u)};
+const imp=(rows)=>{const newS=rows.map(r=>({id:uid(),name:r.Deal||r.Name||r.name||"",sponsor:r.Sponsor||r.sponsor||"",invested:+(r.Invested||r.invested||0),rate:+(r.Rate||r.rate||0),projIRR:+(r.IRR||r.projIRR||r.irr||0),status:r.Status||r.status||"Active",type:r.Type||r.type||"Multifamily",risk:+(r.Risk||r.risk||5),notes:r.Notes||r.notes||""})).filter(s=>s.name&&s.invested>0);const u={...data,syndications:[...it,...newS]};sd(u);save(u)};
 const sE=()=>{if(!ei)return;const u={...data,syndications:it.map(d=>d.id===ei.id?ei:d)};sd(u);save(u);sEi(null)};
 return(<div>
 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
@@ -161,7 +173,7 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><Bt ghost sm onClick={()=>csvX(["Deal","Sponsor","Type","Invested","Rate","AnnIncome","IRR","Risk","Status"],it.map(d=>[d.name,d.sponsor,d.type,d.invested,d.rate||0,Math.round(d.invested*(d.rate||0)/100),d.projIRR,d.risk||"",d.status]),"syndications.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add Deal</Bt></div>}>LP Positions</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Deal","Sponsor","Type","Invested","Rate","AnnIncome","IRR","Risk","Status"],it.map(d=>[d.name,d.sponsor,d.type,d.invested,d.rate||0,Math.round(d.invested*(d.rate||0)/100),d.projIRR,d.risk||"",d.status]),"syndications.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add Deal</Bt></div>}>LP Positions</Hd>
 <Cd style={{padding:0,overflow:"auto"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Deal","Sponsor","Type","Invested","Rate%","Ann.Income","IRR","Risk","Status","",""].map((h,i)=><th key={i} style={{padding:"10px 6px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace",whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
@@ -224,6 +236,7 @@ const pie=Object.entries(byC).map(([name,value])=>({name,value}));
 const add=()=>{if(!f.qty||!f.costPer||!f.current)return;const u={...data,crypto:[...it,{id:uid(),coin:f.coin,name:f.name,qty:+f.qty,costPer:+f.costPer,current:+f.current,risk:+f.risk||null,notes:f.notes}]};sd(u);save(u);sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:"",risk:"8",notes:""});sSa(false)};
 const up=(id,k,v)=>{const u={...data,crypto:it.map(h=>h.id===id?{...h,[k]:v}:h)};sd(u);save(u)};
 const rm=id=>{const u={...data,crypto:it.filter(h=>h.id!==id)};sd(u);save(u)};
+const imp=(rows)=>{const newC=rows.map(r=>({id:uid(),coin:r.Coin||r.coin||"BTC",name:r.Name||r.name||"",qty:+(r.Qty||r.qty||0),costPer:+(r.Cost||r.costPer||r.cost||0),current:+(r.Current||r.current||r.Price||r.price||0),risk:+(r.Risk||r.risk||8),notes:r.Notes||r.notes||""})).filter(c=>c.qty>0);const u={...data,crypto:[...it,...newC]};sd(u);save(u)};
 const sE=()=>{if(!ei)return;const u={...data,crypto:it.map(h=>h.id===ei.id?ei:h)};sd(u);save(u);sEi(null)};
 return(<div>
 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
@@ -233,7 +246,7 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Crypto Holdings</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Crypto Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Coin","Name","Qty","Cost","Current","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
@@ -340,6 +353,7 @@ const ar=it.filter(a=>a.risk).length>0?(it.filter(a=>a.risk).reduce((s,a)=>s+(a.
 const sI=(data.syndications||[]).reduce((s,d)=>s+d.invested*(d.rate||0)/100,0);
 const add=()=>{if(!f.name||!f.value)return;const u={...data,portfolio:[...it,{id:uid(),cls:f.cls,name:f.name,value:+f.value,risk:+f.risk||null,notes:f.notes}]};sd(u);save(u);sF({cls:"Precious Metals",name:"",value:"",risk:"5",notes:""});sSa(false)};
 const rm=id=>{const u={...data,portfolio:it.filter(a=>a.id!==id)};sd(u);save(u)};
+const imp=(rows)=>{const newP=rows.map(r=>({id:uid(),cls:r.Class||r.cls||"Other",name:r.Name||r.name||"",value:+(r.Value||r.value||0),risk:+(r.Risk||r.risk||5),notes:r.Notes||r.notes||""})).filter(p=>p.name&&p.value>0);const u={...data,portfolio:[...it,...newP]};sd(u);save(u)};
 const sE=()=>{if(!ei)return;const u={...data,portfolio:it.map(a=>a.id===ei.id?ei:a)};sd(u);save(u);sEi(null)};
 const sTg=t=>{const u={...data,targets:t};sd(u);save(u)};
 return(<div>
@@ -364,7 +378,7 @@ return <div key={cls} style={{marginBottom:10}}>
 </Cd>
 </div>
 <div style={{flex:1.2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><Bt ghost sm onClick={()=>csvX(["Class","Name","Value","Risk","Notes"],it.map(a=>[a.cls,a.name,a.value,a.risk||"",a.notes||""]),"portfolio.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Breakdown</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Class","Name","Value","Risk","Notes"],it.map(a=>[a.cls,a.name,a.value,a.risk||"",a.notes||""]),"portfolio.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Breakdown</Hd>
 <Cd style={{maxHeight:450,overflow:"auto"}}>
 {Object.entries(byC).sort((a,b)=>b[1]-a[1]).map(([cls,ct])=>
 <div key={cls} style={{marginBottom:14}}>
@@ -422,6 +436,7 @@ const TABS=[{key:"metals",label:"Metals",icon:"\u25C6"},{key:"synd",label:"RE Sy
 const GIc=()=> <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>;
 const Lg=({big,onClick})=> <div onClick={onClick} style={{display:"flex",alignItems:"center",gap:10,cursor:onClick?"pointer":"default"}}><div style={{width:big?42:32,height:big?42:32,borderRadius:9,background:"linear-gradient(135deg,"+T.gld+","+T.gldD+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:big?20:16,fontWeight:900,color:T.bg}}>H</div><div><div style={{fontSize:big?22:16,fontWeight:800,color:T.txt}}>HardAssets<span style={{color:T.gld}}>.io</span></div><div style={{fontSize:9,color:T.txM,letterSpacing:2,textTransform:"uppercase"}}>Track Everything That Holds Value</div></div></div>;
 
+
 function useReveal(){
   const ref=useRef(null);const[vis,setVis]=useState(false);
   useEffect(()=>{if(!ref.current)return;const o=new IntersectionObserver(([e])=>{if(e.isIntersecting){setVis(true);o.disconnect()}},{threshold:.15,rootMargin:"0px 0px -40px 0px"});o.observe(ref.current);return()=>o.disconnect()},[]);
@@ -429,7 +444,7 @@ function useReveal(){
 }
 function Rv({children,delay=0,style={}}){const[ref,vis]=useReveal();return <div ref={ref} style={{opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(30px)",transition:"opacity .7s cubic-bezier(.25,.1,.25,1) "+delay+"s, transform .7s cubic-bezier(.25,.1,.25,1) "+delay+"s",...style}}>{children}</div>}
 
-function HomePage({onNav}){
+function HomePage({onNav,user}){
   const S={nav:{position:"sticky",top:0,zIndex:100,padding:"16px 40px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",background:"rgba(6,13,27,.85)",borderBottom:"1px solid "+T.bdr},
     link:{background:"none",border:"none",color:T.txD,fontSize:13,cursor:"pointer"},
     loginLink:{background:"none",border:"none",color:T.gld,fontSize:13,cursor:"pointer",fontWeight:600},
@@ -464,8 +479,7 @@ function HomePage({onNav}){
       <Lg onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}/>
       <div style={{display:"flex",gap:20,alignItems:"center"}}>
         <button onClick={()=>onNav("contact")} style={S.link}>Contact</button>
-        <button onClick={()=>onNav("login")} style={S.loginLink}>Login</button>
-        <Bt onClick={()=>onNav("login")}>Get Started Free</Bt>
+        {user?<Bt onClick={()=>onNav("app")}>Dashboard →</Bt>:<><button onClick={()=>onNav("login")} style={S.loginLink}>Login</button><Bt onClick={()=>onNav("login")}>Get Started Free</Bt></>}
       </div>
     </nav>
 
@@ -477,7 +491,7 @@ function HomePage({onNav}){
         <Rv delay={.1}><h1 style={{fontSize:"clamp(36px,5.5vw,62px)",fontWeight:900,lineHeight:1.05,letterSpacing:-1.5,maxWidth:720,margin:"0 auto 20px"}}>Track Everything<br/>That <span style={{color:T.gld}}>Holds Value</span></h1></Rv>
         <Rv delay={.2}><p style={{fontSize:"clamp(16px,1.8vw,19px)",color:T.txD,maxWidth:540,margin:"0 auto 36px",lineHeight:1.6}}>Gold. Silver. Real estate syndications. Crypto. Commodities. The only portfolio dashboard built specifically for hard asset investors.</p></Rv>
         <Rv delay={.3}><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:50}}>
-          <Bt onClick={()=>onNav("login")} style={{padding:"14px 32px",fontSize:15}}>Start Tracking Free →</Bt>
+          <Bt onClick={()=>onNav(user?"app":"login")} style={{padding:"14px 32px",fontSize:15}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Bt>
           <Bt ghost onClick={()=>document.getElementById("features")?.scrollIntoView({behavior:"smooth"})} style={{padding:"14px 32px",fontSize:15}}>See Features</Bt>
         </div></Rv>
 
@@ -612,7 +626,7 @@ function HomePage({onNav}){
       <div style={{position:"relative"}}>
         <Rv><div style={{fontSize:"clamp(28px,4vw,46px)",fontWeight:800,lineHeight:1.15}}>Ready to See Your<br/><span style={{color:T.gld}}>Complete Picture?</span></div></Rv>
         <Rv delay={.1}><p style={{fontSize:16,color:T.txD,maxWidth:460,margin:"16px auto 32px",lineHeight:1.6}}>Join investors who track gold, real estate, crypto, and more in one unified dashboard. Free forever.</p></Rv>
-        <Rv delay={.2}><Bt onClick={()=>onNav("login")} style={{padding:"16px 40px",fontSize:17}}>Start Tracking Free →</Bt></Rv>
+        <Rv delay={.2}><Bt onClick={()=>onNav(user?"app":"login")} style={{padding:"16px 40px",fontSize:17}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Bt></Rv>
         <Rv delay={.3}><div style={{marginTop:14,fontSize:12,color:T.txM}}>No credit card · Free forever · 60-second setup</div></Rv>
       </div>
     </div>
@@ -680,11 +694,7 @@ function LoginPg({onLogin,onBack}){
 
 export default function App(){
   const[page,setPage]=useState("home");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[syncing,setSyncing]=useState(false);
-  useEffect(()=>{
-    const loadScript=(src)=>{if(document.querySelector('script[src="'+src+'"]'))return Promise.resolve();return new Promise(r=>{const s=document.createElement("script");s.src=src;s.onload=r;s.onerror=r;document.head.appendChild(s)})};
-    loadScript("https://accounts.google.com/gsi/client");
-    loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js").then(()=>loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js")).then(()=>initFirebase());
-  },[]);
+  useEffect(()=>{initFirebase()},[]);
   const handleLogin=useCallback(async(u)=>{
     setUser(u);setPage("app");
     if(u.email&&u.email!=="guest"){
@@ -701,11 +711,12 @@ export default function App(){
     sv("ha-v4",d);
     if(user&&user.email&&user.email!=="guest"){fbSave(user.email,d)}
   },[user]);
-  if(page==="home") return <HomePage onNav={setPage}/>;
+  if(page==="home") return <HomePage onNav={setPage} user={user}/>;
   if(page==="contact") return <ContactPg onNav={setPage}/>;
   if(page==="login"&&!user) return <LoginPg onLogin={handleLogin} onBack={()=>setPage("home")}/>;
+  if(page==="login"&&user){setPage("app");return null;}
   return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
-    <div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>{setUser(null);setPage("home")}}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
+    <div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>setPage("home")}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
     <div style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span>{t.label}</button>)}</div>
     <div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
   </div>);
