@@ -440,32 +440,29 @@ return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"s
 }
 function LoginPg({onLogin,onBack}){
 const[mode,setMode]=useState("login");const[email,setEmail]=useState("");const[pass,setPass]=useState("");const[name,setName]=useState("");const[err,setErr]=useState("");
-const gBtnRef=useRef(null);const gInitRef=useRef(false);
+const gBtnRef=useRef(null);const doneRef=useRef(false);
 const onLoginRef=useRef(onLogin);
 onLoginRef.current=onLogin;
 useEffect(()=>{
-if(gInitRef.current)return;
-const tryInit=()=>{
-if(!window.google||!window.google.accounts||!gBtnRef.current)return false;
+if(doneRef.current)return;
+const render=()=>{
+if(!window.google||!window.google.accounts||!gBtnRef.current||doneRef.current)return;
+doneRef.current=true;
 window.google.accounts.id.initialize({
 client_id:"159487463622-ol75fn02c9cg8gmd2h4bpk36gaga3rcf.apps.googleusercontent.com",
+ux_mode:"popup",
 callback:(response)=>{
 try{
-const parts=response.credential.split(".");
-const payload=JSON.parse(atob(parts[1].replace(/-/g,"+").replace(/_/g,"/")));
-onLoginRef.current({email:payload.email,name:payload.name||payload.email.split("@")[0],picture:payload.picture,method:"google"});
-}catch(e){console.log("JWT decode error",e)}
+const p=JSON.parse(atob(response.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));
+onLoginRef.current({email:p.email,name:p.name||p.email.split("@")[0],picture:p.picture,method:"google"});
+}catch(e){}
 }
 });
-window.google.accounts.id.renderButton(gBtnRef.current,{theme:"outline",size:"large",width:340,text:"signin_with",shape:"rectangular"});
-gInitRef.current=true;
-return true;
+window.google.accounts.id.renderButton(gBtnRef.current,{theme:"outline",size:"large",width:340,text:"signin_with"});
 };
-if(tryInit())return;
-const script=document.createElement("script");
-script.src="https://accounts.google.com/gsi/client";
-script.onload=()=>{setTimeout(tryInit,100)};
-document.head.appendChild(script);
+if(window.google&&window.google.accounts){render();return;}
+const id=setInterval(()=>{if(window.google&&window.google.accounts){clearInterval(id);render()}},300);
+return()=>clearInterval(id);
 },[]);
 const sub=()=>{if(!email||!pass){setErr("Fill all fields");return;}if(mode==="signup"&&!name){setErr("Enter name");return;}onLogin({email,name:name||email.split("@")[0]})};
 return (<div style={{background:T.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"system-ui,sans-serif"}}>
@@ -481,11 +478,9 @@ return (<div style={{background:T.bg,minHeight:"100vh",display:"flex",alignItems
 export default function App(){
 const[page,setPage]=useState("home");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[syncing,setSyncing]=useState(false);
 useEffect(()=>{
-const s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-const s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
-s1.onload=()=>{document.head.appendChild(s2)};
-s2.onload=()=>{initFirebase()};
-document.head.appendChild(s1);
+const loadScript=(src)=>{if(document.querySelector('script[src="'+src+'"]'))return Promise.resolve();return new Promise(r=>{const s=document.createElement("script");s.src=src;s.onload=r;s.onerror=r;document.head.appendChild(s)})};
+loadScript("https://accounts.google.com/gsi/client");
+loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js").then(()=>loadScript("https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js")).then(()=>initFirebase());
 },[]);
 const handleLogin=useCallback(async(u)=>{
 setUser(u);setPage("app");
