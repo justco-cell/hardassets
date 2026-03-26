@@ -21,6 +21,74 @@ const fbSave=async(email,d)=>{if(!db||!email||email==="guest")return;try{await d
 const fbLoad=async(email)=>{if(!db||!email||email==="guest")return null;try{const doc=await db.collection("users").doc(userKey(email)).get();if(doc.exists){const r=doc.data();return r.data?JSON.parse(r.data):null}return null}catch(e){console.log("load err",e);return null}};
 const sv=async(k,d)=>{try{mm[k]=JSON.stringify(d)}catch(e){}};
 const lo=async k=>{return mm[k]?JSON.parse(mm[k]):null};
+
+const GOLD_API_KEY="3698ded390f2b2d265935002acb5880556253ad19ba99d7c8e90c66aba02c374";
+const COIN_MAP={BTC:"bitcoin",ETH:"ethereum",SOL:"solana",ADA:"cardano",DOT:"polkadot",AVAX:"avalanche-2",MATIC:"matic-network",LINK:"chainlink",XRP:"ripple",DOGE:"dogecoin"};
+const METAL_MAP={Gold:"XAU",Silver:"XAG",Platinum:"XPT",Palladium:"XPD"};
+
+async function fetchMetalPrices(){
+  try{
+    const results={};
+    for(const[name,sym] of Object.entries(METAL_MAP)){
+      const r=await fetch("https://www.goldapi.io/api/"+sym+"/USD",{headers:{"x-access-token":GOLD_API_KEY,"Content-Type":"application/json"}});
+      if(r.ok){const d=await r.json();results[name]={price:d.price||0,prev:d.prev_close_price||d.price||0}}
+    }
+    return results;
+  }catch(e){console.log("Metal price err:",e);return null}
+}
+
+async function fetchCryptoPrices(){
+  try{
+    const ids=Object.values(COIN_MAP).join(",");
+    const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids="+ids+"&vs_currencies=usd&include_24hr_change=true");
+    if(!r.ok)return null;
+    const d=await r.json();
+    const results={};
+    for(const[sym,cgId] of Object.entries(COIN_MAP)){
+      if(d[cgId])results[sym]={price:d[cgId].usd||0,change24h:d[cgId].usd_24h_change||0}
+    }
+    return results;
+  }catch(e){console.log("Crypto price err:",e);return null}
+}
+
+function applyPricesToData(data,metalPrices,cryptoPrices){
+  const updated={...data};
+  if(metalPrices&&updated.metals){
+    updated.metals=updated.metals.map(h=>{
+      const mp=metalPrices[h.metal];
+      return mp?{...h,spot:Math.round(mp.price*100)/100}:h;
+    });
+  }
+  if(cryptoPrices&&updated.crypto){
+    updated.crypto=updated.crypto.map(h=>{
+      const cp=cryptoPrices[h.coin];
+      return cp?{...h,current:Math.round(cp.price*100)/100}:h;
+    });
+  }
+  return updated;
+}
+
+function PriceTicker({prices,onRefresh,lastUpdated}){
+  if(!prices)return null;
+  const{metals,crypto}=prices;
+  const items=[];
+  if(metals){Object.entries(metals).forEach(([name,d])=>{const chg=d.prev>0?((d.price-d.prev)/d.prev*100):0;items.push({label:name==="Gold"?"Au":name==="Silver"?"Ag":name==="Platinum"?"Pt":"Pd",price:d.price,change:chg})})}
+  if(crypto){["BTC","ETH","SOL"].forEach(sym=>{const d=crypto[sym];if(d)items.push({label:sym,price:d.price,change:d.change24h||0})})}
+  if(items.length===0)return null;
+  return(<div style={{display:"flex",alignItems:"center",gap:16,padding:"8px 24px",background:"#080e1e",borderBottom:"1px solid "+T.bdr,overflowX:"auto",fontSize:12,fontFamily:"monospace"}}>
+    <span style={{color:T.txM,fontSize:10,whiteSpace:"nowrap"}}>LIVE</span>
+    <div style={{width:6,height:6,borderRadius:3,background:T.grn,animation:"pulse 2s infinite"}}/>
+    {items.map((it,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:6,whiteSpace:"nowrap"}}>
+      <span style={{color:T.txM}}>{it.label}</span>
+      <span style={{color:T.txt,fontWeight:600}}>${it.price>=1000?it.price.toLocaleString("en-US",{maximumFractionDigits:0}):it.price.toFixed(2)}</span>
+      <span style={{color:it.change>=0?T.grn:T.red,fontSize:11}}>{it.change>=0?"▲":"▼"}{Math.abs(it.change).toFixed(1)}%</span>
+    </div>)}
+    <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:10}}>
+      {lastUpdated&&<span style={{color:T.txM,fontSize:10}}>Updated {lastUpdated}</span>}
+      <button onClick={onRefresh} style={{background:"none",border:"1px solid "+T.bdr,color:T.txD,padding:"3px 8px",borderRadius:4,fontSize:10,cursor:"pointer"}}>↻ Refresh</button>
+    </div>
+  </div>);
+}
 const STYPES=["Multifamily","Office","Industrial","Retail","Self-Storage","BTR","Mobile Home Parks","Mixed-Use","Hotels","Data Centers","Student Housing","Senior Living","Medical Office","Land","Debt/Credit Fund","Diversified"];
 const ACLS=["Precious Metals","Real Estate","Equities","Crypto","Commodities","Fixed Income","Private Credit","Alternatives","Venture/PE","Cash","Other"];
 const STS=["Active","Realized","Hold","Watchlist","Exited"];
@@ -67,7 +135,7 @@ const ref=useRef(null);
 const handle=e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const text=ev.target.result;const lines=text.split("\n").map(l=>l.trim()).filter(Boolean);if(lines.length<2)return;const headers=lines[0].split(",").map(h=>h.replace(/"/g,"").trim());const rows=lines.slice(1).map(l=>{const vals=l.split(",").map(v=>v.replace(/"/g,"").trim());const obj={};headers.forEach((h,i)=>{obj[h]=vals[i]||""});return obj});onImport(rows)};reader.readAsText(file);e.target.value=""};
 return <><input ref={ref} type="file" accept=".csv,.txt" onChange={handle} style={{display:"none"}}/><Bt ghost sm onClick={()=>ref.current?.click()}>{label||"Import"}</Bt></>
 }
-function MetalsTab({data,sd,save}){
+function MetalsTab({data,sd,save,prices}){
 const[sa,sSa]=useState(false);const[ei,sEi]=useState(null);
 const[f,sF]=useState({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:"",risk:"3",notes:""});
 const it=data.metals||[];
@@ -88,7 +156,7 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Oz/Unit","Cost","Spot/oz","Value","Gain","Risk"],it.map(h=>[h.metal,h.form,h.qty,getOz(h.form),h.costPer,h.spot,h.qty*getOz(h.form)*h.spot,(h.qty*getOz(h.form)*h.spot)-(h.qty*h.costPer),h.risk||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Holdings</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Oz/Unit","Cost","Spot/oz","Value","Gain","Risk"],it.map(h=>[h.metal,h.form,h.qty,getOz(h.form),h.costPer,h.spot,h.qty*getOz(h.form)*h.spot,(h.qty*getOz(h.form)*h.spot)-(h.qty*h.costPer),h.risk||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.metals?.Gold?.price;sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:lp?String(Math.round(lp*100)/100):"",risk:"3",notes:""});sSa(true)}}>+ Add</Bt></div>}>Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Metal","Form","Qty","Oz","Cost/Unit","Spot/oz","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
@@ -119,7 +187,7 @@ return(<div>
 </div>
 <Md open={sa} onClose={()=>sSa(false)} title="Add Metal">
 <div style={{display:"flex",flexDirection:"column",gap:12}}>
-<div><Lb>Metal</Lb><Sl value={f.metal} onChange={v=>sF({...f,metal:v})} options={["Gold","Silver","Platinum","Palladium"]} style={{width:"100%"}}/></div>
+<div><Lb>Metal</Lb><Sl value={f.metal} onChange={v=>{const lp=prices?.metals?.[v]?.price;sF({...f,metal:v,spot:lp?String(Math.round(lp*100)/100):f.spot})}} options={["Gold","Silver","Platinum","Palladium"]} style={{width:"100%"}}/></div>
 <div><Lb>Form</Lb><Sl value={f.form} onChange={v=>sF({...f,form:v})} options={MFORMS} style={{width:"100%"}}/></div>
 {f.form&&<div style={{padding:6,background:T.bgI,borderRadius:6,fontSize:11,color:T.txD}}>{getOz(f.form)} oz per unit{f.qty&&f.spot?(" · Total oz: "+(+f.qty*getOz(f.form)).toFixed(2)+" · Value: "+fmt(+f.qty*getOz(f.form)*(+f.spot))):""}</div>}
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
@@ -225,7 +293,7 @@ return(<div>
 </Md>
 </div>)
 }
-function CryptoTab({data,sd,save}){
+function CryptoTab({data,sd,save,prices}){
 const[sa,sSa]=useState(false);const[ei,sEi]=useState(null);
 const[f,sF]=useState({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:"",risk:"8",notes:""});
 const it=data.crypto||[];
@@ -246,7 +314,7 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Crypto Holdings</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.crypto?.BTC?.price;sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:lp?String(Math.round(lp*100)/100):"",risk:"8",notes:""});sSa(true)}}>+ Add</Bt></div>}>Crypto Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Coin","Name","Qty","Cost","Current","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
@@ -276,7 +344,7 @@ return(<div>
 </div>
 <Md open={sa} onClose={()=>sSa(false)} title="Add Crypto">
 <div style={{display:"flex",flexDirection:"column",gap:12}}>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Coin</Lb><Sl value={f.coin} onChange={v=>sF({...f,coin:v})} options={COINS} style={{width:"100%"}}/></div><div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})}/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Coin</Lb><Sl value={f.coin} onChange={v=>{const lp=prices?.crypto?.[v]?.price;sF({...f,coin:v,current:lp?String(Math.round(lp*100)/100):f.current})}} options={COINS} style={{width:"100%"}}/></div><div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})}/></div></div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Qty</Lb><In value={f.qty} onChange={v=>sF({...f,qty:v})} type="number"/></div><div><Lb>Cost/Unit</Lb><In value={f.costPer} onChange={v=>sF({...f,costPer:v})} prefix="$" type="number"/></div><div><Lb>Current</Lb><In value={f.current} onChange={v=>sF({...f,current:v})} prefix="$" type="number"/></div></div>
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
 <div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})}/></div>
@@ -463,11 +531,13 @@ function HomePage({onNav,user}){
 
   const[openFaq,setOpenFaq]=useState(null);
   const faqs=[
-    ["Is HardAssets.io really free?","Yes. The core dashboard with all features is completely free. No credit card required. We plan to offer premium features in the future, but the current product is free."],
+    ["Is HardAssets.io really free?","Yes. The core dashboard with all features — including live prices, CSV import/export, and cloud sync — is completely free. No credit card required. We plan to offer premium features in the future, but the current product is free."],
+    ["Where do the live prices come from?","Metal prices (gold, silver, platinum, palladium) are pulled from Gold-API.com in real-time. Crypto prices (BTC, ETH, SOL, and 10+ coins) come from CoinGecko's API. Prices update automatically every time you log in, and you can refresh anytime with the Refresh button in the price ticker bar."],
+    ["How does the oz-per-unit calculation work?","Different metal forms contain different amounts of troy ounces. A 1oz coin = 1 oz, a 100oz bar = 100 oz, a kilo bar = 32.15 oz, and junk silver = 0.715 oz per unit. The dashboard automatically multiplies your quantity by the oz-per-unit and the live spot price to show accurate portfolio value."],
     ["How is my data secured?","Your data is stored in Google Cloud Firestore with AES-256 encryption. Authentication uses Google Identity Services. All data transmission uses HTTPS/TLS."],
-    ["Do you connect to my bank accounts?","No. HardAssets.io is a manual-entry tracker. You add holdings yourself or import from Excel/CSV. Zero risk of unauthorized access to financial accounts."],
-    ["Can I import from a spreadsheet?","Yes. Every tab supports CSV export. Upload your file or manually enter your holdings."],
-    ["What asset types can I track?","Precious metals (12 form types), RE syndications (16 deal types), crypto (13+ coins), plus 11 asset classes in the master portfolio."],
+    ["Do you connect to my bank accounts?","No. HardAssets.io is a manual-entry tracker. You add holdings yourself or import from CSV. Zero risk of unauthorized access to financial accounts."],
+    ["Can I import from a spreadsheet?","Yes. Every tab has an Import button that accepts CSV files. Export your data from any spreadsheet, click Import, and your holdings are added instantly. Column names are matched automatically."],
+    ["What asset types can I track?","Precious metals (12 form types), RE syndications (16 deal types), crypto (13+ coins), plus 11 asset classes in the master portfolio including equities, commodities, fixed income, private credit, alternatives, and more."],
     ["Can I use it on my phone?","Yes. Fully responsive and works on any device. Your data syncs across all devices via your account."]
   ];
 
@@ -489,7 +559,7 @@ function HomePage({onNav,user}){
       <div style={{position:"relative"}}>
         <Rv><div style={S.badge}><div style={S.dot}/> Free to use — No credit card required</div></Rv>
         <Rv delay={.1}><h1 style={{fontSize:"clamp(36px,5.5vw,62px)",fontWeight:900,lineHeight:1.05,letterSpacing:-1.5,maxWidth:720,margin:"0 auto 20px"}}>Track Everything<br/>That <span style={{color:T.gld}}>Holds Value</span></h1></Rv>
-        <Rv delay={.2}><p style={{fontSize:"clamp(16px,1.8vw,19px)",color:T.txD,maxWidth:540,margin:"0 auto 36px",lineHeight:1.6}}>Gold. Silver. Real estate syndications. Crypto. Commodities. The only portfolio dashboard built specifically for hard asset investors.</p></Rv>
+        <Rv delay={.2}><p style={{fontSize:"clamp(16px,1.8vw,19px)",color:T.txD,maxWidth:540,margin:"0 auto 36px",lineHeight:1.6}}>Gold. Silver. Real estate syndications. Crypto. Commodities. Live spot prices, portfolio tracking, and risk analysis — built for hard asset investors.</p></Rv>
         <Rv delay={.3}><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:50}}>
           <Bt onClick={()=>onNav(user?"app":"login")} style={{padding:"14px 32px",fontSize:15}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Bt>
           <Bt ghost onClick={()=>document.getElementById("features")?.scrollIntoView({behavior:"smooth"})} style={{padding:"14px 32px",fontSize:15}}>See Features</Bt>
@@ -500,6 +570,12 @@ function HomePage({onNav,user}){
           <div style={S.mockup}>
             <div style={S.bar}><div style={S.mdot("#ef4444")}/><div style={S.mdot("#f59e0b")}/><div style={S.mdot("#10b981")}/><div style={{marginLeft:12,padding:"4px 12px",background:T.bg,borderRadius:6,fontSize:11,color:T.txM,fontFamily:"monospace",flex:1,textAlign:"center"}}>hardassets.io/dashboard</div></div>
             <div style={{padding:16,display:"grid",gap:10}}>
+              <div style={{display:"flex",alignItems:"center",gap:14,padding:"6px 12px",background:"#080e1e",borderRadius:6,fontSize:10,fontFamily:"monospace",overflow:"hidden"}}>
+                <span style={{color:T.txM}}>LIVE</span><div style={{width:5,height:5,borderRadius:3,background:T.grn}}/>
+                {[["Au","$3,042","+2.1%",true],["Ag","$34.18","+1.8%",true],["Pt","$1,021","-0.3%",false],["BTC","$87,420","+4.2%",true],["ETH","$3,180","+2.8%",true]].map(([s,p,c,up],i)=>
+                  <span key={i} style={{whiteSpace:"nowrap"}}><span style={{color:T.txM}}>{s}</span> <span style={{color:T.txt}}>{p}</span> <span style={{color:up?T.grn:T.red}}>{up?"▲":"▼"}{c}</span></span>
+                )}
+              </div>
               <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
                 {[["Total Portfolio","$1.24M",T.gldB],["Hard Assets %","72.4%",T.grn],["Est. Annual Income","$47.2K",T.grn],["Avg Risk","4.8/10",T.gld]].map(([l,v,c],i)=>
                   <div key={i} style={S.mstat}><div style={{fontSize:9,color:T.txM,textTransform:"uppercase",letterSpacing:1,fontFamily:"monospace"}}>{l}</div><div style={{fontSize:18,fontWeight:800,color:c,marginTop:4}}>{v}</div></div>
@@ -531,8 +607,8 @@ function HomePage({onNav,user}){
 
     {/* Stats */}
     <div style={{padding:"50px 40px",borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr,background:T.bgI}}>
-      <div style={{maxWidth:900,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:32,textAlign:"center"}}>
-        {[["5","Asset Classes"],["16","RE Deal Types"],["13","Crypto Coins"],["100%","Free to Use"]].map(([n,l],i)=>
+      <div style={{maxWidth:1000,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:28,textAlign:"center"}}>
+        {[["5","Asset Classes"],["16","RE Deal Types"],["13","Crypto Coins"],["Live","Spot Prices"],["100%","Free to Use"]].map(([n,l],i)=>
           <Rv key={i} delay={i*.1}><div style={{fontSize:34,fontWeight:900,fontFamily:"monospace",color:T.gldB}}>{n}</div><div style={{fontSize:12,color:T.txM,marginTop:4}}>{l}</div></Rv>
         )}
       </div>
@@ -546,16 +622,16 @@ function HomePage({onNav,user}){
         <Rv delay={.2}><p style={{fontSize:16,color:T.txD,maxWidth:540,margin:"0 auto",lineHeight:1.6}}>No more juggling spreadsheets across asset classes.</p></Rv>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:14,marginTop:40}}>
-        <Rv><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◆</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Precious Metals Tracker</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Track physical gold, silver, platinum & palladium with cost basis, spot price, and real-time gain/loss. See allocation by metal type.</p><div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:14}}>{["1oz Coins","Bars","Rounds","Junk Silver","ETFs","Numismatic"].map(t=><span key={t} style={{padding:"4px 10px",borderRadius:6,fontSize:10,background:T.bgI,border:"1px solid "+T.bdr,color:T.txM,fontFamily:"monospace"}}>{t}</span>)}</div></div></Rv>
+        <Rv><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◆</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Precious Metals Tracker</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Track physical gold, silver, platinum & palladium with cost basis and real-time gain/loss. Live spot prices update automatically from Gold-API on every login with oz-per-unit conversion for accurate valuation.</p><div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:14}}>{["1oz Coins","Bars","Rounds","Junk Silver","ETFs","Live Spot Prices"].map(t=><span key={t} style={{padding:"4px 10px",borderRadius:6,fontSize:10,background:T.bgI,border:"1px solid "+T.bdr,color:t==="Live Spot Prices"?T.grn:T.txM,fontFamily:"monospace"}}>{t}</span>)}</div></div></Rv>
         <Rv delay={.1}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◫</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>RE Syndication LP Tracker</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Monitor LP positions with rate %, projected IRR, and sponsor tracking across 16 deal types.</p></div></Rv>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginTop:14}}>
         <Rv><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>⊞</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Deal Analyzer</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Full cash flow calculator with CoC, Cap Rate, DSCR, and quick pass/fail tests.</p></div></Rv>
-        <Rv delay={.1}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>Ⓒ</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Crypto Portfolio</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Track BTC, ETH, SOL & 10+ coins with cost basis, current price, and risk scoring.</p></div></Rv>
+        <Rv delay={.1}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>Ⓒ</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Crypto Portfolio</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Track BTC, ETH, SOL & 10+ coins with live prices from CoinGecko, cost basis tracking, and portfolio allocation with risk scoring.</p></div></Rv>
         <Rv delay={.2}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◉</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Master Portfolio</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Complete allocation across 11 asset classes with targets, risk scoring & income estimates.</p></div></Rv>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:10,marginTop:14}}>
-        {[["📊","Excel Import"],["📥","CSV Export"],["🎯","Risk Ratings"],["📝","Notes"],["✏️","Inline Edit"],["☁️","Cloud Sync"]].map(([ic,lb],i)=>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginTop:14}}>
+        {[["📡","Live Metal Prices"],["💰","Live Crypto Prices"],["📊","CSV Import"],["📥","CSV Export"],["🎯","Risk Ratings"],["📝","Notes"],["✏️","Inline Edit"],["☁️","Cloud Sync"]].map(([ic,lb],i)=>
           <Rv key={i} delay={i*.05}><div style={{...S.card,textAlign:"center",padding:18}}><div style={{fontSize:18,marginBottom:6}}>{ic}</div><div style={{fontSize:11,fontWeight:600}}>{lb}</div></div></Rv>
         )}
       </div>
@@ -567,7 +643,7 @@ function HomePage({onNav,user}){
         <Rv><div style={S.sLabel}>How It Works</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Start Tracking in <span style={{color:T.gld}}>60 Seconds</span></div></Rv>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:32,marginTop:40}}>
-          {[["1","Sign Up Free","Create an account with Google or email. Your data syncs across all devices."],["2","Add Your Assets","Enter holdings manually or import from CSV. Metals, RE, crypto, anything."],["3","See the Full Picture","View allocation charts, risk scores, income projections — all in one dashboard."]].map(([n,t,d],i)=>
+          {[["1","Sign Up Free","Create an account with Google or email. Your data syncs across all devices securely."],["2","Add Your Assets","Enter holdings manually or import from CSV. Live spot prices auto-fill for metals and crypto."],["3","See the Full Picture","Live price ticker, allocation charts, risk scores, income projections — updated in real time."]].map(([n,t,d],i)=>
             <Rv key={i} delay={i*.1}><div style={{textAlign:"center",padding:"28px 20px"}}>
               <div style={{width:48,height:48,borderRadius:"50%",border:"2px solid "+T.gld,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:800,color:T.gld,margin:"0 auto 18px",fontFamily:"monospace"}}>{n}</div>
               <h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>{t}</h3>
@@ -625,7 +701,7 @@ function HomePage({onNav,user}){
       <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:300,background:"radial-gradient(ellipse,rgba(212,168,67,.08),transparent)",pointerEvents:"none"}}/>
       <div style={{position:"relative"}}>
         <Rv><div style={{fontSize:"clamp(28px,4vw,46px)",fontWeight:800,lineHeight:1.15}}>Ready to See Your<br/><span style={{color:T.gld}}>Complete Picture?</span></div></Rv>
-        <Rv delay={.1}><p style={{fontSize:16,color:T.txD,maxWidth:460,margin:"16px auto 32px",lineHeight:1.6}}>Join investors who track gold, real estate, crypto, and more in one unified dashboard. Free forever.</p></Rv>
+        <Rv delay={.1}><p style={{fontSize:16,color:T.txD,maxWidth:460,margin:"16px auto 32px",lineHeight:1.6}}>Live metal and crypto prices. Portfolio tracking across every hard asset class. Risk scoring. Income projections. Free forever.</p></Rv>
         <Rv delay={.2}><Bt onClick={()=>onNav(user?"app":"login")} style={{padding:"16px 40px",fontSize:17}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Bt></Rv>
         <Rv delay={.3}><div style={{marginTop:14,fontSize:12,color:T.txM}}>No credit card · Free forever · 60-second setup</div></Rv>
       </div>
@@ -635,7 +711,7 @@ function HomePage({onNav,user}){
     <div style={{borderTop:"1px solid "+T.bdr,padding:"50px 40px 24px"}}>
       <div style={{maxWidth:1100,margin:"0 auto"}}>
         <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:40,marginBottom:36}}>
-          <div><Lg/><p style={{fontSize:13,color:T.txD,marginTop:12,lineHeight:1.5,maxWidth:280}}>The portfolio dashboard built for investors who believe in hard assets.</p></div>
+          <div><Lg/><p style={{fontSize:13,color:T.txD,marginTop:12,lineHeight:1.5,maxWidth:280}}>The portfolio dashboard with live prices built for investors who believe in hard assets.</p></div>
           <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Product</h4>{["Features","How It Works","Security","FAQ"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>document.getElementById(l.toLowerCase().replace(/ /g,""))?.scrollIntoView({behavior:"smooth"})}>{l}</div>)}</div>
           <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Asset Classes</h4>{["Precious Metals","RE Syndications","Crypto","Deal Analyzer"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("login")}>{l}</div>)}</div>
           <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Company</h4><div style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("contact")}>Contact Us</div><div style={{fontSize:13,color:T.txD,padding:"4px 0"}}>info@hardassets.io</div></div>
@@ -694,19 +770,47 @@ function LoginPg({onLogin,onBack}){
 
 export default function App(){
   const[page,setPage]=useState("home");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[syncing,setSyncing]=useState(false);
+  const[prices,setPrices]=useState(null);const[lastUpdated,setLastUpdated]=useState(null);
   useEffect(()=>{initFirebase()},[]);
+
+  const refreshPrices=useCallback(async(currentData)=>{
+    const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
+    const ts=new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+    setPrices({metals:mp,crypto:cp});setLastUpdated(ts);
+    if(mp||cp){
+      const d=currentData||data;
+      const updated=applyPricesToData(d,mp,cp);
+      setData(updated);
+      if(user&&user.email&&user.email!=="guest"){fbSave(user.email,updated)}
+      return updated;
+    }
+    return currentData||data;
+  },[data,user]);
+
   const handleLogin=useCallback(async(u)=>{
     setUser(u);setPage("app");
+    let loadedData=DEF;
     if(u.email&&u.email!=="guest"){
       setSyncing(true);
       const tryLoad=async(retries)=>{
-        if(fbReady){try{const saved=await fbLoad(u.email);if(saved){setData(saved)}}catch(e){}}
+        if(fbReady){try{const saved=await fbLoad(u.email);if(saved)return saved}catch(e){}}
         else if(retries>0){await new Promise(r=>setTimeout(r,500));return tryLoad(retries-1)}
+        return null;
       };
-      await tryLoad(10);
+      const saved=await tryLoad(10);
+      if(saved){loadedData=saved;setData(saved)}
       setSyncing(false);
     }
+    const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
+    const ts=new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"});
+    setPrices({metals:mp,crypto:cp});setLastUpdated(ts);
+    if(mp||cp){
+      const updated=applyPricesToData(loadedData,mp,cp);
+      setData(updated);
+      if(u.email&&u.email!=="guest"){fbSave(u.email,updated)}
+    }
   },[]);
+
   const save=useCallback(d=>{
     sv("ha-v4",d);
     if(user&&user.email&&user.email!=="guest"){fbSave(user.email,d)}
@@ -716,8 +820,9 @@ export default function App(){
   if(page==="login"&&!user) return <LoginPg onLogin={handleLogin} onBack={()=>setPage("home")}/>;
   if(page==="login"&&user){setPage("app");return null;}
   return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
-    <div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>setPage("home")}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
+    <PriceTicker prices={prices} onRefresh={()=>refreshPrices(data)} lastUpdated={lastUpdated}/>
+    <div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>setPage("home")}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);setPrices(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
     <div style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span>{t.label}</button>)}</div>
-    <div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
+    <div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save} prices={prices}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save} prices={prices}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
   </div>);
 }
