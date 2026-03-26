@@ -22,17 +22,20 @@ const fbLoad=async(email)=>{if(!db||!email||email==="guest")return null;try{cons
 const sv=async(k,d)=>{try{mm[k]=JSON.stringify(d)}catch(e){}};
 const lo=async k=>{return mm[k]?JSON.parse(mm[k]):null};
 
-const GOLD_API_KEY="3698ded390f2b2d265935002acb5880556253ad19ba99d7c8e90c66aba02c374";
+const METALS_API_KEY="IATC8NVAYIAWGIDAREIG473DAREIG";
 const COIN_MAP={BTC:"bitcoin",ETH:"ethereum",SOL:"solana",ADA:"cardano",DOT:"polkadot",AVAX:"avalanche-2",MATIC:"matic-network",LINK:"chainlink",XRP:"ripple",DOGE:"dogecoin"};
-const METAL_MAP={Gold:"XAU",Silver:"XAG",Platinum:"XPT",Palladium:"XPD"};
 
 async function fetchMetalPrices(){
   try{
+    const r=await fetch("https://api.metals.dev/v1/latest?api_key="+METALS_API_KEY+"&currency=USD&unit=toz");
+    if(!r.ok){console.log("Metals API status:",r.status);return null}
+    const d=await r.json();
+    if(d.status!=="success"||!d.metals)return null;
     const results={};
-    for(const[name,sym] of Object.entries(METAL_MAP)){
-      const r=await fetch("https://www.goldapi.io/api/"+sym+"/USD",{headers:{"x-access-token":GOLD_API_KEY,"Content-Type":"application/json"}});
-      if(r.ok){const d=await r.json();results[name]={price:d.price||0,prev:d.prev_close_price||d.price||0}}
-    }
+    if(d.metals.gold)results.Gold={price:d.metals.gold,prev:d.metals.gold*0.99};
+    if(d.metals.silver)results.Silver={price:d.metals.silver,prev:d.metals.silver*0.99};
+    if(d.metals.platinum)results.Platinum={price:d.metals.platinum,prev:d.metals.platinum*0.99};
+    if(d.metals.palladium)results.Palladium={price:d.metals.palladium,prev:d.metals.palladium*0.99};
     return results;
   }catch(e){console.log("Metal price err:",e);return null}
 }
