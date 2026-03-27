@@ -5,6 +5,69 @@ const PC=[T.gld,T.blu,T.grn,T.pur,T.org,T.cyn,"#ec4899","#84cc16"];
 const fmt=n=>{if(n==null||isNaN(n))return"$0";const a=Math.abs(n);return a>=1e6?"$"+(n/1e6).toFixed(2)+"M":a>=1e3?"$"+(n/1e3).toFixed(1)+"K":"$"+n.toFixed(2)};
 const fP=n=>(n>=0?"+":"")+n.toFixed(2)+"%";
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const GLOBAL_CSS=`
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}
+@keyframes goldShimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:.6}100%{transform:translateY(-400px) scale(0);opacity:0}}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.ha-shimmer{background:linear-gradient(90deg,${T.gld},${T.gldB},#fff,${T.gldB},${T.gld});background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldShimmer 4s ease-in-out infinite}
+.ha-particle{position:absolute;width:4px;height:4px;border-radius:50%;background:${T.gld};opacity:.4;animation:floatUp linear infinite;pointer-events:none}
+.ha-ticker-wrap{overflow:hidden}.ha-ticker-inner{display:flex;gap:24px;animation:tickerScroll 20s linear infinite;width:max-content}
+@media(max-width:768px){
+.ha-nav{padding:12px 16px!important}
+.ha-nav-links{gap:10px!important}
+.ha-nav-links .ha-hide-m{display:none!important}
+.ha-hero{padding:50px 20px 30px!important}
+.ha-hero h1{font-size:32px!important;letter-spacing:-1px!important}
+.ha-hero p{font-size:15px!important}
+.ha-mockup-stats{grid-template-columns:repeat(2,1fr)!important}
+.ha-mockup-row{grid-template-columns:1fr!important}
+.ha-stats-grid{grid-template-columns:repeat(3,1fr)!important;gap:16px!important}
+.ha-bento-2{grid-template-columns:1fr!important}
+.ha-bento-3{grid-template-columns:1fr!important}
+.ha-mini-grid{grid-template-columns:repeat(2,1fr)!important}
+.ha-steps{grid-template-columns:1fr!important;gap:8px!important}
+.ha-trust{grid-template-columns:1fr 1fr!important}
+.ha-built{grid-template-columns:1fr!important}
+.ha-section{padding:50px 20px!important}
+.ha-footer-grid{grid-template-columns:1fr 1fr!important;gap:20px!important}
+.ha-dash-header{padding:10px 14px!important}
+.ha-dash-header .ha-user-name{display:none!important}
+.ha-dash-cards{grid-template-columns:repeat(2,1fr)!important}
+.ha-dash-content{padding:14px!important}
+.ha-dash-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ha-dash-table-wrap table{min-width:700px}
+.ha-dash-flex{flex-direction:column!important}
+.ha-dash-flex>div{flex:none!important;width:100%!important}
+.ha-port-cards{grid-template-columns:repeat(2,1fr)!important}
+.ha-port-cards>div:nth-child(5){grid-column:span 2!important}
+.ha-alloc-grid{flex-direction:column!important}
+.ha-alloc-grid>div{flex:none!important;width:100%!important}
+.ha-deal-wrap{flex-direction:column!important}
+.ha-deal-wrap>div:first-child{width:100%!important}
+.ha-deal-stats{grid-template-columns:repeat(2,1fr)!important}
+.ha-deal-pl{grid-template-columns:1fr!important}
+.ha-deal-tests{grid-template-columns:1fr!important}
+.ha-ticker{font-size:10px!important;padding:6px 12px!important;gap:10px!important}
+.ha-modal{padding:20px!important;border-radius:12px!important}
+.ha-form-row{grid-template-columns:1fr!important}
+.ha-tabs{padding:0 12px!important}
+.ha-tabs button{padding:10px 10px!important;font-size:11px!important}
+.ha-tab-label{display:none!important}
+}
+@media(max-width:480px){
+.ha-stats-grid{grid-template-columns:repeat(2,1fr)!important}
+.ha-trust{grid-template-columns:1fr!important}
+.ha-footer-grid{grid-template-columns:1fr!important}
+.ha-port-cards{grid-template-columns:1fr!important}
+.ha-port-cards>div:nth-child(5){grid-column:span 1!important}
+.ha-dash-cards{grid-template-columns:1fr!important}
+.ha-deal-stats{grid-template-columns:1fr!important}
+.ha-modal{padding:16px!important;margin:8px!important}
+.ha-dash-header{gap:8px!important}
+}
+`;
 const mm={};
 let authToken=null;
 const setAuthToken=(t)=>{authToken=t};
@@ -563,69 +626,7 @@ function HomePage({onNav,user}){
   ];
 
   return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,sans-serif"}}>
-    <style>{`
-@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}
-@keyframes goldShimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-@keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:.6}100%{transform:translateY(-400px) scale(0);opacity:0}}
-@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.ha-shimmer{background:linear-gradient(90deg,${T.gld},${T.gldB},#fff,${T.gldB},${T.gld});background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldShimmer 4s ease-in-out infinite}
-.ha-particle{position:absolute;width:4px;height:4px;border-radius:50%;background:${T.gld};opacity:.4;animation:floatUp linear infinite;pointer-events:none}
-.ha-ticker-wrap{overflow:hidden}.ha-ticker-inner{display:flex;gap:24px;animation:tickerScroll 20s linear infinite;width:max-content}
-@media(max-width:768px){
-.ha-nav{padding:12px 16px!important}
-.ha-nav-links{gap:10px!important}
-.ha-nav-links .ha-hide-m{display:none!important}
-.ha-hero{padding:50px 20px 30px!important}
-.ha-hero h1{font-size:32px!important;letter-spacing:-1px!important}
-.ha-hero p{font-size:15px!important}
-.ha-mockup-stats{grid-template-columns:repeat(2,1fr)!important}
-.ha-mockup-row{grid-template-columns:1fr!important}
-.ha-stats-grid{grid-template-columns:repeat(3,1fr)!important;gap:16px!important}
-.ha-bento-2{grid-template-columns:1fr!important}
-.ha-bento-3{grid-template-columns:1fr!important}
-.ha-mini-grid{grid-template-columns:repeat(2,1fr)!important}
-.ha-steps{grid-template-columns:1fr!important;gap:8px!important}
-.ha-trust{grid-template-columns:1fr 1fr!important}
-.ha-built{grid-template-columns:1fr!important}
-.ha-section{padding:50px 20px!important}
-.ha-footer-grid{grid-template-columns:1fr 1fr!important;gap:20px!important}
-.ha-dash-header{padding:10px 14px!important}
-.ha-dash-header .ha-user-name{display:none!important}
-.ha-dash-cards{grid-template-columns:repeat(2,1fr)!important}
-.ha-dash-content{padding:14px!important}
-.ha-dash-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.ha-dash-table-wrap table{min-width:700px}
-.ha-dash-flex{flex-direction:column!important}
-.ha-dash-flex>div{flex:none!important;width:100%!important}
-.ha-port-cards{grid-template-columns:repeat(2,1fr)!important}
-.ha-port-cards>div:nth-child(5){grid-column:span 2!important}
-.ha-alloc-grid{flex-direction:column!important}
-.ha-alloc-grid>div{flex:none!important;width:100%!important}
-.ha-deal-wrap{flex-direction:column!important}
-.ha-deal-wrap>div:first-child{width:100%!important}
-.ha-deal-stats{grid-template-columns:repeat(2,1fr)!important}
-.ha-deal-pl{grid-template-columns:1fr!important}
-.ha-deal-tests{grid-template-columns:1fr!important}
-.ha-ticker{font-size:10px!important;padding:6px 12px!important;gap:10px!important}
-.ha-modal{padding:20px!important;border-radius:12px!important}
-.ha-form-row{grid-template-columns:1fr!important}
-.ha-tabs{padding:0 12px!important}
-.ha-tabs button{padding:10px 10px!important;font-size:11px!important}
-.ha-tab-label{display:none!important}
-}
-@media(max-width:480px){
-.ha-stats-grid{grid-template-columns:repeat(2,1fr)!important}
-.ha-trust{grid-template-columns:1fr!important}
-.ha-footer-grid{grid-template-columns:1fr!important}
-.ha-port-cards{grid-template-columns:1fr!important}
-.ha-port-cards>div:nth-child(5){grid-column:span 1!important}
-.ha-dash-cards{grid-template-columns:1fr!important}
-.ha-deal-stats{grid-template-columns:1fr!important}
-.ha-modal{padding:16px!important;margin:8px!important}
-.ha-dash-header{gap:8px!important}
-}
-`}</style>
+    <style>{GLOBAL_CSS}</style>
 
     {/* Nav */}
     <nav className="ha-nav" style={S.nav}>
@@ -936,6 +937,7 @@ export default function App(){
   if(page==="login"&&!user) return <LoginPg onLogin={handleLogin} onBack={()=>setPage("home")}/>;
   if(page==="login"&&user){setPage("app");return null;}
   return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
+    <style>{GLOBAL_CSS}</style>
     <PriceTicker prices={prices} onRefresh={()=>refreshPrices(data)} lastUpdated={lastUpdated}/>
     <div className="ha-dash-header" style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>setPage("home")}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span className="ha-user-name" style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{authToken&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setAuthToken(null);setUser(null);setPrices(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
     <div className="ha-tabs" style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span><span className="ha-tab-label">{t.label}</span></button>)}</div>
