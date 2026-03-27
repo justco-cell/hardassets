@@ -70,7 +70,7 @@ function PriceTicker({prices,onRefresh,lastUpdated}){
   if(metals){Object.entries(metals).forEach(([name,d])=>{const chg=d.prev>0?((d.price-d.prev)/d.prev*100):0;items.push({label:name==="Gold"?"Au":name==="Silver"?"Ag":name==="Platinum"?"Pt":"Pd",price:d.price,change:chg})})}
   if(crypto){["BTC","ETH","SOL"].forEach(sym=>{const d=crypto[sym];if(d)items.push({label:sym,price:d.price,change:d.change24h||0})})}
   if(items.length===0)return null;
-  return(<div style={{display:"flex",alignItems:"center",gap:16,padding:"8px 24px",background:"#080e1e",borderBottom:"1px solid "+T.bdr,overflowX:"auto",fontSize:12,fontFamily:"monospace"}}>
+  return(<div className="ha-ticker" style={{display:"flex",alignItems:"center",gap:16,padding:"8px 24px",background:"#080e1e",borderBottom:"1px solid "+T.bdr,overflowX:"auto",fontSize:12,fontFamily:"monospace"}}>
     <span style={{color:T.txM,fontSize:10,whiteSpace:"nowrap"}}>LIVE</span>
     <div style={{width:6,height:6,borderRadius:3,background:T.grn,animation:"pulse 2s infinite"}}/>
     {items.map((it,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:6,whiteSpace:"nowrap"}}>
@@ -147,16 +147,16 @@ const rm=id=>{const u={...data,metals:it.filter(h=>h.id!==id)};sd(u);save(u)};
 const imp=(rows)=>{const newM=rows.map(r=>({id:uid(),metal:r.Metal||r.metal||"Gold",form:r.Form||r.form||"1oz Coins",qty:+(r.Qty||r.qty||0),costPer:+(r["Cost/Unit"]||r.Cost||r.costPer||r.cost||0),spot:+(r["Spot/oz"]||r.Spot||r.spot||r.Current||r.current||0),risk:+(r.Risk||r.risk||3),notes:r.Notes||r.notes||""})).filter(m=>m.qty>0);const u={...data,metals:[...it,...newM]};sd(u);save(u)};
 const sE=()=>{if(!ei)return;const u={...data,metals:it.map(h=>h.id===ei.id?ei:h)};sd(u);save(u);sEi(null)};
 return(<div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
+<div className="ha-dash-cards" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
 {[["Cost Basis",fmt(tC),T.txD],["Value",fmt(tV),T.gldB],["Gain/Loss",fmt(g),g>=0?T.grn:T.red],["Return",fP(gP),gP>=0?T.grn:T.red]].map(([l,v,c],i)=>
 <Cd key={i}><div style={{fontSize:10,color:T.txM,textTransform:"uppercase",letterSpacing:1,fontFamily:"monospace"}}>{l}</div><div style={{fontSize:24,fontWeight:800,color:c,marginTop:4}}>{v}</div></Cd>
 )}
 </div>
-<div style={{display:"flex",gap:16}}>
+<div className="ha-dash-flex" style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
 <Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Oz/Unit","Cost","Spot/oz","Value","Gain","Risk","Date Invested","Target Yrs","Yrs Held"],it.map(h=>[h.metal,h.form,h.qty,getOz(h.form),h.costPer,h.spot,h.qty*getOz(h.form)*h.spot,(h.qty*getOz(h.form)*h.spot)-(h.qty*h.costPer),h.risk||"",h.dateInv||"",h.years||"",yrsHeld(h.dateInv)||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.metals?.Gold?.price;sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:lp?String(Math.round(lp*100)/100):"",risk:"3",dateInv:"",years:"",notes:""});sSa(true)}}>+ Add</Bt></div>}>Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
-<table style={{width:"100%",borderCollapse:"collapse"}}>
+<div className="ha-dash-table-wrap"><table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Metal","Form","Qty","Oz","Cost/Unit","Spot/oz","Value","Gain","Risk","Date","Yrs","Held","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(h=>{const oz=getOz(h.form),v=h.qty*oz*h.spot,c=h.qty*h.costPer,gl=v-c;return(
 <tr key={h.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
@@ -175,7 +175,7 @@ return(<div>
 <TD><button onClick={()=>sEi({...h})} style={{background:"none",border:"none",color:T.blu,cursor:"pointer",fontSize:11}}>Edit</button></TD>
 <TD><button onClick={()=>rm(h.id)} style={{background:"none",border:"none",color:T.red,cursor:"pointer",fontSize:14,opacity:.6}}>x</button></TD>
 </tr>)})}</tbody>
-</table>
+</table></div>
 {it.length===0&&<div style={{padding:24,textAlign:"center",color:T.txM}}>No holdings yet. Click + Add.</div>}
 </Cd>
 </div>
@@ -236,16 +236,16 @@ const rm=id=>{const u={...data,syndications:it.filter(d=>d.id!==id)};sd(u);save(
 const imp=(rows)=>{const newS=rows.map(r=>({id:uid(),name:r.Deal||r.Name||r.name||"",sponsor:r.Sponsor||r.sponsor||"",invested:+(r.Invested||r.invested||0),rate:+(r.Rate||r.rate||0),projIRR:+(r.IRR||r.projIRR||r.irr||0),status:r.Status||r.status||"Active",type:r.Type||r.type||"Multifamily",risk:+(r.Risk||r.risk||5),notes:r.Notes||r.notes||""})).filter(s=>s.name&&s.invested>0);const u={...data,syndications:[...it,...newS]};sd(u);save(u)};
 const sE=()=>{if(!ei)return;const u={...data,syndications:it.map(d=>d.id===ei.id?ei:d)};sd(u);save(u);sEi(null)};
 return(<div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
+<div className="ha-dash-cards" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
 {[["Total Invested",fmt(tI),T.txt],["Avg Rate",aR.toFixed(1)+"%",T.gldB],["Est. Annual Income",fmt(tInc),T.grn],["Avg Proj. IRR",aIRR.toFixed(1)+"%",T.blu]].map(([l,v,c],i)=>
 <Cd key={i}><div style={{fontSize:10,color:T.txM,textTransform:"uppercase",letterSpacing:1,fontFamily:"monospace"}}>{l}</div><div style={{fontSize:24,fontWeight:800,color:c,marginTop:4}}>{v}</div></Cd>
 )}
 </div>
-<div style={{display:"flex",gap:16}}>
+<div className="ha-dash-flex" style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
 <Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Deal","Sponsor","Type","Invested","Rate","AnnIncome","IRR","Risk","Status","Date Invested","Target Yrs","Yrs Held"],it.map(d=>[d.name,d.sponsor,d.type,d.invested,d.rate||0,Math.round(d.invested*(d.rate||0)/100),d.projIRR,d.risk||"",d.status,d.dateInv||"",d.years||"",yrsHeld(d.dateInv)||""]),"syndications.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add Deal</Bt></div>}>LP Positions</Hd>
 <Cd style={{padding:0,overflow:"auto"}}>
-<table style={{width:"100%",borderCollapse:"collapse"}}>
+<div className="ha-dash-table-wrap"><table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Deal","Sponsor","Type","Invested","Rate%","Ann.Income","IRR","Risk","Status","Date","Yrs","Held","",""].map((h,i)=><th key={i} style={{padding:"10px 6px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace",whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(d=>{const ai=d.invested*(d.rate||0)/100;return(
 <tr key={d.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
@@ -264,7 +264,7 @@ return(<div>
 <TD><button onClick={()=>sEi({...d})} style={{background:"none",border:"none",color:T.blu,cursor:"pointer",fontSize:11}}>Edit</button></TD>
 <TD><button onClick={()=>rm(d.id)} style={{background:"none",border:"none",color:T.red,cursor:"pointer",fontSize:14,opacity:.6}}>x</button></TD>
 </tr>)})}</tbody>
-</table>
+</table></div>
 {it.length===0&&<div style={{padding:24,textAlign:"center",color:T.txM}}>No deals yet.</div>}
 </Cd>
 </div>
@@ -314,16 +314,16 @@ const rm=id=>{const u={...data,crypto:it.filter(h=>h.id!==id)};sd(u);save(u)};
 const imp=(rows)=>{const newC=rows.map(r=>({id:uid(),coin:r.Coin||r.coin||"BTC",name:r.Name||r.name||"",qty:+(r.Qty||r.qty||0),costPer:+(r.Cost||r.costPer||r.cost||0),current:+(r.Current||r.current||r.Price||r.price||0),risk:+(r.Risk||r.risk||8),notes:r.Notes||r.notes||""})).filter(c=>c.qty>0);const u={...data,crypto:[...it,...newC]};sd(u);save(u)};
 const sE=()=>{if(!ei)return;const u={...data,crypto:it.map(h=>h.id===ei.id?ei:h)};sd(u);save(u);sEi(null)};
 return(<div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
+<div className="ha-dash-cards" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
 {[["Cost Basis",fmt(tC),T.txD],["Value",fmt(tV),T.gldB],["Gain/Loss",fmt(g),g>=0?T.grn:T.red],["Return",fP(gP),gP>=0?T.grn:T.red]].map(([l,v,c],i)=>
 <Cd key={i}><div style={{fontSize:10,color:T.txM,textTransform:"uppercase",letterSpacing:1,fontFamily:"monospace"}}>{l}</div><div style={{fontSize:24,fontWeight:800,color:c,marginTop:4}}>{v}</div></Cd>
 )}
 </div>
-<div style={{display:"flex",gap:16}}>
+<div className="ha-dash-flex" style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
 <Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk","Date Invested","Target Yrs","Yrs Held"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||"",h.dateInv||"",h.years||"",yrsHeld(h.dateInv)||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.crypto?.BTC?.price;sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:lp?String(Math.round(lp*100)/100):"",risk:"8",dateInv:"",years:"",notes:""});sSa(true)}}>+ Add</Bt></div>}>Crypto Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
-<table style={{width:"100%",borderCollapse:"collapse"}}>
+<div className="ha-dash-table-wrap"><table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Coin","Name","Qty","Cost","Current","Value","Gain","Risk","Date","Yrs","Held","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(h=>{const v=h.qty*h.current,c=h.qty*h.costPer,gl=v-c;return(
 <tr key={h.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
@@ -341,7 +341,7 @@ return(<div>
 <TD><button onClick={()=>sEi({...h})} style={{background:"none",border:"none",color:T.blu,cursor:"pointer",fontSize:11}}>Edit</button></TD>
 <TD><button onClick={()=>rm(h.id)} style={{background:"none",border:"none",color:T.red,cursor:"pointer",fontSize:14,opacity:.6}}>x</button></TD>
 </tr>)})}</tbody>
-</table>
+</table></div>
 {it.length===0&&<div style={{padding:24,textAlign:"center",color:T.txM}}>No crypto yet.</div>}
 </Cd>
 </div>
@@ -385,7 +385,7 @@ const noi=er-ox,cf=noi-mt,acf=cf*12;
 const coc=ci>0?(acf/ci)*100:0,cap=d.price>0?((noi*12)/d.price)*100:0;
 const ds=mt>0?noi/mt:0,op=d.price>0?(d.rent/d.price)*100:0;
 const F=({label,k,prefix,suffix})=><div style={{marginBottom:10}}><Lb>{label}</Lb><In value={d[k]} onChange={v=>u(k,v)} prefix={prefix} suffix={suffix} type="number"/></div>;
-return(<div style={{display:"flex",gap:20}}>
+return(<div className="ha-deal-wrap" style={{display:"flex",gap:20}}>
 <div style={{width:260}}>
 <Cd>
 <Hd>Property</Hd><F label="Price" k="price" prefix="$"/><F label="Down %" k="down" suffix="%"/><F label="Closing" k="closing" prefix="$"/><F label="Rehab" k="rehab" prefix="$"/>
@@ -437,7 +437,7 @@ const imp=(rows)=>{const newP=rows.map(r=>({id:uid(),cls:r.Class||r.cls||"Other"
 const sE=()=>{if(!ei)return;const u={...data,portfolio:it.map(a=>a.id===ei.id?ei:a)};sd(u);save(u);sEi(null)};
 const sTg=t=>{const u={...data,targets:t};sd(u);save(u)};
 return(<div>
-<div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:12,marginBottom:20}}>
+<div className="ha-port-cards" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:12,marginBottom:20}}>
 <Cd glow><div style={{fontSize:10,color:T.txM,textTransform:"uppercase",fontFamily:"monospace"}}>Total</div><div style={{fontSize:26,fontWeight:800,color:T.gldB,marginTop:4}}>{fmt(tot)}</div></Cd>
 <Cd><div style={{fontSize:10,color:T.txM,textTransform:"uppercase",fontFamily:"monospace"}}>Hard %</div><div style={{fontSize:22,fontWeight:800,color:T.grn,marginTop:4}}>{hp.toFixed(1)}%</div></Cd>
 <Cd><div style={{fontSize:10,color:T.txM,textTransform:"uppercase",fontFamily:"monospace"}}>Hard Value</div><div style={{fontSize:22,fontWeight:800,color:T.gld,marginTop:4}}>{fmt(hv)}</div></Cd>
@@ -526,6 +526,12 @@ function useReveal(){
 }
 function Rv({children,delay=0,style={}}){const[ref,vis]=useReveal();return <div ref={ref} style={{opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(30px)",transition:"opacity .7s cubic-bezier(.25,.1,.25,1) "+delay+"s, transform .7s cubic-bezier(.25,.1,.25,1) "+delay+"s",...style}}>{children}</div>}
 
+function AnimCount({target,suffix="",duration=2000}){
+  const[val,setVal]=useState(0);const[ref,vis]=useReveal();
+  useEffect(()=>{if(!vis)return;const num=parseFloat(target);if(isNaN(num)){setVal(target);return;}let start=0;const step=num/((duration/16));const id=setInterval(()=>{start+=step;if(start>=num){setVal(num);clearInterval(id)}else setVal(Math.floor(start))},16);return()=>clearInterval(id)},[vis,target,duration]);
+  return <span ref={ref}>{typeof val==="number"?val:target}{suffix}</span>;
+}
+
 function HomePage({onNav,user}){
   const S={nav:{position:"sticky",top:0,zIndex:100,padding:"16px 40px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",background:"rgba(6,13,27,.85)",borderBottom:"1px solid "+T.bdr},
     link:{background:"none",border:"none",color:T.txD,fontSize:13,cursor:"pointer"},
@@ -556,23 +562,73 @@ function HomePage({onNav,user}){
   ];
 
   return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,sans-serif"}}>
-    <style>{`@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}`}</style>
+    <style>{`
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}
+@keyframes goldShimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:.6}100%{transform:translateY(-400px) scale(0);opacity:0}}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.ha-shimmer{background:linear-gradient(90deg,${T.gld},${T.gldB},#fff,${T.gldB},${T.gld});background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldShimmer 4s ease-in-out infinite}
+.ha-particle{position:absolute;width:4px;height:4px;border-radius:50%;background:${T.gld};opacity:.4;animation:floatUp linear infinite;pointer-events:none}
+.ha-ticker-wrap{overflow:hidden}.ha-ticker-inner{display:flex;gap:24px;animation:tickerScroll 20s linear infinite;width:max-content}
+@media(max-width:768px){
+.ha-nav{padding:12px 16px!important}
+.ha-nav-links{gap:10px!important}
+.ha-nav-links .ha-hide-m{display:none!important}
+.ha-hero{padding:50px 20px 30px!important}
+.ha-hero h1{font-size:32px!important;letter-spacing:-1px!important}
+.ha-hero p{font-size:15px!important}
+.ha-mockup-stats{grid-template-columns:repeat(2,1fr)!important}
+.ha-mockup-row{grid-template-columns:1fr!important}
+.ha-stats-grid{grid-template-columns:repeat(3,1fr)!important;gap:16px!important}
+.ha-bento-2{grid-template-columns:1fr!important}
+.ha-bento-3{grid-template-columns:1fr!important}
+.ha-mini-grid{grid-template-columns:repeat(2,1fr)!important}
+.ha-steps{grid-template-columns:1fr!important;gap:8px!important}
+.ha-trust{grid-template-columns:1fr 1fr!important}
+.ha-built{grid-template-columns:1fr!important}
+.ha-section{padding:50px 20px!important}
+.ha-footer-grid{grid-template-columns:1fr 1fr!important;gap:20px!important}
+.ha-dash-header{padding:10px 14px!important}
+.ha-dash-header .ha-user-name{display:none!important}
+.ha-dash-cards{grid-template-columns:repeat(2,1fr)!important}
+.ha-dash-content{padding:14px!important}
+.ha-dash-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ha-dash-flex{flex-direction:column!important}
+.ha-dash-flex>div{flex:none!important;width:100%!important}
+.ha-port-cards{grid-template-columns:repeat(2,1fr)!important}
+.ha-port-cards>div:nth-child(5){grid-column:span 2!important}
+.ha-alloc-grid{flex-direction:column!important}
+.ha-alloc-grid>div{flex:none!important;width:100%!important}
+.ha-deal-wrap{flex-direction:column!important}
+.ha-deal-wrap>div:first-child{width:100%!important}
+.ha-ticker{font-size:10px!important;padding:6px 12px!important}
+}
+@media(max-width:480px){
+.ha-stats-grid{grid-template-columns:repeat(2,1fr)!important}
+.ha-trust{grid-template-columns:1fr!important}
+.ha-footer-grid{grid-template-columns:1fr!important}
+.ha-port-cards{grid-template-columns:1fr!important}
+.ha-port-cards>div:nth-child(5){grid-column:span 1!important}
+}
+`}</style>
 
     {/* Nav */}
-    <nav style={S.nav}>
+    <nav className="ha-nav" style={S.nav}>
       <Lg onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}/>
-      <div style={{display:"flex",gap:20,alignItems:"center"}}>
-        <button onClick={()=>onNav("contact")} style={S.link}>Contact</button>
-        {user?<Bt onClick={()=>onNav("app")}>Dashboard →</Bt>:<><button onClick={()=>onNav("login")} style={S.loginLink}>Login</button><Bt onClick={()=>onNav("login")}>Get Started Free</Bt></>}
+      <div className="ha-nav-links" style={{display:"flex",gap:20,alignItems:"center"}}>
+        <button className="ha-hide-m" onClick={()=>onNav("contact")} style={S.link}>Contact</button>
+        {user?<Bt onClick={()=>onNav("app")}>Dashboard →</Bt>:<><button className="ha-hide-m" onClick={()=>onNav("login")} style={S.loginLink}>Login</button><Bt onClick={()=>onNav("login")}>Get Started Free</Bt></>}
       </div>
     </nav>
 
     {/* Hero */}
-    <div style={{textAlign:"center",padding:"80px 40px 60px",position:"relative",overflow:"hidden"}}>
+    <div className="ha-hero" style={{textAlign:"center",padding:"80px 40px 60px",position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:-200,left:"50%",transform:"translateX(-50%)",width:800,height:600,background:"radial-gradient(ellipse,rgba(212,168,67,.06) 0%,transparent 60%)",pointerEvents:"none"}}/>
+      {[...Array(12)].map((_,i)=><div key={i} className="ha-particle" style={{left:Math.random()*100+"%",bottom:-10,width:3+Math.random()*4,height:3+Math.random()*4,animationDuration:(4+Math.random()*6)+"s",animationDelay:(Math.random()*5)+"s",opacity:.2+Math.random()*.4}}/>)}
       <div style={{position:"relative"}}>
         <Rv><div style={S.badge}><div style={S.dot}/> Free to use — No credit card required</div></Rv>
-        <Rv delay={.1}><h1 style={{fontSize:"clamp(36px,5.5vw,62px)",fontWeight:900,lineHeight:1.05,letterSpacing:-1.5,maxWidth:720,margin:"0 auto 20px"}}>Track Everything<br/>That <span style={{color:T.gld}}>Holds Value</span></h1></Rv>
+        <Rv delay={.1}><h1 style={{fontSize:"clamp(32px,5.5vw,62px)",fontWeight:900,lineHeight:1.05,letterSpacing:-1.5,maxWidth:720,margin:"0 auto 20px"}}>Track Everything<br/>That <span className="ha-shimmer">Holds Value</span></h1></Rv>
         <Rv delay={.2}><p style={{fontSize:"clamp(16px,1.8vw,19px)",color:T.txD,maxWidth:540,margin:"0 auto 36px",lineHeight:1.6}}>Gold. Silver. Real estate syndications. Crypto. Commodities. Live spot prices, portfolio tracking, and risk analysis — built for hard asset investors.</p></Rv>
         <Rv delay={.3}><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:50}}>
           <Bt onClick={()=>onNav(user?"app":"login")} style={{padding:"14px 32px",fontSize:15}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Bt>
@@ -590,12 +646,12 @@ function HomePage({onNav,user}){
                   <span key={i} style={{whiteSpace:"nowrap"}}><span style={{color:T.txM}}>{s}</span> <span style={{color:T.txt}}>{p}</span> <span style={{color:up?T.grn:T.red}}>{up?"▲":"▼"}{c}</span></span>
                 )}
               </div>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
+              <div className="ha-mockup-stats" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
                 {[["Total Portfolio","$1.24M",T.gldB],["Hard Assets %","72.4%",T.grn],["Est. Annual Income","$47.2K",T.grn],["Avg Risk","4.8/10",T.gld]].map(([l,v,c],i)=>
                   <div key={i} style={S.mstat}><div style={{fontSize:9,color:T.txM,textTransform:"uppercase",letterSpacing:1,fontFamily:"monospace"}}>{l}</div><div style={{fontSize:18,fontWeight:800,color:c,marginTop:4}}>{v}</div></div>
                 )}
               </div>
-              <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:10}}>
+              <div className="ha-mockup-row" style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:10}}>
                 <div style={{...S.mstat,padding:12}}>
                   <div style={{display:"grid",gridTemplateColumns:"1.5fr 1fr 1fr 1fr",gap:8,paddingBottom:8,borderBottom:"1px solid "+T.bdr,marginBottom:6}}>
                     {["Asset","Value","Gain","Risk"].map(h=><div key={h} style={{fontSize:9,color:T.txM,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</div>)}
@@ -621,30 +677,30 @@ function HomePage({onNav,user}){
 
     {/* Stats */}
     <div style={{padding:"50px 40px",borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr,background:T.bgI}}>
-      <div style={{maxWidth:1000,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:28,textAlign:"center"}}>
+      <div className="ha-stats-grid" style={{maxWidth:1000,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:28,textAlign:"center"}}>
         {[["5","Asset Classes"],["16","RE Deal Types"],["13","Crypto Coins"],["Live","Spot Prices"],["100%","Free to Use"]].map(([n,l],i)=>
-          <Rv key={i} delay={i*.1}><div style={{fontSize:34,fontWeight:900,fontFamily:"monospace",color:T.gldB}}>{n}</div><div style={{fontSize:12,color:T.txM,marginTop:4}}>{l}</div></Rv>
+          <Rv key={i} delay={i*.1}><div style={{fontSize:34,fontWeight:900,fontFamily:"monospace",color:T.gldB}}><AnimCount target={n} duration={1500}/></div><div style={{fontSize:12,color:T.txM,marginTop:4}}>{l}</div></Rv>
         )}
       </div>
     </div>
 
     {/* Features Bento */}
-    <div id="features" style={S.section}>
+    <div id="features" className="ha-section" style={S.section}>
       <div style={{textAlign:"center"}}>
         <Rv><div style={S.sLabel}>Features</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Everything You Need in One <span style={{color:T.gld}}>Dashboard</span></div></Rv>
         <Rv delay={.2}><p style={{fontSize:16,color:T.txD,maxWidth:540,margin:"0 auto",lineHeight:1.6}}>No more juggling spreadsheets across asset classes.</p></Rv>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:14,marginTop:40}}>
+      <div className="ha-bento-2" style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:14,marginTop:40}}>
         <Rv><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◆</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Precious Metals Tracker</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Track physical gold, silver, platinum & palladium with cost basis and real-time gain/loss. Live spot prices update automatically from Gold-API on every login with oz-per-unit conversion for accurate valuation.</p><div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:14}}>{["1oz Coins","Bars","Rounds","Junk Silver","ETFs","Live Spot Prices"].map(t=><span key={t} style={{padding:"4px 10px",borderRadius:6,fontSize:10,background:T.bgI,border:"1px solid "+T.bdr,color:t==="Live Spot Prices"?T.grn:T.txM,fontFamily:"monospace"}}>{t}</span>)}</div></div></Rv>
         <Rv delay={.1}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◫</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>RE Syndication LP Tracker</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Monitor LP positions with rate %, projected IRR, and sponsor tracking across 16 deal types.</p></div></Rv>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginTop:14}}>
+      <div className="ha-bento-3" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginTop:14}}>
         <Rv><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>⊞</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Deal Analyzer</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Full cash flow calculator with CoC, Cap Rate, DSCR, and quick pass/fail tests.</p></div></Rv>
         <Rv delay={.1}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>Ⓒ</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Crypto Portfolio</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Track BTC, ETH, SOL & 10+ coins with live prices from CoinGecko, cost basis tracking, and portfolio allocation with risk scoring.</p></div></Rv>
         <Rv delay={.2}><div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◉</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Master Portfolio</h3><p style={{fontSize:13,color:T.txD,lineHeight:1.5}}>Complete allocation across 11 asset classes with targets, risk scoring & income estimates.</p></div></Rv>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginTop:14}}>
+      <div className="ha-mini-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginTop:14}}>
         {[["📡","Live Metal Prices"],["💰","Live Crypto Prices"],["📊","CSV Import"],["📥","CSV Export"],["🎯","Risk Ratings"],["📝","Notes"],["✏️","Inline Edit"],["☁️","Cloud Sync"]].map(([ic,lb],i)=>
           <Rv key={i} delay={i*.05}><div style={{...S.card,textAlign:"center",padding:18}}><div style={{fontSize:18,marginBottom:6}}>{ic}</div><div style={{fontSize:11,fontWeight:600}}>{lb}</div></div></Rv>
         )}
@@ -652,11 +708,11 @@ function HomePage({onNav,user}){
     </div>
 
     {/* How it works */}
-    <div style={{padding:"80px 40px",background:T.bgI,borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr}}>
+    <div className="ha-section" style={{padding:"80px 40px",background:T.bgI,borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr}}>
       <div style={{maxWidth:1100,margin:"0 auto",textAlign:"center"}}>
         <Rv><div style={S.sLabel}>How It Works</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Start Tracking in <span style={{color:T.gld}}>60 Seconds</span></div></Rv>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:32,marginTop:40}}>
+        <div className="ha-steps" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:32,marginTop:40}}>
           {[["1","Sign Up Free","Create an account with Google or email. Your data syncs across all devices securely."],["2","Add Your Assets","Enter holdings manually or import from CSV. Live spot prices auto-fill for metals and crypto."],["3","See the Full Picture","Live price ticker, allocation charts, risk scores, income projections — updated in real time."]].map(([n,t,d],i)=>
             <Rv key={i} delay={i*.1}><div style={{textAlign:"center",padding:"28px 20px"}}>
               <div style={{width:48,height:48,borderRadius:"50%",border:"2px solid "+T.gld,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:800,color:T.gld,margin:"0 auto 18px",fontFamily:"monospace"}}>{n}</div>
@@ -669,12 +725,12 @@ function HomePage({onNav,user}){
     </div>
 
     {/* Security */}
-    <div style={S.section}>
+    <div className="ha-section" style={S.section}>
       <div style={{textAlign:"center"}}>
         <Rv><div style={S.sLabel}>Security & Trust</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Your Data, <span style={{color:T.gld}}>Protected</span></div></Rv>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,marginTop:36}}>
+      <div className="ha-trust" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,marginTop:36}}>
         {[["🔒","Encrypted Storage","Encrypted PostgreSQL via Supabase. Server-side only."],["🔑","Google Auth","Secure sign-in via Google. We never see your password."],["👁️","Read-Only","Manual entry only. Zero risk of unauthorized transactions."],["🚫","No Selling Data","Your portfolio data is never shared or sold. Period."]].map(([ic,t,d],i)=>
           <Rv key={i} delay={i*.1}><div style={S.trustCard}><h4 style={{fontSize:14,fontWeight:700,marginBottom:6}}>{ic} {t}</h4><p style={{fontSize:12,color:T.txD,lineHeight:1.5}}>{d}</p></div></Rv>
         )}
@@ -682,11 +738,11 @@ function HomePage({onNav,user}){
     </div>
 
     {/* Built For */}
-    <div style={{padding:"80px 40px",background:T.bgI,borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr}}>
+    <div className="ha-section" style={{padding:"80px 40px",background:T.bgI,borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr}}>
       <div style={{maxWidth:900,margin:"0 auto",textAlign:"center"}}>
         <Rv><div style={S.sLabel}>Built For</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Investors Who <span style={{color:T.gld}}>Think Different</span></div></Rv>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,marginTop:36}}>
+        <div className="ha-built" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,marginTop:36}}>
           {[["🥇","Precious Metals Stackers","Track every coin, bar, and round with real cost basis across gold, silver, platinum."],["🏢","RE Syndication LPs","Monitor LP positions across sponsors and deal types with rate tracking and IRR projections."],["📊","Hard Asset Allocators","See complete allocation across physical and alternative assets with target comparison and risk scoring."]].map(([ic,t,d],i)=>
             <Rv key={i} delay={i*.1}><div style={{...S.card,textAlign:"center",padding:28}}><div style={{fontSize:28,marginBottom:12}}>{ic}</div><h3 style={{fontSize:15,fontWeight:700,marginBottom:6}}>{t}</h3><p style={{fontSize:12,color:T.txD,lineHeight:1.5}}>{d}</p></div></Rv>
           )}
@@ -695,7 +751,7 @@ function HomePage({onNav,user}){
     </div>
 
     {/* FAQ */}
-    <div style={S.section}>
+    <div className="ha-section" style={S.section}>
       <div style={{textAlign:"center"}}>
         <Rv><div style={S.sLabel}>FAQ</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Common Questions</div></Rv>
@@ -724,7 +780,7 @@ function HomePage({onNav,user}){
     {/* Footer */}
     <div style={{borderTop:"1px solid "+T.bdr,padding:"50px 40px 24px"}}>
       <div style={{maxWidth:1100,margin:"0 auto"}}>
-        <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:40,marginBottom:36}}>
+        <div className="ha-footer-grid" style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:40,marginBottom:36}}>
           <div><Lg/><p style={{fontSize:13,color:T.txD,marginTop:12,lineHeight:1.5,maxWidth:280}}>The portfolio dashboard with live prices built for investors who believe in hard assets.</p></div>
           <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Product</h4>{["Features","How It Works","Security","FAQ"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>document.getElementById(l.toLowerCase().replace(/ /g,""))?.scrollIntoView({behavior:"smooth"})}>{l}</div>)}</div>
           <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Asset Classes</h4>{["Precious Metals","RE Syndications","Crypto","Deal Analyzer"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("login")}>{l}</div>)}</div>
@@ -838,8 +894,8 @@ export default function App(){
   if(page==="login"&&user){setPage("app");return null;}
   return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
     <PriceTicker prices={prices} onRefresh={()=>refreshPrices(data)} lastUpdated={lastUpdated}/>
-    <div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>setPage("home")}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{authToken&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setAuthToken(null);setUser(null);setPrices(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
+    <div className="ha-dash-header" style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>setPage("home")}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span className="ha-user-name" style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{authToken&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setAuthToken(null);setUser(null);setPrices(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
     <div style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span>{t.label}</button>)}</div>
-    <div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save} prices={prices}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save} prices={prices}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
+    <div className="ha-dash-content" style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save} prices={prices}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save} prices={prices}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
   </div>);
 }
