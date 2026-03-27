@@ -99,6 +99,7 @@ const COINS=["BTC","ETH","SOL","ADA","DOT","AVAX","MATIC","LINK","XRP","DOGE","O
 const MFORMS=["1oz Coins","1oz Rounds","1oz Bars","5oz Bars","10oz Bars","100oz Bars","1kg Bars","Kilo Bars","Junk Silver","Numismatic","ETF/Fund","Other"];
 const OZ_PER={"1oz Coins":1,"1oz Rounds":1,"1oz Bars":1,"5oz Bars":5,"10oz Bars":10,"100oz Bars":100,"1kg Bars":32.1507,"Kilo Bars":32.1507,"Junk Silver":0.715,"Numismatic":1,"ETF/Fund":1,"Other":1};
 const getOz=(form)=>OZ_PER[form]||1;
+const yrsHeld=(dateStr)=>{if(!dateStr)return"";const d=new Date(dateStr);const now=new Date();const diff=(now-d)/(365.25*24*60*60*1000);return diff>=0?diff.toFixed(1):""};
 const DEF={
 metals:[{id:"m1",metal:"Gold",form:"1oz Coins",qty:10,costPer:1850,spot:2650,risk:3,notes:""},{id:"m2",metal:"Silver",form:"100oz Bars",qty:3,costPer:2400,spot:3200,risk:4,notes:""}],
 syndications:[{id:"s1",name:"Takoma Towers",sponsor:"Schweb Partners",invested:75000,rate:8,projIRR:15,status:"Active",type:"Multifamily",risk:6,notes:""},{id:"s2",name:"Blue Owl RE VI",sponsor:"Blue Owl",invested:150000,rate:6,projIRR:14,status:"Active",type:"Diversified",risk:5,notes:""}],
@@ -108,7 +109,7 @@ targets:{"Precious Metals":15,"Real Estate":40,"Equities":15,"Crypto":5,"Cash":1
 };
 const Cd=({children,style,glow})=><div style={{background:T.bgC,border:"1px solid "+(glow?T.gld+"44":T.bdr),borderRadius:12,padding:"16px 18px",...(glow?{boxShadow:"0 0 20px "+T.gld+"22"}:{}),...style}}>{children}</div>;
 const Bt=({children,onClick,ghost,sm,style})=><button onClick={onClick} style={{padding:sm?"5px 10px":"8px 16px",borderRadius:8,fontWeight:700,fontSize:sm?11:12,border:ghost?"1px solid "+T.bdr:"none",cursor:"pointer",background:ghost?"transparent":"linear-gradient(135deg,"+T.gld+","+T.gldD+")",color:ghost?T.txD:T.bg,...style}}>{children}</button>;
-const In=({value,onChange,placeholder,prefix,suffix,type="text",style})=><div style={{display:"flex",alignItems:"center",background:T.bgI,border:"1px solid "+T.bdr,borderRadius:8,padding:"0 10px",...style}}>{prefix&&<span style={{color:T.txM,fontSize:12,marginRight:4}}>{prefix}</span>}<input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={{background:"transparent",border:"none",color:T.txt,padding:"9px 4px",fontSize:13,width:"100%",outline:"none",fontFamily:"monospace"}}/>{suffix&&<span style={{color:T.txM,fontSize:12,marginLeft:4}}>{suffix}</span>}</div>;
+const In=({value,onChange,placeholder,prefix,suffix,type="text",style})=><div style={{display:"flex",alignItems:"center",background:T.bgI,border:"1px solid "+T.bdr,borderRadius:8,padding:"0 10px",...style}}>{prefix&&<span style={{color:T.txM,fontSize:12,marginRight:4}}>{prefix}</span>}<input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} style={{background:"transparent",border:"none",color:T.txt,padding:"9px 4px",fontSize:13,width:"100%",outline:"none",fontFamily:"monospace",colorScheme:"dark"}}/>{suffix&&<span style={{color:T.txM,fontSize:12,marginLeft:4}}>{suffix}</span>}</div>;
 const Sl=({value,onChange,options,style})=><select value={value} onChange={e=>onChange(e.target.value)} style={{background:T.bgI,border:"1px solid "+T.bdr,color:T.txt,padding:"9px 10px",borderRadius:8,fontSize:12,outline:"none",...style}}>{options.map(o=><option key={o}>{o}</option>)}</select>;
 const Hd=({children,right})=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:T.gld,textTransform:"uppercase",letterSpacing:1.5,fontFamily:"monospace"}}>{children}</div>{right}</div>;
 const Lb=({children})=><label style={{fontSize:10,color:T.txM,display:"block",marginBottom:3,textTransform:"uppercase"}}>{children}</label>;
@@ -159,10 +160,10 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Oz/Unit","Cost","Spot/oz","Value","Gain","Risk"],it.map(h=>[h.metal,h.form,h.qty,getOz(h.form),h.costPer,h.spot,h.qty*getOz(h.form)*h.spot,(h.qty*getOz(h.form)*h.spot)-(h.qty*h.costPer),h.risk||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.metals?.Gold?.price;sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:lp?String(Math.round(lp*100)/100):"",risk:"3",dateInv:"",years:"",notes:""});sSa(true)}}>+ Add</Bt></div>}>Holdings</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Oz/Unit","Cost","Spot/oz","Value","Gain","Risk","Date Invested","Target Yrs","Yrs Held"],it.map(h=>[h.metal,h.form,h.qty,getOz(h.form),h.costPer,h.spot,h.qty*getOz(h.form)*h.spot,(h.qty*getOz(h.form)*h.spot)-(h.qty*h.costPer),h.risk||"",h.dateInv||"",h.years||"",yrsHeld(h.dateInv)||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.metals?.Gold?.price;sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:lp?String(Math.round(lp*100)/100):"",risk:"3",dateInv:"",years:"",notes:""});sSa(true)}}>+ Add</Bt></div>}>Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
-<thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Metal","Form","Qty","Oz","Cost/Unit","Spot/oz","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
+<thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Metal","Form","Qty","Oz","Cost/Unit","Spot/oz","Value","Gain","Risk","Date","Yrs","Held","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(h=>{const oz=getOz(h.form),v=h.qty*oz*h.spot,c=h.qty*h.costPer,gl=v-c;return(
 <tr key={h.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
 <TD color={h.metal==="Gold"?T.gld:T.txD}>{h.metal}</TD>
@@ -174,6 +175,9 @@ return(<div>
 <TD color={T.gldB} bold>{fmt(v)}</TD>
 <TD color={gl>=0?T.grn:T.red} bold>{fmt(gl)}</TD>
 <TD><RB risk={h.risk}/></TD>
+<TD color={T.txD}>{h.dateInv||"-"}</TD>
+<TD color={T.txD}>{h.years||"-"}</TD>
+<TD color={T.txD}>{yrsHeld(h.dateInv)||"-"}</TD>
 <TD><button onClick={()=>sEi({...h})} style={{background:"none",border:"none",color:T.blu,cursor:"pointer",fontSize:11}}>Edit</button></TD>
 <TD><button onClick={()=>rm(h.id)} style={{background:"none",border:"none",color:T.red,cursor:"pointer",fontSize:14,opacity:.6}}>x</button></TD>
 </tr>)})}</tbody>
@@ -245,10 +249,10 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Deal","Sponsor","Type","Invested","Rate","AnnIncome","IRR","Risk","Status"],it.map(d=>[d.name,d.sponsor,d.type,d.invested,d.rate||0,Math.round(d.invested*(d.rate||0)/100),d.projIRR,d.risk||"",d.status]),"syndications.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add Deal</Bt></div>}>LP Positions</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Deal","Sponsor","Type","Invested","Rate","AnnIncome","IRR","Risk","Status","Date Invested","Target Yrs","Yrs Held"],it.map(d=>[d.name,d.sponsor,d.type,d.invested,d.rate||0,Math.round(d.invested*(d.rate||0)/100),d.projIRR,d.risk||"",d.status,d.dateInv||"",d.years||"",yrsHeld(d.dateInv)||""]),"syndications.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add Deal</Bt></div>}>LP Positions</Hd>
 <Cd style={{padding:0,overflow:"auto"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
-<thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Deal","Sponsor","Type","Invested","Rate%","Ann.Income","IRR","Risk","Status","",""].map((h,i)=><th key={i} style={{padding:"10px 6px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace",whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
+<thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Deal","Sponsor","Type","Invested","Rate%","Ann.Income","IRR","Risk","Status","Date","Yrs","Held","",""].map((h,i)=><th key={i} style={{padding:"10px 6px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace",whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(d=>{const ai=d.invested*(d.rate||0)/100;return(
 <tr key={d.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
 <TD color={T.gld}>{d.name}</TD>
@@ -260,6 +264,9 @@ return(<div>
 <TD color={T.blu}>{d.projIRR}%</TD>
 <TD><RB risk={d.risk}/></TD>
 <TD><span style={{background:(d.status==="Active"?T.grn:T.txM)+"18",color:d.status==="Active"?T.grn:T.txM,padding:"3px 8px",borderRadius:20,fontSize:10}}>{d.status}</span></TD>
+<TD color={T.txD}>{d.dateInv||"-"}</TD>
+<TD color={T.txD}>{d.years||"-"}</TD>
+<TD color={T.txD}>{yrsHeld(d.dateInv)||"-"}</TD>
 <TD><button onClick={()=>sEi({...d})} style={{background:"none",border:"none",color:T.blu,cursor:"pointer",fontSize:11}}>Edit</button></TD>
 <TD><button onClick={()=>rm(d.id)} style={{background:"none",border:"none",color:T.red,cursor:"pointer",fontSize:14,opacity:.6}}>x</button></TD>
 </tr>)})}</tbody>
@@ -320,10 +327,10 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.crypto?.BTC?.price;sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:lp?String(Math.round(lp*100)/100):"",risk:"8",dateInv:"",years:"",notes:""});sSa(true)}}>+ Add</Bt></div>}>Crypto Holdings</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk","Date Invested","Target Yrs","Yrs Held"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||"",h.dateInv||"",h.years||"",yrsHeld(h.dateInv)||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.crypto?.BTC?.price;sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:lp?String(Math.round(lp*100)/100):"",risk:"8",dateInv:"",years:"",notes:""});sSa(true)}}>+ Add</Bt></div>}>Crypto Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
-<thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Coin","Name","Qty","Cost","Current","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
+<thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Coin","Name","Qty","Cost","Current","Value","Gain","Risk","Date","Yrs","Held","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(h=>{const v=h.qty*h.current,c=h.qty*h.costPer,gl=v-c;return(
 <tr key={h.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
 <TD color={T.org} bold>{h.coin}</TD>
@@ -334,6 +341,9 @@ return(<div>
 <TD color={T.gldB} bold>{fmt(v)}</TD>
 <TD color={gl>=0?T.grn:T.red} bold>{fmt(gl)}</TD>
 <TD><RB risk={h.risk}/></TD>
+<TD color={T.txD}>{h.dateInv||"-"}</TD>
+<TD color={T.txD}>{h.years||"-"}</TD>
+<TD color={T.txD}>{yrsHeld(h.dateInv)||"-"}</TD>
 <TD><button onClick={()=>sEi({...h})} style={{background:"none",border:"none",color:T.blu,cursor:"pointer",fontSize:11}}>Edit</button></TD>
 <TD><button onClick={()=>rm(h.id)} style={{background:"none",border:"none",color:T.red,cursor:"pointer",fontSize:14,opacity:.6}}>x</button></TD>
 </tr>)})}</tbody>
@@ -454,7 +464,7 @@ return <div key={cls} style={{marginBottom:10}}>
 </Cd>
 </div>
 <div style={{flex:1.2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Class","Name","Value","Risk","Notes"],it.map(a=>[a.cls,a.name,a.value,a.risk||"",a.notes||""]),"portfolio.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Breakdown</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Class","Name","Value","Risk","Date Invested","Target Yrs","Yrs Held","Notes"],it.map(a=>[a.cls,a.name,a.value,a.risk||"",a.dateInv||"",a.years||"",yrsHeld(a.dateInv)||"",a.notes||""]),"portfolio.csv")}>Export</Bt><Bt sm onClick={()=>sSa(true)}>+ Add</Bt></div>}>Breakdown</Hd>
 <Cd style={{maxHeight:450,overflow:"auto"}}>
 {Object.entries(byC).sort((a,b)=>b[1]-a[1]).map(([cls,ct])=>
 <div key={cls} style={{marginBottom:14}}>
