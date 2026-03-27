@@ -550,6 +550,7 @@ function HomePage({onNav,user}){
     fq:{display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer",fontSize:15,fontWeight:600,padding:"20px 0",borderBottom:"1px solid "+T.bdr}};
 
   const[openFaq,setOpenFaq]=useState(null);
+  const[legalModal,setLegalModal]=useState(null);
   const faqs=[
     ["Is HardAssets.io really free?","Yes. The core dashboard with all features — including live prices, CSV import/export, and cloud sync — is completely free. No credit card required. We plan to offer premium features in the future, but the current product is free."],
     ["Where do the live prices come from?","Metal prices (gold, silver, platinum, palladium) are pulled from Gold-API.com in real-time. Crypto prices (BTC, ETH, SOL, and 10+ coins) come from CoinGecko's API. Prices update automatically every time you log in, and you can refresh anytime with the Refresh button in the price ticker bar."],
@@ -708,7 +709,7 @@ function HomePage({onNav,user}){
     </div>
 
     {/* How it works */}
-    <div className="ha-section" style={{padding:"80px 40px",background:T.bgI,borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr}}>
+    <div id="howitworks" className="ha-section" style={{padding:"80px 40px",background:T.bgI,borderTop:"1px solid "+T.bdr,borderBottom:"1px solid "+T.bdr}}>
       <div style={{maxWidth:1100,margin:"0 auto",textAlign:"center"}}>
         <Rv><div style={S.sLabel}>How It Works</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Start Tracking in <span style={{color:T.gld}}>60 Seconds</span></div></Rv>
@@ -725,7 +726,7 @@ function HomePage({onNav,user}){
     </div>
 
     {/* Security */}
-    <div className="ha-section" style={S.section}>
+    <div id="security" className="ha-section" style={S.section}>
       <div style={{textAlign:"center"}}>
         <Rv><div style={S.sLabel}>Security & Trust</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Your Data, <span style={{color:T.gld}}>Protected</span></div></Rv>
@@ -751,7 +752,7 @@ function HomePage({onNav,user}){
     </div>
 
     {/* FAQ */}
-    <div className="ha-section" style={S.section}>
+    <div id="faq" className="ha-section" style={S.section}>
       <div style={{textAlign:"center"}}>
         <Rv><div style={S.sLabel}>FAQ</div></Rv>
         <Rv delay={.1}><div style={S.sTitle}>Common Questions</div></Rv>
@@ -783,15 +784,44 @@ function HomePage({onNav,user}){
         <div className="ha-footer-grid" style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:40,marginBottom:36}}>
           <div><Lg/><p style={{fontSize:13,color:T.txD,marginTop:12,lineHeight:1.5,maxWidth:280}}>The portfolio dashboard with live prices built for investors who believe in hard assets.</p></div>
           <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Product</h4>{["Features","How It Works","Security","FAQ"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>document.getElementById(l.toLowerCase().replace(/ /g,""))?.scrollIntoView({behavior:"smooth"})}>{l}</div>)}</div>
-          <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Asset Classes</h4>{["Precious Metals","RE Syndications","Crypto","Deal Analyzer"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("login")}>{l}</div>)}</div>
+          <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Asset Classes</h4>{["Precious Metals","RE Syndications","Crypto","Deal Analyzer"].map(l=><div key={l} style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav(user?"app":"login")}>{l}</div>)}</div>
           <div><h4 style={{fontSize:11,color:T.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Company</h4><div style={{fontSize:13,color:T.txD,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("contact")}>Contact Us</div><div style={{fontSize:13,color:T.txD,padding:"4px 0"}}>info@hardassets.io</div></div>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid "+T.bdr,paddingTop:20,fontSize:11,color:T.txM}}>
           <div>© 2026 HardAssets.io. All rights reserved.</div>
-          <div style={{display:"flex",gap:20}}><span>Privacy Policy</span><span>Terms of Service</span></div>
+          <div style={{display:"flex",gap:20}}><span style={{cursor:"pointer"}} onClick={()=>setLegalModal("privacy")}>Privacy Policy</span><span style={{cursor:"pointer"}} onClick={()=>setLegalModal("terms")}>Terms of Service</span></div>
         </div>
       </div>
     </div>
+
+    {/* Legal Modal */}
+    {legalModal&&<div onClick={()=>setLegalModal(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:T.bgC,border:"1px solid "+T.bdr,borderRadius:16,padding:32,maxWidth:640,maxHeight:"80vh",overflow:"auto",width:"100%"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+          <h2 style={{fontSize:20,fontWeight:800}}>{legalModal==="privacy"?"Privacy Policy":"Terms of Service"}</h2>
+          <button onClick={()=>setLegalModal(null)} style={{background:"none",border:"none",color:T.txM,fontSize:22,cursor:"pointer"}}>x</button>
+        </div>
+        {legalModal==="privacy"?<div style={{fontSize:13,color:T.txD,lineHeight:1.8}}>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Effective Date:</strong> March 26, 2026</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>What We Collect:</strong> When you sign in with Google, we receive your name, email address, and profile picture from Google. When you sign in with email/password, we store a hashed version of your password (never the actual password). We store the portfolio data you enter into the dashboard.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>How We Use It:</strong> Your data is used solely to provide the HardAssets.io portfolio tracking service. We do not sell, share, rent, or trade your personal information or portfolio data with any third party.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Data Storage:</strong> Your portfolio data is stored in an encrypted PostgreSQL database hosted on Supabase. All data transmission uses HTTPS/TLS encryption. Your browser never has direct access to the database — all data flows through our secure server-side API.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>No Tracking:</strong> We do not use tracking cookies, advertising pixels, or analytics that identify individual users. We do not serve ads.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Data Deletion:</strong> You may request deletion of your account and all associated data at any time by contacting info@hardassets.io. We will delete your data within 30 days of the request.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Contact:</strong> For any privacy questions, email info@hardassets.io.</p>
+        </div>:<div style={{fontSize:13,color:T.txD,lineHeight:1.8}}>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Effective Date:</strong> March 26, 2026</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Service Description:</strong> HardAssets.io is a free portfolio tracking dashboard for precious metals, real estate syndications, cryptocurrency, and other asset classes. The service is provided as-is for informational purposes only.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Not Financial Advice:</strong> HardAssets.io does not provide financial, investment, tax, or legal advice. All portfolio data, calculations, live prices, and analytics are for informational purposes only. You should consult a qualified financial advisor before making investment decisions.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Price Data:</strong> Live metal prices are sourced from metals.dev and crypto prices from CoinGecko. We do not guarantee the accuracy, completeness, or timeliness of any price data. Prices may be delayed or incorrect. Do not rely on this data for trading decisions.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>No Account Connections:</strong> HardAssets.io is a manual-entry portfolio tracker. We never connect to your bank, brokerage, or any financial accounts. All data is entered by you.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Account Responsibility:</strong> You are responsible for maintaining the security of your account credentials. We are not liable for unauthorized access resulting from compromised credentials.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Limitation of Liability:</strong> HardAssets.io is provided "as is" without warranties of any kind. We are not liable for any losses, damages, or costs arising from your use of the service, including but not limited to investment losses based on information displayed in the dashboard.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Changes:</strong> We may modify these terms at any time. Continued use of the service constitutes acceptance of updated terms.</p>
+          <p style={{marginBottom:16}}><strong style={{color:T.txt}}>Contact:</strong> For questions about these terms, email info@hardassets.io.</p>
+        </div>}
+      </div>
+    </div>}
   </div>);
 }
 
