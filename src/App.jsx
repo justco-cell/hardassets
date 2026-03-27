@@ -6,19 +6,11 @@ const fmt=n=>{if(n==null||isNaN(n))return"$0";const a=Math.abs(n);return a>=1e6?
 const fP=n=>(n>=0?"+":"")+n.toFixed(2)+"%";
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const mm={};
-let db=null;let fbReady=false;
-function initFirebase(){
-if(fbReady)return;
-try{
-if(!window.firebase)return;
-window.firebase.initializeApp({apiKey:"AIzaSyDhZVIzQ1d9urU0oqZjmAEn5px9uz02e5c",authDomain:"hardassets.firebaseapp.com",projectId:"hardassets",storageBucket:"hardassets.firebasestorage.app",messagingSenderId:"584271534897",appId:"1:584271534897:web:33b0334ce7676ba2032e10"});
-db=window.firebase.firestore();
-fbReady=true;
-}catch(e){console.log("FB init:",e)}
-}
-const userKey=email=>email.replace(/[.#$/\[\]]/g,"_").toLowerCase();
-const fbSave=async(email,d)=>{if(!db||!email||email==="guest")return;try{await db.collection("users").doc(userKey(email)).set({data:JSON.stringify(d),updated:new Date().toISOString()},{merge:true})}catch(e){console.log("save err",e)}};
-const fbLoad=async(email)=>{if(!db||!email||email==="guest")return null;try{const doc=await db.collection("users").doc(userKey(email)).get();if(doc.exists){const r=doc.data();return r.data?JSON.parse(r.data):null}return null}catch(e){console.log("load err",e);return null}};
+let authToken=null;
+const setAuthToken=(t)=>{authToken=t};
+const apiSave=async(email,d)=>{if(!email||email==="guest"||!authToken)return;try{await fetch("/api/save",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken},body:JSON.stringify({data:d})})}catch(e){console.log("save err",e)}};
+const apiLoad=async(email)=>{if(!email||email==="guest"||!authToken)return null;try{const r=await fetch("/api/load",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken}});if(!r.ok)return null;const j=await r.json();return j.data||null}catch(e){console.log("load err",e);return null}};
+const apiAuth=async(action,email,password,name)=>{try{const r=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password,name})});const j=await r.json();if(!r.ok)return{error:j.error||"Auth failed"};return j}catch(e){return{error:"Network error"}}};
 const sv=async(k,d)=>{try{mm[k]=JSON.stringify(d)}catch(e){}};
 const lo=async k=>{return mm[k]?JSON.parse(mm[k]):null};
 
@@ -556,7 +548,7 @@ function HomePage({onNav,user}){
     ["Is HardAssets.io really free?","Yes. The core dashboard with all features — including live prices, CSV import/export, and cloud sync — is completely free. No credit card required. We plan to offer premium features in the future, but the current product is free."],
     ["Where do the live prices come from?","Metal prices (gold, silver, platinum, palladium) are pulled from Gold-API.com in real-time. Crypto prices (BTC, ETH, SOL, and 10+ coins) come from CoinGecko's API. Prices update automatically every time you log in, and you can refresh anytime with the Refresh button in the price ticker bar."],
     ["How does the oz-per-unit calculation work?","Different metal forms contain different amounts of troy ounces. A 1oz coin = 1 oz, a 100oz bar = 100 oz, a kilo bar = 32.15 oz, and junk silver = 0.715 oz per unit. The dashboard automatically multiplies your quantity by the oz-per-unit and the live spot price to show accurate portfolio value."],
-    ["How is my data secured?","Your data is stored in Google Cloud Firestore with AES-256 encryption. Authentication uses Google Identity Services. All data transmission uses HTTPS/TLS."],
+    ["How is my data secured?","Your data is stored in encrypted PostgreSQL database (Supabase) with server-side API routes. Your browser never touches the database directly. Authentication uses Google Identity Services. All data transmission uses HTTPS/TLS."],
     ["Do you connect to my bank accounts?","No. HardAssets.io is a manual-entry tracker. You add holdings yourself or import from CSV. Zero risk of unauthorized access to financial accounts."],
     ["Can I import from a spreadsheet?","Yes. Every tab has an Import button that accepts CSV files. Export your data from any spreadsheet, click Import, and your holdings are added instantly. Column names are matched automatically."],
     ["What asset types can I track?","Precious metals (12 form types), RE syndications (16 deal types), crypto (13+ coins), plus 11 asset classes in the master portfolio including equities, commodities, fixed income, private credit, alternatives, and more."],
@@ -683,7 +675,7 @@ function HomePage({onNav,user}){
         <Rv delay={.1}><div style={S.sTitle}>Your Data, <span style={{color:T.gld}}>Protected</span></div></Rv>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,marginTop:36}}>
-        {[["🔒","Encrypted Storage","AES-256 encryption via Google Cloud Firestore."],["🔑","Google Auth","Secure sign-in via Google. We never see your password."],["👁️","Read-Only","Manual entry only. Zero risk of unauthorized transactions."],["🚫","No Selling Data","Your portfolio data is never shared or sold. Period."]].map(([ic,t,d],i)=>
+        {[["🔒","Encrypted Storage","Encrypted PostgreSQL via Supabase. Server-side only."],["🔑","Google Auth","Secure sign-in via Google. We never see your password."],["👁️","Read-Only","Manual entry only. Zero risk of unauthorized transactions."],["🚫","No Selling Data","Your portfolio data is never shared or sold. Period."]].map(([ic,t,d],i)=>
           <Rv key={i} delay={i*.1}><div style={S.trustCard}><h4 style={{fontSize:14,fontWeight:700,marginBottom:6}}>{ic} {t}</h4><p style={{fontSize:12,color:T.txD,lineHeight:1.5}}>{d}</p></div></Rv>
         )}
       </div>
@@ -770,7 +762,11 @@ function LoginPg({onLogin,onBack}){
       window.google.accounts.id.initialize({
         client_id:"159487463622-ol75fn02c9cg8gmd2h4bpk36gaga3rcf.apps.googleusercontent.com",
         ux_mode:"popup",
-        callback:(response)=>{try{const p=JSON.parse(atob(response.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));onLoginRef.current({email:p.email,name:p.name||p.email.split("@")[0],picture:p.picture,method:"google"})}catch(e){}}
+        callback:async(response)=>{try{
+          setAuthToken(response.credential);
+          const p=JSON.parse(atob(response.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/")));
+          onLoginRef.current({email:p.email,name:p.name||p.email.split("@")[0],picture:p.picture,method:"google"})
+        }catch(e){}}
       });
       window.google.accounts.id.renderButton(gBtnRef.current,{theme:"outline",size:"large",width:340,text:"signin_with"});
     };
@@ -778,7 +774,12 @@ function LoginPg({onLogin,onBack}){
     const id=setInterval(()=>{if(window.google&&window.google.accounts){clearInterval(id);render()}},300);
     return()=>clearInterval(id);
   },[]);
-  const sub=()=>{if(!email||!pass){setErr("Fill all fields");return;}if(mode==="signup"&&!name){setErr("Enter name");return;}onLogin({email,name:name||email.split("@")[0]})};
+  const sub=async()=>{if(!email||!pass){setErr("Fill all fields");return;}if(mode==="signup"&&!name){setErr("Enter name");return;}
+    const result=await apiAuth(mode==="signup"?"signup":"login",email,pass,name);
+    if(result?.error){setErr(result.error);return;}
+    setAuthToken(result.token);
+    onLogin({email:result.email||email,name:result.name||name||email.split("@")[0]});
+  };
   return (<div style={{background:T.bg,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"system-ui,sans-serif"}}>
     <div style={{position:"relative",width:380}}><div style={{textAlign:"center",marginBottom:32}}><Lg big onClick={onBack}/></div>
     <Cd style={{padding:26}}>
@@ -793,7 +794,7 @@ function LoginPg({onLogin,onBack}){
 export default function App(){
   const[page,setPage]=useState("home");const[user,setUser]=useState(null);const[tab,setTab]=useState("metals");const[data,setData]=useState(DEF);const[syncing,setSyncing]=useState(false);
   const[prices,setPrices]=useState(null);const[lastUpdated,setLastUpdated]=useState(null);
-  useEffect(()=>{initFirebase()},[]);
+
 
   const refreshPrices=useCallback(async(currentData)=>{
     const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
@@ -803,7 +804,7 @@ export default function App(){
       const d=currentData||data;
       const updated=applyPricesToData(d,mp,cp);
       setData(updated);
-      if(user&&user.email&&user.email!=="guest"){fbSave(user.email,updated)}
+      if(user&&user.email&&user.email!=="guest"){apiSave(user.email,updated)}
       return updated;
     }
     return currentData||data;
@@ -814,13 +815,7 @@ export default function App(){
     let loadedData=DEF;
     if(u.email&&u.email!=="guest"){
       setSyncing(true);
-      const tryLoad=async(retries)=>{
-        if(fbReady){try{const saved=await fbLoad(u.email);if(saved)return saved}catch(e){}}
-        else if(retries>0){await new Promise(r=>setTimeout(r,500));return tryLoad(retries-1)}
-        return null;
-      };
-      const saved=await tryLoad(10);
-      if(saved){loadedData=saved;setData(saved)}
+      try{const saved=await apiLoad(u.email);if(saved){loadedData=saved;setData(saved)}}catch(e){}
       setSyncing(false);
     }
     const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
@@ -829,13 +824,13 @@ export default function App(){
     if(mp||cp){
       const updated=applyPricesToData(loadedData,mp,cp);
       setData(updated);
-      if(u.email&&u.email!=="guest"){fbSave(u.email,updated)}
+      if(u.email&&u.email!=="guest"){apiSave(u.email,updated)}
     }
   },[]);
 
   const save=useCallback(d=>{
     sv("ha-v4",d);
-    if(user&&user.email&&user.email!=="guest"){fbSave(user.email,d)}
+    if(user&&user.email&&user.email!=="guest"){apiSave(user.email,d)}
   },[user]);
   if(page==="home") return <HomePage onNav={setPage} user={user}/>;
   if(page==="contact") return <ContactPg onNav={setPage}/>;
@@ -843,7 +838,7 @@ export default function App(){
   if(page==="login"&&user){setPage("app");return null;}
   return (<div style={{background:T.bg,minHeight:"100vh",color:T.txt,fontFamily:"system-ui,-apple-system,sans-serif"}}>
     <PriceTicker prices={prices} onRefresh={()=>refreshPrices(data)} lastUpdated={lastUpdated}/>
-    <div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>setPage("home")}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{fbReady&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setUser(null);setPrices(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
+    <div style={{borderBottom:"1px solid "+T.bdr,padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><Lg onClick={()=>setPage("home")}/><div style={{display:"flex",alignItems:"center",gap:14}}>{syncing&&<span style={{fontSize:10,color:T.gld}}>Syncing...</span>}{user?.picture&&<img src={user.picture} style={{width:28,height:28,borderRadius:14}} referrerPolicy="no-referrer"/>}{user?.method==="google"&&!user?.picture&&<GIc/>}<span style={{fontSize:12,color:T.txt,fontWeight:600}}>{user?.name}</span>{authToken&&<span style={{width:6,height:6,borderRadius:3,background:T.grn,display:"inline-block"}} title="Cloud sync active"/>}<button onClick={()=>{setAuthToken(null);setUser(null);setPrices(null);setPage("home")}} style={{background:"none",border:"1px solid "+T.bdr,color:T.txM,padding:"5px 10px",borderRadius:6,fontSize:11,cursor:"pointer"}}>Sign Out</button></div></div>
     <div style={{display:"flex",borderBottom:"1px solid "+T.bdr,padding:"0 24px",background:T.bgC+"88",overflowX:"auto"}}>{TABS.map(t=> <button key={t.key} onClick={()=>setTab(t.key)} style={{background:"none",border:"none",color:tab===t.key?T.gld:T.txM,padding:"12px 16px",fontSize:12,fontWeight:tab===t.key?700:400,cursor:"pointer",borderBottom:tab===t.key?"2px solid "+T.gld:"2px solid transparent",whiteSpace:"nowrap"}}><span style={{marginRight:5}}>{t.icon}</span>{t.label}</button>)}</div>
     <div style={{padding:"20px 24px",maxWidth:1200,margin:"0 auto"}}>{tab==="metals"&&<MetalsTab data={data} sd={setData} save={save} prices={prices}/>}{tab==="synd"&&<SyndTab data={data} sd={setData} save={save}/>}{tab==="crypto"&&<CryptoTab data={data} sd={setData} save={save} prices={prices}/>}{tab==="deal"&&<DealTab/>}{tab==="port"&&<PortTab data={data} sd={setData} save={save}/>}</div>
   </div>);
