@@ -96,10 +96,11 @@ const STYPES=["Multifamily","Office","Industrial","Retail","Self-Storage","BTR",
 const ACLS=["Precious Metals","Real Estate","Equities","Crypto","Commodities","Fixed Income","Private Credit","Alternatives","Venture/PE","Cash","Other"];
 const STS=["Active","Realized","Hold","Watchlist","Exited"];
 const COINS=["BTC","ETH","SOL","ADA","DOT","AVAX","MATIC","LINK","XRP","DOGE","Other"];
+const COIN_NAMES={BTC:"Bitcoin",ETH:"Ethereum",SOL:"Solana",ADA:"Cardano",DOT:"Polkadot",AVAX:"Avalanche",MATIC:"Polygon",LINK:"Chainlink",XRP:"XRP",DOGE:"Dogecoin",Other:"Other"};
 const MFORMS=["1oz Coins","1oz Rounds","1oz Bars","5oz Bars","10oz Bars","100oz Bars","1kg Bars","Kilo Bars","Junk Silver","Numismatic","ETF/Fund","Other"];
 const OZ_PER={"1oz Coins":1,"1oz Rounds":1,"1oz Bars":1,"5oz Bars":5,"10oz Bars":10,"100oz Bars":100,"1kg Bars":32.1507,"Kilo Bars":32.1507,"Junk Silver":0.715,"Numismatic":1,"ETF/Fund":1,"Other":1};
 const getOz=(form)=>OZ_PER[form]||1;
-const yrsHeld=(dateStr)=>{if(!dateStr)return"";const d=new Date(dateStr);const now=new Date();const diff=(now-d)/(365.25*24*60*60*1000);return diff>=0?diff.toFixed(1):""};
+const yrsHeld=(dateStr)=>{if(!dateStr||dateStr==="")return"";try{const d=new Date(dateStr);if(isNaN(d.getTime()))return"";const now=new Date();const diff=(now.getTime()-d.getTime())/(365.25*24*60*60*1000);return diff>=0?diff.toFixed(2):""}catch(e){return""}};
 const DEF={
 metals:[{id:"m1",metal:"Gold",form:"1oz Coins",qty:10,costPer:1850,spot:2650,risk:3,notes:""},{id:"m2",metal:"Silver",form:"100oz Bars",qty:3,costPer:2400,spot:3200,risk:4,notes:""}],
 syndications:[{id:"s1",name:"Takoma Towers",sponsor:"Schweb Partners",invested:75000,rate:8,projIRR:15,status:"Active",type:"Multifamily",risk:6,notes:""},{id:"s2",name:"Blue Owl RE VI",sponsor:"Blue Owl",invested:150000,rate:6,projIRR:14,status:"Active",type:"Diversified",risk:5,notes:""}],
@@ -113,6 +114,7 @@ const In=({value,onChange,placeholder,prefix,suffix,type="text",style})=><div st
 const Sl=({value,onChange,options,style})=><select value={value} onChange={e=>onChange(e.target.value)} style={{background:T.bgI,border:"1px solid "+T.bdr,color:T.txt,padding:"9px 10px",borderRadius:8,fontSize:12,outline:"none",...style}}>{options.map(o=><option key={o}>{o}</option>)}</select>;
 const Hd=({children,right})=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:T.gld,textTransform:"uppercase",letterSpacing:1.5,fontFamily:"monospace"}}>{children}</div>{right}</div>;
 const Lb=({children})=><label style={{fontSize:10,color:T.txM,display:"block",marginBottom:3,textTransform:"uppercase"}}>{children}</label>;
+const DateIn=({value,onChange})=><input type="date" value={value||""} onChange={e=>onChange(e.target.value)} style={{background:T.bgI,border:"1px solid "+T.bdr,borderRadius:8,color:T.txt,padding:"9px 10px",fontSize:13,width:"100%",outline:"none",colorScheme:"dark",fontFamily:"monospace",boxSizing:"border-box"}}/>;
 const TD=({children,color,bold})=><td style={{padding:"10px 8px",color:color||T.txt,fontWeight:bold?700:400,fontFamily:"monospace",fontSize:12}}>{children}</td>;
 const Md=({open,onClose,title,children})=>{if(!open)return null;return <div style={{position:"fixed",inset:0,background:"#000000aa",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={onClose}><div onClick={e=>e.stopPropagation()} style={{background:T.bgC,border:"1px solid "+T.bdr,borderRadius:16,padding:28,minWidth:420,maxWidth:600,maxHeight:"85vh",overflow:"auto"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:20}}><div style={{fontSize:16,fontWeight:700,color:T.txt}}>{title}</div><button onClick={onClose} style={{background:"none",border:"none",color:T.txM,fontSize:20,cursor:"pointer"}}>x</button></div>{children}</div></div>};
 const RB=({risk})=>{if(!risk)return <span style={{color:T.txM,fontSize:10}}>-</span>;const r=+risk;const c=r<=3?T.grn:r<=6?T.gld:T.red;return <div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:28,height:4,borderRadius:2,background:T.bdr,overflow:"hidden"}}><div style={{width:(r/10)*100+"%",height:"100%",background:c,borderRadius:2}}/></div><span style={{fontSize:10,color:c,fontWeight:700,fontFamily:"monospace"}}>{r}</span></div>};
@@ -203,7 +205,7 @@ return(<div>
 <div><Lb>Spot $/oz</Lb><In value={f.spot} onChange={v=>sF({...f,spot:v})} prefix="$" type="number"/></div>
 </div>
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={f.dateInv||""} onChange={v=>sF({...f,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div><div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})} placeholder="Optional"/></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><DateIn value={f.dateInv} onChange={v=>sF({...f,dateInv:v})}/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div><div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})} placeholder="Optional"/></div>
 <Bt onClick={add} style={{width:"100%"}}>Add Holding</Bt>
 </div>
 </Md>
@@ -218,7 +220,7 @@ return(<div>
 <div><Lb>Spot $/oz</Lb><In value={ei.spot} onChange={v=>sEi({...ei,spot:+v})} prefix="$" type="number"/></div>
 </div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={ei.dateInv||""} onChange={v=>sEi({...ei,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><DateIn value={ei.dateInv} onChange={v=>sEi({...ei,dateInv:v})}/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
 <Bt onClick={sE} style={{width:"100%"}}>Save Changes</Bt>
 </div>}
@@ -288,7 +290,7 @@ return(<div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Invested</Lb><In value={f.invested} onChange={v=>sF({...f,invested:v})} prefix="$" type="number"/></div><div><Lb>Rate %</Lb><In value={f.rate} onChange={v=>sF({...f,rate:v})} suffix="%" type="number"/></div><div><Lb>Proj IRR</Lb><In value={f.projIRR} onChange={v=>sF({...f,projIRR:v})} suffix="%" type="number"/></div></div>
 {f.invested&&f.rate&&<div style={{padding:8,background:T.grn+"11",borderRadius:8,fontSize:12,color:T.grn}}>Est. Annual Income: <strong>{fmt((+f.invested)*(+f.rate)/100)}</strong></div>}
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={f.dateInv||""} onChange={v=>sF({...f,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><DateIn value={f.dateInv} onChange={v=>sF({...f,dateInv:v})}/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})}/></div>
 <Bt onClick={add} style={{width:"100%"}}>Add Deal</Bt>
 </div>
@@ -299,7 +301,7 @@ return(<div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Type</Lb><Sl value={ei.type} onChange={v=>sEi({...ei,type:v})} options={STYPES} style={{width:"100%"}}/></div><div><Lb>Status</Lb><Sl value={ei.status} onChange={v=>sEi({...ei,status:v})} options={STS} style={{width:"100%"}}/></div></div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Invested</Lb><In value={ei.invested} onChange={v=>sEi({...ei,invested:+v})} prefix="$" type="number"/></div><div><Lb>Rate</Lb><In value={ei.rate||""} onChange={v=>sEi({...ei,rate:+v})} suffix="%" type="number"/></div><div><Lb>IRR</Lb><In value={ei.projIRR} onChange={v=>sEi({...ei,projIRR:+v})} suffix="%" type="number"/></div></div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={ei.dateInv||""} onChange={v=>sEi({...ei,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><DateIn value={ei.dateInv} onChange={v=>sEi({...ei,dateInv:v})}/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
 <Bt onClick={sE} style={{width:"100%"}}>Save</Bt>
 </div>}
@@ -360,20 +362,20 @@ return(<div>
 </div>
 <Md open={sa} onClose={()=>sSa(false)} title="Add Crypto">
 <div style={{display:"flex",flexDirection:"column",gap:12}}>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Coin</Lb><Sl value={f.coin} onChange={v=>{const lp=prices?.crypto?.[v]?.price;sF({...f,coin:v,current:lp?String(Math.round(lp*100)/100):f.current})}} options={COINS} style={{width:"100%"}}/></div><div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})}/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Coin</Lb><Sl value={f.coin} onChange={v=>{const lp=prices?.crypto?.[v]?.price;sF({...f,coin:v,name:COIN_NAMES[v]||v,current:lp?String(Math.round(lp*100)/100):f.current})}} options={COINS} style={{width:"100%"}}/></div><div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})}/></div></div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Qty</Lb><In value={f.qty} onChange={v=>sF({...f,qty:v})} type="number"/></div><div><Lb>Cost/Unit</Lb><In value={f.costPer} onChange={v=>sF({...f,costPer:v})} prefix="$" type="number"/></div><div><Lb>Current</Lb><In value={f.current} onChange={v=>sF({...f,current:v})} prefix="$" type="number"/></div></div>
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={f.dateInv||""} onChange={v=>sF({...f,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><DateIn value={f.dateInv} onChange={v=>sF({...f,dateInv:v})}/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})}/></div>
 <Bt onClick={add} style={{width:"100%"}}>Add Crypto</Bt>
 </div>
 </Md>
 <Md open={!!ei} onClose={()=>sEi(null)} title="Edit Crypto">
 {ei&&<div style={{display:"flex",flexDirection:"column",gap:12}}>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Coin</Lb><Sl value={ei.coin} onChange={v=>sEi({...ei,coin:v})} options={COINS} style={{width:"100%"}}/></div><div><Lb>Name</Lb><In value={ei.name} onChange={v=>sEi({...ei,name:v})}/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Coin</Lb><Sl value={ei.coin} onChange={v=>sEi({...ei,coin:v,name:COIN_NAMES[v]||v})} options={COINS} style={{width:"100%"}}/></div><div><Lb>Name</Lb><In value={ei.name} onChange={v=>sEi({...ei,name:v})}/></div></div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Qty</Lb><In value={ei.qty} onChange={v=>sEi({...ei,qty:+v})} type="number"/></div><div><Lb>Cost</Lb><In value={ei.costPer} onChange={v=>sEi({...ei,costPer:+v})} prefix="$" type="number"/></div><div><Lb>Current</Lb><In value={ei.current} onChange={v=>sEi({...ei,current:+v})} prefix="$" type="number"/></div></div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={ei.dateInv||""} onChange={v=>sEi({...ei,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><DateIn value={ei.dateInv} onChange={v=>sEi({...ei,dateInv:v})}/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
 <Bt onClick={sE} style={{width:"100%"}}>Save</Bt>
 </div>}
@@ -492,7 +494,7 @@ return <div key={cls} style={{marginBottom:10}}>
 <div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})} placeholder="Gold Eagles, Takoma Towers"/></div>
 <div><Lb>Value</Lb><In value={f.value} onChange={v=>sF({...f,value:v})} prefix="$" type="number"/></div>
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={f.dateInv||""} onChange={v=>sF({...f,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><DateIn value={f.dateInv} onChange={v=>sF({...f,dateInv:v})}/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})}/></div>
 <Bt onClick={add} style={{width:"100%"}}>Add Asset</Bt>
 </div>
@@ -503,7 +505,7 @@ return <div key={cls} style={{marginBottom:10}}>
 <div><Lb>Name</Lb><In value={ei.name} onChange={v=>sEi({...ei,name:v})}/></div>
 <div><Lb>Value</Lb><In value={ei.value} onChange={v=>sEi({...ei,value:+v})} prefix="$" type="number"/></div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={ei.dateInv||""} onChange={v=>sEi({...ei,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><DateIn value={ei.dateInv} onChange={v=>sEi({...ei,dateInv:v})}/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
 <Bt onClick={sE} style={{width:"100%"}}>Save</Bt>
 </div>}
