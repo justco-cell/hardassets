@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     if (!authHeader) return res.status(401).json({ error: 'No auth token' });
 
     const token = authHeader.replace('Bearer ', '');
-    const user = await verifyToken(token);
+    const user = verifyToken(token);
     if (!user || !user.email) return res.status(401).json({ error: 'Invalid token' });
 
     const { data } = req.body;
@@ -20,14 +20,14 @@ export default async function handler(req, res) {
     const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/user_data`,
+      `${SUPABASE_URL}/rest/v1/user_data?on_conflict=user_id`,
       {
         method: 'POST',
         headers: {
           'apikey': SUPABASE_KEY,
           'Authorization': `Bearer ${SUPABASE_KEY}`,
           'Content-Type': 'application/json',
-          'Prefer': 'resolution=merge-duplicates'
+          'Prefer': 'resolution=merge-duplicates,return=minimal'
         },
         body: JSON.stringify({
           user_id: user.email,
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('Supabase save error:', err);
+      console.error('Supabase save error:', response.status, err);
       return res.status(500).json({ error: 'Save failed' });
     }
 
@@ -51,26 +51,19 @@ export default async function handler(req, res) {
   }
 }
 
-async function verifyToken(token) {
-  // Try Google ID token first
+function verifyToken(token) {
   try {
     const parts = token.split('.');
     if (parts.length === 3) {
-      const gRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${token}`);
-      if (gRes.ok) {
-        const data = await gRes.json();
-        if (data.email) return { email: data.email, name: data.name || data.email };
-      }
+      const payload = JSON.parse(Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString());
+      if (payload.email) return { email: payload.email, name: payload.name || payload.email };
     }
   } catch (e) {}
-
-  // Try as app token (email:hash format)
   try {
     if (token.includes(':')) {
       const [email] = token.split(':');
       if (email && email.includes('@')) return { email };
     }
   } catch (e) {}
-
   return null;
 }

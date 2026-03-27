@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     if (!authHeader) return res.status(401).json({ error: 'No auth token' });
 
     const token = authHeader.replace('Bearer ', '');
-    const user = await verifyToken(token);
+    const user = verifyToken(token);
     if (!user || !user.email) return res.status(401).json({ error: 'Invalid token' });
 
     const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -38,26 +38,19 @@ export default async function handler(req, res) {
   }
 }
 
-async function verifyToken(token) {
-  // Try Google ID token first
+function verifyToken(token) {
   try {
     const parts = token.split('.');
     if (parts.length === 3) {
-      const gRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${token}`);
-      if (gRes.ok) {
-        const data = await gRes.json();
-        if (data.email) return { email: data.email, name: data.name || data.email };
-      }
+      const payload = JSON.parse(Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString());
+      if (payload.email) return { email: payload.email, name: payload.name || payload.email };
     }
   } catch (e) {}
-
-  // Try as app token (email:hash format)
   try {
     if (token.includes(':')) {
       const [email] = token.split(':');
       if (email && email.includes('@')) return { email };
     }
   } catch (e) {}
-
   return null;
 }
