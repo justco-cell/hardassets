@@ -140,13 +140,13 @@ return <><input ref={ref} type="file" accept=".csv,.txt" onChange={handle} style
 }
 function MetalsTab({data,sd,save,prices}){
 const[sa,sSa]=useState(false);const[ei,sEi]=useState(null);
-const[f,sF]=useState({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:"",risk:"3",notes:""});
+const[f,sF]=useState({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:"",risk:"3",dateInv:"",years:"",notes:""});
 const it=data.metals||[];
 const tC=it.reduce((s,h)=>s+h.qty*h.costPer,0);const tV=it.reduce((s,h)=>s+h.qty*getOz(h.form)*h.spot,0);
 const g=tV-tC;const gP=tC>0?(g/tC)*100:0;
 const byM=it.reduce((a,h)=>{a[h.metal]=(a[h.metal]||0)+h.qty*getOz(h.form)*h.spot;return a},{});
 const pie=Object.entries(byM).map(([name,value])=>({name,value}));
-const add=()=>{if(!f.form||!f.qty||!f.costPer||!f.spot)return;const u={...data,metals:[...it,{id:uid(),metal:f.metal,form:f.form,qty:+f.qty,costPer:+f.costPer,spot:+f.spot,risk:+f.risk||null,notes:f.notes}]};sd(u);save(u);sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:"",risk:"3",notes:""});sSa(false)};
+const add=()=>{if(!f.form||!f.qty||!f.costPer||!f.spot)return;const u={...data,metals:[...it,{id:uid(),metal:f.metal,form:f.form,qty:+f.qty,costPer:+f.costPer,spot:+f.spot,risk:+f.risk||null,dateInv:f.dateInv||"",years:f.years?+f.years:null,notes:f.notes}]};sd(u);save(u);sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:"",risk:"3",dateInv:"",years:"",notes:""});sSa(false)};
 const up=(id,k,v)=>{const u={...data,metals:it.map(h=>h.id===id?{...h,[k]:v}:h)};sd(u);save(u)};
 const rm=id=>{const u={...data,metals:it.filter(h=>h.id!==id)};sd(u);save(u)};
 const imp=(rows)=>{const newM=rows.map(r=>({id:uid(),metal:r.Metal||r.metal||"Gold",form:r.Form||r.form||"1oz Coins",qty:+(r.Qty||r.qty||0),costPer:+(r["Cost/Unit"]||r.Cost||r.costPer||r.cost||0),spot:+(r["Spot/oz"]||r.Spot||r.spot||r.Current||r.current||0),risk:+(r.Risk||r.risk||3),notes:r.Notes||r.notes||""})).filter(m=>m.qty>0);const u={...data,metals:[...it,...newM]};sd(u);save(u)};
@@ -159,18 +159,18 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Oz/Unit","Cost","Spot/oz","Value","Gain","Risk"],it.map(h=>[h.metal,h.form,h.qty,getOz(h.form),h.costPer,h.spot,h.qty*getOz(h.form)*h.spot,(h.qty*getOz(h.form)*h.spot)-(h.qty*h.costPer),h.risk||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.metals?.Gold?.price;sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:lp?String(Math.round(lp*100)/100):"",risk:"3",notes:""});sSa(true)}}>+ Add</Bt></div>}>Holdings</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Metal","Form","Qty","Oz/Unit","Cost","Spot/oz","Value","Gain","Risk"],it.map(h=>[h.metal,h.form,h.qty,getOz(h.form),h.costPer,h.spot,h.qty*getOz(h.form)*h.spot,(h.qty*getOz(h.form)*h.spot)-(h.qty*h.costPer),h.risk||""]),"metals.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.metals?.Gold?.price;sF({metal:"Gold",form:"1oz Coins",qty:"",costPer:"",spot:lp?String(Math.round(lp*100)/100):"",risk:"3",dateInv:"",years:"",notes:""});sSa(true)}}>+ Add</Bt></div>}>Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Metal","Form","Qty","Oz","Cost/Unit","Spot/oz","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(h=>{const oz=getOz(h.form),v=h.qty*oz*h.spot,c=h.qty*h.costPer,gl=v-c;return(
 <tr key={h.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
-<EC value={h.metal} onChange={v=>up(h.id,"metal",v)} color={h.metal==="Gold"?T.gld:T.txD}/>
-<EC value={h.form} onChange={v=>up(h.id,"form",v)}/>
-<EC value={h.qty} onChange={v=>up(h.id,"qty",v)} type="number"/>
+<TD color={h.metal==="Gold"?T.gld:T.txD}>{h.metal}</TD>
+<TD>{h.form}</TD>
+<TD>{h.qty}</TD>
 <TD color={T.txD}>{oz}</TD>
-<EC value={h.costPer} onChange={v=>up(h.id,"costPer",v)} type="number" color={T.txD}/>
-<EC value={h.spot} onChange={v=>up(h.id,"spot",v)} type="number"/>
+<TD color={T.txD}>{fmt(h.costPer)}</TD>
+<TD>{fmt(h.spot)}</TD>
 <TD color={T.gldB} bold>{fmt(v)}</TD>
 <TD color={gl>=0?T.grn:T.red} bold>{fmt(gl)}</TD>
 <TD><RB risk={h.risk}/></TD>
@@ -199,7 +199,7 @@ return(<div>
 <div><Lb>Spot $/oz</Lb><In value={f.spot} onChange={v=>sF({...f,spot:v})} prefix="$" type="number"/></div>
 </div>
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
-<div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})} placeholder="Optional"/></div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={f.dateInv||""} onChange={v=>sF({...f,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div><div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})} placeholder="Optional"/></div>
 <Bt onClick={add} style={{width:"100%"}}>Add Holding</Bt>
 </div>
 </Md>
@@ -214,6 +214,7 @@ return(<div>
 <div><Lb>Spot $/oz</Lb><In value={ei.spot} onChange={v=>sEi({...ei,spot:+v})} prefix="$" type="number"/></div>
 </div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={ei.dateInv||""} onChange={v=>sEi({...ei,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
 <Bt onClick={sE} style={{width:"100%"}}>Save Changes</Bt>
 </div>}
@@ -222,7 +223,7 @@ return(<div>
 }
 function SyndTab({data,sd,save}){
 const[sa,sSa]=useState(false);const[ei,sEi]=useState(null);
-const[f,sF]=useState({name:"",sponsor:"",invested:"",rate:"",projIRR:"",status:"Active",type:"Multifamily",risk:"5",notes:""});
+const[f,sF]=useState({name:"",sponsor:"",invested:"",rate:"",projIRR:"",status:"Active",type:"Multifamily",risk:"5",dateInv:"",years:"",notes:""});
 const it=data.syndications||[];
 const sp=[...new Set(it.map(d=>d.sponsor).filter(Boolean))];
 const tI=it.reduce((s,d)=>s+d.invested,0);
@@ -231,7 +232,7 @@ const aIRR=it.length>0?it.reduce((s,d)=>s+d.projIRR,0)/it.length:0;
 const aR=it.length>0?it.reduce((s,d)=>s+(d.rate||0),0)/it.length:0;
 const byT=it.reduce((a,d)=>{a[d.type]=(a[d.type]||0)+d.invested;return a},{});
 const pie=Object.entries(byT).map(([name,value])=>({name,value}));
-const add=()=>{if(!f.name||!f.invested)return;const u={...data,syndications:[...it,{id:uid(),name:f.name,sponsor:f.sponsor,invested:+f.invested,rate:+(f.rate||0),projIRR:+(f.projIRR||0),status:f.status,type:f.type,risk:+f.risk||null,notes:f.notes}]};sd(u);save(u);sF({name:"",sponsor:"",invested:"",rate:"",projIRR:"",status:"Active",type:"Multifamily",risk:"5",notes:""});sSa(false)};
+const add=()=>{if(!f.name||!f.invested)return;const u={...data,syndications:[...it,{id:uid(),name:f.name,sponsor:f.sponsor,invested:+f.invested,rate:+(f.rate||0),projIRR:+(f.projIRR||0),status:f.status,type:f.type,risk:+f.risk||null,dateInv:f.dateInv||"",years:f.years?+f.years:null,notes:f.notes}]};sd(u);save(u);sF({name:"",sponsor:"",invested:"",rate:"",projIRR:"",status:"Active",type:"Multifamily",risk:"5",dateInv:"",years:"",notes:""});sSa(false)};
 const up=(id,k,v)=>{const u={...data,syndications:it.map(d=>d.id===id?{...d,[k]:v}:d)};sd(u);save(u)};
 const rm=id=>{const u={...data,syndications:it.filter(d=>d.id!==id)};sd(u);save(u)};
 const imp=(rows)=>{const newS=rows.map(r=>({id:uid(),name:r.Deal||r.Name||r.name||"",sponsor:r.Sponsor||r.sponsor||"",invested:+(r.Invested||r.invested||0),rate:+(r.Rate||r.rate||0),projIRR:+(r.IRR||r.projIRR||r.irr||0),status:r.Status||r.status||"Active",type:r.Type||r.type||"Multifamily",risk:+(r.Risk||r.risk||5),notes:r.Notes||r.notes||""})).filter(s=>s.name&&s.invested>0);const u={...data,syndications:[...it,...newS]};sd(u);save(u)};
@@ -250,13 +251,13 @@ return(<div>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Deal","Sponsor","Type","Invested","Rate%","Ann.Income","IRR","Risk","Status","",""].map((h,i)=><th key={i} style={{padding:"10px 6px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace",whiteSpace:"nowrap"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(d=>{const ai=d.invested*(d.rate||0)/100;return(
 <tr key={d.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
-<EC value={d.name} onChange={v=>up(d.id,"name",v)} color={T.gld}/>
-<EC value={d.sponsor} onChange={v=>up(d.id,"sponsor",v)} color={T.txD}/>
+<TD color={T.gld}>{d.name}</TD>
+<TD color={T.txD}>{d.sponsor}</TD>
 <TD color={T.txD}>{d.type}</TD>
-<EC value={d.invested} onChange={v=>up(d.id,"invested",v)} type="number"/>
-<EC value={d.rate||0} onChange={v=>up(d.id,"rate",v)} type="number" color={T.gldB}/>
+<TD>{fmt(d.invested)}</TD>
+<TD color={T.gldB}>{(d.rate||0).toFixed(1)}%</TD>
 <TD color={T.grn} bold>{fmt(ai)}</TD>
-<EC value={d.projIRR} onChange={v=>up(d.id,"projIRR",v)} type="number" color={T.blu}/>
+<TD color={T.blu}>{d.projIRR}%</TD>
 <TD><RB risk={d.risk}/></TD>
 <TD><span style={{background:(d.status==="Active"?T.grn:T.txM)+"18",color:d.status==="Active"?T.grn:T.txM,padding:"3px 8px",borderRadius:20,fontSize:10}}>{d.status}</span></TD>
 <TD><button onClick={()=>sEi({...d})} style={{background:"none",border:"none",color:T.blu,cursor:"pointer",fontSize:11}}>Edit</button></TD>
@@ -269,7 +270,7 @@ return(<div>
 <div style={{flex:.8}}>
 <Hd>By Strategy</Hd>
 <Cd style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-{pie.length>0?<ResponsiveContainer width="100%" height={180}><PieChart><Pie data={pie} dataKey="value" cx="50%" cy="50%" innerRadius={30} outerRadius={60} paddingAngle={3}>{pie.map((_,i)=><Cell key={i} fill={PC[i%PC.length]}/>)}</Pie><Tooltip formatter={v=>fmt(v)} contentStyle={{background:T.bgC,border:"1px solid "+T.bdr,borderRadius:8,fontSize:12}}/></PieChart></ResponsiveContainer>:<div style={{padding:40,color:T.txM}}>Add deals</div>}
+{pie.length>0?<><ResponsiveContainer width="100%" height={180}><PieChart><Pie data={pie} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={30} outerRadius={60} paddingAngle={3}>{pie.map((_,i)=><Cell key={i} fill={PC[i%PC.length]}/>)}</Pie><Tooltip formatter={(v,n)=>[fmt(v),n]} contentStyle={{background:T.bgC,border:"1px solid "+T.bdr,borderRadius:8,fontSize:12}}/></PieChart></ResponsiveContainer><div style={{display:"flex",gap:8,flexWrap:"wrap",justifyContent:"center",marginTop:4}}>{pie.map((d,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:4,fontSize:10,color:T.txD}}><div style={{width:8,height:8,borderRadius:2,background:PC[i%PC.length]}}/>{d.name}</div>)}</div></>:<div style={{padding:40,color:T.txM}}>Add deals</div>}
 </Cd>
 </div>
 </div>
@@ -280,6 +281,7 @@ return(<div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Invested</Lb><In value={f.invested} onChange={v=>sF({...f,invested:v})} prefix="$" type="number"/></div><div><Lb>Rate %</Lb><In value={f.rate} onChange={v=>sF({...f,rate:v})} suffix="%" type="number"/></div><div><Lb>Proj IRR</Lb><In value={f.projIRR} onChange={v=>sF({...f,projIRR:v})} suffix="%" type="number"/></div></div>
 {f.invested&&f.rate&&<div style={{padding:8,background:T.grn+"11",borderRadius:8,fontSize:12,color:T.grn}}>Est. Annual Income: <strong>{fmt((+f.invested)*(+f.rate)/100)}</strong></div>}
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={f.dateInv||""} onChange={v=>sF({...f,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})}/></div>
 <Bt onClick={add} style={{width:"100%"}}>Add Deal</Bt>
 </div>
@@ -290,6 +292,7 @@ return(<div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Type</Lb><Sl value={ei.type} onChange={v=>sEi({...ei,type:v})} options={STYPES} style={{width:"100%"}}/></div><div><Lb>Status</Lb><Sl value={ei.status} onChange={v=>sEi({...ei,status:v})} options={STS} style={{width:"100%"}}/></div></div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Invested</Lb><In value={ei.invested} onChange={v=>sEi({...ei,invested:+v})} prefix="$" type="number"/></div><div><Lb>Rate</Lb><In value={ei.rate||""} onChange={v=>sEi({...ei,rate:+v})} suffix="%" type="number"/></div><div><Lb>IRR</Lb><In value={ei.projIRR} onChange={v=>sEi({...ei,projIRR:+v})} suffix="%" type="number"/></div></div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={ei.dateInv||""} onChange={v=>sEi({...ei,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
 <Bt onClick={sE} style={{width:"100%"}}>Save</Bt>
 </div>}
@@ -298,13 +301,13 @@ return(<div>
 }
 function CryptoTab({data,sd,save,prices}){
 const[sa,sSa]=useState(false);const[ei,sEi]=useState(null);
-const[f,sF]=useState({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:"",risk:"8",notes:""});
+const[f,sF]=useState({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:"",risk:"8",dateInv:"",years:"",notes:""});
 const it=data.crypto||[];
 const tC=it.reduce((s,h)=>s+h.qty*h.costPer,0);const tV=it.reduce((s,h)=>s+h.qty*h.current,0);
 const g=tV-tC;const gP=tC>0?(g/tC)*100:0;
 const byC=it.reduce((a,h)=>{a[h.coin]=(a[h.coin]||0)+h.qty*h.current;return a},{});
 const pie=Object.entries(byC).map(([name,value])=>({name,value}));
-const add=()=>{if(!f.qty||!f.costPer||!f.current)return;const u={...data,crypto:[...it,{id:uid(),coin:f.coin,name:f.name,qty:+f.qty,costPer:+f.costPer,current:+f.current,risk:+f.risk||null,notes:f.notes}]};sd(u);save(u);sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:"",risk:"8",notes:""});sSa(false)};
+const add=()=>{if(!f.qty||!f.costPer||!f.current)return;const u={...data,crypto:[...it,{id:uid(),coin:f.coin,name:f.name,qty:+f.qty,costPer:+f.costPer,current:+f.current,risk:+f.risk||null,dateInv:f.dateInv||"",years:f.years?+f.years:null,notes:f.notes}]};sd(u);save(u);sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:"",risk:"8",dateInv:"",years:"",notes:""});sSa(false)};
 const up=(id,k,v)=>{const u={...data,crypto:it.map(h=>h.id===id?{...h,[k]:v}:h)};sd(u);save(u)};
 const rm=id=>{const u={...data,crypto:it.filter(h=>h.id!==id)};sd(u);save(u)};
 const imp=(rows)=>{const newC=rows.map(r=>({id:uid(),coin:r.Coin||r.coin||"BTC",name:r.Name||r.name||"",qty:+(r.Qty||r.qty||0),costPer:+(r.Cost||r.costPer||r.cost||0),current:+(r.Current||r.current||r.Price||r.price||0),risk:+(r.Risk||r.risk||8),notes:r.Notes||r.notes||""})).filter(c=>c.qty>0);const u={...data,crypto:[...it,...newC]};sd(u);save(u)};
@@ -317,17 +320,17 @@ return(<div>
 </div>
 <div style={{display:"flex",gap:16}}>
 <div style={{flex:2}}>
-<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.crypto?.BTC?.price;sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:lp?String(Math.round(lp*100)/100):"",risk:"8",notes:""});sSa(true)}}>+ Add</Bt></div>}>Crypto Holdings</Hd>
+<Hd right={<div style={{display:"flex",gap:6}}><CsvImp onImport={imp} label="Import"/><Bt ghost sm onClick={()=>csvX(["Coin","Name","Qty","Cost","Current","Value","Gain","Risk"],it.map(h=>[h.coin,h.name,h.qty,h.costPer,h.current,h.qty*h.current,(h.qty*h.current)-(h.qty*h.costPer),h.risk||""]),"crypto.csv")}>Export</Bt><Bt sm onClick={()=>{const lp=prices?.crypto?.BTC?.price;sF({coin:"BTC",name:"Bitcoin",qty:"",costPer:"",current:lp?String(Math.round(lp*100)/100):"",risk:"8",dateInv:"",years:"",notes:""});sSa(true)}}>+ Add</Bt></div>}>Crypto Holdings</Hd>
 <Cd style={{padding:0,overflow:"hidden"}}>
 <table style={{width:"100%",borderCollapse:"collapse"}}>
 <thead><tr style={{borderBottom:"1px solid "+T.bdr}}>{["Coin","Name","Qty","Cost","Current","Value","Gain","Risk","",""].map((h,i)=><th key={i} style={{padding:"10px 8px",textAlign:"left",color:T.txM,fontSize:10,textTransform:"uppercase",fontFamily:"monospace"}}>{h}</th>)}</tr></thead>
 <tbody>{it.map(h=>{const v=h.qty*h.current,c=h.qty*h.costPer,gl=v-c;return(
 <tr key={h.id} style={{borderBottom:"1px solid "+T.bdr+"22"}}>
 <TD color={T.org} bold>{h.coin}</TD>
-<EC value={h.name} onChange={v=>up(h.id,"name",v)} color={T.txD}/>
-<EC value={h.qty} onChange={v=>up(h.id,"qty",v)} type="number"/>
-<EC value={h.costPer} onChange={v=>up(h.id,"costPer",v)} type="number" color={T.txD}/>
-<EC value={h.current} onChange={v=>up(h.id,"current",v)} type="number"/>
+<TD color={T.txD}>{h.name}</TD>
+<TD>{h.qty}</TD>
+<TD color={T.txD}>{fmt(h.costPer)}</TD>
+<TD>{fmt(h.current)}</TD>
 <TD color={T.gldB} bold>{fmt(v)}</TD>
 <TD color={gl>=0?T.grn:T.red} bold>{fmt(gl)}</TD>
 <TD><RB risk={h.risk}/></TD>
@@ -350,6 +353,7 @@ return(<div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Coin</Lb><Sl value={f.coin} onChange={v=>{const lp=prices?.crypto?.[v]?.price;sF({...f,coin:v,current:lp?String(Math.round(lp*100)/100):f.current})}} options={COINS} style={{width:"100%"}}/></div><div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})}/></div></div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Qty</Lb><In value={f.qty} onChange={v=>sF({...f,qty:v})} type="number"/></div><div><Lb>Cost/Unit</Lb><In value={f.costPer} onChange={v=>sF({...f,costPer:v})} prefix="$" type="number"/></div><div><Lb>Current</Lb><In value={f.current} onChange={v=>sF({...f,current:v})} prefix="$" type="number"/></div></div>
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={f.dateInv||""} onChange={v=>sF({...f,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})}/></div>
 <Bt onClick={add} style={{width:"100%"}}>Add Crypto</Bt>
 </div>
@@ -359,6 +363,7 @@ return(<div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Coin</Lb><Sl value={ei.coin} onChange={v=>sEi({...ei,coin:v})} options={COINS} style={{width:"100%"}}/></div><div><Lb>Name</Lb><In value={ei.name} onChange={v=>sEi({...ei,name:v})}/></div></div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}><div><Lb>Qty</Lb><In value={ei.qty} onChange={v=>sEi({...ei,qty:+v})} type="number"/></div><div><Lb>Cost</Lb><In value={ei.costPer} onChange={v=>sEi({...ei,costPer:+v})} prefix="$" type="number"/></div><div><Lb>Current</Lb><In value={ei.current} onChange={v=>sEi({...ei,current:+v})} prefix="$" type="number"/></div></div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={ei.dateInv||""} onChange={v=>sEi({...ei,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
 <Bt onClick={sE} style={{width:"100%"}}>Save</Bt>
 </div>}
@@ -413,7 +418,7 @@ return(<div style={{display:"flex",gap:20}}>
 }
 function PortTab({data,sd,save}){
 const[sa,sSa]=useState(false);const[ei,sEi]=useState(null);const[st,sSt]=useState(false);
-const[f,sF]=useState({cls:"Precious Metals",name:"",value:"",risk:"5",notes:""});
+const[f,sF]=useState({cls:"Precious Metals",name:"",value:"",risk:"5",dateInv:"",years:"",notes:""});
 const it=data.portfolio||[];const tg=data.targets||DEF.targets;
 const tot=it.reduce((s,a)=>s+a.value,0);
 const byC=it.reduce((a,i)=>{a[i.cls]=(a[i.cls]||0)+i.value;return a},{});
@@ -422,7 +427,7 @@ const hv=it.filter(a=>["Precious Metals","Real Estate","Crypto","Commodities"].i
 const hp=tot>0?(hv/tot)*100:0;
 const ar=it.filter(a=>a.risk).length>0?(it.filter(a=>a.risk).reduce((s,a)=>s+(a.risk||0),0)/it.filter(a=>a.risk).length):0;
 const sI=(data.syndications||[]).reduce((s,d)=>s+d.invested*(d.rate||0)/100,0);
-const add=()=>{if(!f.name||!f.value)return;const u={...data,portfolio:[...it,{id:uid(),cls:f.cls,name:f.name,value:+f.value,risk:+f.risk||null,notes:f.notes}]};sd(u);save(u);sF({cls:"Precious Metals",name:"",value:"",risk:"5",notes:""});sSa(false)};
+const add=()=>{if(!f.name||!f.value)return;const u={...data,portfolio:[...it,{id:uid(),cls:f.cls,name:f.name,value:+f.value,risk:+f.risk||null,dateInv:f.dateInv||"",years:f.years?+f.years:null,notes:f.notes}]};sd(u);save(u);sF({cls:"Precious Metals",name:"",value:"",risk:"5",dateInv:"",years:"",notes:""});sSa(false)};
 const rm=id=>{const u={...data,portfolio:it.filter(a=>a.id!==id)};sd(u);save(u)};
 const imp=(rows)=>{const newP=rows.map(r=>({id:uid(),cls:r.Class||r.cls||"Other",name:r.Name||r.name||"",value:+(r.Value||r.value||0),risk:+(r.Risk||r.risk||5),notes:r.Notes||r.notes||""})).filter(p=>p.name&&p.value>0);const u={...data,portfolio:[...it,...newP]};sd(u);save(u)};
 const sE=()=>{if(!ei)return;const u={...data,portfolio:it.map(a=>a.id===ei.id?ei:a)};sd(u);save(u);sEi(null)};
@@ -477,6 +482,7 @@ return <div key={cls} style={{marginBottom:10}}>
 <div><Lb>Name</Lb><In value={f.name} onChange={v=>sF({...f,name:v})} placeholder="Gold Eagles, Takoma Towers"/></div>
 <div><Lb>Value</Lb><In value={f.value} onChange={v=>sF({...f,value:v})} prefix="$" type="number"/></div>
 <RI value={f.risk} onChange={v=>sF({...f,risk:v})}/>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={f.dateInv||""} onChange={v=>sF({...f,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={f.years||""} onChange={v=>sF({...f,years:v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={f.notes} onChange={v=>sF({...f,notes:v})}/></div>
 <Bt onClick={add} style={{width:"100%"}}>Add Asset</Bt>
 </div>
@@ -487,6 +493,7 @@ return <div key={cls} style={{marginBottom:10}}>
 <div><Lb>Name</Lb><In value={ei.name} onChange={v=>sEi({...ei,name:v})}/></div>
 <div><Lb>Value</Lb><In value={ei.value} onChange={v=>sEi({...ei,value:+v})} prefix="$" type="number"/></div>
 <RI value={ei.risk} onChange={v=>sEi({...ei,risk:+v})}/>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}><div><Lb>Date Invested</Lb><In value={ei.dateInv||""} onChange={v=>sEi({...ei,dateInv:v})} type="date"/></div><div><Lb>Hold Period (Yrs)</Lb><In value={ei.years||""} onChange={v=>sEi({...ei,years:+v})} type="number"/></div></div>
 <div><Lb>Notes</Lb><In value={ei.notes||""} onChange={v=>sEi({...ei,notes:v})}/></div>
 <Bt onClick={sE} style={{width:"100%"}}>Save</Bt>
 </div>}
