@@ -523,7 +523,7 @@ export default function HardAssets(){
     {/* Footer */}
     <div style={{borderTop:"1px solid "+P.border,padding:"24px 20px",textAlign:"center"}}>
       <div style={{fontSize:11,color:P.txM}}>© 2026 HardAssets.io</div>
-      <div style={{fontSize:11,color:P.txM,marginTop:4}}>info@hardassets.io</div>
+      <div style={{fontSize:11,color:P.txM,marginTop:4}}>support@hardassets.io</div>
     </div>
 
     {/* LOGIN MODAL */}

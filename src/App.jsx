@@ -369,7 +369,7 @@ function HomePage({onNav,user}){
           <div><Logo/><p style={{fontSize:13,color:P.txS,marginTop:12,lineHeight:1.5,maxWidth:280}}>The portfolio dashboard with live prices built for investors who believe in hard assets.</p></div>
           <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Product</h4>{["Features","How It Works","Security","FAQ"].map(l=><div key={l} style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>document.getElementById(l.toLowerCase().replace(/ /g,""))?.scrollIntoView({behavior:"smooth"})}>{l}</div>)}</div>
           <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Asset Classes</h4>{["Precious Metals","RE Syndications","Crypto","Deal Analyzer"].map(l=><div key={l} style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav(user?"app":"login")}>{l}</div>)}</div>
-          <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Company</h4><a href="/blog" style={{display:"block",fontSize:13,color:P.txS,padding:"4px 0",textDecoration:"none"}}>Blog</a><div style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("contact")}>Contact Us</div><div style={{fontSize:13,color:P.txS,padding:"4px 0"}}>info@hardassets.io</div></div>
+          <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Company</h4><a href="/blog" style={{display:"block",fontSize:13,color:P.txS,padding:"4px 0",textDecoration:"none"}}>Blog</a><div style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("contact")}>Contact Us</div><div style={{fontSize:13,color:P.txS,padding:"4px 0"}}>support@hardassets.io</div></div>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid "+P.border,paddingTop:20,fontSize:11,color:P.txM}}>
           <div>© 2026 HardAssets.io. All rights reserved.</div>
@@ -390,8 +390,8 @@ function HomePage({onNav,user}){
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>How We Use It:</strong> Your data is used solely to provide the HardAssets.io portfolio tracking service. We do not sell, share, rent, or trade your personal information or portfolio data with any third party.</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>Data Storage:</strong> Your portfolio data is stored in an encrypted PostgreSQL database hosted on Supabase. All data transmission uses HTTPS/TLS encryption.</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>No Tracking:</strong> We do not use tracking cookies, advertising pixels, or analytics that identify individual users.</p>
-          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Data Deletion:</strong> You may request deletion of your account and all associated data at any time by contacting info@hardassets.io.</p>
-          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Contact:</strong> For any privacy questions, email info@hardassets.io.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Data Deletion:</strong> You may request deletion of your account and all associated data at any time by contacting support@hardassets.io.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Contact:</strong> For any privacy questions, email support@hardassets.io.</p>
         </div>:<div style={{fontSize:13,color:P.txS,lineHeight:1.8}}>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>Effective Date:</strong> March 26, 2026</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>Service Description:</strong> HardAssets.io is a free portfolio tracking dashboard for precious metals, real estate syndications, cryptocurrency, and other asset classes. Provided as-is for informational purposes only.</p>
@@ -399,7 +399,7 @@ function HomePage({onNav,user}){
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>Price Data:</strong> Live metal prices from metals.dev and crypto prices from CoinGecko. We do not guarantee accuracy or timeliness of price data.</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>No Account Connections:</strong> We never connect to your bank, brokerage, or any financial accounts. All data is entered by you.</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>Limitation of Liability:</strong> Provided "as is" without warranties. We are not liable for any losses arising from use of the service.</p>
-          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Contact:</strong> For questions, email info@hardassets.io.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Contact:</strong> For questions, email support@hardassets.io.</p>
         </div>}
       </div>
     </div>}
@@ -418,7 +418,7 @@ function ContactPg({onNav}){
       <FF label="Name" value={f.name} onChange={v=>sF({...f,name:v})} placeholder="Your name"/>
       <FF label="Email" value={f.email} onChange={v=>sF({...f,email:v})} placeholder="you@email.com"/>
       <div style={{marginBottom:14}}><label style={{display:"block",fontSize:12,fontWeight:600,color:P.txS,marginBottom:6}}>Message</label><textarea value={f.msg} onChange={e=>sF({...f,msg:e.target.value})} placeholder="How can we help?" rows={4} style={{width:"100%",background:P.bg,border:"1px solid "+P.border,borderRadius:12,color:P.text,padding:12,fontSize:14,outline:"none",resize:"vertical",fontFamily:ff,boxSizing:"border-box"}}/></div>
-      <Btn onClick={()=>{if(f.name&&f.email&&f.msg)setSent(true)}} full>Send to info@hardassets.io</Btn>
+      <Btn onClick={()=>{if(f.name&&f.email&&f.msg)setSent(true)}} full>Send to support@hardassets.io</Btn>
     </div></GC>}
     </div></div>);
 }
