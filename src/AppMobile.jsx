@@ -120,10 +120,10 @@ function HoldingCard({item,type,spotPrice,onTap}){
 }
 
 // ═══ EDIT FORM (universal) ═══
-function EditForm({item,type,onSave,onDelete,onClose,prices,synds=[]}){
+function EditForm({item,type,onSave,onDelete,onClose,prices,synds=[],allCrypto={}}){
   const[f,sF]=useState({...item});
   const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
-  const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol};
+  const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
   return<>
     {type==="metal"&&<><FS label="Metal" value={f.metal} onChange={v=>sF({...f,metal:v})} options={["Gold","Silver","Platinum","Palladium"]}/>
       <FS label="Unit" value={f.unit} onChange={v=>sF({...f,unit:v})} options={["1 oz","1/2 oz","1/4 oz","1/10 oz","1 kg","10 oz","100 oz","Gram"]}/>
@@ -157,7 +157,7 @@ function AddMetalForm({onAdd,onClose,prices}){const[f,sF]=useState({metal:"Gold"
 
 function AddSyndForm({onAdd,onClose,synds}){const[f,sF]=useState({name:"",sponsor:"",invested:"",expectedRate:"",projIRR:"",strategy:"Multifamily",risk:"5",status:"Active",dateInvested:"",holdPeriod:"",notes:""});return<><FF label="Deal Name" value={f.name} onChange={v=>sF({...f,name:v})} placeholder="e.g. Pinnacle West"/><SponsorInput value={f.sponsor} onChange={v=>sF({...f,sponsor:v})} synds={synds}/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><FF label="Invested" value={f.invested} onChange={v=>sF({...f,invested:v})} type="number" prefix="$" isMono/><FF label="Rate %" value={f.expectedRate} onChange={v=>sF({...f,expectedRate:v})} type="number" prefix="%" isMono/></div><FF label="Projected IRR %" value={f.projIRR} onChange={v=>sF({...f,projIRR:v})} type="number" prefix="%" isMono/><FS label="Strategy" value={f.strategy} onChange={v=>sF({...f,strategy:v})} options={SYND_TYPES}/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><FS label="Risk" value={f.risk} onChange={v=>sF({...f,risk:v})} options={[...Array(10)].map((_,i)=>({value:String(i+1),label:`${i+1}`}))}/><FS label="Status" value={f.status} onChange={v=>sF({...f,status:v})} options={["Active","Pending","Exited","Default"]}/></div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><FF label="Date Invested" value={f.dateInvested} onChange={v=>sF({...f,dateInvested:v})} type="date"/><FF label="Hold Period (Yrs)" value={f.holdPeriod} onChange={v=>sF({...f,holdPeriod:v})} type="number" isMono/></div><FF label="Notes" value={f.notes} onChange={v=>sF({...f,notes:v})} placeholder="Optional"/><Btn full onClick={()=>{if(f.name&&f.invested){onAdd({...f,invested:+f.invested,expectedRate:+f.expectedRate,projIRR:f.projIRR?+f.projIRR:null,risk:+f.risk,id:uid()});onClose()}}}>Add Syndication</Btn></>}
 
-function AddCryptoForm({onAdd,onClose,prices}){const[f,sF]=useState({coin:"BTC",qty:"",avgCost:"",dateInvested:"",holdPeriod:"",risk:"7",notes:""});const spot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol};return<><FS label="Coin" value={f.coin} onChange={v=>sF({...f,coin:v})} options={COINS}/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><FF label="Quantity" value={f.qty} onChange={v=>sF({...f,qty:v})} type="number" isMono/><FF label="Avg Cost" value={f.avgCost} onChange={v=>sF({...f,avgCost:v})} type="number" prefix="$" isMono/></div>{spot[f.coin]&&<div style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",background:P.purpleSoft,borderRadius:10,marginBottom:14,border:`1px solid rgba(167,139,250,0.15)`}}><div style={{width:6,height:6,borderRadius:3,background:P.purple}}/><span style={{fontSize:12,color:P.txS}}>Live</span><span style={{fontSize:13,fontWeight:700,color:P.purple,fontFamily:mono,marginLeft:"auto"}}>${Math.round(spot[f.coin]).toLocaleString()}</span></div>}<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><FF label="Date Invested" value={f.dateInvested} onChange={v=>sF({...f,dateInvested:v})} type="date"/><FF label="Hold Period (Yrs)" value={f.holdPeriod} onChange={v=>sF({...f,holdPeriod:v})} type="number" isMono/></div><FS label="Risk" value={f.risk} onChange={v=>sF({...f,risk:v})} options={[...Array(10)].map((_,i)=>({value:String(i+1),label:`${i+1}`}))}/><FF label="Notes" value={f.notes} onChange={v=>sF({...f,notes:v})} placeholder="Optional"/><Btn full onClick={()=>{if(f.qty){onAdd({...f,qty:+f.qty,avgCost:+f.avgCost,risk:+f.risk,coin:f.coin,name:f.coin,price:spot[f.coin]||+f.avgCost,id:uid()});onClose()}}}>Add Coin</Btn></>}
+function AddCryptoForm({onAdd,onClose,prices,allCrypto={}}){const[f,sF]=useState({coin:"BTC",qty:"",avgCost:"",dateInvested:"",holdPeriod:"",risk:"7",notes:""});const spot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};return<><FS label="Coin" value={f.coin} onChange={v=>sF({...f,coin:v})} options={COINS}/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><FF label="Quantity" value={f.qty} onChange={v=>sF({...f,qty:v})} type="number" isMono/><FF label="Avg Cost" value={f.avgCost} onChange={v=>sF({...f,avgCost:v})} type="number" prefix="$" isMono/></div>{spot[f.coin]&&<div style={{display:"flex",alignItems:"center",gap:8,padding:"10px 14px",background:P.purpleSoft,borderRadius:10,marginBottom:14,border:`1px solid rgba(167,139,250,0.15)`}}><div style={{width:6,height:6,borderRadius:3,background:P.purple}}/><span style={{fontSize:12,color:P.txS}}>Live</span><span style={{fontSize:13,fontWeight:700,color:P.purple,fontFamily:mono,marginLeft:"auto"}}>${Math.round(spot[f.coin]).toLocaleString()}</span></div>}<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><FF label="Date Invested" value={f.dateInvested} onChange={v=>sF({...f,dateInvested:v})} type="date"/><FF label="Hold Period (Yrs)" value={f.holdPeriod} onChange={v=>sF({...f,holdPeriod:v})} type="number" isMono/></div><FS label="Risk" value={f.risk} onChange={v=>sF({...f,risk:v})} options={[...Array(10)].map((_,i)=>({value:String(i+1),label:`${i+1}`}))}/><FF label="Notes" value={f.notes} onChange={v=>sF({...f,notes:v})} placeholder="Optional"/><Btn full onClick={()=>{if(f.qty){onAdd({...f,qty:+f.qty,avgCost:+f.avgCost,risk:+f.risk,coin:f.coin,name:f.coin,price:spot[f.coin]||+f.avgCost,id:uid()});onClose()}}}>Add Coin</Btn></>}
 
 // ═══ DEAL ANALYZER ═══
 function DealAnalyzer(){const[d,sD]=useState({price:"",rent:"",tax:"",insurance:"",maintenance:"",vacancy:"8",mgmt:"10",downPct:"25",rate:"7",term:"30"});const price=+d.price||0,rent=+d.rent||0,tax=+d.tax||0,ins=+d.insurance||0,maint=+d.maintenance||0;const down=price*(+d.downPct/100),loan=price-down;const mr=(+d.rate/100)/12,n=+d.term*12;const mortgage=mr>0?loan*(mr*Math.pow(1+mr,n))/(Math.pow(1+mr,n)-1):0;const gross=rent*12,vac=gross*(+d.vacancy/100),eff=gross-vac,mgmtC=eff*(+d.mgmt/100);const noi=eff-tax-ins-(maint*12)-mgmtC,cf=noi-(mortgage*12),mcf=cf/12;const cap=price>0?(noi/price)*100:0,coc=down>0?(cf/down)*100:0,dscr=mortgage>0?noi/(mortgage*12):0;const tests=[{name:"Cap Rate",val:cap.toFixed(1)+"%",pass:cap>=6,tgt:"≥ 6%"},{name:"CoC Return",val:coc.toFixed(1)+"%",pass:coc>=8,tgt:"≥ 8%"},{name:"DSCR",val:dscr.toFixed(2),pass:dscr>=1.25,tgt:"≥ 1.25"},{name:"Monthly CF",val:fmt(mcf),pass:mcf>0,tgt:"> $0"}];
@@ -166,9 +166,9 @@ function DealAnalyzer(){const[d,sD]=useState({price:"",rent:"",tax:"",insurance:
   </div>}
 
 // ═══ PORTFOLIO VIEW ═══
-function PortfolioView({metals,synds,crypto,prices,targets,setTargets}){
+function PortfolioView({metals,synds,crypto,prices,targets,setTargets,allCrypto={}}){
   const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
-  const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol};
+  const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
   const mT=metals.reduce((s,m)=>s+m.qty*(ozMap[m.unit]||1)*(spotMap[m.metal]||m.spot||0),0);
   const sT=synds.reduce((s,x)=>s+(x.invested||0),0);
   const cT=crypto.reduce((s,x)=>s+x.qty*(cSpot[x.coin]||x.price||0),0);
@@ -252,6 +252,7 @@ export default function HardAssets(){
   const[synds,setSynds]=useState([]);
   const[crypto,setCrypto]=useState([]);
   const[prices,setPrices]=useState({gold:3015,silver:33.8,platinum:1015,palladium:985,goldChg:0.42,silverChg:1.1,platChg:-0.3,btc:87240,eth:2050,sol:140,btcChg:2.1,ethChg:-0.8,solChg:3.4});
+  const[allCrypto,setAllCrypto]=useState({});
   const[lastRefresh,setLastRefresh]=useState(null);
   const[refreshing,setRefreshing]=useState(false);
   const[targets,setTargets]=useState({"Precious Metals":30,"Real Estate":35,"Crypto":10,"Equities":10,"Cash":5,"Alternatives":10});
@@ -326,6 +327,8 @@ export default function HardAssets(){
       }
       return next;
     });
+    // Store all crypto prices
+    if(cp){const ac={};for(const[sym,data] of Object.entries(cp)){ac[sym]=data.price}setAllCrypto(ac)}
     // Update metal holdings with live spot
     if(mp){
       setMetals(prev=>prev.map(m=>{
@@ -348,6 +351,9 @@ export default function HardAssets(){
   useEffect(()=>{if(view==="app")refreshPrices()},[view]);
   const goldS=useMemo(()=>spark(2850,30,0.008),[]);const silverS=useMemo(()=>spark(30,30,0.012),[]);const btcS=useMemo(()=>spark(78000,30,0.02),[]);const ethS=useMemo(()=>spark(2400,30,0.018),[]);
 
+  const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
+  const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
+
   // ═══ LOGIN SCREEN ═══
   if(view==="login")return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",maxWidth:430,margin:"0 auto",display:"flex",flexDirection:"column",height:"100vh",position:"relative"}}>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
@@ -367,9 +373,6 @@ export default function HardAssets(){
 
   const NAV=[{key:"portfolio",label:"Portfolio",d:"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"},{key:"metals",label:"Metals",d:"M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"},{key:"realestate",label:"RE",d:"M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"},{key:"crypto",label:"Crypto",d:"M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"},{key:"analyzer",label:"Analyze",d:"M9 7h6m0 10v-3m-3 3v-6m-3 6v-1m6-9a2 2 0 012 2v8a2 2 0 01-2 2H9a2 2 0 01-2-2V9a2 2 0 012-2"}];
 
-  const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
-  const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol};
-
   // Save/delete helpers
   const saveItem=(updated,type)=>{if(type==="metal")setMetals(p=>p.map(x=>x.id===updated.id?updated:x));if(type==="synd")setSynds(p=>p.map(x=>x.id===updated.id?updated:x));if(type==="crypto")setCrypto(p=>p.map(x=>x.id===updated.id?updated:x));setEditItem(null)};
   const deleteItem=(id,type)=>{if(type==="metal")setMetals(p=>p.filter(x=>x.id!==id));if(type==="synd")setSynds(p=>p.filter(x=>x.id!==id));if(type==="crypto")setCrypto(p=>p.filter(x=>x.id!==id))};
@@ -379,7 +382,7 @@ export default function HardAssets(){
   const PriceTag=({label,value,change,color,sp})=>{const up=change>=0;return<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:`1px solid ${P.border}`}}><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{width:34,height:34,borderRadius:10,background:`${color}12`,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:13,fontWeight:700,color}}>{label.slice(0,2)}</span></div><div><div style={{fontSize:13,fontWeight:600,color:P.text}}>{label}</div><div style={{fontSize:11,color:up?P.green:P.red,fontWeight:600,fontFamily:mono}}>{fPct(change)}</div></div></div><div style={{display:"flex",alignItems:"center",gap:10}}>{sp&&<MiniChart data={sp} color={up?P.green:P.red}/>}<div style={{fontSize:15,fontWeight:700,color:P.text,fontFamily:mono,minWidth:70,textAlign:"right"}}>{value>999?"$"+Math.round(value).toLocaleString():"$"+value.toFixed(2)}</div></div></div>};
 
   const renderTab=()=>{switch(tab){
-    case "portfolio": return <PortfolioView metals={metals} synds={synds} crypto={crypto} prices={prices} targets={targets} setTargets={setTargets}/>;
+    case "portfolio": return <PortfolioView metals={metals} synds={synds} crypto={crypto} prices={prices} targets={targets} setTargets={setTargets} allCrypto={allCrypto}/>;
     case "metals": return <div style={{paddingBottom:120}}>
       <GC style={{padding:"14px 18px",marginBottom:14}}><PriceTag label="Gold" value={prices.gold} change={prices.goldChg} color={P.gold} sp={goldS}/><PriceTag label="Silver" value={prices.silver} change={prices.silverChg} color={P.txS} sp={silverS}/><PriceTag label="Platinum" value={prices.platinum} change={prices.platChg} color={P.cyan}/></GC>
       <TabHeader title="Holdings" count={metals.length} onAdd={()=>setSheet("addMetal")} onExport={()=>csvExport(["Metal","Unit","Qty","Cost/Unit","Spot","Value","Gain","Risk","Date Invested","Hold Period","Yrs Held","Notes"],metals.map(m=>[m.metal,m.unit,m.qty,m.costPerUnit,spotMap[m.metal]||m.spot,m.qty*(ozMap[m.unit]||1)*(spotMap[m.metal]||m.spot||0),(m.qty*(ozMap[m.unit]||1)*(spotMap[m.metal]||m.spot||0))-(m.qty*m.costPerUnit),m.risk||"",m.dateInvested||"",m.holdPeriod||"",yrsHeld(m.dateInvested),m.notes||""]),"metals.csv")} onImport={rows=>{const ni=rows.map(r=>({id:uid(),metal:r.Metal||"Gold",unit:r.Unit||"1 oz",qty:+(r.Qty||r.Quantity||0),costPerUnit:+(r["Cost/Unit"]||r.Cost||0),spot:+(r.Spot||0),name:(r.Metal||"Gold")+" "+(r.Unit||"1 oz"),risk:+(r.Risk||0)||null,dateInvested:r["Date Invested"]||"",holdPeriod:r["Hold Period"]||"",notes:r.Notes||""})).filter(i=>i.qty>0);setMetals(p=>[...p,...ni])}}/>
@@ -420,10 +423,10 @@ export default function HardAssets(){
     {/* Sheets */}
     <Sheet open={sheet==="addMetal"} onClose={()=>setSheet(null)} title="Add Metal"><AddMetalForm prices={prices} onAdd={m=>setMetals(p=>[...p,m])} onClose={()=>setSheet(null)}/></Sheet>
     <Sheet open={sheet==="addSynd"} onClose={()=>setSheet(null)} title="Add Syndication"><AddSyndForm synds={synds} onAdd={s=>setSynds(p=>[...p,s])} onClose={()=>setSheet(null)}/></Sheet>
-    <Sheet open={sheet==="addCrypto"} onClose={()=>setSheet(null)} title="Add Crypto"><AddCryptoForm prices={prices} onAdd={c=>setCrypto(p=>[...p,c])} onClose={()=>setSheet(null)}/></Sheet>
+    <Sheet open={sheet==="addCrypto"} onClose={()=>setSheet(null)} title="Add Crypto"><AddCryptoForm prices={prices} allCrypto={allCrypto} onAdd={c=>setCrypto(p=>[...p,c])} onClose={()=>setSheet(null)}/></Sheet>
     {/* Edit Sheet */}
     <Sheet open={!!editItem} onClose={()=>setEditItem(null)} title={`Edit ${editItem?.name||editItem?.metal||editItem?.coin||""}`}>
-      {editItem&&<EditForm item={editItem} type={editItem._type} prices={prices} synds={synds} onSave={u=>saveItem(u,editItem._type)} onDelete={id=>deleteItem(id,editItem._type)} onClose={()=>setEditItem(null)}/>}
+      {editItem&&<EditForm item={editItem} type={editItem._type} prices={prices} allCrypto={allCrypto} synds={synds} onSave={u=>saveItem(u,editItem._type)} onDelete={id=>deleteItem(id,editItem._type)} onClose={()=>setEditItem(null)}/>}
     </Sheet>
   </div>
 }
