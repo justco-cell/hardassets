@@ -1,53 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#0B0F1A"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
   <defs>
-    <linearGradient id="goldG" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#D4A843"/><stop offset="100%" stop-color="#B8912E"/>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F1729"/><stop offset="100%" stop-color="#0B0F1A"/>
     </linearGradient>
-    <linearGradient id="silverG" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#C0C0C0"/><stop offset="100%" stop-color="#8A8A8A"/>
+    <linearGradient id="gld2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ECC94B"/><stop offset="100%" stop-color="#B8912E"/>
     </linearGradient>
-    <radialGradient id="glow1" cx="35%" cy="50%">
-      <stop offset="0%" stop-color="#D4A843" stop-opacity="0.12"/><stop offset="100%" stop-color="#0B0F1A" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="glow2" cx="75%" cy="50%">
-      <stop offset="0%" stop-color="#C0C0C0" stop-opacity="0.08"/><stop offset="100%" stop-color="#0B0F1A" stop-opacity="0"/>
-    </radialGradient>
+    <linearGradient id="slv" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E2E8F0"/><stop offset="100%" stop-color="#94A3B8"/>
+    </linearGradient>
+    <radialGradient id="gwL" cx="30%" cy="50%"><stop offset="0%" stop-color="#D4A843" stop-opacity="0.1"/><stop offset="60%" stop-color="#0B0F1A" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gwR" cx="70%" cy="50%"><stop offset="0%" stop-color="#94A3B8" stop-opacity="0.06"/><stop offset="60%" stop-color="#0B0F1A" stop-opacity="0"/></radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#glow1)"/>
-  <rect width="1200" height="630" fill="url(#glow2)"/>
-  <!-- Gold coin -->
-  <circle cx="340" cy="300" r="160" fill="#111827" stroke="#D4A843" stroke-width="3"/>
-  <circle cx="340" cy="300" r="140" fill="none" stroke="#D4A843" stroke-width="1" opacity="0.3"/>
-  <circle cx="340" cy="300" r="120" fill="url(#goldG)" opacity="0.15"/>
-  <text x="340" y="270" text-anchor="middle" fill="#D4A843" font-family="serif" font-size="72" font-weight="700">Au</text>
-  <text x="340" y="320" text-anchor="middle" fill="#D4A843" font-family="monospace" font-size="20" font-weight="600" opacity="0.8">GOLD</text>
-  <text x="340" y="350" text-anchor="middle" fill="#D4A843" font-family="monospace" font-size="14" opacity="0.5">79 · 196.97</text>
-  <!-- Silver coin -->
-  <circle cx="860" cy="300" r="160" fill="#111827" stroke="#94A3B8" stroke-width="3"/>
-  <circle cx="860" cy="300" r="140" fill="none" stroke="#94A3B8" stroke-width="1" opacity="0.3"/>
-  <circle cx="860" cy="300" r="120" fill="url(#silverG)" opacity="0.08"/>
-  <text x="860" y="270" text-anchor="middle" fill="#94A3B8" font-family="serif" font-size="72" font-weight="700">Ag</text>
-  <text x="860" y="320" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="20" font-weight="600" opacity="0.8">SILVER</text>
-  <text x="860" y="350" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="14" opacity="0.5">47 · 107.87</text>
-  <!-- Ratio divider -->
-  <line x1="520" y1="200" x2="680" y2="200" stroke="#1E293B" stroke-width="2"/>
-  <line x1="520" y1="400" x2="680" y2="400" stroke="#1E293B" stroke-width="2"/>
-  <line x1="600" y1="200" x2="600" y2="400" stroke="#1E293B" stroke-width="2"/>
-  <rect x="550" y="260" width="100" height="80" rx="12" fill="#111827" stroke="#D4A843" stroke-width="2"/>
-  <text x="600" y="295" text-anchor="middle" fill="#D4A843" font-family="monospace" font-size="28" font-weight="800">88:1</text>
-  <text x="600" y="322" text-anchor="middle" fill="#475569" font-family="system-ui" font-size="11" font-weight="600">AU/AG RATIO</text>
-  <!-- Arrows -->
-  <line x1="500" y1="300" x2="550" y2="300" stroke="#D4A843" stroke-width="2" opacity="0.5"/>
-  <line x1="650" y1="300" x2="700" y2="300" stroke="#94A3B8" stroke-width="2" opacity="0.5"/>
-  <!-- Title -->
-  <text x="600" y="80" text-anchor="middle" fill="#F1F5F9" font-family="system-ui" font-size="32" font-weight="900" letter-spacing="-0.5">The Gold/Silver Ratio</text>
-  <text x="600" y="115" text-anchor="middle" fill="#94A3B8" font-family="system-ui" font-size="16">What It Means & How Investors Use It</text>
-  <!-- Price labels -->
-  <text x="340" y="500" text-anchor="middle" fill="#D4A843" font-family="monospace" font-size="24" font-weight="700">$3,042/oz</text>
-  <text x="860" y="500" text-anchor="middle" fill="#94A3B8" font-family="monospace" font-size="24" font-weight="700">$34.18/oz</text>
-  <!-- Brand -->
-  <rect x="540" y="550" width="28" height="28" rx="8" fill="url(#goldG)"/>
-  <text x="548" y="571" fill="#0B0F1A" font-family="system-ui" font-size="16" font-weight="900">H</text>
-  <text x="578" y="571" fill="#94A3B8" font-family="system-ui" font-size="13" font-weight="600">HardAssets.io</text>
+  <rect width="1200" height="630" fill="url(#bg2)"/>
+  <rect width="1200" height="630" fill="url(#gwL)"/>
+  <rect width="1200" height="630" fill="url(#gwR)"/>
+
+  <!-- Gold coin (left) -->
+  <g transform="translate(320,280)">
+    <circle r="170" fill="#111827" stroke="#D4A843" stroke-width="3"/>
+    <circle r="150" fill="none" stroke="#D4A843" stroke-width="1" opacity="0.2"/>
+    <circle r="130" fill="#D4A843" opacity="0.06"/>
+    <!-- Inner ring pattern -->
+    <circle r="110" fill="none" stroke="#D4A843" stroke-width="0.5" opacity="0.15" stroke-dasharray="8 8"/>
+    <!-- Au symbol -->
+    <text y="-15" text-anchor="middle" fill="#D4A843" font-family="Georgia,serif" font-size="80" font-weight="700">Au</text>
+    <text y="30" text-anchor="middle" fill="#D4A843" font-family="Arial,sans-serif" font-size="18" font-weight="600" opacity="0.7">GOLD</text>
+    <!-- Small star accents -->
+    <circle cx="-80" cy="-80" r="2" fill="#D4A843" opacity="0.4"/>
+    <circle cx="85" cy="-75" r="1.5" fill="#D4A843" opacity="0.3"/>
+    <circle cx="70" cy="90" r="2" fill="#D4A843" opacity="0.35"/>
+  </g>
+
+  <!-- Silver coin (right) -->
+  <g transform="translate(880,280)">
+    <circle r="170" fill="#111827" stroke="#94A3B8" stroke-width="3"/>
+    <circle r="150" fill="none" stroke="#94A3B8" stroke-width="1" opacity="0.2"/>
+    <circle r="130" fill="#94A3B8" opacity="0.04"/>
+    <circle r="110" fill="none" stroke="#94A3B8" stroke-width="0.5" opacity="0.15" stroke-dasharray="8 8"/>
+    <text y="-15" text-anchor="middle" fill="#94A3B8" font-family="Georgia,serif" font-size="80" font-weight="700">Ag</text>
+    <text y="30" text-anchor="middle" fill="#94A3B8" font-family="Arial,sans-serif" font-size="18" font-weight="600" opacity="0.7">SILVER</text>
+    <circle cx="-80" cy="-80" r="2" fill="#94A3B8" opacity="0.3"/>
+    <circle cx="85" cy="-75" r="1.5" fill="#94A3B8" opacity="0.25"/>
+    <circle cx="70" cy="90" r="2" fill="#94A3B8" opacity="0.3"/>
+  </g>
+
+  <!-- Ratio badge (center) -->
+  <g transform="translate(600,280)">
+    <!-- Connecting lines -->
+    <line x1="-130" y1="0" x2="-40" y2="0" stroke="#D4A843" stroke-width="1.5" opacity="0.3"/>
+    <line x1="40" y1="0" x2="130" y2="0" stroke="#94A3B8" stroke-width="1.5" opacity="0.3"/>
+    <!-- Badge -->
+    <rect x="-52" y="-32" width="104" height="64" rx="16" fill="#111827" stroke="#D4A843" stroke-width="2"/>
+    <text y="8" text-anchor="middle" fill="#D4A843" font-family="Arial,sans-serif" font-size="30" font-weight="900">88:1</text>
+  </g>
+
+  <!-- Subtle scale/balance lines at top -->
+  <g transform="translate(600,60)" opacity="0.15">
+    <line x1="0" y1="0" x2="-200" y2="30" stroke="#D4A843" stroke-width="2"/>
+    <line x1="0" y1="0" x2="200" y2="30" stroke="#94A3B8" stroke-width="2"/>
+    <circle cx="0" cy="0" r="6" fill="none" stroke="#F1F5F9" stroke-width="1.5"/>
+    <circle cx="-200" cy="30" r="20" fill="none" stroke="#D4A843" stroke-width="1"/>
+    <circle cx="200" cy="30" r="20" fill="none" stroke="#94A3B8" stroke-width="1"/>
+  </g>
+
+  <!-- Logo -->
+  <rect x="548" y="560" width="32" height="32" rx="9" fill="url(#gld2)"/>
+  <text x="557" y="583" fill="#0B0F1A" font-family="Arial,sans-serif" font-size="18" font-weight="900">H</text>
+  <text x="590" y="583" fill="#F1F5F9" font-family="Arial,sans-serif" font-size="15" font-weight="800">HardAssets.io</text>
 </svg>
