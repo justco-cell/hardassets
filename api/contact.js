@@ -20,6 +20,7 @@ export default async function handler(req, res) {
           headers: { 'Authorization': `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({
             from: 'HardAssets.io <noreply@hardassets.io>',
+            reply_to: email,
             to: 'support@hardassets.io',
             subject: `Contact Form: ${name}`,
             html: `<h3>New Contact Form Submission</h3><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br>')}</p><hr><p style="color:#888;font-size:12px">Sent from hardassets.io contact form</p>`
