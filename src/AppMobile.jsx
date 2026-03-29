@@ -76,7 +76,7 @@ function GC({children,style,onClick}){const[h,setH]=useState(false);return<div o
 
 function MiniChart({data,color=P.green,height=32,width=60}){const id=useMemo(()=>"m"+Math.random().toString(36).slice(2,7),[]);return<ResponsiveContainer width={width} height={height}><AreaChart data={data} margin={{top:2,right:0,bottom:0,left:0}}><defs><linearGradient id={id} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={color} stopOpacity={0.3}/><stop offset="100%" stopColor={color} stopOpacity={0}/></linearGradient></defs><Area type="monotone" dataKey="v" stroke={color} strokeWidth={1.5} fill={`url(#${id})`} dot={false}/></AreaChart></ResponsiveContainer>}
 
-function Sheet({open,onClose,title,children}){if(!open)return null;return<div style={{position:"fixed",inset:0,zIndex:200,display:"flex",flexDirection:"column",justifyContent:"flex-end"}}><div onClick={onClose} style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.6)",backdropFilter:"blur(8px)"}}/><div style={{position:"relative",background:P.surface,borderRadius:"28px 28px 0 0",maxHeight:"88vh",overflow:"auto",animation:"sheetUp 0.35s cubic-bezier(0.32,0.72,0,1)"}}><div style={{display:"flex",justifyContent:"center",padding:"12px 0 0"}}><div style={{width:36,height:4,borderRadius:2,background:P.txF}}/></div><div style={{padding:"12px 24px 8px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:20,fontWeight:700,color:P.text}}>{title}</span><button onClick={onClose} style={{width:32,height:32,borderRadius:16,background:P.elevated,border:"none",color:P.txS,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button></div><div style={{padding:"8px 24px 40px"}}>{children}</div></div></div>}
+function Sheet({open,onClose,title,children,onSave}){if(!open)return null;return<div style={{position:"fixed",inset:0,zIndex:200,display:"flex",flexDirection:"column",justifyContent:"flex-end"}}><div onClick={onClose} style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.6)",backdropFilter:"blur(8px)"}}/><div style={{position:"relative",background:P.surface,borderRadius:"28px 28px 0 0",maxHeight:"88vh",overflow:"auto",animation:"sheetUp 0.35s cubic-bezier(0.32,0.72,0,1)"}}><div style={{display:"flex",justifyContent:"center",padding:"12px 0 0"}}><div style={{width:36,height:4,borderRadius:2,background:P.txF}}/></div><div style={{padding:"12px 24px 8px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:20,fontWeight:700,color:P.text}}>{title}</span><div style={{display:"flex",alignItems:"center",gap:8}}>{onSave&&<button onClick={onSave} style={{padding:"6px 14px",borderRadius:10,border:"none",background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:12,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>✓ Save</button>}<button onClick={onClose} style={{width:32,height:32,borderRadius:16,background:P.elevated,border:"none",color:P.txS,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button></div></div><div style={{padding:"8px 24px 40px"}}>{children}</div></div></div>}
 
 function FF({label,value,onChange,type="text",prefix,placeholder,isMono}){return<div style={{marginBottom:14}}><label style={{display:"block",fontSize:12,fontWeight:600,color:P.txS,marginBottom:6}}>{label}</label><div style={{display:"flex",alignItems:"center",background:P.bg,border:`1px solid ${P.border}`,borderRadius:12,overflow:"hidden"}}>{prefix&&<span style={{padding:"0 0 0 14px",color:P.txM,fontSize:14,fontFamily:mono}}>{prefix}</span>}<input value={value} onChange={e=>onChange(e.target.value)} type={type} placeholder={placeholder} style={{flex:1,background:"transparent",border:"none",color:P.text,fontSize:14,padding:prefix?"12px 14px 12px 6px":"12px 14px",outline:"none",fontFamily:isMono?mono:ff,width:"100%",colorScheme:"dark"}}/></div></div>}
 
@@ -130,8 +130,10 @@ function HoldingCard({item,type,spotPrice,onTap}){
 }
 
 // ═══ EDIT FORM (universal) ═══
-function EditForm({item,type,onSave,onDelete,onClose,prices,synds=[],allCrypto={}}){
+function EditForm({item,type,onSave,onDelete,onClose,prices,synds=[],allCrypto={},saveRef}){
   const[f,sF]=useState({...item});
+  const doSave=()=>{const u={...f};if(type==="metal"){u.qty=+u.qty;u.costPerUnit=+u.costPerUnit;u.spot=({Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium})[u.metal]||u.spot||0;u.name=u.metal+" "+u.unit}if(type==="synd"){u.invested=+u.invested;u.expectedRate=+u.expectedRate;u.risk=+u.risk}if(type==="crypto"){u.qty=+u.qty;u.avgCost=+u.avgCost;u.price=({BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto})[u.coin]||+u.avgCost;u.name=u.coin}if(type==="property"){u.purchasePrice=+u.purchasePrice;u.currentValue=+u.currentValue;u.mortgageBalance=+u.mortgageBalance;u.monthlyRent=+u.monthlyRent;u.monthlyExpenses=+u.monthlyExpenses;u.mortgagePayment=+u.mortgagePayment;u.risk=+u.risk}if(type==="note"){u.principal=+u.principal;u.outstandingBalance=+u.outstandingBalance;u.interestRate=+u.interestRate;u.ltv=u.ltv?+u.ltv:null;u.risk=+u.risk}if(type==="collectible"){u.purchasePrice=+u.purchasePrice;u.currentValue=+u.currentValue;u.insuranceValue=u.insuranceValue?+u.insuranceValue:null;u.risk=+u.risk}onSave(u)};
+  useEffect(()=>{if(saveRef)saveRef.current=doSave});
   const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
   const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
   return<>
@@ -176,8 +178,7 @@ function EditForm({item,type,onSave,onDelete,onClose,prices,synds=[],allCrypto={
     <FS label="Risk (1-10)" value={f.risk||"5"} onChange={v=>sF({...f,risk:v})} options={[...Array(10)].map((_,i)=>({value:String(i+1),label:`${i+1} — ${i<3?"Low":i<6?"Medium":i<8?"High":"Very High"}`}))}/>
     <FF label="Notes" value={f.notes||""} onChange={v=>sF({...f,notes:v})} placeholder="Optional notes..."/>
     <div style={{display:"flex",gap:10,marginTop:8}}>
-      <Btn full onClick={()=>{const updated={...f};if(type==="metal"){updated.qty=+updated.qty;updated.costPerUnit=+updated.costPerUnit;updated.spot=spotMap[updated.metal]||updated.spot||0;updated.name=updated.metal+" "+updated.unit}if(type==="synd"){updated.invested=+updated.invested;updated.expectedRate=+updated.expectedRate;updated.risk=+updated.risk}if(type==="crypto"){updated.qty=+updated.qty;updated.avgCost=+updated.avgCost;updated.price=cSpot[updated.coin]||+updated.avgCost;updated.name=updated.coin}if(type==="property"){updated.purchasePrice=+updated.purchasePrice;updated.currentValue=+updated.currentValue;updated.mortgageBalance=+(updated.mortgageBalance||0);updated.monthlyRent=+(updated.monthlyRent||0);updated.monthlyExpenses=+(updated.monthlyExpenses||0);updated.mortgagePayment=+(updated.mortgagePayment||0);updated.risk=+updated.risk}if(type==="note"){updated.principal=+updated.principal;updated.outstandingBalance=+updated.outstandingBalance;updated.interestRate=+(updated.interestRate||0);updated.ltv=+(updated.ltv||0);updated.risk=+updated.risk}if(type==="collectible"){updated.purchasePrice=+updated.purchasePrice;updated.currentValue=+updated.currentValue;updated.insuranceValue=+(updated.insuranceValue||0);updated.risk=+updated.risk}onSave(updated)}}>Save Changes</Btn>
-      <Btn variant="danger" onClick={()=>{onDelete(f.id);onClose()}} style={{padding:"14px 18px"}}>🗑</Btn>
+      <Btn variant="danger" onClick={()=>{onDelete(f.id);onClose()}} style={{padding:"10px 18px",fontSize:12}}>Delete</Btn>
     </div>
   </>
 }
@@ -285,6 +286,7 @@ export default function HardAssets(){
   const[tab,setTab]=useState("portfolio");
   const[sheet,setSheet]=useState(null);
   const[editItem,setEditItem]=useState(null);
+  const editSaveRef=useRef(null);
   const[confirmDelete,setConfirmDelete]=useState(null);
   const[showFaq,setShowFaq]=useState(false);
   const[user,setUser]=useState(()=>{try{const s=sessionStorage.getItem("ha_user");return s?JSON.parse(s):null}catch(e){return null}});
@@ -592,8 +594,8 @@ export default function HardAssets(){
     <Sheet open={sheet==="addNote"} onClose={()=>setSheet(null)} title="Add Note"><AddNoteForm onAdd={n=>setNotesLending(prev=>[...prev,n])} onClose={()=>setSheet(null)}/></Sheet>
     <Sheet open={sheet==="addCollectible"} onClose={()=>setSheet(null)} title="Add Collectible"><AddCollectibleForm onAdd={c=>setCollectibles(prev=>[...prev,c])} onClose={()=>setSheet(null)}/></Sheet>
     {/* Edit Sheet */}
-    <Sheet open={!!editItem} onClose={()=>setEditItem(null)} title={`Edit ${editItem?.name||editItem?.metal||editItem?.coin||""}`}>
-      {editItem&&<EditForm item={editItem} type={editItem._type} prices={prices} allCrypto={allCrypto} synds={synds} onSave={u=>saveItem(u,editItem._type)} onDelete={id=>setConfirmDelete({id,type:editItem._type,name:editItem?.name||editItem?.metal||editItem?.coin||"this item"})} onClose={()=>setEditItem(null)}/>}
+    <Sheet open={!!editItem} onClose={()=>setEditItem(null)} title={`Edit ${editItem?.name||editItem?.metal||editItem?.coin||""}`} onSave={()=>editSaveRef.current&&editSaveRef.current()}>
+      {editItem&&<EditForm item={editItem} type={editItem._type} prices={prices} allCrypto={allCrypto} synds={synds} saveRef={editSaveRef} onSave={u=>saveItem(u,editItem._type)} onDelete={id=>setConfirmDelete({id,type:editItem._type,name:editItem?.name||editItem?.metal||editItem?.coin||"this item"})} onClose={()=>setEditItem(null)}/>}
     </Sheet>
     <Sheet open={!!confirmDelete} onClose={()=>setConfirmDelete(null)} title="Confirm Delete">
       <div style={{textAlign:"center",padding:"12px 0"}}>
