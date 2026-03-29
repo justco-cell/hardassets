@@ -1,5 +1,15 @@
+# HardAssets.io robots.txt
 # Allow landing page for SEO
 User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+Sitemap: https://hardassets.io/sitemap.xml
+
+# Block AI scrapers from dashboard and API routes only
+User-agent: GPTBot
 Allow: /
 Disallow: /app
 Disallow: /mobile

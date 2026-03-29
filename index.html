@@ -3,13 +3,147 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>HardAssets.io — Track Everything That Holds Value</title>
+
+    <!-- Primary SEO -->
+    <title>HardAssets.io — Track Gold, Silver, Real Estate, Crypto & Hard Asset Portfolios</title>
+    <meta name="description" content="HardAssets.io is the free portfolio dashboard for hard asset investors. Track precious metals, real estate syndications, crypto, collectibles, and more with live prices, risk scoring, and cloud sync.">
+    <meta name="keywords" content="HardAssets.io, hard assets tracker, gold portfolio tracker, silver tracker, real estate syndication tracker, crypto portfolio, precious metals dashboard, alternative investments, portfolio management, live gold price, live silver price">
+    <meta name="author" content="HardAssets.io">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://hardassets.io/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hardassets.io/">
+    <meta property="og:title" content="HardAssets.io — Track Gold, Silver, Real Estate, Crypto & Hard Assets">
+    <meta property="og:description" content="The free portfolio dashboard for hard asset investors. Live metal & crypto prices, real estate syndication tracking, risk scoring, and cloud sync. No credit card required.">
+    <meta property="og:image" content="https://hardassets.io/icon-512.png">
+    <meta property="og:site_name" content="HardAssets.io">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://hardassets.io/">
+    <meta name="twitter:title" content="HardAssets.io — Track Gold, Silver, Real Estate, Crypto & Hard Assets">
+    <meta name="twitter:description" content="Free portfolio dashboard for hard asset investors. Live prices, risk scoring, cloud sync. Track precious metals, RE syndications, crypto, and more.">
+    <meta name="twitter:image" content="https://hardassets.io/icon-512.png">
+
+    <!-- Theme & PWA -->
     <meta name="theme-color" content="#d4a843">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon-192.png">
+    <link rel="icon" href="/icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon-192.png">
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://accounts.google.com" crossorigin>
+    <link rel="preconnect" href="https://us.i.posthog.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://api.metals.dev">
+    <link rel="dns-prefetch" href="https://api.coingecko.com">
+    <link rel="dns-prefetch" href="https://api.frankfurter.app">
+
+    <!-- Structured Data: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "HardAssets.io",
+      "url": "https://hardassets.io",
+      "logo": "https://hardassets.io/icon-512.png",
+      "description": "HardAssets.io is a free portfolio tracking dashboard for precious metals, real estate syndications, cryptocurrency, collectibles, and alternative hard assets.",
+      "foundingDate": "2026",
+      "sameAs": []
+    }
+    </script>
+
+    <!-- Structured Data: WebSite with Search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "HardAssets.io",
+      "alternateName": ["HardAssets", "Hard Assets IO"],
+      "url": "https://hardassets.io",
+      "description": "Free portfolio dashboard for hard asset investors — track gold, silver, real estate, crypto, and alternative investments with live prices.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://hardassets.io/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Structured Data: SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "HardAssets.io",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web, Android, iOS",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Track precious metals, real estate syndications, crypto portfolios, private notes, and collectibles with live spot prices, risk scoring, and target allocation analysis.",
+      "featureList": "Live gold & silver prices, Crypto portfolio tracking, Real estate syndication LP tracker, Deal analyzer, CSV import/export, Cloud sync, Risk scoring, Target allocation"
+    }
+    </script>
+
+    <!-- Structured Data: FAQPage -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is HardAssets.io really free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The core dashboard with all features including live prices, CSV import/export, and cloud sync is completely free. No credit card required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do the live prices come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Metal prices (gold, silver, platinum, palladium) are pulled from metals.dev in real-time. Crypto prices (BTC, ETH, SOL, and 20+ coins) come from CoinGecko's API. Currency exchange rates come from the European Central Bank via Frankfurter API."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What asset types can I track on HardAssets.io?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "HardAssets.io tracks precious metals (gold, silver, platinum, palladium in 8 unit types), real estate syndications (16 deal types), physical real estate properties, cryptocurrency (20+ coins), private notes and lending, and collectibles (watches, wine, art, cars, jewelry, and more)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is my data secured on HardAssets.io?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your data is stored in an encrypted PostgreSQL database hosted on Supabase with server-side API routes. Your browser never has direct database access. Authentication uses Google Identity Services with secure JWT tokens."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is HardAssets.io different from Hard Assets Alliance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, HardAssets.io is a completely separate product. HardAssets.io is a free portfolio tracking dashboard for all hard assets. Hard Assets Alliance is a precious metals dealer. HardAssets.io does not sell metals or any financial products — it is a tracking and analytics tool only."
+          }
+        }
+      ]
+    }
+    </script>
+
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>*{margin:0;padding:0;box-sizing:border-box}html,body,#root{width:100%;height:100%;background:#0B0F1A}</style>
     <script>
@@ -18,7 +152,58 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <!--
+      SEO: Crawlable content for search engines.
+      React app mounts over this content in #root.
+      Google can read this even without JavaScript execution.
+    -->
+    <div id="root">
+      <header style="background:#060d1b;padding:20px 40px;text-align:center">
+        <h1 style="font-size:0;overflow:hidden">HardAssets.io — Free Portfolio Dashboard for Gold, Silver, Real Estate, Crypto & Hard Asset Investors</h1>
+      </header>
+      <main style="background:#060d1b;color:#e8edf5;padding:40px;font-family:system-ui,sans-serif;max-width:900px;margin:0 auto">
+        <section>
+          <h2 style="font-size:24px;margin-bottom:12px">What is HardAssets.io?</h2>
+          <p style="font-size:16px;line-height:1.6;margin-bottom:16px">HardAssets.io is a free portfolio tracking dashboard built for investors who hold gold, silver, real estate syndications, cryptocurrency, private notes, and collectibles. Track everything that holds value — with live spot prices, risk scoring, allocation analysis, and secure cloud sync.</p>
+          <p style="font-size:16px;line-height:1.6;margin-bottom:16px">Unlike Hard Assets Alliance (a precious metals dealer), HardAssets.io does not sell any financial products. It is a pure tracking and analytics tool — completely free, no credit card required.</p>
+        </section>
+        <section>
+          <h2 style="font-size:20px;margin-bottom:10px">Track These Asset Classes</h2>
+          <ul style="font-size:15px;line-height:1.8;padding-left:20px">
+            <li><strong>Precious Metals</strong> — Gold, silver, platinum, palladium with live spot prices and oz-per-unit conversion</li>
+            <li><strong>Real Estate Syndications</strong> — LP positions with rate tracking, projected IRR, and sponsor management across 16 deal types</li>
+            <li><strong>Physical Real Estate</strong> — Properties with equity, cash flow, cap rate, and mortgage tracking</li>
+            <li><strong>Cryptocurrency</strong> — 20+ coins with live CoinGecko prices, cost basis, and gain/loss tracking</li>
+            <li><strong>Notes &amp; Lending</strong> — Hard money loans, private notes, P2P lending with interest income tracking</li>
+            <li><strong>Collectibles &amp; Art</strong> — Watches, wine, art, cars, jewelry with valuation and gain tracking</li>
+          </ul>
+        </section>
+        <section>
+          <h2 style="font-size:20px;margin-bottom:10px">Key Features</h2>
+          <ul style="font-size:15px;line-height:1.8;padding-left:20px">
+            <li>Live metal prices from metals.dev API</li>
+            <li>Live crypto prices from CoinGecko for 20+ coins</li>
+            <li>Live currency exchange rates for 16 currencies</li>
+            <li>Portfolio allocation with target comparison</li>
+            <li>Risk scoring (1-10) with color coding</li>
+            <li>CSV import and export on every tab</li>
+            <li>Secure cloud sync via Google Sign-In</li>
+            <li>Deal analyzer with cap rate, CoC, and DSCR calculations</li>
+            <li>Activity log tracking all portfolio changes</li>
+            <li>Works on desktop and mobile — installable as a PWA</li>
+          </ul>
+        </section>
+        <section>
+          <h2 style="font-size:20px;margin-bottom:10px">Frequently Asked Questions</h2>
+          <h3 style="font-size:16px;margin-top:12px">Is HardAssets.io free?</h3>
+          <p style="font-size:14px;line-height:1.6">Yes, completely free. No credit card, no premium tier. All features are included.</p>
+          <h3 style="font-size:16px;margin-top:12px">Is HardAssets.io the same as Hard Assets Alliance?</h3>
+          <p style="font-size:14px;line-height:1.6">No. HardAssets.io is a separate portfolio tracking tool. Hard Assets Alliance sells precious metals. HardAssets.io does not sell anything — it helps you track investments you already own.</p>
+          <h3 style="font-size:16px;margin-top:12px">How is my data secured?</h3>
+          <p style="font-size:14px;line-height:1.6">Data is stored in encrypted PostgreSQL on Supabase. Your browser never touches the database directly. Authentication uses Google Identity Services.</p>
+        </section>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
     if ('serviceWorker' in navigator) {
