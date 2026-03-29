@@ -408,7 +408,8 @@ function HomePage({onNav,user}){
 
 // ═══ CONTACT PAGE ═══
 function ContactPg({onNav}){
-  const[f,sF]=useState({name:"",email:"",msg:""});const[sent,setSent]=useState(false);
+  const[f,sF]=useState({name:"",email:"",msg:""});const[sent,setSent]=useState(false);const[sending,setSending]=useState(false);
+  const submit=async()=>{if(!f.name||!f.email||!f.msg)return;setSending(true);try{await fetch("/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:f.name,email:f.email,message:f.msg})})}catch(e){}setSent(true);setSending(false)};
   const Logo=()=><div style={{cursor:"pointer",display:"flex",alignItems:"center",gap:10}} onClick={()=>onNav("home")}><div style={{width:32,height:32,borderRadius:10,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:P.bg}}>H</div><span style={{fontSize:17,fontWeight:800,color:P.text,letterSpacing:-.5}}>Hard<span style={{color:P.gold}}>Assets</span></span></div>;
   return(<div style={{background:P.bg,minHeight:"100vh",color:P.text,fontFamily:ff}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"20px 40px",borderBottom:"1px solid "+P.border}}><Logo/><Btn variant="ghost" onClick={()=>onNav("home")}>Back</Btn></div>
@@ -418,7 +419,7 @@ function ContactPg({onNav}){
       <FF label="Name" value={f.name} onChange={v=>sF({...f,name:v})} placeholder="Your name"/>
       <FF label="Email" value={f.email} onChange={v=>sF({...f,email:v})} placeholder="you@email.com"/>
       <div style={{marginBottom:14}}><label style={{display:"block",fontSize:12,fontWeight:600,color:P.txS,marginBottom:6}}>Message</label><textarea value={f.msg} onChange={e=>sF({...f,msg:e.target.value})} placeholder="How can we help?" rows={4} style={{width:"100%",background:P.bg,border:"1px solid "+P.border,borderRadius:12,color:P.text,padding:12,fontSize:14,outline:"none",resize:"vertical",fontFamily:ff,boxSizing:"border-box"}}/></div>
-      <Btn onClick={()=>{if(f.name&&f.email&&f.msg)setSent(true)}} full>Send to support@hardassets.io</Btn>
+      <Btn onClick={submit} full style={{opacity:sending?0.6:1}}>{sending?"Sending...":"Send Message"}</Btn>
     </div></GC>}
     </div></div>);
 }
