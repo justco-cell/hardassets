@@ -7,7 +7,8 @@ export const POSTS = [
     date: "2026-03-29",
     excerpt: "Brokerage apps show stocks and ETFs, but they can't track the gold in your safe, the syndication LP you wired into, or the private note paying you 10%. Here's why a dedicated hard asset tracker matters.",
     metaDescription: "Brokerage apps miss physical gold, RE syndications, and private notes. Learn why serious investors need a dedicated hard asset portfolio tracker like HardAssets.io.",
-    thumbnail: "/icon-512.png",
+    thumbnail: "/blog-hard-assets.svg",
+    heroImage: "/blog-hard-assets.svg",
     content: `
       <p>If you're reading this, you probably own assets that don't show up in your Schwab, Fidelity, or Vanguard account. Physical gold coins in a safe. A $75,000 LP position in a multifamily syndication. A private note earning 10% secured by real estate. Maybe some Bitcoin in cold storage.</p>
 
@@ -59,7 +60,8 @@ export const POSTS = [
     date: "2026-03-28",
     excerpt: "The gold/silver ratio has been used for centuries to gauge relative value between the two metals. Here's how to read it, what historical levels tell us, and how to use it in your stacking strategy.",
     metaDescription: "Learn what the gold/silver ratio means, historical ranges, and how precious metals investors use it to decide when to buy gold vs silver. Free tracking at HardAssets.io.",
-    thumbnail: "/icon-512.png",
+    thumbnail: "/blog-gold-silver.svg",
+    heroImage: "/blog-gold-silver.svg",
     content: `
       <p>The gold/silver ratio is one of the oldest and most-watched metrics in precious metals investing. It tells you how many ounces of silver it takes to buy one ounce of gold at current spot prices.</p>
 
@@ -103,7 +105,8 @@ export const POSTS = [
     date: "2026-03-27",
     excerpt: "Real estate syndications let you invest passively in large deals alongside experienced operators. Here's how they work, what to look for, and how to track your LP positions effectively.",
     metaDescription: "Learn how real estate syndications work for passive LP investors. Understand preferred returns, projected IRR, sponsor vetting, and how to track syndication investments with HardAssets.io.",
-    thumbnail: "/icon-512.png",
+    thumbnail: "/blog-syndication.svg",
+    heroImage: "/blog-syndication.svg",
     content: `
       <p>A real estate syndication is a partnership where a sponsor (also called a general partner or GP) pools capital from multiple investors (limited partners or LPs) to acquire, manage, and eventually sell a property — typically a commercial asset like a multifamily apartment complex, self-storage facility, or industrial warehouse.</p>
 

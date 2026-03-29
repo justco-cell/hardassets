@@ -68,14 +68,17 @@ export function BlogIndex(){
 
       <div style={{display:"flex",flexDirection:"column",gap:24}}>
         {POSTS.map(post=><a key={post.slug} href={"/blog/"+post.slug} style={{textDecoration:"none",color:"inherit"}}>
-          <article style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,padding:28,transition:"all 0.2s",cursor:"pointer"}} onMouseEnter={e=>e.currentTarget.style.borderColor=P.gold+"44"} onMouseLeave={e=>e.currentTarget.style.borderColor=P.border}>
-            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
-              <time dateTime={post.date} style={{fontSize:12,color:P.txM,fontFamily:"monospace"}}>{new Date(post.date).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</time>
-              <span style={{fontSize:10,color:P.gold,background:P.goldSoft,padding:"2px 8px",borderRadius:5,fontWeight:600}}>Article</span>
+          <article style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,overflow:"hidden",transition:"all 0.2s",cursor:"pointer"}} onMouseEnter={e=>e.currentTarget.style.borderColor=P.gold+"44"} onMouseLeave={e=>e.currentTarget.style.borderColor=P.border}>
+            {post.heroImage&&<img src={post.heroImage} alt={post.title} style={{width:"100%",height:220,objectFit:"cover",display:"block"}} loading="lazy"/>}
+            <div style={{padding:28}}>
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+                <time dateTime={post.date} style={{fontSize:12,color:P.txM,fontFamily:"monospace"}}>{new Date(post.date).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</time>
+                <span style={{fontSize:10,color:P.gold,background:P.goldSoft,padding:"2px 8px",borderRadius:5,fontWeight:600}}>Article</span>
+              </div>
+              <h2 style={{fontSize:20,fontWeight:700,color:P.text,marginBottom:10,lineHeight:1.3}}>{post.title}</h2>
+              <p style={{fontSize:14,color:P.txS,lineHeight:1.6,margin:0}}>{post.excerpt}</p>
+              <div style={{marginTop:14,fontSize:13,fontWeight:600,color:P.gold}}>Read more →</div>
             </div>
-            <h2 style={{fontSize:20,fontWeight:700,color:P.text,marginBottom:10,lineHeight:1.3}}>{post.title}</h2>
-            <p style={{fontSize:14,color:P.txS,lineHeight:1.6,margin:0}}>{post.excerpt}</p>
-            <div style={{marginTop:14,fontSize:13,fontWeight:600,color:P.gold}}>Read more →</div>
           </article>
         </a>)}
       </div>
@@ -136,6 +139,7 @@ export function BlogPost({slug}){
     <Nav current="blog"/>
     <article style={{maxWidth:720,margin:"0 auto",padding:"48px 24px 80px"}}>
       <a href="/blog" style={{fontSize:13,color:P.txS,textDecoration:"none",display:"inline-flex",alignItems:"center",gap:6,marginBottom:24}}>← Back to Blog</a>
+      {post.heroImage&&<img src={post.heroImage} alt={post.title} style={{width:"100%",borderRadius:16,marginBottom:28,display:"block",border:"1px solid "+P.border}} loading="eager"/>}
       <header>
         <time dateTime={post.date} style={{fontSize:13,color:P.txM,fontFamily:"monospace",display:"block",marginBottom:12}}>{new Date(post.date).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</time>
         <h1 style={{fontSize:"clamp(28px,4vw,38px)",fontWeight:900,lineHeight:1.2,letterSpacing:-0.5,marginBottom:24}}>{post.title}</h1>
