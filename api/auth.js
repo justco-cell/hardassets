@@ -1,5 +1,16 @@
 import crypto from 'crypto';
 
+// Simple in-memory rate limiter (resets on cold start, good enough for serverless)
+const attempts = {};
+function rateLimit(ip, limit = 5, windowMs = 60000) {
+  const now = Date.now();
+  if (!attempts[ip]) attempts[ip] = [];
+  attempts[ip] = attempts[ip].filter(t => now - t < windowMs);
+  if (attempts[ip].length >= limit) return false;
+  attempts[ip].push(now);
+  return true;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -7,8 +18,26 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { action, email, password, name } = req.body;
+  const { action, email, password, name, _ts } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+
+  // Bot check 1: Rate limit — max 5 attempts per minute per IP
+  const ip = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown';
+  if (!rateLimit(ip)) return res.status(429).json({ error: 'Too many attempts. Try again in a minute.' });
+
+  // Bot check 2: Time check — form loaded less than 2 seconds ago = bot
+  if (_ts && (Date.now() - _ts) < 2000) return res.status(400).json({ error: 'Please try again.' });
+
+  // Bot check 3: Email format
+  if (!email.includes('@') || !email.includes('.') || email.length < 5) return res.status(400).json({ error: 'Invalid email address.' });
+
+  // Bot check 4: Password minimum length
+  if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters.' });
+
+  // Bot check 5: Block disposable email domains
+  const disposable = ['mailinator.com','tempmail.com','throwaway.email','guerrillamail.com','yopmail.com','10minutemail.com','trashmail.com','fakeinbox.com'];
+  const domain = email.split('@')[1]?.toLowerCase();
+  if (disposable.includes(domain)) return res.status(400).json({ error: 'Please use a real email address.' });
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
