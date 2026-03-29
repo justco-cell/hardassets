@@ -1,0 +1,22 @@
+{
+  "headers": [
+    {
+      "source": "/app/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noai, noimageai, noindex" }
+      ]
+    },
+    {
+      "source": "/mobile/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noai, noimageai, noindex" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noai, noimageai, noindex" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+# Allow landing page for SEO
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+# Block AI scrapers from dashboard and API routes only
+User-agent: GPTBot
+Allow: /
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: Google-Extended
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: CCBot
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: anthropic-ai
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: Claude-Web
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: Bytespider
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: Diffbot
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: PerplexityBot
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: YouBot
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: cohere-ai
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
+
+User-agent: Meta-ExternalAgent
+Disallow: /app
+Disallow: /mobile
+Disallow: /api/
