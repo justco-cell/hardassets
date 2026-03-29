@@ -9,13 +9,28 @@ export default async function handler(req, res) {
     const { name, email, message } = req.body;
     if (!name || !email || !message) return res.status(400).json({ error: 'All fields required' });
 
+    // Send email via FormSubmit.co (free, no API key needed)
+    const emailRes = await fetch('https://formsubmit.co/ajax/support@hardassets.io', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        message,
+        _subject: `HardAssets.io Contact: ${name}`,
+        _template: 'table'
+      })
+    });
+
+    if (!emailRes.ok) {
+      console.error('FormSubmit error:', await emailRes.text());
+    }
+
+    // Also store in Supabase as backup
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    // Store in Supabase contact_messages table
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/contact_messages`,
-      {
+    if (SUPABASE_URL && SUPABASE_KEY) {
+      await fetch(`${SUPABASE_URL}/rest/v1/contact_messages`, {
         method: 'POST',
         headers: {
           'apikey': SUPABASE_KEY,
@@ -23,19 +38,8 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
           'Prefer': 'return=minimal'
         },
-        body: JSON.stringify({
-          name,
-          email,
-          message,
-          created_at: new Date().toISOString()
-        })
-      }
-    );
-
-    if (!response.ok) {
-      const err = await response.text();
-      console.error('Supabase contact error:', response.status, err);
-      // Don't fail — still return success so user isn't stuck
+        body: JSON.stringify({ name, email, message, created_at: new Date().toISOString() })
+      }).catch(() => {});
     }
 
     return res.status(200).json({ success: true });
