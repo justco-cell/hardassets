@@ -6,12 +6,25 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { name, email, message } = req.body;
+    const { name, email, message, _hp, _ts } = req.body;
     if (!name || !email || !message) return res.status(400).json({ error: 'All fields required' });
+
+    // Bot check 1: Honeypot — hidden field bots auto-fill
+    if (_hp) return res.status(200).json({ success: true }); // silently reject
+
+    // Bot check 2: Time — form must take at least 3 seconds
+    if (_ts && (Date.now() - _ts) < 3000) return res.status(200).json({ success: true }); // too fast = bot
+
+    // Bot check 3: Basic email format
+    if (!email.includes('@') || !email.includes('.')) return res.status(400).json({ error: 'Invalid email' });
+
+    // Bot check 4: Block common spam patterns
+    const spamWords = ['viagra','casino','crypto airdrop','free money','click here','buy now','SEO services'];
+    const lower = (name + ' ' + message).toLowerCase();
+    if (spamWords.some(w => lower.includes(w))) return res.status(200).json({ success: true });
 
     let emailSent = false;
 
-    // Method 1: Try Resend if API key exists
     const RESEND_KEY = process.env.RESEND_API_KEY;
     if (RESEND_KEY) {
       try {
@@ -31,13 +44,6 @@ export default async function handler(req, res) {
       } catch (e) { console.error('Resend failed:', e); }
     }
 
-    // Method 2: Try SMTP env vars (GoDaddy/any SMTP)
-    if (!emailSent && process.env.SMTP_HOST) {
-      // Nodemailer not available in Vercel serverless by default
-      // Skip — would need to add as dependency
-    }
-
-    // Method 3: Store in Supabase (always works as backup)
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
     if (SUPABASE_URL && SUPABASE_KEY) {
@@ -50,13 +56,9 @@ export default async function handler(req, res) {
             'Content-Type': 'application/json',
             'Prefer': 'return=minimal'
           },
-          body: JSON.stringify({
-            name, email, message,
-            email_sent: emailSent,
-            created_at: new Date().toISOString()
-          })
+          body: JSON.stringify({ name, email, message, email_sent: emailSent, created_at: new Date().toISOString() })
         });
-      } catch (e) { console.error('Supabase store failed:', e); }
+      } catch (e) {}
     }
 
     return res.status(200).json({ success: true, emailSent });
