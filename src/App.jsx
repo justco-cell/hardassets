@@ -31,6 +31,19 @@ async function fetchCryptoPrices(){try{const ids=Object.values(COIN_IDS).join(",
 // ═══ CSV HELPERS ═══
 const csvExport=(headers,rows,filename)=>{const csv=[headers.join(","),...rows.map(r=>r.map(c=>typeof c==="string"&&c.includes(",")?`"${c}"`:c).join(","))].join("\n");const b=new Blob([csv],{type:"text/csv"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=filename;a.click();URL.revokeObjectURL(u)};
 
+// ═══ SUPABASE CLOUD PERSISTENCE ═══
+const GOOGLE_CLIENT_ID="159487463622-ol75fn02c9cg8gmd2h4bpk36gaga3rcf.apps.googleusercontent.com";
+
+async function cloudSave(authToken,data){
+  if(!authToken)return;
+  try{await fetch("/api/save",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken},body:JSON.stringify({data})})}catch(e){console.log("Cloud save err:",e)}
+}
+
+async function cloudLoad(authToken){
+  if(!authToken)return null;
+  try{const r=await fetch("/api/load",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken}});if(!r.ok)return null;const d=await r.json();return d.data||null}catch(e){console.log("Cloud load err:",e);return null}
+}
+
 // ═══ COMPONENTS ═══
 function GC({children,style,onClick}){const[h,setH]=useState(false);return<div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{background:P.card,backdropFilter:"blur(40px)",border:`1px solid ${h&&onClick?P.borderLight:P.border}`,borderRadius:20,transition:"all 0.3s",transform:h&&onClick?"translateY(-2px)":"none",boxShadow:h&&onClick?"0 8px 32px rgba(0,0,0,0.2)":"none",cursor:onClick?"pointer":"default",...style}}>{children}</div>}
 
@@ -145,34 +158,65 @@ function PortfolioView({metals,synds,crypto,prices,targets,setTargets}){
 
 // ═══ MAIN APP ═══
 export default function HardAssetsWeb(){
+  const[view,setView]=useState("login");
   const[tab,setTab]=useState("portfolio");
   const[modal,setModal]=useState(null);
   const[editItem,setEditItem]=useState(null);
   const[sideCollapsed,setSC]=useState(false);
+  const[user,setUser]=useState(null);
+  const[authToken,setAuthToken]=useState(null);
+  const[syncing,setSyncing]=useState(false);
 
-  const[metals,setMetals]=useState([
-    {id:"m1",metal:"Gold",name:"American Eagle 1oz",unit:"1 oz",qty:10,costPerUnit:1950,spot:3015,risk:2,dateInvested:"2023-06-15",holdPeriod:"5",notes:""},
-    {id:"m2",metal:"Gold",name:"100oz Gold Bar",unit:"100 oz",qty:2,costPerUnit:185000,spot:3015,risk:2,dateInvested:"2024-01-10",holdPeriod:"10"},
-    {id:"m3",metal:"Silver",name:"Silver Maple Leaf",unit:"1 oz",qty:500,costPerUnit:26,spot:33.8,risk:3,dateInvested:"2023-03-20",holdPeriod:"3"},
-    {id:"m4",metal:"Platinum",name:"Platinum Eagle",unit:"1 oz",qty:20,costPerUnit:920,spot:1015,risk:4},
-  ]);
-  const[synds,setSynds]=useState([
-    {id:"s1",name:"Pinnacle West",sponsor:"Bergman",invested:100000,expectedRate:8,projIRR:15,strategy:"Multifamily",risk:5,status:"Active",dateInvested:"2024-06-01",holdPeriod:"5"},
-    {id:"s2",name:"Avery Portorosa",sponsor:"Klein",invested:300000,expectedRate:12,projIRR:18,strategy:"Hotel",risk:7,status:"Active",dateInvested:"2025-01-15",holdPeriod:"7"},
-    {id:"s3",name:"Takoma Towers",sponsor:"Biderman",invested:150000,expectedRate:6,projIRR:10,strategy:"Multifamily",risk:8,status:"Active",dateInvested:"2024-11-01",holdPeriod:"5",notes:"Distressed, rent-controlled"},
-  ]);
-  const[crypto,setCrypto]=useState([
-    {id:"c1",coin:"BTC",name:"Bitcoin",qty:1.5,avgCost:42000,price:87240,risk:8,dateInvested:"2023-01-15"},
-    {id:"c2",coin:"ETH",name:"Ethereum",qty:12,avgCost:2800,price:2050,risk:7},
-    {id:"c3",coin:"SOL",name:"Solana",qty:100,avgCost:95,price:140,risk:9},
-  ]);
+  const[metals,setMetals]=useState([]);
+  const[synds,setSynds]=useState([]);
+  const[crypto,setCrypto]=useState([]);
   const[prices,setPrices]=useState({gold:3015,silver:33.8,platinum:1015,palladium:985,goldChg:0.42,silverChg:1.1,platChg:-0.3,btc:87240,eth:2050,sol:140,btcChg:2.1,ethChg:-0.8,solChg:3.4});
   const[targets,setTargets]=useState({"Precious Metals":30,"Real Estate":35,"Crypto":10,"Equities":10,"Cash":5,"Alternatives":10});
   const[lastRefresh,setLastRefresh]=useState(null);
   const[refreshing,setRefreshing]=useState(false);
 
+  // Auto-save to Supabase on data change
+  const saveTimer=useRef(null);
+  useEffect(()=>{
+    if(!authToken||!user)return;
+    if(saveTimer.current)clearTimeout(saveTimer.current);
+    saveTimer.current=setTimeout(()=>{cloudSave(authToken,{metals,syndications:synds,crypto,targets})},800);
+    return()=>{if(saveTimer.current)clearTimeout(saveTimer.current)};
+  },[metals,synds,crypto,targets,authToken,user]);
+
+  // Google Sign-In
+  const handleGoogleLogin=async(credentialResponse)=>{
+    const token=credentialResponse.credential;setAuthToken(token);
+    try{const payload=JSON.parse(atob(token.split('.')[1]));setUser({name:payload.name||payload.email,email:payload.email,picture:payload.picture})}catch(e){setUser({name:"User",email:"user@hardassets.io"})}
+    setSyncing(true);
+    const saved=await cloudLoad(token);
+    if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.targets)setTargets(saved.targets)}
+    setSyncing(false);setView("app");refreshPrices();
+  };
+
+  useEffect(()=>{
+    if(view!=="login")return;
+    const initGSI=()=>{if(!window.google?.accounts?.id)return;window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleLogin,auto_select:true});window.google.accounts.id.renderButton(document.getElementById("gsi-btn-web"),{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:360})};
+    if(window.google?.accounts?.id){initGSI()}else{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=initGSI;document.head.appendChild(s)}
+  },[view]);
+
+  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setView("login")};
+  const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setView("app");refreshPrices()};
+
   const refreshPrices=async()=>{setRefreshing(true);const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);setPrices(prev=>{const next={...prev};if(mp){if(mp.gold){next.goldChg=prev.gold>0?((mp.gold-prev.gold)/prev.gold*100):0;next.gold=mp.gold}if(mp.silver){next.silverChg=prev.silver>0?((mp.silver-prev.silver)/prev.silver*100):0;next.silver=mp.silver}if(mp.platinum){next.platChg=prev.platinum>0?((mp.platinum-prev.platinum)/prev.platinum*100):0;next.platinum=mp.platinum}if(mp.palladium)next.palladium=mp.palladium}if(cp){if(cp.BTC){next.btc=cp.BTC.price;next.btcChg=cp.BTC.change}if(cp.ETH){next.eth=cp.ETH.price;next.ethChg=cp.ETH.change}if(cp.SOL){next.sol=cp.SOL.price;next.solChg=cp.SOL.change}}return next});if(mp)setMetals(prev=>prev.map(m=>{const ls=({Gold:mp.gold,Silver:mp.silver,Platinum:mp.platinum,Palladium:mp.palladium})[m.metal];return ls?{...m,spot:Math.round(ls*100)/100}:m}));if(cp)setCrypto(prev=>prev.map(c=>{const l=cp[c.coin];return l?{...c,price:l.price}:c}));setLastRefresh(new Date().toLocaleTimeString());setRefreshing(false)};
-  useEffect(()=>{refreshPrices()},[]);
+
+  // ═══ LOGIN SCREEN ═══
+  if(view==="login")return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
+    <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
+    <div style={{textAlign:"center",maxWidth:400,padding:40}}>
+      <div style={{width:72,height:72,borderRadius:22,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:32,fontWeight:900,color:P.bg,marginBottom:28,boxShadow:`0 12px 40px rgba(212,168,67,0.3)`}}>H</div>
+      <div style={{fontSize:32,fontWeight:800,color:P.text,marginBottom:8,animation:"fadeUp 0.6s ease both"}}>HardAssets</div>
+      <div style={{fontSize:14,color:P.txS,marginBottom:48,lineHeight:1.5,animation:"fadeUp 0.6s ease 0.1s both"}}>Track your precious metals, real estate, crypto<br/>& alternative investments in one dashboard</div>
+      <div style={{animation:"fadeUp 0.6s ease 0.2s both"}}><div id="gsi-btn-web" style={{display:"flex",justifyContent:"center",marginBottom:16}}/><button onClick={guestLogin} style={{padding:"15px 32px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button></div>
+      {syncing&&<div style={{marginTop:24,fontSize:14,color:P.gold}}>Loading your portfolio...</div>}
+      <div style={{marginTop:60,fontSize:11,color:P.txM}}>Data saved securely to Supabase. Free forever.</div>
+    </div>
+  </div>;
 
   const goldS=useMemo(()=>spark(2850,35,0.008),[]);const silverS=useMemo(()=>spark(30,35,0.012),[]);const btcS=useMemo(()=>spark(78000,35,0.02),[]);const ethS=useMemo(()=>spark(2400,35,0.018),[]);
   const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
@@ -220,7 +264,7 @@ export default function HardAssetsWeb(){
     <div style={{width:sideCollapsed?72:240,minHeight:"100vh",background:P.surface,borderRight:`1px solid ${P.border}`,display:"flex",flexDirection:"column",transition:"width 0.3s",overflow:"hidden",position:"sticky",top:0,flexShrink:0}}>
       <div style={{padding:sideCollapsed?"20px 16px":"20px",display:"flex",alignItems:"center",gap:12,borderBottom:`1px solid ${P.border}`,cursor:"pointer"}} onClick={()=>setSC(!sideCollapsed)}><div style={{width:38,height:38,borderRadius:12,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:900,color:P.bg,flexShrink:0,boxShadow:`0 4px 16px rgba(212,168,67,0.2)`}}>H</div>{!sideCollapsed&&<div><div style={{fontSize:17,fontWeight:800,color:P.text,letterSpacing:-0.4,whiteSpace:"nowrap"}}>HardAssets</div><div style={{fontSize:9,color:P.txM,letterSpacing:2,textTransform:"uppercase"}}>Portfolio Intelligence</div></div>}</div>
       <div style={{padding:"12px 8px",flex:1}}>{NAV.map(n=>{const a=tab===n.key;return<button key={n.key} onClick={()=>setTab(n.key)} style={{display:"flex",alignItems:"center",gap:12,width:"100%",padding:"12px 16px",border:"none",borderRadius:12,cursor:"pointer",marginBottom:4,fontFamily:ff,background:a?P.goldSoft:"transparent"}}><div style={{width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={a?P.gold:P.txM} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={n.d}/></svg></div>{!sideCollapsed&&<span style={{fontSize:14,fontWeight:a?600:500,color:a?P.gold:P.txS,whiteSpace:"nowrap"}}>{n.label}</span>}</button>})}</div>
-      <div style={{padding:sideCollapsed?"16px":"16px 20px",borderTop:`1px solid ${P.border}`,display:"flex",alignItems:"center",gap:10}}><div style={{width:32,height:32,borderRadius:10,background:`linear-gradient(145deg,${P.elevated},${P.surface})`,border:`1px solid ${P.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{fontSize:13,fontWeight:700,color:P.gold}}>C</span></div>{!sideCollapsed&&<div><div style={{fontSize:13,fontWeight:600,color:P.text}}>Chaim</div><div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:6,height:6,borderRadius:3,background:P.green,boxShadow:`0 0 6px ${P.green}`}}/><span style={{fontSize:11,color:P.txM}}>Synced</span></div></div>}</div>
+      <div style={{padding:sideCollapsed?"16px":"16px 20px",borderTop:`1px solid ${P.border}`,display:"flex",alignItems:"center",gap:10,cursor:"pointer"}} onClick={logout}><div style={{width:32,height:32,borderRadius:10,background:`linear-gradient(145deg,${P.elevated},${P.surface})`,border:`1px solid ${P.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden"}}>{user?.picture?<img src={user.picture} style={{width:32,height:32,borderRadius:10}} referrerPolicy="no-referrer"/>:<span style={{fontSize:13,fontWeight:700,color:P.gold}}>{(user?.name||"?")[0]}</span>}</div>{!sideCollapsed&&<div><div style={{fontSize:13,fontWeight:600,color:P.text}}>{user?.name||"User"}</div><div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:6,height:6,borderRadius:3,background:syncing?P.orange:user?.email!=="guest"?P.green:P.txM,boxShadow:user?.email!=="guest"?`0 0 6px ${P.green}`:"none"}}/><span style={{fontSize:11,color:P.txM}}>{syncing?"Syncing...":user?.email!=="guest"?"Synced":"Guest"}</span></div></div>}</div>
     </div>
 
     {/* MAIN */}

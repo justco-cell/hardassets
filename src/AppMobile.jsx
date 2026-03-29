@@ -47,6 +47,26 @@ async function fetchCryptoPrices(){
 // ═══ CSV HELPERS ═══
 const csvExport=(headers,rows,filename)=>{const csv=[headers.join(","),...rows.map(r=>r.map(c=>typeof c==="string"&&c.includes(",")?`"${c}"`:c).join(","))].join("\n");const b=new Blob([csv],{type:"text/csv"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=filename;a.click();URL.revokeObjectURL(u)};
 
+// ═══ SUPABASE CLOUD PERSISTENCE ═══
+const GOOGLE_CLIENT_ID="159487463622-ol75fn02c9cg8gmd2h4bpk36gaga3rcf.apps.googleusercontent.com";
+
+async function cloudSave(authToken,data){
+  if(!authToken)return;
+  try{
+    await fetch("/api/save",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken},body:JSON.stringify({data})});
+  }catch(e){console.log("Cloud save err:",e)}
+}
+
+async function cloudLoad(authToken){
+  if(!authToken)return null;
+  try{
+    const r=await fetch("/api/load",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken}});
+    if(!r.ok)return null;
+    const d=await r.json();
+    return d.data||null;
+  }catch(e){console.log("Cloud load err:",e);return null}
+}
+
 // ═══ COMPONENTS ═══
 function GC({children,style,onClick}){const[h,setH]=useState(false);return<div onClick={onClick} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{background:P.card,backdropFilter:"blur(40px)",border:`1px solid ${h&&onClick?P.borderLight:P.border}`,borderRadius:20,transition:"all 0.3s",cursor:onClick?"pointer":"default",...style}}>{children}</div>}
 
@@ -224,25 +244,68 @@ export default function HardAssets(){
   const[tab,setTab]=useState("portfolio");
   const[sheet,setSheet]=useState(null);
   const[editItem,setEditItem]=useState(null);
-  const[metals,setMetals]=useState([
-    {id:"m1",metal:"Gold",name:"American Eagle 1oz",unit:"1 oz",qty:10,costPerUnit:1950,spot:3015,risk:2,dateInvested:"2023-06-15",holdPeriod:"5",notes:""},
-    {id:"m2",metal:"Gold",name:"100oz Gold Bar",unit:"100 oz",qty:2,costPerUnit:185000,spot:3015,risk:2,dateInvested:"2024-01-10",holdPeriod:"10"},
-    {id:"m3",metal:"Silver",name:"Silver Maple Leaf",unit:"1 oz",qty:500,costPerUnit:26,spot:33.8,risk:3,dateInvested:"2023-03-20",holdPeriod:"3"},
-    {id:"m4",metal:"Platinum",name:"Platinum Eagle",unit:"1 oz",qty:20,costPerUnit:920,spot:1015,risk:4},
-  ]);
-  const[synds,setSynds]=useState([
-    {id:"s1",name:"Pinnacle West",sponsor:"Bergman",invested:100000,expectedRate:8,projIRR:15,strategy:"Multifamily",risk:5,status:"Active",dateInvested:"2024-06-01",holdPeriod:"5"},
-    {id:"s2",name:"Avery Portorosa",sponsor:"Klein",invested:300000,expectedRate:12,projIRR:18,strategy:"Hotel",risk:7,status:"Active",dateInvested:"2025-01-15",holdPeriod:"7"},
-    {id:"s3",name:"Takoma Towers",sponsor:"Biderman",invested:150000,expectedRate:6,projIRR:10,strategy:"Multifamily",risk:8,status:"Active",dateInvested:"2024-11-01",holdPeriod:"5",notes:"Distressed, rent-controlled"},
-  ]);
-  const[crypto,setCrypto]=useState([
-    {id:"c1",coin:"BTC",name:"Bitcoin",qty:1.5,avgCost:42000,price:87240,risk:8,dateInvested:"2023-01-15"},
-    {id:"c2",coin:"ETH",name:"Ethereum",qty:12,avgCost:2800,price:2050,risk:7},
-    {id:"c3",coin:"SOL",name:"Solana",qty:100,avgCost:95,price:140,risk:9},
-  ]);
+  const[user,setUser]=useState(null);
+  const[authToken,setAuthToken]=useState(null);
+  const[syncing,setSyncing]=useState(false);
+
+  const[metals,setMetals]=useState([]);
+  const[synds,setSynds]=useState([]);
+  const[crypto,setCrypto]=useState([]);
   const[prices,setPrices]=useState({gold:3015,silver:33.8,platinum:1015,palladium:985,goldChg:0.42,silverChg:1.1,platChg:-0.3,btc:87240,eth:2050,sol:140,btcChg:2.1,ethChg:-0.8,solChg:3.4});
   const[lastRefresh,setLastRefresh]=useState(null);
   const[refreshing,setRefreshing]=useState(false);
+  const[targets,setTargets]=useState({"Precious Metals":30,"Real Estate":35,"Crypto":10,"Equities":10,"Cash":5,"Alternatives":10});
+
+  // Auto-save to Supabase on any data change
+  const saveTimer=useRef(null);
+  useEffect(()=>{
+    if(!authToken||!user)return;
+    if(saveTimer.current)clearTimeout(saveTimer.current);
+    saveTimer.current=setTimeout(()=>{
+      cloudSave(authToken,{metals,syndications:synds,crypto,targets});
+    },800); // debounce 800ms
+    return()=>{if(saveTimer.current)clearTimeout(saveTimer.current)};
+  },[metals,synds,crypto,targets,authToken,user]);
+
+  // Google Sign-In handler
+  const handleGoogleLogin=async(credentialResponse)=>{
+    const token=credentialResponse.credential;
+    setAuthToken(token);
+    // Decode JWT to get user info
+    try{
+      const payload=JSON.parse(atob(token.split('.')[1]));
+      setUser({name:payload.name||payload.email,email:payload.email,picture:payload.picture});
+    }catch(e){setUser({name:"User",email:"user@hardassets.io"})}
+    // Load saved data from Supabase
+    setSyncing(true);
+    const saved=await cloudLoad(token);
+    if(saved){
+      if(saved.metals&&saved.metals.length>0)setMetals(saved.metals);
+      if(saved.syndications&&saved.syndications.length>0)setSynds(saved.syndications);
+      if(saved.crypto&&saved.crypto.length>0)setCrypto(saved.crypto);
+      if(saved.targets)setTargets(saved.targets);
+    }
+    setSyncing(false);
+    setView("app");
+    refreshPrices();
+  };
+
+  // Init Google Sign-In
+  useEffect(()=>{
+    if(view!=="login")return;
+    const initGSI=()=>{
+      if(!window.google?.accounts?.id)return;
+      window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleLogin,auto_select:true});
+      window.google.accounts.id.renderButton(document.getElementById("gsi-btn"),{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:320});
+    };
+    if(window.google?.accounts?.id){initGSI()}
+    else{
+      const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=initGSI;document.head.appendChild(s);
+    }
+  },[view]);
+
+  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setView("login")};
+  const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setView("app");refreshPrices()};
 
   // Live price refresh
   const refreshPrices=async()=>{
@@ -282,13 +345,25 @@ export default function HardAssets(){
   };
 
   // Fetch on mount
-  useEffect(()=>{refreshPrices()},[]);
-  const[targets,setTargets]=useState({"Precious Metals":30,"Real Estate":35,"Crypto":10,"Equities":10,"Cash":5,"Alternatives":10});
+  useEffect(()=>{if(view==="app")refreshPrices()},[view]);
   const goldS=useMemo(()=>spark(2850,30,0.008),[]);const silverS=useMemo(()=>spark(30,30,0.012),[]);const btcS=useMemo(()=>spark(78000,30,0.02),[]);const ethS=useMemo(()=>spark(2400,30,0.018),[]);
 
-  useEffect(()=>{if(view==="splash")setTimeout(()=>setView("app"),2000)},[view]);
-
-  if(view==="splash")return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",maxWidth:430,margin:"0 auto",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}><style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}`}</style><div style={{width:72,height:72,borderRadius:22,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:32,fontWeight:900,color:P.bg,boxShadow:`0 12px 40px rgba(212,168,67,0.3)`,marginBottom:28,animation:"pulse 2s ease-in-out infinite"}}>H</div><div style={{fontSize:24,fontWeight:800,letterSpacing:-0.5,animation:"rise 0.6s ease 0.2s both"}}>HardAssets</div><div style={{fontSize:12,color:P.txM,letterSpacing:3.5,textTransform:"uppercase",marginTop:6,animation:"rise 0.6s ease 0.4s both"}}>Portfolio Intelligence</div></div>;
+  // ═══ LOGIN SCREEN ═══
+  if(view==="login")return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",maxWidth:430,margin:"0 auto",display:"flex",flexDirection:"column",height:"100vh",position:"relative"}}>
+    <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
+    <div style={{position:"absolute",top:-100,left:"50%",transform:"translateX(-50%)",width:400,height:400,background:`radial-gradient(circle,${P.gold}08,transparent 70%)`,pointerEvents:"none"}}/>
+    <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"0 32px"}}>
+      <div style={{width:64,height:64,borderRadius:20,background:`linear-gradient(135deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,fontWeight:900,color:P.bg,marginBottom:32,boxShadow:`0 8px 32px rgba(212,168,67,0.3)`}}>H</div>
+      <div style={{fontSize:26,fontWeight:800,color:P.text,marginBottom:8,animation:"fadeUp 0.6s ease both"}}>Welcome Back</div>
+      <div style={{fontSize:14,color:P.txS,marginBottom:48,textAlign:"center",lineHeight:1.5,animation:"fadeUp 0.6s ease 0.1s both"}}>Track your precious metals, real estate,<br/>crypto & alternative investments</div>
+      <div style={{width:"100%",animation:"fadeUp 0.6s ease 0.2s both"}}>
+        <div id="gsi-btn" style={{display:"flex",justifyContent:"center",marginBottom:12}}/>
+        <button onClick={guestLogin} style={{width:"100%",padding:"15px 20px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
+      </div>
+      {syncing&&<div style={{marginTop:20,fontSize:13,color:P.gold}}>Syncing your data...</div>}
+    </div>
+    <div style={{padding:"24px 32px 40px",textAlign:"center"}}><div style={{fontSize:10,color:P.txM,lineHeight:1.6}}>Data saved securely to your account.<br/>Free forever.</div></div>
+  </div>;
 
   const NAV=[{key:"portfolio",label:"Portfolio",d:"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"},{key:"metals",label:"Metals",d:"M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"},{key:"realestate",label:"RE",d:"M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"},{key:"crypto",label:"Crypto",d:"M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"},{key:"analyzer",label:"Analyze",d:"M9 7h6m0 10v-3m-3 3v-6m-3 6v-1m6-9a2 2 0 012 2v8a2 2 0 01-2 2H9a2 2 0 01-2-2V9a2 2 0 012-2"}];
 
@@ -331,7 +406,10 @@ export default function HardAssets(){
     {/* Header */}
     <div style={{padding:"4px 24px 14px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center",gap:12}}><div style={{width:38,height:38,borderRadius:12,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:900,color:P.bg,boxShadow:`0 4px 16px rgba(212,168,67,0.2)`}}>H</div><div><div style={{fontSize:19,fontWeight:800,color:P.text,letterSpacing:-0.4}}>HardAssets</div><div style={{fontSize:10,color:P.txM,letterSpacing:2,textTransform:"uppercase"}}>Portfolio Intelligence</div></div></div><div style={{display:"flex",alignItems:"center",gap:8}}>
       <button onClick={refreshPrices} style={{background:P.goldSoft,border:`1px solid ${P.goldMed}`,borderRadius:10,padding:"6px 12px",cursor:"pointer",display:"flex",alignItems:"center",gap:5,fontFamily:ff}} disabled={refreshing}><span style={{fontSize:14,transition:"transform 0.5s",transform:refreshing?"rotate(360deg)":"none"}}>↻</span><span style={{fontSize:10,fontWeight:600,color:P.gold}}>{refreshing?"...":"Refresh"}</span></button>
-      <div style={{width:7,height:7,borderRadius:4,background:P.green,boxShadow:`0 0 8px ${P.green}`}}/><div style={{width:36,height:36,borderRadius:12,background:`linear-gradient(145deg,${P.elevated},${P.surface})`,border:`1px solid ${P.border}`,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:15,fontWeight:700,color:P.gold}}>C</span></div></div></div>
+      <div style={{width:7,height:7,borderRadius:4,background:syncing?P.orange:user?.email!=="guest"?P.green:P.txM,boxShadow:syncing?`0 0 8px ${P.orange}`:user?.email!=="guest"?`0 0 8px ${P.green}`:"none"}}/>
+      <div onClick={logout} style={{width:36,height:36,borderRadius:12,background:`linear-gradient(145deg,${P.elevated},${P.surface})`,border:`1px solid ${P.border}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",overflow:"hidden"}}>
+        {user?.picture?<img src={user.picture} style={{width:36,height:36,borderRadius:12}} referrerPolicy="no-referrer"/>:<span style={{fontSize:15,fontWeight:700,color:P.gold}}>{(user?.name||"?")[0]}</span>}
+      </div></div></div>
     {lastRefresh&&<div style={{padding:"0 24px 8px",fontSize:10,color:P.txM,textAlign:"right"}}>Updated {lastRefresh}</div>}
     {/* Content */}
     <div style={{padding:"0 18px",overflow:"auto",height:"calc(100vh - 54px - 58px - 80px)",WebkitOverflowScrolling:"touch"}}>{renderTab()}</div>
