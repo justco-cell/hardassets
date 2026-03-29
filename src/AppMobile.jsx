@@ -281,14 +281,14 @@ function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collec
 
 // ═══ MAIN APP ═══
 export default function HardAssets(){
-  const[view,setView]=useState("home");
+  const[view,setView]=useState(()=>{try{return sessionStorage.getItem("ha_user")?"app":"home"}catch(e){return"home"}});
   const[tab,setTab]=useState("portfolio");
   const[sheet,setSheet]=useState(null);
   const[editItem,setEditItem]=useState(null);
   const[confirmDelete,setConfirmDelete]=useState(null);
   const[showFaq,setShowFaq]=useState(false);
-  const[user,setUser]=useState(null);
-  const[authToken,setAuthToken]=useState(null);
+  const[user,setUser]=useState(()=>{try{const s=sessionStorage.getItem("ha_user");return s?JSON.parse(s):null}catch(e){return null}});
+  const[authToken,setAuthToken]=useState(()=>sessionStorage.getItem("ha_token")||null);
   const[syncing,setSyncing]=useState(false);
 
   const[metals,setMetals]=useState([]);
@@ -302,6 +302,13 @@ export default function HardAssets(){
   const[lastRefresh,setLastRefresh]=useState(null);
   const[refreshing,setRefreshing]=useState(false);
   const[targets,setTargets]=useState({"Precious Metals":30,"Real Estate":35,"Crypto":10,"Equities":10,"Cash":5,"Alternatives":10});
+
+  // Persist session
+  useEffect(()=>{try{if(user)sessionStorage.setItem("ha_user",JSON.stringify(user));else sessionStorage.removeItem("ha_user")}catch(e){}},[user]);
+  useEffect(()=>{try{if(authToken)sessionStorage.setItem("ha_token",authToken);else sessionStorage.removeItem("ha_token")}catch(e){}},[authToken]);
+
+  // Restore data on mount if session exists
+  useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
 
   // Auto-save to Supabase on any data change
   const saveTimer=useRef(null);
@@ -356,7 +363,7 @@ export default function HardAssets(){
     return()=>clearTimeout(t);
   },[view]);
 
-  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setProperties([]);setNotesLending([]);setCollectibles([]);setView("home")};
+  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setProperties([]);setNotesLending([]);setCollectibles([]);try{sessionStorage.removeItem("ha_user");sessionStorage.removeItem("ha_token")}catch(e){}setView("home")};
   const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setView("app");refreshPrices()};
 
   // Live price refresh

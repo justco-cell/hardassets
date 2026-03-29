@@ -410,15 +410,15 @@ function ContactPg({onNav}){
 
 // ═══ MAIN APP ═══
 export default function HardAssetsWeb(){
-  const[view,setView]=useState("home");
+  const[view,setView]=useState(()=>{try{return sessionStorage.getItem("ha_user")?"app":"home"}catch(e){return"home"}});
   const[tab,setTab]=useState("portfolio");
   const[modal,setModal]=useState(null);
   const[editItem,setEditItem]=useState(null);
   const[confirmDelete,setConfirmDelete]=useState(null);
   const[showFaq,setShowFaq]=useState(false);
   const[sideCollapsed,setSC]=useState(false);
-  const[user,setUser]=useState(null);
-  const[authToken,setAuthToken]=useState(null);
+  const[user,setUser]=useState(()=>{try{const s=sessionStorage.getItem("ha_user");return s?JSON.parse(s):null}catch(e){return null}});
+  const[authToken,setAuthToken]=useState(()=>sessionStorage.getItem("ha_token")||null);
   const[syncing,setSyncing]=useState(false);
 
   const[metals,setMetals]=useState([]);
@@ -432,6 +432,13 @@ export default function HardAssetsWeb(){
   const[targets,setTargets]=useState({"Precious Metals":30,"Real Estate":35,"Crypto":10,"Equities":10,"Cash":5,"Alternatives":10});
   const[lastRefresh,setLastRefresh]=useState(null);
   const[refreshing,setRefreshing]=useState(false);
+
+  // Persist session to sessionStorage
+  useEffect(()=>{try{if(user)sessionStorage.setItem("ha_user",JSON.stringify(user));else sessionStorage.removeItem("ha_user")}catch(e){}},[user]);
+  useEffect(()=>{try{if(authToken)sessionStorage.setItem("ha_token",authToken);else sessionStorage.removeItem("ha_token")}catch(e){}},[authToken]);
+
+  // Restore data on mount if session exists
+  useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
 
   // Auto-save to Supabase on data change
   const saveTimer=useRef(null);
@@ -459,7 +466,7 @@ export default function HardAssetsWeb(){
     return()=>clearTimeout(t);
   },[view]);
 
-  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setProperties([]);setNotesLending([]);setCollectibles([]);setView("home")};
+  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setProperties([]);setNotesLending([]);setCollectibles([]);try{sessionStorage.removeItem("ha_user");sessionStorage.removeItem("ha_token")}catch(e){}setView("home")};
   const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setView("app");refreshPrices()};
 
   const refreshPrices=async()=>{setRefreshing(true);const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);setPrices(prev=>{const next={...prev};if(mp){if(mp.gold){next.goldChg=prev.gold>0?((mp.gold-prev.gold)/prev.gold*100):0;next.gold=mp.gold}if(mp.silver){next.silverChg=prev.silver>0?((mp.silver-prev.silver)/prev.silver*100):0;next.silver=mp.silver}if(mp.platinum){next.platChg=prev.platinum>0?((mp.platinum-prev.platinum)/prev.platinum*100):0;next.platinum=mp.platinum}if(mp.palladium)next.palladium=mp.palladium}if(cp){if(cp.BTC){next.btc=cp.BTC.price;next.btcChg=cp.BTC.change}if(cp.ETH){next.eth=cp.ETH.price;next.ethChg=cp.ETH.change}if(cp.SOL){next.sol=cp.SOL.price;next.solChg=cp.SOL.change}}return next});if(cp){const ac={};for(const[sym,data] of Object.entries(cp)){ac[sym]=data.price}setAllCrypto(ac)}if(mp)setMetals(prev=>prev.map(m=>{const ls=({Gold:mp.gold,Silver:mp.silver,Platinum:mp.platinum,Palladium:mp.palladium})[m.metal];return ls?{...m,spot:Math.round(ls*100)/100}:m}));if(cp)setCrypto(prev=>prev.map(c=>{const l=cp[c.coin];return l?{...c,price:l.price}:c}));setLastRefresh(new Date().toLocaleTimeString());setRefreshing(false)};
