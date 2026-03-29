@@ -240,7 +240,7 @@ function PortfolioView({metals,synds,crypto,prices,targets,setTargets,allCrypto=
 
 // ═══ MAIN APP ═══
 export default function HardAssets(){
-  const[view,setView]=useState("splash");
+  const[view,setView]=useState("home");
   const[tab,setTab]=useState("portfolio");
   const[sheet,setSheet]=useState(null);
   const[editItem,setEditItem]=useState(null);
@@ -296,16 +296,18 @@ export default function HardAssets(){
     if(view!=="login")return;
     const initGSI=()=>{
       if(!window.google?.accounts?.id)return;
-      window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleLogin,auto_select:true});
-      window.google.accounts.id.renderButton(document.getElementById("gsi-btn"),{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:320});
+      window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleLogin});
+      const el=document.getElementById("gsi-btn");
+      if(el)window.google.accounts.id.renderButton(el,{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:300});
     };
-    if(window.google?.accounts?.id){initGSI()}
-    else{
-      const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=initGSI;document.head.appendChild(s);
-    }
+    const t=setTimeout(()=>{
+      if(window.google?.accounts?.id){initGSI()}
+      else{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=()=>setTimeout(initGSI,100);document.head.appendChild(s)}
+    },100);
+    return()=>clearTimeout(t);
   },[view]);
 
-  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setView("login")};
+  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setView("home")};
   const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setView("app");refreshPrices()};
 
   // Live price refresh
@@ -354,21 +356,107 @@ export default function HardAssets(){
   const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
   const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
 
-  // ═══ LOGIN SCREEN ═══
-  if(view==="login")return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",maxWidth:430,margin:"0 auto",display:"flex",flexDirection:"column",height:"100vh",position:"relative"}}>
-    <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
-    <div style={{position:"absolute",top:-100,left:"50%",transform:"translateX(-50%)",width:400,height:400,background:`radial-gradient(circle,${P.gold}08,transparent 70%)`,pointerEvents:"none"}}/>
-    <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:"0 32px"}}>
-      <div style={{width:64,height:64,borderRadius:20,background:`linear-gradient(135deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28,fontWeight:900,color:P.bg,marginBottom:32,boxShadow:`0 8px 32px rgba(212,168,67,0.3)`}}>H</div>
-      <div style={{fontSize:26,fontWeight:800,color:P.text,marginBottom:8,animation:"fadeUp 0.6s ease both"}}>Welcome Back</div>
-      <div style={{fontSize:14,color:P.txS,marginBottom:48,textAlign:"center",lineHeight:1.5,animation:"fadeUp 0.6s ease 0.1s both"}}>Track your precious metals, real estate,<br/>crypto & alternative investments</div>
-      <div style={{width:"100%",animation:"fadeUp 0.6s ease 0.2s both"}}>
-        <div id="gsi-btn" style={{display:"flex",justifyContent:"center",marginBottom:12}}/>
-        <button onClick={guestLogin} style={{width:"100%",padding:"15px 20px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
+  // ═══ MOBILE HOMEPAGE + LOGIN MODAL ═══
+  if(view==="home"||view==="login") return <div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",overflowX:"hidden"}}>
+    <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}`}</style>
+
+    {/* Nav */}
+    <nav style={{position:"sticky",top:0,zIndex:100,padding:"12px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",background:"rgba(11,15,26,.9)",borderBottom:"1px solid "+P.border}}>
+      <div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:8,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:900,color:P.bg}}>H</div><span style={{fontSize:15,fontWeight:800,color:P.text}}>Hard<span style={{color:P.gold}}>Assets</span></span></div>
+      {user?<Btn onClick={()=>setView("app")} style={{padding:"8px 16px",fontSize:12}}>Dashboard →</Btn>:<Btn onClick={()=>setView("login")} style={{padding:"8px 16px",fontSize:12}}>Get Started</Btn>}
+    </nav>
+
+    {/* Hero */}
+    <div style={{textAlign:"center",padding:"48px 24px 40px",position:"relative"}}>
+      <div style={{position:"absolute",top:-100,left:"50%",transform:"translateX(-50%)",width:400,height:400,background:"radial-gradient(ellipse,rgba(212,168,67,.06),transparent)",pointerEvents:"none"}}/>
+      <div style={{position:"relative"}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"5px 12px",borderRadius:16,border:"1px solid "+P.border,background:P.surface,fontSize:10,color:P.gold,letterSpacing:1,textTransform:"uppercase",fontWeight:600,marginBottom:20}}><div style={{width:5,height:5,borderRadius:"50%",background:P.green,animation:"pulse 2s infinite"}}/> Free — No credit card</div>
+        <h1 style={{fontSize:32,fontWeight:900,lineHeight:1.1,letterSpacing:-1,margin:"0 auto 16px",maxWidth:340}}>Track Everything That <span style={{background:`linear-gradient(90deg,${P.gold},#F5D78E,${P.gold})`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Holds Value</span></h1>
+        <p style={{fontSize:14,color:P.txS,maxWidth:300,margin:"0 auto 28px",lineHeight:1.5}}>Gold. Silver. Real estate. Crypto. Live prices & portfolio tracking for hard asset investors.</p>
+        <Btn onClick={()=>setView(user?"app":"login")} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Btn>
       </div>
-      {syncing&&<div style={{marginTop:20,fontSize:13,color:P.gold}}>Syncing your data...</div>}
     </div>
-    <div style={{padding:"24px 32px 40px",textAlign:"center"}}><div style={{fontSize:10,color:P.txM,lineHeight:1.6}}>Data saved securely to your account.<br/>Free forever.</div></div>
+
+    {/* Stats */}
+    <div style={{padding:"28px 20px",borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border,background:P.surface}}>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,textAlign:"center"}}>
+        {[["Live","Spot Prices"],["13+","Crypto Coins"],["Free","Forever"]].map(([n,l],i)=>
+          <div key={i}><div style={{fontSize:22,fontWeight:900,fontFamily:mono,color:P.gold}}>{n}</div><div style={{fontSize:10,color:P.txM,marginTop:2}}>{l}</div></div>
+        )}
+      </div>
+    </div>
+
+    {/* Features */}
+    <div style={{padding:"36px 20px"}}>
+      <div style={{fontSize:10,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>Features</div>
+      <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:24}}>One <span style={{color:P.gold}}>Dashboard</span></div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        {[["◆","Precious Metals","Live spot prices, oz conversion, cost basis"],["◫","RE Syndications","LP positions, IRR, sponsor tracking"],["Ⓒ","Crypto Portfolio","13+ coins with live CoinGecko prices"],["◉","Master Portfolio","11 asset classes, targets, risk scores"]].map(([ic,t,d],i)=>
+          <div key={i} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:12,padding:16}}>
+            <div style={{fontSize:16,marginBottom:8}}>{ic}</div>
+            <div style={{fontSize:13,fontWeight:700,marginBottom:4}}>{t}</div>
+            <div style={{fontSize:11,color:P.txS,lineHeight:1.4}}>{d}</div>
+          </div>
+        )}
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginTop:10}}>
+        {[["📡","Live Prices"],["📊","CSV Import"],["🎯","Risk Scores"],["☁️","Cloud Sync"]].map(([ic,lb],i)=>
+          <div key={i} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:10,padding:12,textAlign:"center"}}><div style={{fontSize:16,marginBottom:4}}>{ic}</div><div style={{fontSize:9,fontWeight:600}}>{lb}</div></div>
+        )}
+      </div>
+    </div>
+
+    {/* How it works */}
+    <div style={{padding:"36px 20px",background:P.surface,borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border}}>
+      <div style={{fontSize:10,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>How It Works</div>
+      <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:24}}>Start in <span style={{color:P.gold}}>60 Seconds</span></div>
+      {[["1","Sign Up Free","Google sign-in. Data syncs across devices."],["2","Add Assets","Manual entry or CSV import. Live prices auto-fill."],["3","Full Picture","Charts, risk scores, income projections."]].map(([n,t,d],i)=>
+        <div key={i} style={{display:"flex",gap:14,alignItems:"flex-start",marginBottom:20}}>
+          <div style={{width:36,height:36,borderRadius:"50%",border:"2px solid "+P.gold,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:800,color:P.gold,fontFamily:mono,flexShrink:0}}>{n}</div>
+          <div><div style={{fontSize:14,fontWeight:700,marginBottom:2}}>{t}</div><div style={{fontSize:12,color:P.txS,lineHeight:1.4}}>{d}</div></div>
+        </div>
+      )}
+    </div>
+
+    {/* Security */}
+    <div style={{padding:"36px 20px"}}>
+      <div style={{fontSize:10,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>Security</div>
+      <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:20}}>Your Data, <span style={{color:P.gold}}>Protected</span></div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        {[["🔒","Encrypted DB"],["🔑","Google Auth"],["👁️","Read-Only"],["🚫","No Data Sales"]].map(([ic,t],i)=>
+          <div key={i} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:10,padding:14,textAlign:"center"}}><div style={{fontSize:18,marginBottom:4}}>{ic}</div><div style={{fontSize:12,fontWeight:700}}>{t}</div></div>
+        )}
+      </div>
+    </div>
+
+    {/* CTA */}
+    <div style={{padding:"40px 24px",textAlign:"center"}}>
+      <div style={{fontSize:24,fontWeight:800,lineHeight:1.15,marginBottom:12}}>Ready to See Your<br/><span style={{color:P.gold}}>Complete Picture?</span></div>
+      <p style={{fontSize:13,color:P.txS,marginBottom:24,lineHeight:1.5}}>Free forever. No credit card required.</p>
+      <Btn onClick={()=>setView(user?"app":"login")} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Btn>
+    </div>
+
+    {/* Footer */}
+    <div style={{borderTop:"1px solid "+P.border,padding:"24px 20px",textAlign:"center"}}>
+      <div style={{fontSize:11,color:P.txM}}>© 2026 HardAssets.io</div>
+      <div style={{fontSize:11,color:P.txM,marginTop:4}}>info@hardassets.io</div>
+    </div>
+
+    {/* LOGIN MODAL */}
+    {view==="login"&&!user&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setView("home")}>
+      <div onClick={e=>e.stopPropagation()} style={{background:P.surface,borderRadius:"24px 24px 0 0",padding:"32px 24px 40px",width:"100%",maxWidth:430,position:"relative"}}>
+        <button onClick={()=>setView("home")} style={{position:"absolute",top:12,right:16,background:P.elevated,border:"none",color:P.txS,width:32,height:32,borderRadius:16,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+        <div style={{textAlign:"center"}}>
+          <div style={{width:56,height:56,borderRadius:16,background:`linear-gradient(135deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:24,fontWeight:900,color:P.bg,marginBottom:20,boxShadow:`0 8px 32px rgba(212,168,67,0.3)`}}>H</div>
+          <div style={{fontSize:22,fontWeight:800,marginBottom:6}}>Sign In</div>
+          <div style={{fontSize:13,color:P.txS,marginBottom:28}}>Track your investments in one dashboard</div>
+          <div id="gsi-btn" style={{display:"flex",justifyContent:"center",marginBottom:14}}/>
+          <button onClick={()=>{guestLogin();setView("app")}} style={{width:"100%",padding:"14px 20px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
+          {syncing&&<div style={{marginTop:16,fontSize:13,color:P.gold}}>Loading your portfolio...</div>}
+          <div style={{marginTop:24,fontSize:10,color:P.txM}}>Data saved securely. Free forever.</div>
+        </div>
+      </div>
+    </div>}
   </div>;
 
   const NAV=[{key:"portfolio",label:"Portfolio",d:"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"},{key:"metals",label:"Metals",d:"M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"},{key:"realestate",label:"RE",d:"M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"},{key:"crypto",label:"Crypto",d:"M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"},{key:"analyzer",label:"Analyze",d:"M9 7h6m0 10v-3m-3 3v-6m-3 6v-1m6-9a2 2 0 012 2v8a2 2 0 01-2 2H9a2 2 0 01-2-2V9a2 2 0 012-2"}];
