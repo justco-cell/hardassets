@@ -217,6 +217,7 @@ function HomePage({onNav,user}){
     <nav style={S.nav}>
       <Logo/>
       <div style={{display:"flex",gap:20,alignItems:"center"}}>
+        <a href="/blog" style={{color:P.txS,fontSize:13,textDecoration:"none"}}>Blog</a>
         <button onClick={()=>onNav("contact")} style={{background:"none",border:"none",color:P.txS,fontSize:13,cursor:"pointer"}}>Contact</button>
         {user?<Btn onClick={()=>onNav("app")}>Dashboard →</Btn>:<><button onClick={()=>onNav("login")} style={{background:"none",border:"none",color:P.gold,fontSize:13,cursor:"pointer",fontWeight:600}}>Login</button><Btn onClick={()=>onNav("login")}>Get Started Free</Btn></>}
       </div>
@@ -368,7 +369,7 @@ function HomePage({onNav,user}){
           <div><Logo/><p style={{fontSize:13,color:P.txS,marginTop:12,lineHeight:1.5,maxWidth:280}}>The portfolio dashboard with live prices built for investors who believe in hard assets.</p></div>
           <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Product</h4>{["Features","How It Works","Security","FAQ"].map(l=><div key={l} style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>document.getElementById(l.toLowerCase().replace(/ /g,""))?.scrollIntoView({behavior:"smooth"})}>{l}</div>)}</div>
           <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Asset Classes</h4>{["Precious Metals","RE Syndications","Crypto","Deal Analyzer"].map(l=><div key={l} style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav(user?"app":"login")}>{l}</div>)}</div>
-          <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Company</h4><div style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("contact")}>Contact Us</div><div style={{fontSize:13,color:P.txS,padding:"4px 0"}}>info@hardassets.io</div></div>
+          <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Company</h4><a href="/blog" style={{display:"block",fontSize:13,color:P.txS,padding:"4px 0",textDecoration:"none"}}>Blog</a><div style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("contact")}>Contact Us</div><div style={{fontSize:13,color:P.txS,padding:"4px 0"}}>info@hardassets.io</div></div>
         </div>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid "+P.border,paddingTop:20,fontSize:11,color:P.txM}}>
           <div>© 2026 HardAssets.io. All rights reserved.</div>

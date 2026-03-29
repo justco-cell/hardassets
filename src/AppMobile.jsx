@@ -444,7 +444,10 @@ export default function HardAssets(){
     {/* Nav */}
     <nav style={{position:"sticky",top:0,zIndex:100,padding:"12px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",background:"rgba(11,15,26,.9)",borderBottom:"1px solid "+P.border}}>
       <div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:8,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:900,color:P.bg}}>H</div><span style={{fontSize:15,fontWeight:800,color:P.text}}>Hard<span style={{color:P.gold}}>Assets</span></span></div>
-      {user?<Btn onClick={()=>setView("app")} style={{padding:"8px 16px",fontSize:12}}>Dashboard →</Btn>:<Btn onClick={()=>setView("login")} style={{padding:"8px 16px",fontSize:12}}>Get Started</Btn>}
+      <div style={{display:"flex",alignItems:"center",gap:10}}>
+        <a href="/blog" style={{color:P.txS,fontSize:11,textDecoration:"none"}}>Blog</a>
+        {user?<Btn onClick={()=>setView("app")} style={{padding:"8px 16px",fontSize:12}}>Dashboard →</Btn>:<Btn onClick={()=>setView("login")} style={{padding:"8px 16px",fontSize:12}}>Get Started</Btn>}
+      </div>
     </nav>
 
     {/* Hero */}
