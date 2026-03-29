@@ -69,7 +69,7 @@ export function BlogIndex(){
       <div style={{display:"flex",flexDirection:"column",gap:24}}>
         {POSTS.map(post=><a key={post.slug} href={"/blog/"+post.slug} style={{textDecoration:"none",color:"inherit"}}>
           <article style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,overflow:"hidden",transition:"all 0.2s",cursor:"pointer"}} onMouseEnter={e=>e.currentTarget.style.borderColor=P.gold+"44"} onMouseLeave={e=>e.currentTarget.style.borderColor=P.border}>
-            {post.heroImage&&<img src={post.heroImage} alt={post.title} style={{width:"100%",height:220,objectFit:"cover",display:"block"}} loading="lazy"/>}
+            {post.heroImage&&<img src={post.heroImage} alt={post.title} style={{width:"100%",display:"block"}} loading="lazy"/>}
             <div style={{padding:28}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
                 <time dateTime={post.date} style={{fontSize:12,color:P.txM,fontFamily:"monospace"}}>{new Date(post.date).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</time>
