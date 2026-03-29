@@ -156,9 +156,243 @@ function PortfolioView({metals,synds,crypto,prices,targets,setTargets}){
   </div>
 }
 
+// ═══ HOME PAGE ═══
+function HomePage({onNav,user}){
+  const[openFaq,setOpenFaq]=useState(null);
+  const[legalModal,setLegalModal]=useState(null);
+  const faqs=[
+    ["Is HardAssets.io really free?","Yes. The core dashboard with all features — including live prices, CSV import/export, and cloud sync — is completely free. No credit card required."],
+    ["Where do the live prices come from?","Metal prices (gold, silver, platinum, palladium) are pulled from metals.dev in real-time. Crypto prices (BTC, ETH, SOL, and 10+ coins) come from CoinGecko's API."],
+    ["How does the oz-per-unit calculation work?","Different metal forms contain different amounts of troy ounces. A 1oz coin = 1 oz, a 100oz bar = 100 oz, a kilo bar = 32.15 oz. The dashboard automatically multiplies your quantity by the oz-per-unit and the live spot price."],
+    ["How is my data secured?","Your data is stored in encrypted PostgreSQL database (Supabase) with server-side API routes. Your browser never touches the database directly. Authentication uses Google Identity Services."],
+    ["Do you connect to my bank accounts?","No. HardAssets.io is a manual-entry tracker. You add holdings yourself or import from CSV. Zero risk of unauthorized access to financial accounts."],
+    ["Can I import from a spreadsheet?","Yes. Every tab has an Import button that accepts CSV files. Export your data from any spreadsheet, click Import, and your holdings are added instantly."],
+    ["What asset types can I track?","Precious metals (8 unit types), RE syndications (16 deal types), crypto (13+ coins), plus 11 asset classes in the master portfolio."],
+    ["Can I use it on my phone?","Yes. Fully responsive and works on any device. Your data syncs across all devices via your account."]
+  ];
+  const S={nav:{position:"sticky",top:0,zIndex:100,padding:"16px 40px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",background:"rgba(11,15,26,.85)",borderBottom:"1px solid "+P.border},
+    section:{padding:"80px 40px",maxWidth:1100,margin:"0 auto"},
+    sLabel:{fontSize:11,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:12},
+    sTitle:{fontSize:"clamp(28px,3.5vw,42px)",fontWeight:800,letterSpacing:"-.5px",marginBottom:16,lineHeight:1.15},
+    card:{background:P.surface,border:"1px solid "+P.border,borderRadius:12,padding:28,transition:"all .3s"},
+    trustCard:{background:P.surface,border:"1px solid "+P.border,borderRadius:12,padding:24},
+    fq:{display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer",fontSize:15,fontWeight:600,padding:"20px 0",borderBottom:"1px solid "+P.border},
+    mstat:{background:P.elevated,borderRadius:8,padding:"12px 14px",border:"1px solid "+P.border}};
+  const Logo=({big})=><div onClick={()=>window.scrollTo({top:0,behavior:"smooth"})} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:big?14:10}}><div style={{width:big?40:32,height:big?40:32,borderRadius:big?12:10,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:big?20:16,fontWeight:900,color:P.bg}}>H</div><span style={{fontSize:big?22:17,fontWeight:800,color:P.text,letterSpacing:-.5}}>Hard<span style={{color:P.gold}}>Assets</span></span></div>;
+
+  return(<div style={{background:P.bg,minHeight:"100vh",color:P.text,fontFamily:ff}}>
+    <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}`}</style>
+    <nav style={S.nav}>
+      <Logo/>
+      <div style={{display:"flex",gap:20,alignItems:"center"}}>
+        <button onClick={()=>onNav("contact")} style={{background:"none",border:"none",color:P.txS,fontSize:13,cursor:"pointer"}}>Contact</button>
+        {user?<Btn onClick={()=>onNav("app")}>Dashboard →</Btn>:<><button onClick={()=>onNav("login")} style={{background:"none",border:"none",color:P.gold,fontSize:13,cursor:"pointer",fontWeight:600}}>Login</button><Btn onClick={()=>onNav("login")}>Get Started Free</Btn></>}
+      </div>
+    </nav>
+
+    {/* Hero */}
+    <div style={{textAlign:"center",padding:"80px 40px 60px",position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:-200,left:"50%",transform:"translateX(-50%)",width:800,height:600,background:"radial-gradient(ellipse,rgba(212,168,67,.06) 0%,transparent 60%)",pointerEvents:"none"}}/>
+      <div style={{position:"relative"}}>
+        <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 16px",borderRadius:20,border:"1px solid "+P.border,background:P.surface,fontSize:11,color:P.gold,letterSpacing:1.5,textTransform:"uppercase",fontWeight:600,marginBottom:24}}><div style={{width:6,height:6,borderRadius:"50%",background:P.green,animation:"pulse 2s infinite"}}/> Free to use — No credit card required</div>
+        <h1 style={{fontSize:"clamp(32px,5.5vw,62px)",fontWeight:900,lineHeight:1.05,letterSpacing:-1.5,maxWidth:720,margin:"0 auto 20px"}}>Track Everything<br/>That <span style={{background:`linear-gradient(90deg,${P.gold},#F5D78E,${P.gold})`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Holds Value</span></h1>
+        <p style={{fontSize:"clamp(16px,1.8vw,19px)",color:P.txS,maxWidth:540,margin:"0 auto 36px",lineHeight:1.6}}>Gold. Silver. Real estate syndications. Crypto. Commodities. Live spot prices, portfolio tracking, and risk analysis — built for hard asset investors.</p>
+        <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:50}}>
+          <Btn onClick={()=>onNav(user?"app":"login")} style={{padding:"14px 32px",fontSize:15}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Btn>
+          <Btn variant="ghost" onClick={()=>document.getElementById("features")?.scrollIntoView({behavior:"smooth"})} style={{padding:"14px 32px",fontSize:15}}>See Features</Btn>
+        </div>
+
+        {/* Dashboard Mockup */}
+        <div style={{maxWidth:960,margin:"0 auto"}}>
+          <div style={{background:P.surface,border:"1px solid "+P.border,borderRadius:12,overflow:"hidden",boxShadow:"0 40px 80px rgba(0,0,0,.5)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:6,padding:"10px 16px",background:P.bg,borderBottom:"1px solid "+P.border}}>
+              <div style={{width:8,height:8,borderRadius:"50%",background:"#ef4444"}}/><div style={{width:8,height:8,borderRadius:"50%",background:"#f59e0b"}}/><div style={{width:8,height:8,borderRadius:"50%",background:"#10b981"}}/>
+              <div style={{marginLeft:12,padding:"4px 12px",background:P.elevated,borderRadius:6,fontSize:11,color:P.txM,fontFamily:mono,flex:1,textAlign:"center"}}>hardassets.io/dashboard</div>
+            </div>
+            <div style={{padding:16,display:"grid",gap:10}}>
+              <div style={{display:"flex",alignItems:"center",gap:14,padding:"6px 12px",background:P.bg,borderRadius:6,fontSize:10,fontFamily:mono,overflow:"hidden"}}>
+                <span style={{color:P.txM}}>LIVE</span><div style={{width:5,height:5,borderRadius:3,background:P.green}}/>
+                {[["Au","$3,042","+2.1%",true],["Ag","$34.18","+1.8%",true],["Pt","$1,021","-0.3%",false],["BTC","$87,420","+4.2%",true],["ETH","$3,180","+2.8%",true]].map(([s,p,c,up],i)=>
+                  <span key={i} style={{whiteSpace:"nowrap"}}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.text}}>{p}</span> <span style={{color:up?P.green:P.red}}>{up?"▲":"▼"}{c}</span></span>
+                )}
+              </div>
+              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
+                {[["Total Portfolio","$1.24M",P.gold],["Hard Assets %","72.4%",P.green],["Est. Annual Income","$47.2K",P.green],["Avg Risk","4.8/10",P.gold]].map(([l,v,c],i)=>
+                  <div key={i} style={S.mstat}><div style={{fontSize:9,color:P.txM,textTransform:"uppercase",letterSpacing:1,fontFamily:mono}}>{l}</div><div style={{fontSize:18,fontWeight:800,color:c,marginTop:4}}>{v}</div></div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Stats */}
+    <div style={{padding:"50px 40px",borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border,background:P.surface}}>
+      <div style={{maxWidth:1000,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:28,textAlign:"center"}}>
+        {[["5","Asset Classes"],["16","RE Deal Types"],["13","Crypto Coins"],["Live","Spot Prices"],["100%","Free to Use"]].map(([n,l],i)=>
+          <div key={i}><div style={{fontSize:34,fontWeight:900,fontFamily:mono,color:P.gold}}>{n}</div><div style={{fontSize:12,color:P.txM,marginTop:4}}>{l}</div></div>
+        )}
+      </div>
+    </div>
+
+    {/* Features */}
+    <div id="features" style={S.section}>
+      <div style={{textAlign:"center"}}>
+        <div style={S.sLabel}>Features</div>
+        <div style={S.sTitle}>Everything You Need in One <span style={{color:P.gold}}>Dashboard</span></div>
+        <p style={{fontSize:16,color:P.txS,maxWidth:540,margin:"0 auto",lineHeight:1.6}}>No more juggling spreadsheets across asset classes.</p>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:14,marginTop:40}}>
+        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◆</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Precious Metals Tracker</h3><p style={{fontSize:13,color:P.txS,lineHeight:1.5}}>Track physical gold, silver, platinum & palladium with cost basis and real-time gain/loss. Live spot prices with oz-per-unit conversion.</p></div>
+        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◫</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>RE Syndication LP Tracker</h3><p style={{fontSize:13,color:P.txS,lineHeight:1.5}}>Monitor LP positions with rate %, projected IRR, and sponsor tracking across 16 deal types.</p></div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginTop:14}}>
+        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>⊞</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Deal Analyzer</h3><p style={{fontSize:13,color:P.txS,lineHeight:1.5}}>Full cash flow calculator with CoC, Cap Rate, DSCR, and quick pass/fail tests.</p></div>
+        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>Ⓒ</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Crypto Portfolio</h3><p style={{fontSize:13,color:P.txS,lineHeight:1.5}}>Track BTC, ETH, SOL & 10+ coins with live prices from CoinGecko, cost basis, and risk scoring.</p></div>
+        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◉</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Master Portfolio</h3><p style={{fontSize:13,color:P.txS,lineHeight:1.5}}>Complete allocation across 11 asset classes with targets, risk scoring & income estimates.</p></div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginTop:14}}>
+        {[["📡","Live Metal Prices"],["💰","Live Crypto Prices"],["📊","CSV Import"],["📥","CSV Export"],["🎯","Risk Ratings"],["📝","Notes"],["✏️","Inline Edit"],["☁️","Cloud Sync"]].map(([ic,lb],i)=>
+          <div key={i} style={{...S.card,textAlign:"center",padding:18}}><div style={{fontSize:18,marginBottom:6}}>{ic}</div><div style={{fontSize:11,fontWeight:600}}>{lb}</div></div>
+        )}
+      </div>
+    </div>
+
+    {/* How it works */}
+    <div id="howitworks" style={{padding:"80px 40px",background:P.surface,borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border}}>
+      <div style={{maxWidth:1100,margin:"0 auto",textAlign:"center"}}>
+        <div style={S.sLabel}>How It Works</div>
+        <div style={S.sTitle}>Start Tracking in <span style={{color:P.gold}}>60 Seconds</span></div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:32,marginTop:40}}>
+          {[["1","Sign Up Free","Create an account with Google. Your data syncs across all devices securely."],["2","Add Your Assets","Enter holdings manually or import from CSV. Live spot prices auto-fill for metals and crypto."],["3","See the Full Picture","Live price ticker, allocation charts, risk scores, income projections — updated in real time."]].map(([n,t,d],i)=>
+            <div key={i} style={{textAlign:"center",padding:"28px 20px"}}>
+              <div style={{width:48,height:48,borderRadius:"50%",border:"2px solid "+P.gold,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:800,color:P.gold,margin:"0 auto 18px",fontFamily:mono}}>{n}</div>
+              <h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>{t}</h3>
+              <p style={{fontSize:13,color:P.txS,lineHeight:1.5}}>{d}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* Security */}
+    <div id="security" style={S.section}>
+      <div style={{textAlign:"center"}}>
+        <div style={S.sLabel}>Security & Trust</div>
+        <div style={S.sTitle}>Your Data, <span style={{color:P.gold}}>Protected</span></div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,marginTop:36}}>
+        {[["🔒","Encrypted Storage","Encrypted PostgreSQL via Supabase. Server-side only."],["🔑","Google Auth","Secure sign-in via Google. We never see your password."],["👁️","Read-Only","Manual entry only. Zero risk of unauthorized transactions."],["🚫","No Selling Data","Your portfolio data is never shared or sold. Period."]].map(([ic,t,d],i)=>
+          <div key={i} style={S.trustCard}><h4 style={{fontSize:14,fontWeight:700,marginBottom:6}}>{ic} {t}</h4><p style={{fontSize:12,color:P.txS,lineHeight:1.5}}>{d}</p></div>
+        )}
+      </div>
+    </div>
+
+    {/* Built For */}
+    <div style={{padding:"80px 40px",background:P.surface,borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border}}>
+      <div style={{maxWidth:900,margin:"0 auto",textAlign:"center"}}>
+        <div style={S.sLabel}>Built For</div>
+        <div style={S.sTitle}>Investors Who <span style={{color:P.gold}}>Think Different</span></div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,marginTop:36}}>
+          {[["🥇","Precious Metals Stackers","Track every coin, bar, and round with real cost basis across gold, silver, platinum."],["🏢","RE Syndication LPs","Monitor LP positions across sponsors and deal types with rate tracking and IRR projections."],["📊","Hard Asset Allocators","See complete allocation across physical and alternative assets with target comparison and risk scoring."]].map(([ic,t,d],i)=>
+            <div key={i} style={{...S.card,textAlign:"center",padding:28}}><div style={{fontSize:28,marginBottom:12}}>{ic}</div><h3 style={{fontSize:15,fontWeight:700,marginBottom:6}}>{t}</h3><p style={{fontSize:12,color:P.txS,lineHeight:1.5}}>{d}</p></div>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* FAQ */}
+    <div id="faq" style={S.section}>
+      <div style={{textAlign:"center"}}>
+        <div style={S.sLabel}>FAQ</div>
+        <div style={S.sTitle}>Common Questions</div>
+      </div>
+      <div style={{maxWidth:680,margin:"36px auto 0"}}>
+        {faqs.map(([q,a],i)=>
+          <div key={i}><div style={S.fq} onClick={()=>setOpenFaq(openFaq===i?null:i)}>
+            <span>{q}</span><span style={{color:P.txM,fontSize:20,transition:"transform .3s",transform:openFaq===i?"rotate(45deg)":"none"}}>+</span>
+          </div>
+          <div style={{maxHeight:openFaq===i?200:0,overflow:"hidden",transition:"max-height .4s ease",fontSize:14,color:P.txS,lineHeight:1.6,paddingBottom:openFaq===i?16:0}}>{a}</div></div>
+        )}
+      </div>
+    </div>
+
+    {/* Final CTA */}
+    <div style={{padding:"80px 40px",textAlign:"center",position:"relative"}}>
+      <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:500,height:300,background:"radial-gradient(ellipse,rgba(212,168,67,.08),transparent)",pointerEvents:"none"}}/>
+      <div style={{position:"relative"}}>
+        <div style={{fontSize:"clamp(28px,4vw,46px)",fontWeight:800,lineHeight:1.15}}>Ready to See Your<br/><span style={{color:P.gold}}>Complete Picture?</span></div>
+        <p style={{fontSize:16,color:P.txS,maxWidth:460,margin:"16px auto 32px",lineHeight:1.6}}>Live metal and crypto prices. Portfolio tracking across every hard asset class. Risk scoring. Income projections. Free forever.</p>
+        <Btn onClick={()=>onNav(user?"app":"login")} style={{padding:"16px 40px",fontSize:17}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Btn>
+        <div style={{marginTop:14,fontSize:12,color:P.txM}}>No credit card · Free forever · 60-second setup</div>
+      </div>
+    </div>
+
+    {/* Footer */}
+    <div style={{borderTop:"1px solid "+P.border,padding:"50px 40px 24px"}}>
+      <div style={{maxWidth:1100,margin:"0 auto"}}>
+        <div style={{display:"grid",gridTemplateColumns:"2fr 1fr 1fr 1fr",gap:40,marginBottom:36}}>
+          <div><Logo/><p style={{fontSize:13,color:P.txS,marginTop:12,lineHeight:1.5,maxWidth:280}}>The portfolio dashboard with live prices built for investors who believe in hard assets.</p></div>
+          <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Product</h4>{["Features","How It Works","Security","FAQ"].map(l=><div key={l} style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>document.getElementById(l.toLowerCase().replace(/ /g,""))?.scrollIntoView({behavior:"smooth"})}>{l}</div>)}</div>
+          <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Asset Classes</h4>{["Precious Metals","RE Syndications","Crypto","Deal Analyzer"].map(l=><div key={l} style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav(user?"app":"login")}>{l}</div>)}</div>
+          <div><h4 style={{fontSize:11,color:P.txM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:12}}>Company</h4><div style={{fontSize:13,color:P.txS,padding:"4px 0",cursor:"pointer"}} onClick={()=>onNav("contact")}>Contact Us</div><div style={{fontSize:13,color:P.txS,padding:"4px 0"}}>info@hardassets.io</div></div>
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",borderTop:"1px solid "+P.border,paddingTop:20,fontSize:11,color:P.txM}}>
+          <div>© 2026 HardAssets.io. All rights reserved.</div>
+          <div style={{display:"flex",gap:20}}><span style={{cursor:"pointer"}} onClick={()=>setLegalModal("privacy")}>Privacy Policy</span><span style={{cursor:"pointer"}} onClick={()=>setLegalModal("terms")}>Terms of Service</span></div>
+        </div>
+      </div>
+    </div>
+
+    {legalModal&&<div onClick={()=>setLegalModal(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <div onClick={e=>e.stopPropagation()} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,padding:32,maxWidth:640,maxHeight:"80vh",overflow:"auto",width:"100%"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+          <h2 style={{fontSize:20,fontWeight:800}}>{legalModal==="privacy"?"Privacy Policy":"Terms of Service"}</h2>
+          <button onClick={()=>setLegalModal(null)} style={{background:"none",border:"none",color:P.txM,fontSize:22,cursor:"pointer"}}>x</button>
+        </div>
+        {legalModal==="privacy"?<div style={{fontSize:13,color:P.txS,lineHeight:1.8}}>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Effective Date:</strong> March 26, 2026</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>What We Collect:</strong> When you sign in with Google, we receive your name, email address, and profile picture. We store the portfolio data you enter into the dashboard.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>How We Use It:</strong> Your data is used solely to provide the HardAssets.io portfolio tracking service. We do not sell, share, rent, or trade your personal information or portfolio data with any third party.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Data Storage:</strong> Your portfolio data is stored in an encrypted PostgreSQL database hosted on Supabase. All data transmission uses HTTPS/TLS encryption.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>No Tracking:</strong> We do not use tracking cookies, advertising pixels, or analytics that identify individual users.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Data Deletion:</strong> You may request deletion of your account and all associated data at any time by contacting info@hardassets.io.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Contact:</strong> For any privacy questions, email info@hardassets.io.</p>
+        </div>:<div style={{fontSize:13,color:P.txS,lineHeight:1.8}}>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Effective Date:</strong> March 26, 2026</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Service Description:</strong> HardAssets.io is a free portfolio tracking dashboard for precious metals, real estate syndications, cryptocurrency, and other asset classes. Provided as-is for informational purposes only.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Not Financial Advice:</strong> HardAssets.io does not provide financial, investment, tax, or legal advice. All data and analytics are for informational purposes only.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Price Data:</strong> Live metal prices from metals.dev and crypto prices from CoinGecko. We do not guarantee accuracy or timeliness of price data.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>No Account Connections:</strong> We never connect to your bank, brokerage, or any financial accounts. All data is entered by you.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Limitation of Liability:</strong> Provided "as is" without warranties. We are not liable for any losses arising from use of the service.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Contact:</strong> For questions, email info@hardassets.io.</p>
+        </div>}
+      </div>
+    </div>}
+  </div>);
+}
+
+// ═══ CONTACT PAGE ═══
+function ContactPg({onNav}){
+  const[f,sF]=useState({name:"",email:"",msg:""});const[sent,setSent]=useState(false);
+  const Logo=()=><div style={{cursor:"pointer",display:"flex",alignItems:"center",gap:10}} onClick={()=>onNav("home")}><div style={{width:32,height:32,borderRadius:10,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:P.bg}}>H</div><span style={{fontSize:17,fontWeight:800,color:P.text,letterSpacing:-.5}}>Hard<span style={{color:P.gold}}>Assets</span></span></div>;
+  return(<div style={{background:P.bg,minHeight:"100vh",color:P.text,fontFamily:ff}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"20px 40px",borderBottom:"1px solid "+P.border}}><Logo/><Btn variant="ghost" onClick={()=>onNav("home")}>Back</Btn></div>
+    <div style={{maxWidth:440,margin:"60px auto",padding:"0 20px"}}><h2 style={{fontSize:24,fontWeight:800,marginBottom:24}}>Get in Touch</h2>
+    {sent?<GC style={{textAlign:"center",padding:32}}><div style={{fontSize:16,fontWeight:700,color:P.green}}>Message Sent!</div><div style={{color:P.txS,fontSize:12,marginTop:6}}>We will reply to {f.email}</div></GC>:
+    <GC style={{padding:22}}><div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <FF label="Name" value={f.name} onChange={v=>sF({...f,name:v})} placeholder="Your name"/>
+      <FF label="Email" value={f.email} onChange={v=>sF({...f,email:v})} placeholder="you@email.com"/>
+      <div style={{marginBottom:14}}><label style={{display:"block",fontSize:12,fontWeight:600,color:P.txS,marginBottom:6}}>Message</label><textarea value={f.msg} onChange={e=>sF({...f,msg:e.target.value})} placeholder="How can we help?" rows={4} style={{width:"100%",background:P.bg,border:"1px solid "+P.border,borderRadius:12,color:P.text,padding:12,fontSize:14,outline:"none",resize:"vertical",fontFamily:ff,boxSizing:"border-box"}}/></div>
+      <Btn onClick={()=>{if(f.name&&f.email&&f.msg)setSent(true)}} full>Send to info@hardassets.io</Btn>
+    </div></GC>}
+    </div></div>);
+}
+
 // ═══ MAIN APP ═══
 export default function HardAssetsWeb(){
-  const[view,setView]=useState("login");
+  const[view,setView]=useState("home");
   const[tab,setTab]=useState("portfolio");
   const[modal,setModal]=useState(null);
   const[editItem,setEditItem]=useState(null);
@@ -200,10 +434,14 @@ export default function HardAssetsWeb(){
     if(window.google?.accounts?.id){initGSI()}else{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=initGSI;document.head.appendChild(s)}
   },[view]);
 
-  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setView("login")};
+  const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setView("home")};
   const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setView("app");refreshPrices()};
 
   const refreshPrices=async()=>{setRefreshing(true);const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);setPrices(prev=>{const next={...prev};if(mp){if(mp.gold){next.goldChg=prev.gold>0?((mp.gold-prev.gold)/prev.gold*100):0;next.gold=mp.gold}if(mp.silver){next.silverChg=prev.silver>0?((mp.silver-prev.silver)/prev.silver*100):0;next.silver=mp.silver}if(mp.platinum){next.platChg=prev.platinum>0?((mp.platinum-prev.platinum)/prev.platinum*100):0;next.platinum=mp.platinum}if(mp.palladium)next.palladium=mp.palladium}if(cp){if(cp.BTC){next.btc=cp.BTC.price;next.btcChg=cp.BTC.change}if(cp.ETH){next.eth=cp.ETH.price;next.ethChg=cp.ETH.change}if(cp.SOL){next.sol=cp.SOL.price;next.solChg=cp.SOL.change}}return next});if(mp)setMetals(prev=>prev.map(m=>{const ls=({Gold:mp.gold,Silver:mp.silver,Platinum:mp.platinum,Palladium:mp.palladium})[m.metal];return ls?{...m,spot:Math.round(ls*100)/100}:m}));if(cp)setCrypto(prev=>prev.map(c=>{const l=cp[c.coin];return l?{...c,price:l.price}:c}));setLastRefresh(new Date().toLocaleTimeString());setRefreshing(false)};
+
+  // ═══ HOME & CONTACT ═══
+  if(view==="home") return <HomePage onNav={v=>{if(v==="app"&&user)setView("app");else setView(v)}} user={user}/>;
+  if(view==="contact") return <ContactPg onNav={v=>setView(v)}/>;
 
   // ═══ LOGIN SCREEN ═══
   if(view==="login")return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
@@ -264,6 +502,7 @@ export default function HardAssetsWeb(){
     <div style={{width:sideCollapsed?72:240,minHeight:"100vh",background:P.surface,borderRight:`1px solid ${P.border}`,display:"flex",flexDirection:"column",transition:"width 0.3s",overflow:"hidden",position:"sticky",top:0,flexShrink:0}}>
       <div style={{padding:sideCollapsed?"20px 16px":"20px",display:"flex",alignItems:"center",gap:12,borderBottom:`1px solid ${P.border}`,cursor:"pointer"}} onClick={()=>setSC(!sideCollapsed)}><div style={{width:38,height:38,borderRadius:12,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:900,color:P.bg,flexShrink:0,boxShadow:`0 4px 16px rgba(212,168,67,0.2)`}}>H</div>{!sideCollapsed&&<div><div style={{fontSize:17,fontWeight:800,color:P.text,letterSpacing:-0.4,whiteSpace:"nowrap"}}>HardAssets</div><div style={{fontSize:9,color:P.txM,letterSpacing:2,textTransform:"uppercase"}}>Portfolio Intelligence</div></div>}</div>
       <div style={{padding:"12px 8px",flex:1}}>{NAV.map(n=>{const a=tab===n.key;return<button key={n.key} onClick={()=>setTab(n.key)} style={{display:"flex",alignItems:"center",gap:12,width:"100%",padding:"12px 16px",border:"none",borderRadius:12,cursor:"pointer",marginBottom:4,fontFamily:ff,background:a?P.goldSoft:"transparent"}}><div style={{width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={a?P.gold:P.txM} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={n.d}/></svg></div>{!sideCollapsed&&<span style={{fontSize:14,fontWeight:a?600:500,color:a?P.gold:P.txS,whiteSpace:"nowrap"}}>{n.label}</span>}</button>})}</div>
+      <button onClick={()=>setView("home")} style={{display:"flex",alignItems:"center",gap:12,width:"calc(100% - 16px)",padding:"10px 16px",border:"none",borderRadius:12,cursor:"pointer",margin:"0 8px 8px",fontFamily:ff,background:"transparent"}}><div style={{width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={P.txM} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3"/></svg></div>{!sideCollapsed&&<span style={{fontSize:13,fontWeight:500,color:P.txS,whiteSpace:"nowrap"}}>Home Page</span>}</button>
       <div style={{padding:sideCollapsed?"16px":"16px 20px",borderTop:`1px solid ${P.border}`,display:"flex",alignItems:"center",gap:10,cursor:"pointer"}} onClick={logout}><div style={{width:32,height:32,borderRadius:10,background:`linear-gradient(145deg,${P.elevated},${P.surface})`,border:`1px solid ${P.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden"}}>{user?.picture?<img src={user.picture} style={{width:32,height:32,borderRadius:10}} referrerPolicy="no-referrer"/>:<span style={{fontSize:13,fontWeight:700,color:P.gold}}>{(user?.name||"?")[0]}</span>}</div>{!sideCollapsed&&<div><div style={{fontSize:13,fontWeight:600,color:P.text}}>{user?.name||"User"}</div><div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:6,height:6,borderRadius:3,background:syncing?P.orange:user?.email!=="guest"?P.green:P.txM,boxShadow:user?.email!=="guest"?`0 0 6px ${P.green}`:"none"}}/><span style={{fontSize:11,color:P.txM}}>{syncing?"Syncing...":user?.email!=="guest"?"Synced":"Guest"}</span></div></div>}</div>
     </div>
 
