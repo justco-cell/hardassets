@@ -430,31 +430,15 @@ export default function HardAssetsWeb(){
 
   useEffect(()=>{
     if(view!=="login")return;
-    const initGSI=()=>{if(!window.google?.accounts?.id)return;window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleLogin,auto_select:true});window.google.accounts.id.renderButton(document.getElementById("gsi-btn-web"),{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:360})};
-    if(window.google?.accounts?.id){initGSI()}else{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=initGSI;document.head.appendChild(s)}
+    const initGSI=()=>{if(!window.google?.accounts?.id)return;window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleLogin});const el=document.getElementById("gsi-btn-web");if(el)window.google.accounts.id.renderButton(el,{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:340})};
+    const t=setTimeout(()=>{if(window.google?.accounts?.id){initGSI()}else{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=()=>setTimeout(initGSI,100);document.head.appendChild(s)}},100);
+    return()=>clearTimeout(t);
   },[view]);
 
   const logout=()=>{setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setView("home")};
   const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setView("app");refreshPrices()};
 
   const refreshPrices=async()=>{setRefreshing(true);const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);setPrices(prev=>{const next={...prev};if(mp){if(mp.gold){next.goldChg=prev.gold>0?((mp.gold-prev.gold)/prev.gold*100):0;next.gold=mp.gold}if(mp.silver){next.silverChg=prev.silver>0?((mp.silver-prev.silver)/prev.silver*100):0;next.silver=mp.silver}if(mp.platinum){next.platChg=prev.platinum>0?((mp.platinum-prev.platinum)/prev.platinum*100):0;next.platinum=mp.platinum}if(mp.palladium)next.palladium=mp.palladium}if(cp){if(cp.BTC){next.btc=cp.BTC.price;next.btcChg=cp.BTC.change}if(cp.ETH){next.eth=cp.ETH.price;next.ethChg=cp.ETH.change}if(cp.SOL){next.sol=cp.SOL.price;next.solChg=cp.SOL.change}}return next});if(mp)setMetals(prev=>prev.map(m=>{const ls=({Gold:mp.gold,Silver:mp.silver,Platinum:mp.platinum,Palladium:mp.palladium})[m.metal];return ls?{...m,spot:Math.round(ls*100)/100}:m}));if(cp)setCrypto(prev=>prev.map(c=>{const l=cp[c.coin];return l?{...c,price:l.price}:c}));setLastRefresh(new Date().toLocaleTimeString());setRefreshing(false)};
-
-  // ═══ HOME & CONTACT ═══
-  if(view==="home") return <HomePage onNav={v=>{if(v==="app"&&user)setView("app");else setView(v)}} user={user}/>;
-  if(view==="contact") return <ContactPg onNav={v=>setView(v)}/>;
-
-  // ═══ LOGIN SCREEN ═══
-  if(view==="login")return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
-    <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
-    <div style={{textAlign:"center",maxWidth:400,padding:40}}>
-      <div style={{width:72,height:72,borderRadius:22,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:32,fontWeight:900,color:P.bg,marginBottom:28,boxShadow:`0 12px 40px rgba(212,168,67,0.3)`}}>H</div>
-      <div style={{fontSize:32,fontWeight:800,color:P.text,marginBottom:8,animation:"fadeUp 0.6s ease both"}}>HardAssets</div>
-      <div style={{fontSize:14,color:P.txS,marginBottom:48,lineHeight:1.5,animation:"fadeUp 0.6s ease 0.1s both"}}>Track your precious metals, real estate, crypto<br/>& alternative investments in one dashboard</div>
-      <div style={{animation:"fadeUp 0.6s ease 0.2s both"}}><div id="gsi-btn-web" style={{display:"flex",justifyContent:"center",marginBottom:16}}/><button onClick={guestLogin} style={{padding:"15px 32px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button></div>
-      {syncing&&<div style={{marginTop:24,fontSize:14,color:P.gold}}>Loading your portfolio...</div>}
-      <div style={{marginTop:60,fontSize:11,color:P.txM}}>Data saved securely to Supabase. Free forever.</div>
-    </div>
-  </div>;
 
   const goldS=useMemo(()=>spark(2850,35,0.008),[]);const silverS=useMemo(()=>spark(30,35,0.012),[]);const btcS=useMemo(()=>spark(78000,35,0.02),[]);const ethS=useMemo(()=>spark(2400,35,0.018),[]);
   const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
@@ -494,6 +478,24 @@ export default function HardAssetsWeb(){
       </GC></div></div>;
     case "analyzer": return<DealAnalyzer/>;
     default: return null}};
+
+  // ═══ HOME (with login modal) & CONTACT ═══
+  if(view==="home"||view==="login") return <>
+    <HomePage onNav={v=>{if(v==="app"&&user)setView("app");else setView(v)}} user={user}/>
+    {view==="login"&&!user&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setView("home")}>
+      <div onClick={e=>e.stopPropagation()} style={{background:P.surface,border:`1px solid ${P.border}`,borderRadius:24,padding:40,maxWidth:420,width:"90%",textAlign:"center",position:"relative"}}>
+        <button onClick={()=>setView("home")} style={{position:"absolute",top:16,right:16,background:P.elevated,border:"none",color:P.txS,width:32,height:32,borderRadius:16,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+        <div style={{width:64,height:64,borderRadius:18,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:28,fontWeight:900,color:P.bg,marginBottom:24,boxShadow:`0 12px 40px rgba(212,168,67,0.3)`}}>H</div>
+        <div style={{fontSize:26,fontWeight:800,color:P.text,marginBottom:6}}>Sign In</div>
+        <div style={{fontSize:14,color:P.txS,marginBottom:32,lineHeight:1.5}}>Track your investments in one dashboard</div>
+        <div id="gsi-btn-web" style={{display:"flex",justifyContent:"center",marginBottom:16}}/>
+        <button onClick={()=>{guestLogin();setView("app")}} style={{padding:"14px 28px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
+        {syncing&&<div style={{marginTop:20,fontSize:14,color:P.gold}}>Loading your portfolio...</div>}
+        <div style={{marginTop:32,fontSize:11,color:P.txM}}>Data saved securely to Supabase. Free forever.</div>
+      </div>
+    </div>}
+  </>;
+  if(view==="contact") return <ContactPg onNav={v=>setView(v)}/>;
 
   return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",display:"flex"}}>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes modalIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}*{box-sizing:border-box}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:${P.txF};border-radius:3px}input::placeholder{color:${P.txF}}select option{background:${P.surface}}`}</style>
