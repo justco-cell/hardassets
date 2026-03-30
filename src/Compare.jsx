@@ -95,7 +95,6 @@ export default function ComparePage(){
   return<div style={{background:P.bg,minHeight:"100vh",color:P.text,fontFamily:ff}}>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');`}</style>
     <Nav/>
-    <div style={{background:"rgba(212,168,67,0.08)",borderBottom:"1px solid rgba(212,168,67,0.15)",padding:"10px 20px",display:"flex",justifyContent:"center",alignItems:"center"}}><span style={{fontSize:13,fontWeight:500,color:P.txS,textAlign:"center"}}><span style={{color:P.gold}}>🔒 No identity verification</span> · <span style={{color:P.gold}}>No bank connections</span> · <span style={{color:P.gold}}>No email verification</span></span></div>
 
     {/* Hero */}
     <div style={{textAlign:"center",padding:isMobile?"48px 20px 40px":"80px 24px 60px",position:"relative"}}>

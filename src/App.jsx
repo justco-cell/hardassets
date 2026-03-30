@@ -280,10 +280,6 @@ function HomePage({onNav,user}){
 
   return(<div style={{background:P.bg,minHeight:"100vh",color:P.text,fontFamily:ff}}>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}`}</style>
-    {!sessionStorage.getItem?.("ha_trust_dismissed")&&<div id="trust-bar" style={{background:"rgba(212,168,67,0.08)",borderBottom:"1px solid rgba(212,168,67,0.15)",padding:"10px 20px",display:"flex",justifyContent:"center",alignItems:"center",gap:8,position:"relative"}}>
-      <span style={{fontSize:13,fontWeight:500,color:P.txS,textAlign:"center"}}><span style={{color:P.gold}}>🔒 No identity verification</span> · <span style={{color:P.gold}}>No bank connections</span> · <span style={{color:P.gold}}>No email verification</span> · Track your hard assets on your terms.</span>
-      <button onClick={()=>{document.getElementById("trust-bar").style.display="none";try{sessionStorage.setItem("ha_trust_dismissed","1")}catch(e){}}} style={{position:"absolute",right:12,background:"none",border:"none",color:P.txM,fontSize:14,cursor:"pointer"}}>✕</button>
-    </div>}
     <nav style={S.nav}>
       <Logo/>
       <div style={{display:"flex",gap:20,alignItems:"center"}}>
@@ -303,21 +299,24 @@ function HomePage({onNav,user}){
       :[["Au","—"],["Ag","—"],["Pt","—"],["BTC","—"],["ETH","—"],["SOL","—"]].map(([s,v],i)=>
         <span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.txM}}>{v}</span></span>
       ))}
+      <span style={{color:P.txM}}>·</span><span style={{color:P.txM}}>🔒</span><span style={{color:P.gold}}>No sign-up required</span><span style={{color:P.txM}}>·</span><span style={{color:P.gold}}>Free forever</span>
     </div>
 
     {/* Hero */}
     <div style={{textAlign:"center",padding:"80px 40px 60px",position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:-200,left:"50%",transform:"translateX(-50%)",width:800,height:600,background:"radial-gradient(ellipse,rgba(212,168,67,.06) 0%,transparent 60%)",pointerEvents:"none"}}/>
       <div style={{position:"relative"}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 16px",borderRadius:20,border:"1px solid "+P.border,background:P.surface,fontSize:11,color:P.gold,letterSpacing:1.5,textTransform:"uppercase",fontWeight:600,marginBottom:24}}><div style={{width:6,height:6,borderRadius:"50%",background:P.green,animation:"pulse 2s infinite"}}/> Free to use — No credit card required</div>
-        <h1 style={{fontSize:"clamp(36px,5vw,48px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",maxWidth:720,margin:"0 auto 20px"}}>Track Everything That <span style={{background:`linear-gradient(90deg,${P.gold},#F5D78E,${P.gold})`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Holds Value</span></h1>
-        <p style={{fontSize:17,color:P.txS,maxWidth:540,margin:"0 auto 16px",lineHeight:1.6}}>Gold. Silver. Real estate. Crypto. Collectibles. The only portfolio dashboard built for hard asset investors.</p>
-        <div style={{display:"flex",gap:24,justifyContent:"center",flexWrap:"wrap",marginBottom:24}}>{[["🔒","Anonymous signup"],["📡","No bank connections"],["💰","Free forever"]].map(([ic,t],i)=><span key={i} style={{fontSize:13,fontWeight:500,color:P.txS}}>{ic} {t}</span>)}</div>
+        <h1 style={{fontSize:"clamp(30px,5vw,46px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",maxWidth:720,margin:"0 auto 20px"}}>The Only Dashboard Built for <span style={{color:P.gold}}>What You Actually Own</span></h1>
+        <p style={{maxWidth:560,margin:"0 auto",textAlign:"center"}}>
+          <span style={{display:"block",fontSize:17,color:P.txS,fontWeight:500,letterSpacing:"0.5px"}}>Gold. Silver. Real estate. Crypto. Collectibles. Private notes.</span>
+          <span style={{display:"block",fontSize:16,color:"#64748B",fontWeight:400,marginTop:8}}>Live prices, risk scoring, and allocation tracking — in one free dashboard.</span>
+        </p>
+        <div style={{display:"flex",gap:24,justifyContent:"center",flexWrap:"wrap",marginTop:16,marginBottom:24}}>{[["🔒","No identity verification"],["📡","No bank connections"],["💰","Free forever"]].map(([ic,t],i)=><span key={i} style={{fontSize:13,fontWeight:500,color:P.txS}}>{ic} {t}</span>)}</div>
         <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",marginBottom:12}}>
-          <Btn onClick={()=>onNav("demo")} style={{padding:"16px 36px",fontSize:16}}>Try Live Demo →</Btn>
-          <Btn variant="ghost" onClick={()=>onNav("login")} style={{padding:"16px 36px",fontSize:16}}>Sign In for Cloud Sync</Btn>
+          {user&&user.email!=="guest"?<Btn onClick={()=>onNav("app")} style={{padding:"16px 32px",fontSize:16}}>Go to Dashboard →</Btn>:<Btn onClick={()=>onNav("demo")} style={{padding:"16px 32px",fontSize:16}}>Try Live Demo →</Btn>}
+          <Btn variant="ghost" onClick={()=>onNav("login")} style={{padding:"16px 32px",fontSize:15}}>Sign In to Save</Btn>
         </div>
-        <div style={{fontSize:13,color:P.txM}}>No sign-up required to try. Your demo data stays in your browser.</div>
+        <div style={{fontSize:12,color:P.txM}}>No account needed. Demo data loaded instantly.</div>
 
         {/* Dashboard Mockup */}
         <div style={{maxWidth:960,margin:"0 auto"}}>
