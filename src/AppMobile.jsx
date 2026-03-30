@@ -401,15 +401,17 @@ function MobileLoginSheet({onClose,onGuestLogin,onEmailAuth,syncing}){
         {["login","signup"].map(m=><button key={m} onClick={()=>{setMode(m);setErr("")}} style={{flex:1,padding:"10px 0",background:mode===m?P.goldSoft:"transparent",color:mode===m?P.gold:P.txM,border:"none",fontSize:12,fontWeight:700,cursor:"pointer",textTransform:"uppercase",letterSpacing:1,fontFamily:ff}}>{m==="login"?"Sign In":"Sign Up"}</button>)}
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:10}}>
-        {mode==="signup"&&<FF label="Name" value={nm} onChange={setNm} placeholder="Your name"/>}
-        <FF label="Email" value={em} onChange={setEm} placeholder="you@email.com"/>
+        {mode==="signup"&&<FF label="Name" value={nm} onChange={setNm} placeholder="Any name or alias"/>}
+        <FF label="Email" value={em} onChange={setEm} placeholder="Any email — not verified"/>
         <FF label="Password" value={pw} onChange={setPw} placeholder="Min. 8 characters" type="password"/>
         <div style={{position:"absolute",left:"-9999px",opacity:0,height:0,overflow:"hidden"}}><input type="text" value={hp} onChange={e=>setHp(e.target.value)} tabIndex={-1} autoComplete="off"/></div>
+        {mode==="signup"&&<div style={{fontSize:11,color:P.txM,fontStyle:"italic",marginTop:-4}}>We don't verify your identity. Use any alias you prefer.</div>}
         {err&&<div style={{color:P.red,fontSize:13,display:"flex",alignItems:"center",gap:6}}><span>⚠</span>{err}</div>}
         <Btn onClick={submit} full style={{opacity:loading?0.6:1}}>{loading?"Please wait...":(mode==="login"?"Sign In":"Create Account")}</Btn>
       </div>
       <div style={{textAlign:"center",marginTop:12}}><button onClick={onGuestLogin} style={{background:"none",border:"none",color:P.txM,fontSize:12,cursor:"pointer",textDecoration:"underline",fontFamily:ff}}>Continue as guest</button></div>
       {syncing&&<div style={{textAlign:"center",marginTop:10,fontSize:12,color:P.gold}}>Loading...</div>}
+      <div style={{textAlign:"center",marginTop:12,fontSize:11,color:P.txS}}>🔒 No identity verification required.</div>
     </div>
   </div>;
 }
@@ -592,6 +594,11 @@ export default function HardAssets(){
         <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"5px 12px",borderRadius:16,border:"1px solid "+P.border,background:P.surface,fontSize:10,color:P.gold,letterSpacing:1,textTransform:"uppercase",fontWeight:600,marginBottom:20}}><div style={{width:5,height:5,borderRadius:"50%",background:P.green,animation:"pulse 2s infinite"}}/> Free — No credit card</div>
         <h1 style={{fontSize:32,fontWeight:800,lineHeight:1.1,letterSpacing:-1,margin:"0 auto 16px",maxWidth:340}}>HardAssets.io — Track Everything That <span style={{background:`linear-gradient(90deg,${P.gold},#F5D78E,${P.gold})`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Holds Value</span></h1>
         <p style={{fontSize:15,color:P.txS,maxWidth:300,margin:"0 auto 28px",lineHeight:1.5}}>Gold. Silver. Real estate. Crypto. Live prices & portfolio tracking for hard asset investors.</p>
+        <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:16,marginTop:12}}>
+  {[["🔒","Anonymous signup"],["📡","No bank links"],["💰","Free forever"]].map(([ic,t],i)=>
+    <span key={i} style={{fontSize:12,fontWeight:500,color:P.txS}}>{ic} {t}</span>
+  )}
+</div>
         <Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>
         <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In for Cloud Sync</Btn>
         <div style={{fontSize:11,color:P.txM,marginTop:8}}>No sign-up required to try.</div>

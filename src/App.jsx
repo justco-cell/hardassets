@@ -261,7 +261,12 @@ function HomePage({onNav,user}){
     ["Do you connect to my bank accounts?","No. HardAssets.io is a manual-entry tracker. You add holdings yourself or import from CSV. Zero risk of unauthorized access to financial accounts."],
     ["Can I import from a spreadsheet?","Yes. Every tab has an Import button that accepts CSV files. Export your data from any spreadsheet, click Import, and your holdings are added instantly."],
     ["What asset types can I track?","Precious metals (8 unit types), RE syndications (16 deal types), crypto (13+ coins), plus 11 asset classes in the master portfolio."],
-    ["Can I use it on my phone?","Yes. Fully responsive and works on any device. Your data syncs across all devices via your account."]
+    ["Can I use it on my phone?","Yes. Fully responsive and works on any device. Your data syncs across all devices via your account."],
+    ["Can anyone see my portfolio data?","Your portfolio data is encrypted and accessible only through your authenticated session. There is no admin panel that displays user portfolios in plain text."],
+    ["What if I don't want to track exact quantities?","You don't have to. Many users track approximate values, use nicknames for properties, or skip notes and location fields. The app works with whatever level of detail you're comfortable with."],
+    ["Can I delete all my data?","Yes. Export a full CSV backup from any tab, then delete your account. Deletion is permanent and removes all stored data from our servers."],
+    ["Do I need to use my real name or email?","No. Email signup does not verify your email address or require your real name. Use any alias you want. Just remember your credentials — we can't recover an account for an unverified email."],
+    ["What's the most private way to use HardAssets?","Sign up with a pseudonym and a private email. Use nicknames like 'Rental 1' instead of addresses. Track values without serial numbers. Use approximate quantities. Export CSV backups. The app gives full functionality regardless of how much detail you include."]
   ];
   const S={nav:{position:"sticky",top:0,zIndex:100,padding:"16px 40px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",background:"rgba(11,15,26,.85)",borderBottom:"1px solid "+P.border},
     section:{padding:"80px 40px",maxWidth:1100,margin:"0 auto"},
@@ -275,6 +280,10 @@ function HomePage({onNav,user}){
 
   return(<div style={{background:P.bg,minHeight:"100vh",color:P.text,fontFamily:ff}}>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}`}</style>
+    {!sessionStorage.getItem?.("ha_trust_dismissed")&&<div id="trust-bar" style={{background:"rgba(212,168,67,0.08)",borderBottom:"1px solid rgba(212,168,67,0.15)",padding:"10px 20px",display:"flex",justifyContent:"center",alignItems:"center",gap:8,position:"relative"}}>
+      <span style={{fontSize:13,fontWeight:500,color:P.txS,textAlign:"center"}}><span style={{color:P.gold}}>🔒 No identity verification</span> · <span style={{color:P.gold}}>No bank connections</span> · <span style={{color:P.gold}}>No email verification</span> · Track your hard assets on your terms.</span>
+      <button onClick={()=>{document.getElementById("trust-bar").style.display="none";try{sessionStorage.setItem("ha_trust_dismissed","1")}catch(e){}}} style={{position:"absolute",right:12,background:"none",border:"none",color:P.txM,fontSize:14,cursor:"pointer"}}>✕</button>
+    </div>}
     <nav style={S.nav}>
       <Logo/>
       <div style={{display:"flex",gap:20,alignItems:"center"}}>
@@ -302,7 +311,8 @@ function HomePage({onNav,user}){
       <div style={{position:"relative"}}>
         <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 16px",borderRadius:20,border:"1px solid "+P.border,background:P.surface,fontSize:11,color:P.gold,letterSpacing:1.5,textTransform:"uppercase",fontWeight:600,marginBottom:24}}><div style={{width:6,height:6,borderRadius:"50%",background:P.green,animation:"pulse 2s infinite"}}/> Free to use — No credit card required</div>
         <h1 style={{fontSize:"clamp(36px,5vw,48px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",maxWidth:720,margin:"0 auto 20px"}}>Track Everything That <span style={{background:`linear-gradient(90deg,${P.gold},#F5D78E,${P.gold})`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Holds Value</span></h1>
-        <p style={{fontSize:17,color:P.txS,maxWidth:540,margin:"0 auto 36px",lineHeight:1.6}}>Gold. Silver. Real estate. Crypto. Collectibles. The only portfolio dashboard built for hard asset investors.</p>
+        <p style={{fontSize:17,color:P.txS,maxWidth:540,margin:"0 auto 16px",lineHeight:1.6}}>Gold. Silver. Real estate. Crypto. Collectibles. The only portfolio dashboard built for hard asset investors.</p>
+        <div style={{display:"flex",gap:24,justifyContent:"center",flexWrap:"wrap",marginBottom:24}}>{[["🔒","Anonymous signup"],["📡","No bank connections"],["💰","Free forever"]].map(([ic,t],i)=><span key={i} style={{fontSize:13,fontWeight:500,color:P.txS}}>{ic} {t}</span>)}</div>
         <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",marginBottom:12}}>
           <Btn onClick={()=>onNav("demo")} style={{padding:"16px 36px",fontSize:16}}>Try Live Demo →</Btn>
           <Btn variant="ghost" onClick={()=>onNav("login")} style={{padding:"16px 36px",fontSize:16}}>Sign In for Cloud Sync</Btn>
@@ -437,11 +447,11 @@ function HomePage({onNav,user}){
     {/* Security */}
     <div id="security" style={S.section}>
       <div style={{textAlign:"center"}}>
-        <div style={S.sLabel}>Security & Trust</div>
-        <div style={S.sTitle}>Your Data, <span style={{color:P.gold}}>Protected</span></div>
+        <div style={S.sLabel}>Your Data, Your Control</div>
+        <div style={S.sTitle}>Privacy-First by <span style={{color:P.gold}}>Design</span></div>
       </div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,marginTop:36}}>
-        {[["🔒","Bank-Level Encryption","All data encrypted with AES-256 at rest and TLS in transit."],["🔑","Google Authentication","Sign in securely with Google. We never store your password."],["👁️","Manual Entry Only","We never connect to your bank or brokerage. Zero risk of unauthorized access."],["🛡️","Guest Mode Available","Try everything without creating an account. Demo data stays in your browser only."]].map(([ic,t,d],i)=>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:16,marginTop:36}}>
+        {[["🔐","You Decide What to Track","You control what goes in. Use general descriptions, nicknames for properties, or approximate values. The app works however you're comfortable using it."],["📡","No Bank Connections, Ever","We never connect to your bank, brokerage, dealer, or exchange. Every entry is manual — no external trail linking your accounts to this dashboard."],["🔒","Encryption at Every Layer","All data encrypted with AES-256 at rest and TLS in transit. Your portfolio is not stored in plain text."],["🗑️","Delete Anytime","Export your data and delete your entire account at any time. Deletion is permanent and removes all stored data from our servers."],["👤","No Real Identity Required","Sign up with any name and any email. We don't verify your identity or check your email. Use a nickname and a private email if you prefer."]].map(([ic,t,d],i)=>
           <div key={i} style={S.trustCard}><h4 style={{fontSize:14,fontWeight:700,marginBottom:6}}>{ic} {t}</h4><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>{d}</p></div>
         )}
       </div>
@@ -611,13 +621,14 @@ function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
 
       {/* Form fields */}
       <div style={{display:"flex",flexDirection:"column",gap:10}}>
-        {mode==="signup"&&<FF label="Name" value={name} onChange={setName} placeholder="Your name"/>}
-        <FF label="Email" value={email} onChange={setEmail} placeholder="you@email.com"/>
+        {mode==="signup"&&<FF label="Name" value={name} onChange={setName} placeholder="Any name or alias"/>}
+        <FF label="Email" value={email} onChange={setEmail} placeholder="Any email — not verified"/>
         <FF label="Password" value={pass} onChange={setPass} placeholder="Min. 8 characters" type="password"/>
 
         {/* Honeypot — invisible to humans */}
         <div style={{position:"absolute",left:"-9999px",opacity:0,height:0,overflow:"hidden"}}><input type="text" value={hp} onChange={e=>setHp(e.target.value)} tabIndex={-1} autoComplete="off"/></div>
 
+        {mode==="signup"&&<div style={{fontSize:12,color:P.txM,fontStyle:"italic"}}>We don't verify your identity. Use any alias you prefer.</div>}
         {/* Turnstile widget — invisible */}
         {mode==="signup"&&<div id="turnstile-web"/>}
 
@@ -632,7 +643,7 @@ function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
       </div>
 
       {syncing&&<div style={{textAlign:"center",marginTop:12,fontSize:13,color:P.gold}}>Loading your portfolio...</div>}
-      <div style={{textAlign:"center",marginTop:20,fontSize:11,color:P.txM}}>Data encrypted and saved securely to the cloud.</div>
+      <div style={{textAlign:"center",marginTop:20,fontSize:12,color:P.txS}}>🔒 No identity verification required. Use any name and email.</div>
     </div>
   </div>;
 }

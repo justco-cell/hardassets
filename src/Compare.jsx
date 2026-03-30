@@ -41,6 +41,7 @@ const cats=[
   ]},
   {name:"Access & Platform",rows:[
     {f:"Guest Mode",ha:"Full demo, no sign-up",ku:"14-day trial",gf:"Yes",mo:"7-day trial",em:"Yes",co:"30-day trial",haG:true,gfG:true,emG:true},
+    {f:"Anonymous Signup",ha:"No verification needed",ku:"Email + payment required",gf:"No account needed",mo:"Email + payment required",em:"Real identity for full features",co:"Apple ID required",haG:true,gfG:true},
     {f:"Bank Sync",ha:"Manual (by design)",ku:"20,000+ Plaid",gf:"—",mo:"Plaid",em:"Plaid",co:"Plaid",kuG:true,moG:true,emG:true,coG:true},
     {f:"Budgeting",ha:"—",ku:"—",gf:"—",mo:"Full",em:"Full",co:"Full",moG:true,emG:true,coG:true},
     {f:"Mobile",ha:"PWA + Play Store",ku:"PWA",gf:"iOS + Android",mo:"iOS + Android",em:"iOS + Android",co:"iOS + Mac",haG:true,kuG:true,gfG:true,moG:true,emG:true,coG:true},
@@ -52,23 +53,23 @@ const compKeys=["ku","gf","mo","em","co"];
 const deepDives=[
   {name:"Kubera",price:"$249/year",
     theyDo:["Connects to 20,000+ banks via Plaid","Deep DeFi/NFT tracking with wallet sync","Estate planning 'dead man\\'s switch'","Clean, modern interface"],
-    weDo:["Free forever vs $2,490 over 10 years","Built-in Deal Analyzer (CoC, DSCR)","Risk scoring (1-10) per asset","Notes & Lending tab","Target vs Actual allocation bars","Oz-per-unit metal conversion"],
+    weDo:["Free forever vs $2,490 over 10 years","Built-in Deal Analyzer (CoC, DSCR)","Risk scoring (1-10) per asset","Notes & Lending tab","Target vs Actual allocation bars","No identity verification — use any name and email"],
     chooseThem:"You need bank syncing and deep DeFi/NFT tracking",chooseUs:"You're focused on hard assets and don't want to pay $249/year"},
   {name:"GoldFolio",price:"Free",
     theyDo:["Best metals-only UX","Clean, focused design","Native iOS + Android apps"],
-    weDo:["Tracks 6 asset types, not just metals","Deal Analyzer for RE","Risk scoring and target allocation","Income projections","Markets page with crypto + forex"],
+    weDo:["Tracks 6 asset types, not just metals","Deal Analyzer for RE","Risk scoring and target allocation","Income projections","No identity verification — use any name and email"],
     chooseThem:"You ONLY hold physical metals and nothing else",chooseUs:"You own metals AND any other alternative asset"},
   {name:"Monarch Money",price:"$14.99/mo",
     theyDo:["Best budgeting app (WSJ, Forbes)","Full bank/credit card sync","Couples collaboration features","Clean spending analytics"],
-    weDo:["Free vs $180/year","Physical metals with oz conversion","RE syndications with IRR","Deal analysis and risk scoring","Collectibles and private notes"],
+    weDo:["Free vs $180/year","Physical metals with oz conversion","RE syndications with IRR","Deal analysis and risk scoring","No identity verification — use any name and email"],
     chooseThem:"You want full budgeting + bank syncing for everyday spending",chooseUs:"Your wealth is primarily in hard assets, not bank accounts"},
   {name:"Empower",price:"Free",
     theyDo:["Most popular free net worth tracker","Excellent stock/bond portfolio analysis","Retirement planner","Investment fee analyzer"],
-    weDo:["Built for hard assets, not wealth management leads","Physical metals tracking","RE syndications and LP positions","Collectibles, notes, deal analysis","Bank-level encryption for all data"],
+    weDo:["Built for hard assets, not wealth management leads","Physical metals tracking","RE syndications and LP positions","Collectibles, notes, deal analysis","No identity verification — use any name and email"],
     chooseThem:"You're a traditional stock/bond investor open to wealth management",chooseUs:"You don't want to be a sales lead"},
   {name:"Copilot Money",price:"$95/year",
     theyDo:["Apple Design Award finalist","Beautiful native iOS experience","AI-powered transaction categorization","Premium feel and polish"],
-    weDo:["Free vs $95/year","Works on any device (web + Android)","Metals, syndications, collectibles","Deal analysis and risk scoring","CSV import/export on every tab"],
+    weDo:["Free vs $95/year","Works on any device (web + Android)","Metals, syndications, collectibles","Deal analysis and risk scoring","No identity verification — use any name and email"],
     chooseThem:"You're an Apple user who wants premium budgeting",chooseUs:"You need hard asset tracking on any device"},
 ];
 
@@ -94,6 +95,7 @@ export default function ComparePage(){
   return<div style={{background:P.bg,minHeight:"100vh",color:P.text,fontFamily:ff}}>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');`}</style>
     <Nav/>
+    <div style={{background:"rgba(212,168,67,0.08)",borderBottom:"1px solid rgba(212,168,67,0.15)",padding:"10px 20px",display:"flex",justifyContent:"center",alignItems:"center"}}><span style={{fontSize:13,fontWeight:500,color:P.txS,textAlign:"center"}}><span style={{color:P.gold}}>🔒 No identity verification</span> · <span style={{color:P.gold}}>No bank connections</span> · <span style={{color:P.gold}}>No email verification</span></span></div>
 
     {/* Hero */}
     <div style={{textAlign:"center",padding:isMobile?"48px 20px 40px":"80px 24px 60px",position:"relative"}}>
