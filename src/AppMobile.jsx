@@ -350,7 +350,7 @@ const DEMO_DATA={
 function MobileLoginSheet({onClose,onGuestLogin,onEmailAuth,syncing}){
   const[mode,setMode]=useState("login");
   const[em,setEm]=useState("");const[pw,setPw]=useState("");const[nm,setNm]=useState("");
-  const[err,setErr]=useState("");const[loading,setLoading]=useState(false);const[hp,setHp]=useState("");
+  const[err,setErr]=useState("");const[loading,setLoading]=useState(false);const[hp,setHp]=useState("");const[formLoadedAt]=useState(Date.now());
   const gRef=useRef(null);const doneRef=useRef(false);
 
   useEffect(()=>{
@@ -367,7 +367,7 @@ function MobileLoginSheet({onClose,onGuestLogin,onEmailAuth,syncing}){
     if(pw.length<8){setErr("Password must be at least 8 characters.");return}
     if(hp)return;
     setLoading(true);
-    const result=await onEmailAuth(mode==="signup"?"signup":"login",em,pw,nm.trim());
+    const result=await onEmailAuth(mode==="signup"?"signup":"login",em,pw,nm.trim(),formLoadedAt);
     if(result?.error)setErr(result.error);
     setLoading(false);
   };
@@ -652,8 +652,8 @@ export default function HardAssets(){
     </div>
 
     {/* LOGIN MODAL */}
-    {view==="login"&&(!user||user.email==="guest")&&<MobileLoginSheet onClose={()=>setView("home")} onGuestLogin={guestLogin} onEmailAuth={async(action,email,pass,name)=>{
-      const r=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password:pass,name,_ts:Date.now()})});
+    {view==="login"&&(!user||user.email==="guest")&&<MobileLoginSheet onClose={()=>setView("home")} onGuestLogin={guestLogin} onEmailAuth={async(action,email,pass,name,formLoadedAt)=>{
+      const r=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password:pass,name,_ts:formLoadedAt})});
       const d=await r.json();if(d.error)return{error:d.error};
       setAuthToken(d.token);setUser({email:d.email,name:d.name||email.split("@")[0]});setView("app");
       setSyncing(true);const saved=await cloudLoad(d.token);if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices();
