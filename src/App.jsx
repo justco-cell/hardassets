@@ -219,6 +219,19 @@ function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collec
 function HomePage({onNav,user}){
   const[openFaq,setOpenFaq]=useState(null);
   const[legalModal,setLegalModal]=useState(null);
+  const[livePrices,setLivePrices]=useState(null);
+  useEffect(()=>{
+    (async()=>{
+      try{
+        const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
+        const p={};
+        if(mp){p.gold=mp.gold;p.silver=mp.silver;p.platinum=mp.platinum;p.palladium=mp.palladium}
+        if(cp){if(cp.BTC)p.btc=cp.BTC.price;if(cp.ETH)p.eth=cp.ETH.price;if(cp.SOL)p.sol=cp.SOL.price;
+          if(cp.BTC)p.btcChg=cp.BTC.change;if(cp.ETH)p.ethChg=cp.ETH.change;if(cp.SOL)p.solChg=cp.SOL.change}
+        if(Object.keys(p).length>0)setLivePrices(p);
+      }catch(e){}
+    })();
+  },[]);
   const faqs=[
     ["Do I need to create an account?","No. You can try the full dashboard as a guest with demo data — no sign-up required. Sign in with Google when you want cloud sync and cross-device access."],
     ["Where do the live prices come from?","Metal prices (gold, silver, platinum, palladium) are pulled from metals.dev in real-time. Crypto prices (BTC, ETH, SOL, and 10+ coins) come from CoinGecko's API."],
@@ -252,10 +265,14 @@ function HomePage({onNav,user}){
     </nav>
 
     <div style={{padding:"8px 40px",background:P.surface,borderBottom:"1px solid "+P.border,display:"flex",justifyContent:"center",gap:24,alignItems:"center",fontSize:12,fontFamily:mono,overflow:"hidden"}}>
-      <span style={{color:P.txM}}>LIVE</span><div style={{width:5,height:5,borderRadius:3,background:P.green}}/>
-      {[["Au","$3,042","+0.8%",true],["Ag","$34.18","+1.2%",true],["Pt","$1,021","-0.3%",false],["BTC","$87,420","+2.1%",true],["ETH","$2,050","-0.8%",false],["SOL","$140","+3.4%",true]].map(([s,p,c,up],i)=>
-        <span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.text}}>{p}</span> <span style={{color:up?P.green:P.red,fontSize:11}}>{c}</span></span>
-      )}
+      <span style={{color:P.txM}}>LIVE</span><div style={{width:5,height:5,borderRadius:3,background:livePrices?P.green:P.txM}}/>
+      {(livePrices?[
+        ["Au",livePrices.gold],["Ag",livePrices.silver],["Pt",livePrices.platinum],
+        ["BTC",livePrices.btc,livePrices.btcChg],["ETH",livePrices.eth,livePrices.ethChg],["SOL",livePrices.sol,livePrices.solChg]
+      ].map(([s,v,chg],i)=>{const p=v>999?"$"+Math.round(v).toLocaleString():"$"+(v||0).toFixed(2);return<span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.text}}>{p}</span>{chg!=null&&<span style={{color:chg>=0?P.green:P.red,fontSize:11}}> {chg>=0?"+":""}{chg.toFixed(1)}%</span>}</span>})
+      :[["Au","—"],["Ag","—"],["Pt","—"],["BTC","—"],["ETH","—"],["SOL","—"]].map(([s,v],i)=>
+        <span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.txM}}>{v}</span></span>
+      ))}
     </div>
 
     {/* Hero */}
