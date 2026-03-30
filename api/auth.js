@@ -58,11 +58,9 @@ export default async function handler(req, res) {
       if (trimName.length < 2) return res.status(400).json({ error: 'Name must be at least 2 characters.' });
       if (/^\d+$/.test(trimName)) return res.status(400).json({ error: 'Please enter a real name.' });
 
-      // Cloudflare Turnstile verification
+      // Cloudflare Turnstile verification (optional — only if token provided and secret configured)
       const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET_KEY;
-      if (TURNSTILE_SECRET) {
-        if (!turnstileToken) return res.status(400).json({ error: 'Security verification required. Please try again.' });
-
+      if (TURNSTILE_SECRET && turnstileToken) {
         const tRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
