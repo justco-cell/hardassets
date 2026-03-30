@@ -50,7 +50,7 @@ async function fetchCryptoPrices(){
 // ═══ CSV HELPERS ═══
 const csvExport=(headers,rows,filename)=>{const csv=[headers.join(","),...rows.map(r=>r.map(c=>typeof c==="string"&&c.includes(",")?`"${c}"`:c).join(","))].join("\n");const b=new Blob([csv],{type:"text/csv"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=filename;a.click();URL.revokeObjectURL(u)};
 
-// ═══ SUPABASE CLOUD PERSISTENCE ═══
+// ═══ CLOUD PERSISTENCE ═══
 const GOOGLE_CLIENT_ID="159487463622-ol75fn02c9cg8gmd2h4bpk36gaga3rcf.apps.googleusercontent.com";
 
 async function cloudSave(authToken,data){

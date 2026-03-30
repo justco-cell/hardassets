@@ -34,7 +34,7 @@ async function fetchCryptoPrices(){try{const ids=Object.values(COIN_IDS).join(",
 // ═══ CSV HELPERS ═══
 const csvExport=(headers,rows,filename)=>{const csv=[headers.join(","),...rows.map(r=>r.map(c=>typeof c==="string"&&c.includes(",")?`"${c}"`:c).join(","))].join("\n");const b=new Blob([csv],{type:"text/csv"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=filename;a.click();URL.revokeObjectURL(u)};
 
-// ═══ SUPABASE CLOUD PERSISTENCE ═══
+// ═══ CLOUD PERSISTENCE ═══
 const GOOGLE_CLIENT_ID="159487463622-ol75fn02c9cg8gmd2h4bpk36gaga3rcf.apps.googleusercontent.com";
 
 async function cloudSave(authToken,data){
@@ -223,7 +223,7 @@ function HomePage({onNav,user}){
     ["Do I need to create an account?","No. You can try the full dashboard as a guest with demo data — no sign-up required. Sign in with Google when you want cloud sync and cross-device access."],
     ["Where do the live prices come from?","Metal prices (gold, silver, platinum, palladium) are pulled from metals.dev in real-time. Crypto prices (BTC, ETH, SOL, and 10+ coins) come from CoinGecko's API."],
     ["How does the oz-per-unit calculation work?","Different metal forms contain different amounts of troy ounces. A 1oz coin = 1 oz, a 100oz bar = 100 oz, a kilo bar = 32.15 oz. The dashboard automatically multiplies your quantity by the oz-per-unit and the live spot price."],
-    ["How is my data secured?","Your data is stored in encrypted PostgreSQL database (Supabase) with server-side API routes. Your browser never touches the database directly. Authentication uses Google Identity Services."],
+    ["How is my data secured?","Your data is stored in an enterprise-grade encrypted cloud database with AES-256 encryption. Your browser never touches the database directly. Authentication is handled by Google Identity Services — we never see your password. All connections use HTTPS/TLS encryption."],
     ["Do you connect to my bank accounts?","No. HardAssets.io is a manual-entry tracker. You add holdings yourself or import from CSV. Zero risk of unauthorized access to financial accounts."],
     ["Can I import from a spreadsheet?","Yes. Every tab has an Import button that accepts CSV files. Export your data from any spreadsheet, click Import, and your holdings are added instantly."],
     ["What asset types can I track?","Precious metals (8 unit types), RE syndications (16 deal types), crypto (13+ coins), plus 11 asset classes in the master portfolio."],
@@ -403,7 +403,7 @@ function HomePage({onNav,user}){
         <div style={S.sTitle}>Your Data, <span style={{color:P.gold}}>Protected</span></div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20,marginTop:36}}>
-        {[["🔒","Bank-Level Encryption","All data encrypted with AES-256. Hosted on Supabase with enterprise security."],["🔑","Google Authentication","Sign in with Google. We never see your password."],["👁️","Manual Entry Only","We never connect to your bank or brokerage. Zero risk of unauthorized access."],["🛡️","Guest Mode Available","Try everything without creating an account. Demo data stays in your browser only."]].map(([ic,t,d],i)=>
+        {[["🔒","Bank-Level Encryption","All data encrypted with AES-256 at rest and TLS in transit."],["🔑","Google Authentication","Sign in securely with Google. We never store your password."],["👁️","Manual Entry Only","We never connect to your bank or brokerage. Zero risk of unauthorized access."],["🛡️","Guest Mode Available","Try everything without creating an account. Demo data stays in your browser only."]].map(([ic,t,d],i)=>
           <div key={i} style={S.trustCard}><h4 style={{fontSize:14,fontWeight:700,marginBottom:6}}>{ic} {t}</h4><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>{d}</p></div>
         )}
       </div>
@@ -476,8 +476,8 @@ function HomePage({onNav,user}){
         {legalModal==="privacy"?<div style={{fontSize:13,color:P.txS,lineHeight:1.8}}>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>Effective Date:</strong> March 26, 2026</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>What We Collect:</strong> When you sign in with Google, we receive your name, email address, and profile picture. We store the portfolio data you enter into the dashboard.</p>
-          <p style={{marginBottom:16}}><strong style={{color:P.text}}>How We Use It:</strong> Your data is used solely to provide the HardAssets.io portfolio tracking service. We do not sell, share, rent, or trade your personal information or portfolio data with any third party.</p>
-          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Data Storage:</strong> Your portfolio data is stored in an encrypted PostgreSQL database hosted on Supabase. All data transmission uses HTTPS/TLS encryption.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>How We Use It:</strong> Your data is used to provide the HardAssets.io portfolio tracking service. We use industry-standard security practices to protect your information.</p>
+          <p style={{marginBottom:16}}><strong style={{color:P.text}}>Data Storage:</strong> Your portfolio data is protected with bank-level AES-256 encryption in an enterprise-grade cloud database. All data transmission uses HTTPS/TLS encryption.</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>No Tracking:</strong> We do not use tracking cookies, advertising pixels, or analytics that identify individual users.</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>Data Deletion:</strong> You may request deletion of your account and all associated data at any time by contacting support@hardassets.io.</p>
           <p style={{marginBottom:16}}><strong style={{color:P.text}}>Contact:</strong> For any privacy questions, email support@hardassets.io.</p>
@@ -589,7 +589,7 @@ export default function HardAssetsWeb(){
   // Restore data on mount if session exists
   useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets);if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}))}loadSnapshots(authToken).then(setSnapshots);setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
 
-  // Auto-save to Supabase on data change
+  // Auto-save to cloud on data change
   const saveTimer=useRef(null);
   useEffect(()=>{
     if(!authToken||!user)return;
@@ -790,7 +790,7 @@ export default function HardAssetsWeb(){
         <div id="gsi-btn-web" style={{display:"flex",justifyContent:"center",marginBottom:16}}/>
         <button onClick={()=>{guestLogin();setView("app")}} style={{padding:"14px 28px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
         {syncing&&<div style={{marginTop:20,fontSize:14,color:P.gold}}>Loading your portfolio...</div>}
-        <div style={{marginTop:32,fontSize:11,color:P.txM}}>Data saved securely to Supabase with encryption.</div>
+        <div style={{marginTop:32,fontSize:11,color:P.txM}}>Data encrypted and saved securely to the cloud.</div>
       </div>
     </div>}
   </>;
@@ -852,7 +852,7 @@ export default function HardAssetsWeb(){
           ["What is Cap Rate?","Cap Rate = (Annual Rental Income - Annual Expenses) / Property Value × 100. It measures a property's return independent of financing. Higher cap rates generally mean higher returns but may indicate higher risk."],
           ["What's the difference between Syndications and Physical RE?","Syndications are passive LP (limited partner) investments in deals managed by sponsors. Physical RE is property you own directly — tracking purchase price, mortgage, rental income, and cash flow."],
           ["How do target allocations work?","Click 'Set Targets' in the Portfolio tab to set your ideal percentage for each asset class. The dashboard compares your actual allocation vs targets so you can see where to rebalance."],
-          ["Is my data saved automatically?","Yes. All changes auto-save to the cloud (Supabase) within 800ms when you're signed in with Google. Guest mode data is stored locally only and will be lost if you clear your browser."],
+          ["Is my data saved automatically?","Yes. All changes auto-save to the cloud within seconds when you're signed in with Google. Guest mode data is stored locally only and will be lost if you clear your browser."],
           ["Can I import from a spreadsheet?","Yes! Every tab has an 'Import' button that accepts CSV files. Export from Excel/Sheets as CSV, then import. Column names are matched automatically. You can also export your data to CSV anytime."],
           ["What do the risk scores mean?","Risk is rated 1-10: Green (1-3) = Low risk, Gold (4-6) = Medium, Orange (7-8) = High, Red (9-10) = Very High. Set risk based on your own assessment of each holding."],
           ["How is portfolio income calculated?","Annual income includes: syndication distributions (invested × rate%), property rental cash flow (rent - expenses - mortgage × 12), and note/lending interest (balance × rate%). All are summed in the Portfolio tab."],

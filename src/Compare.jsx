@@ -64,7 +64,7 @@ const deepDives=[
     chooseThem:"You want full budgeting + bank syncing for everyday spending",chooseUs:"Your wealth is primarily in hard assets, not bank accounts"},
   {name:"Empower",price:"Free",
     theyDo:["Most popular free net worth tracker","Excellent stock/bond portfolio analysis","Retirement planner","Investment fee analyzer"],
-    weDo:["No upselling or wealth management sales calls","Physical metals tracking","RE syndications and LP positions","Collectibles, notes, deal analysis","Privacy — we never sell your data to advisors"],
+    weDo:["No upselling or wealth management sales calls","Physical metals tracking","RE syndications and LP positions","Collectibles, notes, deal analysis","No ads or upsells inside the dashboard"],
     chooseThem:"You're a traditional stock/bond investor open to wealth management",chooseUs:"You don't want to be a sales lead"},
   {name:"Copilot Money",price:"$95/year",
     theyDo:["Apple Design Award finalist","Beautiful native iOS experience","AI-powered transaction categorization","Premium feel and polish"],
