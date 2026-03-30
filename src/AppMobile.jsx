@@ -479,6 +479,7 @@ export default function HardAssets(){
       <div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:28,height:28,borderRadius:8,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:900,color:P.bg}}>H</div><span style={{fontSize:15,fontWeight:800,color:P.text}}>Hard<span style={{color:P.gold}}>Assets</span></span></div>
       <div style={{display:"flex",alignItems:"center",gap:10}}>
         <a href="/blog" style={{color:P.txS,fontSize:11,textDecoration:"none"}}>Blog</a>
+        <a href="/compare" style={{color:P.txS,fontSize:11,textDecoration:"none"}}>Compare</a>
         {user?<Btn onClick={()=>setView("app")} style={{padding:"8px 16px",fontSize:12}}>Dashboard →</Btn>:<Btn onClick={()=>setView("login")} style={{padding:"8px 16px",fontSize:12}}>Get Started</Btn>}
       </div>
     </nav>

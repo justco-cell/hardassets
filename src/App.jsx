@@ -218,6 +218,7 @@ function HomePage({onNav,user}){
       <Logo/>
       <div style={{display:"flex",gap:20,alignItems:"center"}}>
         <a href="/blog" style={{color:P.txS,fontSize:13,textDecoration:"none"}}>Blog</a>
+        <a href="/compare" style={{color:P.txS,fontSize:13,textDecoration:"none"}}>Compare</a>
         <button onClick={()=>onNav("contact")} style={{background:"none",border:"none",color:P.txS,fontSize:13,cursor:"pointer"}}>Contact</button>
         {user?<Btn onClick={()=>onNav("app")}>Dashboard →</Btn>:<><button onClick={()=>onNav("login")} style={{background:"none",border:"none",color:P.gold,fontSize:13,cursor:"pointer",fontWeight:600}}>Login</button><Btn onClick={()=>onNav("demo")}>Try Demo</Btn></>}
       </div>

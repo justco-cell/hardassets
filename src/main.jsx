@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import AppMobile from './AppMobile.jsx'
 import { BlogIndex, BlogPost } from './Blog.jsx'
+import ComparePage from './Compare.jsx'
 
 const path = window.location.pathname
 
-// Blog routes
-if (path === '/blog' || path === '/blog/') {
+// Compare page
+if (path === '/compare' || path === '/compare/') {
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode><ComparePage /></React.StrictMode>
+  )
+} else if (path === '/blog' || path === '/blog/') {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode><BlogIndex /></React.StrictMode>
   )
