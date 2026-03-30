@@ -299,7 +299,6 @@ function HomePage({onNav,user}){
       :[["Au","—"],["Ag","—"],["Pt","—"],["BTC","—"],["ETH","—"],["SOL","—"]].map(([s,v],i)=>
         <span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.txM}}>{v}</span></span>
       ))}
-      <span style={{color:P.txM}}>·</span><span style={{color:P.txM}}>🔒</span><span style={{color:P.gold}}>No sign-up required</span><span style={{color:P.txM}}>·</span><span style={{color:P.gold}}>Free forever</span>
     </div>
 
     {/* Hero */}
