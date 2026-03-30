@@ -47,6 +47,16 @@ async function cloudLoad(authToken){
   try{const r=await fetch("/api/load",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken}});if(!r.ok)return null;const d=await r.json();return d.data||null}catch(e){console.log("Cloud load err:",e);return null}
 }
 
+async function saveSnapshot(authToken, data) {
+  if (!authToken) return;
+  try { await fetch("/api/snapshot", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + authToken }, body: JSON.stringify(data) }); } catch (e) {}
+}
+
+async function loadSnapshots(authToken, days = 365) {
+  if (!authToken) return [];
+  try { const r = await fetch("/api/snapshot?days=" + days, { headers: { "Authorization": "Bearer " + authToken } }); if (!r.ok) return []; const d = await r.json(); return d.snapshots || []; } catch (e) { return []; }
+}
+
 function logActivity(authToken,action,assetType,assetId,assetName,oldData,newData){
   if(!authToken)return;
   try{fetch("/api/log",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken},body:JSON.stringify({action,asset_type:assetType,asset_id:assetId,asset_name:assetName,old_data:oldData,new_data:newData})})}catch(e){}
@@ -131,7 +141,7 @@ function DealAnalyzer(){const[d,sD]=useState({price:"",rent:"",tax:"",insurance:
   </div>}
 
 // ═══ PORTFOLIO VIEW ═══
-function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collectibles=[],prices,targets,setTargets,allCrypto={},authToken:at}){
+function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collectibles=[],prices,targets,setTargets,allCrypto={},authToken:at,snapshots=[],snapRange="3M",setSnapRange}){
   const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
   const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
   const mT=metals.reduce((s,m)=>s+m.qty*(ozMap[m.unit]||1)*(spotMap[m.metal]||m.spot||0),0);
@@ -153,6 +163,24 @@ function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collec
   const[showTargets,setShowTargets]=useState(false);
 
   return<div>
+    {/* Performance Chart */}
+    {snapshots.length>1&&<GC style={{padding:20,marginBottom:20}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+        <div style={{fontSize:16,fontWeight:700,color:P.text}}>Portfolio Performance</div>
+        <div style={{display:"flex",gap:4}}>
+          {["1W","1M","3M","6M","1Y","All"].map(r=><button key={r} onClick={()=>setSnapRange(r)} style={{padding:"4px 10px",borderRadius:6,border:`1px solid ${snapRange===r?P.gold:P.border}`,background:snapRange===r?P.goldSoft:"transparent",color:snapRange===r?P.gold:P.txM,fontSize:11,fontWeight:600,cursor:"pointer",fontFamily:ff}}>{r}</button>)}
+        </div>
+      </div>
+      <ResponsiveContainer width="100%" height={200}>
+        <AreaChart data={(()=>{const now=Date.now();const ranges={"1W":7,"1M":30,"3M":90,"6M":180,"1Y":365,"All":9999};const days=ranges[snapRange]||90;return snapshots.filter(s=>now-new Date(s.snapshot_date).getTime()<days*86400000)})()}>
+          <defs><linearGradient id="perfGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={P.gold} stopOpacity={0.3}/><stop offset="100%" stopColor={P.gold} stopOpacity={0}/></linearGradient></defs>
+          <XAxis dataKey="snapshot_date" tick={{fontSize:10,fill:P.txM}} axisLine={false} tickLine={false} tickFormatter={d=>new Date(d).toLocaleDateString("en-US",{month:"short",day:"numeric"})}/>
+          <YAxis tick={{fontSize:10,fill:P.txM,fontFamily:mono}} axisLine={false} tickLine={false} tickFormatter={v=>v>=1e6?"$"+(v/1e6).toFixed(1)+"M":v>=1e3?"$"+(v/1e3).toFixed(0)+"K":"$"+v}/>
+          <Tooltip contentStyle={{background:P.elevated,border:`1px solid ${P.border}`,borderRadius:12,fontSize:12,fontFamily:mono}} formatter={v=>"$"+Math.round(v).toLocaleString()} labelFormatter={d=>new Date(d).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}/>
+          <Area type="monotone" dataKey="total_value" stroke={P.gold} strokeWidth={2} fill="url(#perfGrad)" dot={false}/>
+        </AreaChart>
+      </ResponsiveContainer>
+    </GC>}
     {/* Hero + Chart */}
     <div style={{display:"grid",gridTemplateColumns:"1fr 1.8fr",gap:20,marginBottom:20}}>
       <GC style={{padding:28,display:"flex",flexDirection:"column",justifyContent:"center"}}>
@@ -551,13 +579,15 @@ export default function HardAssetsWeb(){
   const[forex,setForex]=useState(null);
   const[marketSearch,setMarketSearch]=useState("");
   const[cryptoSort,setCryptoSort]=useState("price");
+  const[snapshots,setSnapshots]=useState([]);
+  const[snapRange,setSnapRange]=useState("3M");
 
   // Persist session to sessionStorage
   useEffect(()=>{try{if(user)sessionStorage.setItem("ha_user",JSON.stringify(user));else sessionStorage.removeItem("ha_user")}catch(e){}},[user]);
   useEffect(()=>{try{if(authToken)sessionStorage.setItem("ha_token",authToken);else sessionStorage.removeItem("ha_token")}catch(e){}},[authToken]);
 
   // Restore data on mount if session exists
-  useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets);if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}))}setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
+  useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets);if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}))}loadSnapshots(authToken).then(setSnapshots);setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
 
   // Auto-save to Supabase on data change
   const saveTimer=useRef(null);
@@ -568,6 +598,28 @@ export default function HardAssetsWeb(){
     return()=>{if(saveTimer.current)clearTimeout(saveTimer.current)};
   },[metals,synds,crypto,properties,notesLending,collectibles,targets,authToken,user]);
 
+  // Save portfolio snapshot (max once per day, handled server-side)
+  const snapTimer=useRef(null);
+  useEffect(()=>{
+    if(!authToken||!user||user.email==="guest")return;
+    if(snapTimer.current)clearTimeout(snapTimer.current);
+    snapTimer.current=setTimeout(()=>{
+      const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
+      const ozMap={"1 oz":1,"1/2 oz":0.5,"1/4 oz":0.25,"1/10 oz":0.1,"1 kg":32.151,"10 oz":10,"100 oz":100,"Gram":0.03215};
+      const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
+      const metals_value=metals.reduce((s,m)=>s+m.qty*(ozMap[m.unit]||1)*(spotMap[m.metal]||m.spot||0),0);
+      const re_value=synds.reduce((s,x)=>s+(x.invested||0),0);
+      const crypto_value=crypto.reduce((s,c)=>s+c.qty*(cSpot[c.coin]||c.price||0),0);
+      const properties_value=properties.reduce((s,p)=>s+((+p.currentValue||0)-(+p.mortgageBalance||0)),0);
+      const notes_value=notesLending.reduce((s,n)=>s+(+n.outstandingBalance||0),0);
+      const collectibles_value=collectibles.reduce((s,c)=>s+(+c.currentValue||0),0);
+      const total_value=metals_value+re_value+crypto_value+properties_value+notes_value+collectibles_value;
+      const income_annual=synds.reduce((s,x)=>s+x.invested*(x.expectedRate||0)/100,0)+properties.reduce((s,p)=>s+((+p.monthlyRent||0)-(+p.monthlyExpenses||0)-(+p.mortgagePayment||0))*12,0)+notesLending.reduce((s,n)=>s+(+n.outstandingBalance||0)*(+n.interestRate||0)/100,0);
+      if(total_value>0)saveSnapshot(authToken,{total_value,metals_value,re_value,crypto_value,properties_value,notes_value,collectibles_value,income_annual});
+    },5000);
+    return()=>{if(snapTimer.current)clearTimeout(snapTimer.current)};
+  },[metals,synds,crypto,properties,notesLending,collectibles,prices,allCrypto,authToken,user]);
+
   // Google Sign-In
   const handleGoogleLogin=async(credentialResponse)=>{
     const token=credentialResponse.credential;setAuthToken(token);
@@ -575,6 +627,7 @@ export default function HardAssetsWeb(){
     setSyncing(true);
     const saved=await cloudLoad(token);
     if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets);if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}))}
+    loadSnapshots(token).then(setSnapshots);
     setSyncing(false);setView("app");refreshPrices();
   };
 
@@ -611,7 +664,7 @@ export default function HardAssetsWeb(){
     return{val,gain,pct,up,sp,held}};
 
   const renderContent=()=>{switch(tab){
-    case "portfolio": return<PortfolioView metals={metals} synds={synds} crypto={crypto} properties={properties} notesLending={notesLending} collectibles={collectibles} prices={prices} targets={targets} setTargets={setTargets} allCrypto={allCrypto} authToken={authToken}/>;
+    case "portfolio": return<PortfolioView metals={metals} synds={synds} crypto={crypto} properties={properties} notesLending={notesLending} collectibles={collectibles} prices={prices} targets={targets} setTargets={setTargets} allCrypto={allCrypto} authToken={authToken} snapshots={snapshots} snapRange={snapRange} setSnapRange={setSnapRange}/>;
     case "metals": return<div><div style={{display:"grid",gridTemplateColumns:"1fr 2.2fr",gap:20}}>
       <GC style={{padding:"16px 20px"}}><PriceRow label="Gold" value={prices.gold} change={prices.goldChg} color={P.gold} sp={goldS}/><PriceRow label="Silver" value={prices.silver} change={prices.silverChg} color={P.txS} sp={silverS}/><PriceRow label="Platinum" value={prices.platinum} change={prices.platChg} color={P.cyan}/></GC>
       <GC style={{overflow:"hidden"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"16px 20px 10px"}}><span style={{fontSize:16,fontWeight:700,color:P.text}}>Holdings <span style={{fontSize:12,color:P.txM,background:P.goldSoft,padding:"2px 8px",borderRadius:6,fontWeight:600}}>{metals.length}</span></span><TabActions onAdd={()=>setModal("addMetal")} onExport={()=>{csvExport(["Metal","Unit","Qty","Cost/Unit","Spot","Value","Gain","Risk","Date Invested","Hold Period","Yrs Held","Notes"],metals.map(m=>{const r=mkRow(m,"metal");return[m.metal,m.unit,m.qty,m.costPerUnit,spotMap[m.metal]||m.spot,r.val,r.gain,m.risk||"",m.dateInvested||"",m.holdPeriod||"",r.held,m.notes||""]}),"metals.csv");if(window.posthog)window.posthog.capture('csv_exported',{type:'metal'})}} onImport={rows=>{const ni=rows.map(r=>({id:uid(),metal:r.Metal||"Gold",unit:r.Unit||"1 oz",qty:+(r.Qty||r.Quantity||0),costPerUnit:+(r["Cost/Unit"]||r.Cost||0),spot:+(r.Spot||0),name:(r.Metal||"Gold")+" "+(r.Unit||"1 oz"),risk:+(r.Risk||0)||null,dateInvested:r["Date Invested"]||"",holdPeriod:r["Hold Period"]||"",notes:r.Notes||""})).filter(i=>i.qty>0);setMetals(p=>[...p,...ni]);logActivity(authToken,"import","metal",null,"CSV Import",null,{count:ni.length});if(window.posthog)window.posthog.capture('csv_imported',{type:'metal',count:ni.length})}}/></div>

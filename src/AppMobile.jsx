@@ -70,6 +70,15 @@ async function cloudLoad(authToken){
   }catch(e){console.log("Cloud load err:",e);return null}
 }
 
+async function saveSnapshot(authToken, data) {
+  if (!authToken) return;
+  try { await fetch("/api/snapshot", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": "Bearer " + authToken }, body: JSON.stringify(data) }); } catch (e) {}
+}
+async function loadSnapshots(authToken, days = 365) {
+  if (!authToken) return [];
+  try { const r = await fetch("/api/snapshot?days=" + days, { headers: { "Authorization": "Bearer " + authToken } }); if (!r.ok) return []; const d = await r.json(); return d.snapshots || []; } catch (e) { return []; }
+}
+
 function logActivity(authToken,action,assetType,assetId,assetName,oldData,newData){
   if(!authToken)return;
   try{fetch("/api/log",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken},body:JSON.stringify({action,asset_type:assetType,asset_id:assetId,asset_name:assetName,old_data:oldData,new_data:newData})})}catch(e){}
@@ -214,7 +223,7 @@ function DealAnalyzer(){const[d,sD]=useState({price:"",rent:"",tax:"",insurance:
   </div>}
 
 // ═══ PORTFOLIO VIEW ═══
-function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collectibles=[],prices,targets,setTargets,allCrypto={}}){
+function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collectibles=[],prices,targets,setTargets,allCrypto={},snapshots=[],snapRange="3M",setSnapRange}){
   const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
   const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
   const mT=metals.reduce((s,m)=>s+m.qty*(ozMap[m.unit]||1)*(spotMap[m.metal]||m.spot||0),0);
@@ -237,6 +246,20 @@ function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collec
   const[showTargets,setShowTargets]=useState(false);
 
   return<div style={{paddingBottom:120}}>
+    {snapshots.length>1&&<GC style={{padding:16,marginBottom:14}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+        <span style={{fontSize:15,fontWeight:700}}>Performance</span>
+        <div style={{display:"flex",gap:3}}>{["1M","3M","6M","1Y","All"].map(r=><button key={r} onClick={()=>setSnapRange(r)} style={{padding:"3px 8px",borderRadius:5,border:`1px solid ${snapRange===r?P.gold:P.border}`,background:snapRange===r?P.goldSoft:"transparent",color:snapRange===r?P.gold:P.txM,fontSize:10,fontWeight:600,cursor:"pointer",fontFamily:ff}}>{r}</button>)}</div>
+      </div>
+      <ResponsiveContainer width="100%" height={160}>
+        <AreaChart data={(()=>{const now=Date.now();const ranges={"1M":30,"3M":90,"6M":180,"1Y":365,"All":9999};const days=ranges[snapRange]||90;return snapshots.filter(s=>now-new Date(s.snapshot_date).getTime()<days*86400000)})()}>
+          <defs><linearGradient id="perfGradM" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={P.gold} stopOpacity={0.3}/><stop offset="100%" stopColor={P.gold} stopOpacity={0}/></linearGradient></defs>
+          <XAxis dataKey="snapshot_date" tick={{fontSize:9,fill:P.txM}} axisLine={false} tickLine={false} tickFormatter={d=>new Date(d).toLocaleDateString("en-US",{month:"short",day:"numeric"})}/>
+          <Tooltip contentStyle={{background:P.elevated,border:`1px solid ${P.border}`,borderRadius:10,fontSize:11,fontFamily:mono}} formatter={v=>"$"+Math.round(v).toLocaleString()}/>
+          <Area type="monotone" dataKey="total_value" stroke={P.gold} strokeWidth={2} fill="url(#perfGradM)" dot={false}/>
+        </AreaChart>
+      </ResponsiveContainer>
+    </GC>}
     {/* Hero */}
     <div style={{textAlign:"center",padding:"8px 0 20px"}}>
       <div style={{fontSize:13,color:P.txS,fontWeight:500,marginBottom:6}}>Total Portfolio</div>
@@ -354,13 +377,15 @@ export default function HardAssets(){
   const[activityFilter,setActivityFilter]=useState("all");
   const[forex,setForex]=useState(null);
   const[marketSearch,setMarketSearch]=useState("");
+  const[snapshots,setSnapshots]=useState([]);
+  const[snapRange,setSnapRange]=useState("3M");
 
   // Persist session
   useEffect(()=>{try{if(user)sessionStorage.setItem("ha_user",JSON.stringify(user));else sessionStorage.removeItem("ha_user")}catch(e){}},[user]);
   useEffect(()=>{try{if(authToken)sessionStorage.setItem("ha_token",authToken);else sessionStorage.removeItem("ha_token")}catch(e){}},[authToken]);
 
   // Restore data on mount if session exists
-  useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets);if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}))}setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
+  useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets);if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}))}loadSnapshots(authToken).then(setSnapshots);setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
 
   // Auto-save to Supabase on any data change
   const saveTimer=useRef(null);
@@ -372,6 +397,26 @@ export default function HardAssets(){
     },800); // debounce 800ms
     return()=>{if(saveTimer.current)clearTimeout(saveTimer.current)};
   },[metals,synds,crypto,properties,notesLending,collectibles,targets,authToken,user]);
+
+  // Snapshot save
+  const snapTimer=useRef(null);
+  useEffect(()=>{
+    if(!authToken||!user||user.email==="guest")return;
+    if(snapTimer.current)clearTimeout(snapTimer.current);
+    snapTimer.current=setTimeout(()=>{
+      const spotMap={Gold:prices.gold,Silver:prices.silver,Platinum:prices.platinum,Palladium:prices.palladium};
+      const cSpot={BTC:prices.btc,ETH:prices.eth,SOL:prices.sol,...allCrypto};
+      const mT=metals.reduce((s,m)=>s+m.qty*(ozMap[m.unit]||1)*(spotMap[m.metal]||m.spot||0),0);
+      const sT=synds.reduce((s,x)=>s+(x.invested||0),0);
+      const cT=crypto.reduce((s,x)=>s+x.qty*(cSpot[x.coin]||x.price||0),0);
+      const pT=properties.reduce((s,x)=>s+((+(x.currentValue||0))-(+(x.mortgageBalance||0))),0);
+      const nT=notesLending.reduce((s,x)=>s+(+(x.outstandingBalance||0)),0);
+      const colT=collectibles.reduce((s,x)=>s+(+(x.currentValue||0)),0);
+      const total_value=mT+sT+cT+pT+nT+colT;
+      if(total_value>0)saveSnapshot(authToken,{total_value,metals_value:mT,syndications_value:sT,crypto_value:cT,real_estate_value:pT,notes_value:nT,collectibles_value:colT});
+    },5000);
+    return()=>{if(snapTimer.current)clearTimeout(snapTimer.current)};
+  },[metals,synds,crypto,properties,notesLending,collectibles,prices,allCrypto,authToken,user]);
 
   // Google Sign-In handler
   const handleGoogleLogin=async(credentialResponse)=>{
@@ -396,6 +441,7 @@ export default function HardAssets(){
       if(saved.targets)setTargets(saved.targets);
       if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}));
     }
+    loadSnapshots(token).then(setSnapshots);
     setSyncing(false);
     setView("app");
     refreshPrices();
@@ -595,7 +641,7 @@ export default function HardAssets(){
   const PriceTag=({label,value,change,color,sp})=>{const up=change>=0;return<div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 0",borderBottom:`1px solid ${P.border}`}}><div style={{display:"flex",alignItems:"center",gap:10}}><div style={{width:34,height:34,borderRadius:10,background:`${color}12`,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{fontSize:13,fontWeight:700,color}}>{label.slice(0,2)}</span></div><div><div style={{fontSize:13,fontWeight:600,color:P.text}}>{label}</div><div style={{fontSize:11,color:up?P.green:P.red,fontWeight:600,fontFamily:mono}}>{fPct(change)}</div></div></div><div style={{display:"flex",alignItems:"center",gap:10}}>{sp&&<MiniChart data={sp} color={up?P.green:P.red}/>}<div style={{fontSize:15,fontWeight:700,color:P.text,fontFamily:mono,minWidth:70,textAlign:"right"}}>{value>999?"$"+Math.round(value).toLocaleString():"$"+value.toFixed(2)}</div></div></div>};
 
   const renderTab=()=>{switch(tab){
-    case "portfolio": return <PortfolioView metals={metals} synds={synds} crypto={crypto} properties={properties} notesLending={notesLending} collectibles={collectibles} prices={prices} targets={targets} setTargets={setTargets} allCrypto={allCrypto}/>;
+    case "portfolio": return <PortfolioView metals={metals} synds={synds} crypto={crypto} properties={properties} notesLending={notesLending} collectibles={collectibles} prices={prices} targets={targets} setTargets={setTargets} allCrypto={allCrypto} snapshots={snapshots} snapRange={snapRange} setSnapRange={setSnapRange}/>;
     case "markets": {
       const fxPairs=[{code:"EUR",flag:"🇪🇺",name:"Euro"},{code:"GBP",flag:"🇬🇧",name:"British Pound"},{code:"CHF",flag:"🇨🇭",name:"Swiss Franc"},{code:"JPY",flag:"🇯🇵",name:"Japanese Yen"},{code:"CAD",flag:"🇨🇦",name:"Canadian Dollar"},{code:"AUD",flag:"🇦🇺",name:"Australian Dollar"},{code:"ILS",flag:"🇮🇱",name:"Israeli Shekel"},{code:"CNY",flag:"🇨🇳",name:"Chinese Yuan"},{code:"INR",flag:"🇮🇳",name:"Indian Rupee"},{code:"MXN",flag:"🇲🇽",name:"Mexican Peso"},{code:"BRL",flag:"🇧🇷",name:"Brazilian Real"},{code:"SGD",flag:"🇸🇬",name:"Singapore Dollar"},{code:"HKD",flag:"🇭🇰",name:"Hong Kong Dollar"},{code:"NZD",flag:"🇳🇿",name:"New Zealand Dollar"},{code:"SEK",flag:"🇸🇪",name:"Swedish Krona"},{code:"NOK",flag:"🇳🇴",name:"Norwegian Krone"}];
       const auAgRatio=prices.silver>0?(prices.gold/prices.silver):0;

@@ -1,4 +1,10 @@
 {
+  "crons": [
+    {
+      "path": "/api/cron-snapshot",
+      "schedule": "0 6 * * 0"
+    }
+  ],
   "rewrites": [
     { "source": "/blog", "destination": "/index.html" },
     { "source": "/blog/:slug", "destination": "/index.html" },
