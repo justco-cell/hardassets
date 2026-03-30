@@ -292,6 +292,39 @@ function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collec
   </div>
 }
 
+const DEMO_DATA={
+  metals:[
+    {id:"d1",metal:"Gold",unit:"1 oz",qty:25,costPerUnit:1850,spot:0,name:"Gold 1 oz",risk:3,dateInvested:"2023-03-15",notes:"American Eagles"},
+    {id:"d2",metal:"Gold",unit:"100 oz",qty:1,costPerUnit:182000,spot:0,name:"Gold 100 oz",risk:3,dateInvested:"2024-01-10",notes:"PAMP bar"},
+    {id:"d3",metal:"Silver",unit:"1 oz",qty:1000,costPerUnit:24,spot:0,name:"Silver 1 oz",risk:4,dateInvested:"2022-11-20",notes:"Maple Leafs"},
+    {id:"d4",metal:"Platinum",unit:"1 oz",qty:15,costPerUnit:890,spot:0,name:"Platinum 1 oz",risk:4,dateInvested:"2023-09-01",notes:"Eagles"},
+    {id:"d5",metal:"Gold",unit:"1/10 oz",qty:50,costPerUnit:210,spot:0,name:"Gold 1/10 oz",risk:3,dateInvested:"2024-06-15",notes:"Fractional Eagles"}
+  ],
+  syndications:[
+    {id:"d6",name:"Pinnacle West Apartments",sponsor:"Bergman",invested:100000,expectedRate:8,projIRR:15,strategy:"Multifamily",risk:5,status:"Active",dateInvested:"2024-06-01",location:"Phoenix, AZ",notes:""},
+    {id:"d7",name:"Blue Owl Real Estate VI",sponsor:"Blue Owl",invested:250000,expectedRate:6,projIRR:12,strategy:"Diversified",risk:4,status:"Active",dateInvested:"2024-09-15",location:"US",notes:""},
+    {id:"d8",name:"Avery Portorosa LP",sponsor:"Klein",invested:300000,expectedRate:12,projIRR:18,strategy:"Hotel",risk:7,status:"Active",dateInvested:"2025-01-15",location:"Miami, FL",notes:""},
+    {id:"d9",name:"Rosser Avenue BTR",sponsor:"Equinum",invested:75000,expectedRate:9,projIRR:16,strategy:"BTR",risk:6,status:"Active",dateInvested:"2024-03-01",location:"Dallas, TX",notes:""}
+  ],
+  crypto:[
+    {id:"d10",coin:"BTC",name:"BTC",qty:2.5,avgCost:38000,price:0,risk:8,dateInvested:"2023-01-15",notes:""},
+    {id:"d11",coin:"ETH",name:"ETH",qty:25,avgCost:2200,price:0,risk:8,dateInvested:"2023-06-01",notes:""},
+    {id:"d12",coin:"SOL",name:"SOL",qty:200,avgCost:85,price:0,risk:9,dateInvested:"2024-02-10",notes:""}
+  ],
+  properties:[
+    {id:"d13",name:"Primary Residence",address:"123 Oak Lane",propType:"SFH",purchasePrice:450000,currentValue:580000,mortgageBalance:320000,monthlyRent:0,monthlyExpenses:400,mortgagePayment:1800,risk:3,datePurchased:"2020-05-15",notes:""},
+    {id:"d14",name:"Rental Duplex",address:"456 Elm St",propType:"Duplex",purchasePrice:280000,currentValue:340000,mortgageBalance:210000,monthlyRent:3200,monthlyExpenses:800,mortgagePayment:1400,risk:5,datePurchased:"2022-08-01",notes:""}
+  ],
+  notesLending:[
+    {id:"d15",name:"Bridge Loan — 123 Main St",noteType:"Hard Money",principal:150000,outstandingBalance:150000,interestRate:12,status:"Performing",collateral:"123 Main St, Osceola FL",risk:6,dateInvested:"2024-11-01",notes:""}
+  ],
+  collectibles:[
+    {id:"d16",name:"Rolex Submariner 124060",category:"Watch",brand:"Rolex",purchasePrice:9500,currentValue:12800,serialNumber:"3K2J9X7",location:"Home safe",insured:"Yes",risk:4,dateAcquired:"2023-04-20",notes:""},
+    {id:"d17",name:"2018 Château Margaux (6 bottles)",category:"Wine",brand:"Château Margaux",purchasePrice:3600,currentValue:5200,location:"Wine storage",insured:"No",risk:5,dateAcquired:"2023-12-10",notes:""}
+  ],
+  targets:{"Precious Metals":25,"Real Estate":35,"Crypto":10,"Equities":10,"Alternatives":10,"Cash":5,"Fixed Income":5}
+};
+
 // ═══ MAIN APP ═══
 export default function HardAssets(){
   const[view,setView]=useState(()=>{try{return sessionStorage.getItem("ha_user")?"app":"home"}catch(e){return"home"}});
@@ -385,7 +418,7 @@ export default function HardAssets(){
   },[view]);
 
   const logout=()=>{if(window.posthog)window.posthog.reset();setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setProperties([]);setNotesLending([]);setCollectibles([]);try{sessionStorage.removeItem("ha_user");sessionStorage.removeItem("ha_token")}catch(e){}setView("home")};
-  const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setView("app");refreshPrices();if(window.posthog)window.posthog.capture('user_logged_in',{method:'guest'});};
+  const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setMetals(DEMO_DATA.metals);setSynds(DEMO_DATA.syndications);setCrypto(DEMO_DATA.crypto);setProperties(DEMO_DATA.properties);setNotesLending(DEMO_DATA.notesLending);setCollectibles(DEMO_DATA.collectibles);setTargets(DEMO_DATA.targets);setView("app");refreshPrices();if(window.posthog)window.posthog.capture('user_logged_in',{method:'guest'})};
 
   // Live price refresh
   const refreshPrices=async()=>{
@@ -457,7 +490,9 @@ export default function HardAssets(){
         <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"5px 12px",borderRadius:16,border:"1px solid "+P.border,background:P.surface,fontSize:10,color:P.gold,letterSpacing:1,textTransform:"uppercase",fontWeight:600,marginBottom:20}}><div style={{width:5,height:5,borderRadius:"50%",background:P.green,animation:"pulse 2s infinite"}}/> Free — No credit card</div>
         <h1 style={{fontSize:28,fontWeight:900,lineHeight:1.1,letterSpacing:-1,margin:"0 auto 16px",maxWidth:340}}>HardAssets.io — Track Everything That <span style={{background:`linear-gradient(90deg,${P.gold},#F5D78E,${P.gold})`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Holds Value</span></h1>
         <p style={{fontSize:14,color:P.txS,maxWidth:300,margin:"0 auto 28px",lineHeight:1.5}}>Gold. Silver. Real estate. Crypto. Live prices & portfolio tracking for hard asset investors.</p>
-        <Btn onClick={()=>setView(user?"app":"login")} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Btn>
+        <Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>
+        <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In for Cloud Sync</Btn>
+        <div style={{fontSize:11,color:P.txM,marginTop:8}}>No sign-up required to try.</div>
       </div>
     </div>
 
@@ -517,7 +552,9 @@ export default function HardAssets(){
     <div style={{padding:"40px 24px",textAlign:"center"}}>
       <div style={{fontSize:24,fontWeight:800,lineHeight:1.15,marginBottom:12}}>Ready to See Your<br/><span style={{color:P.gold}}>Complete Picture?</span></div>
       <p style={{fontSize:13,color:P.txS,marginBottom:24,lineHeight:1.5}}>Free forever. No credit card required.</p>
-      <Btn onClick={()=>setView(user?"app":"login")} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>{user?"Go to Dashboard →":"Start Tracking Free →"}</Btn>
+      <Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>
+      <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In for Cloud Sync</Btn>
+      <div style={{fontSize:11,color:P.txM,marginTop:8}}>No sign-up required to try.</div>
     </div>
 
     {/* Footer */}
@@ -535,7 +572,7 @@ export default function HardAssets(){
           <div style={{fontSize:22,fontWeight:800,marginBottom:6}}>Sign In</div>
           <div style={{fontSize:13,color:P.txS,marginBottom:28}}>Track your investments in one dashboard</div>
           <div id="gsi-btn" style={{display:"flex",justifyContent:"center",marginBottom:14}}/>
-          <button onClick={()=>{guestLogin();setView("app")}} style={{width:"100%",padding:"14px 20px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
+          <button onClick={guestLogin} style={{width:"100%",padding:"14px 20px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
           {syncing&&<div style={{marginTop:16,fontSize:13,color:P.gold}}>Loading your portfolio...</div>}
           <div style={{marginTop:24,fontSize:10,color:P.txM}}>Data saved securely. Free forever.</div>
         </div>
@@ -636,6 +673,7 @@ export default function HardAssets(){
 
   return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",maxWidth:430,margin:"0 auto",position:"relative",overflow:"hidden",WebkitUserSelect:"none",userSelect:"none"}} onContextMenu={e=>e.preventDefault()} onCopy={e=>e.preventDefault()}>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}::-webkit-scrollbar{display:none}input::placeholder{color:${P.txF}}select option{background:${P.surface}}`}</style>
+    {user?.email==="guest"&&<div id="demo-banner-m" style={{background:`linear-gradient(90deg,rgba(212,168,67,0.08),${P.surface})`,borderBottom:`1px solid ${P.gold}22`,padding:"8px 16px",display:"flex",justifyContent:"center",alignItems:"center",gap:8,position:"relative"}}><span style={{fontSize:11,color:P.gold}}>📋 Demo Portfolio — Sign in with Google to save your own data</span><button onClick={()=>document.getElementById("demo-banner-m").style.display="none"} style={{position:"absolute",right:12,background:"none",border:"none",color:P.txM,fontSize:14,cursor:"pointer"}}>✕</button></div>}
     {/* Header */}
     <div style={{padding:"4px 24px 14px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center",gap:12}}><div style={{width:38,height:38,borderRadius:12,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:900,color:P.bg,boxShadow:`0 4px 16px rgba(212,168,67,0.2)`}}>H</div><div><div style={{fontSize:19,fontWeight:800,color:P.text,letterSpacing:-0.4}}>HardAssets</div><div style={{fontSize:10,color:P.txM,letterSpacing:2,textTransform:"uppercase"}}>Portfolio Intelligence</div></div></div><div style={{display:"flex",alignItems:"center",gap:8}}>
       <button onClick={refreshPrices} style={{background:P.goldSoft,border:`1px solid ${P.goldMed}`,borderRadius:10,padding:"6px 12px",cursor:"pointer",display:"flex",alignItems:"center",gap:5,fontFamily:ff}} disabled={refreshing}><span style={{fontSize:14,transition:"transform 0.5s",transform:refreshing?"rotate(360deg)":"none"}}>↻</span><span style={{fontSize:10,fontWeight:600,color:P.gold}}>{refreshing?"...":"Refresh"}</span></button>
