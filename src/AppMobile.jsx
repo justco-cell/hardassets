@@ -21,12 +21,11 @@ const NOTE_STATUS=["Performing","Late","Default","Paid Off"];
 const COLLECT_CATS=["Watch","Wine","Art","Car","Jewelry","Coins/Numismatics","Memorabilia","Handbag","Sneakers","Other"];
 
 // ═══ LIVE PRICE APIs ═══
-const METALS_API_KEY="IATC8NVAYIAWGIDAREIG473DAREIG";
 const COIN_IDS={BTC:"bitcoin",ETH:"ethereum",SOL:"solana",ADA:"cardano",DOT:"polkadot",AVAX:"avalanche-2",LINK:"chainlink",MATIC:"matic-network",XRP:"ripple",DOGE:"dogecoin",ATOM:"cosmos",UNI:"uniswap",AAVE:"aave",BNB:"binancecoin",LTC:"litecoin",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism",FIL:"filecoin"};
 
 async function fetchMetalPrices(){
   try{
-    const r=await fetch("https://api.metals.dev/v1/latest?api_key="+METALS_API_KEY+"&currency=USD&unit=toz");
+    const r=await fetch("/api/prices");
     if(!r.ok)return null;
     const d=await r.json();
     if(d.status!=="success"||!d.metals)return null;

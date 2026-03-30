@@ -1,9 +1,23 @@
+const rateLimit = {};
+function checkRate(key, max) {
+  const now = Date.now();
+  if (!rateLimit[key]) rateLimit[key] = [];
+  rateLimit[key] = rateLimit[key].filter(t => now - t < 60000);
+  if (rateLimit[key].length >= max) return false;
+  rateLimit[key].push(now);
+  return true;
+}
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'https://hardassets.io');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const ip = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown';
+  if (!checkRate('contact_' + ip, 5)) return res.status(429).json({ error: 'Rate limited' });
 
   try {
     const { name, email, message, _hp, _ts } = req.body;

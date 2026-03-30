@@ -25,10 +25,9 @@ const NOTE_STATUS=["Performing","Late","Default","Paid Off"];
 const COLLECT_CATS=["Watch","Wine","Art","Car","Jewelry","Coins/Numismatics","Memorabilia","Handbag","Sneakers","Other"];
 
 // ═══ LIVE PRICE APIs ═══
-const METALS_API_KEY="IATC8NVAYIAWGIDAREIG473DAREIG";
 const COIN_IDS={BTC:"bitcoin",ETH:"ethereum",SOL:"solana",ADA:"cardano",DOT:"polkadot",AVAX:"avalanche-2",LINK:"chainlink",MATIC:"matic-network",XRP:"ripple",DOGE:"dogecoin",ATOM:"cosmos",UNI:"uniswap",AAVE:"aave",BNB:"binancecoin",LTC:"litecoin",NEAR:"near",APT:"aptos",ARB:"arbitrum",OP:"optimism",FIL:"filecoin"};
 
-async function fetchMetalPrices(){try{const r=await fetch("https://api.metals.dev/v1/latest?api_key="+METALS_API_KEY+"&currency=USD&unit=toz");if(!r.ok)return null;const d=await r.json();if(d.status!=="success"||!d.metals)return null;return{gold:d.metals.gold||0,silver:d.metals.silver||0,platinum:d.metals.platinum||0,palladium:d.metals.palladium||0}}catch(e){return null}}
+async function fetchMetalPrices(){try{const r=await fetch("/api/prices");if(!r.ok)return null;const d=await r.json();if(d.status!=="success"||!d.metals)return null;return{gold:d.metals.gold||0,silver:d.metals.silver||0,platinum:d.metals.platinum||0,palladium:d.metals.palladium||0}}catch(e){return null}}
 
 async function fetchCryptoPrices(){try{const ids=Object.values(COIN_IDS).join(",");const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids="+ids+"&vs_currencies=usd&include_24hr_change=true");if(!r.ok)return null;const d=await r.json();const results={};for(const[sym,cgId] of Object.entries(COIN_IDS)){if(d[cgId])results[sym]={price:d[cgId].usd||0,change:d[cgId].usd_24h_change||0}}return results}catch(e){return null}}
 

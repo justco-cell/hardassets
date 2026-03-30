@@ -1,7 +1,39 @@
+const rateLimit = {};
+function checkRate(key, max) {
+  const now = Date.now();
+  if (!rateLimit[key]) rateLimit[key] = [];
+  rateLimit[key] = rateLimit[key].filter(t => now - t < 60000);
+  if (rateLimit[key].length >= max) return false;
+  rateLimit[key].push(now);
+  return true;
+}
+
+function verifyToken(token) {
+  try {
+    // Google JWT (3-part token)
+    const parts = token.split('.');
+    if (parts.length === 3) {
+      const payload = JSON.parse(Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString());
+      // Check expiration
+      if (payload.exp && payload.exp * 1000 < Date.now()) return null;
+      if (payload.email) return { email: payload.email, name: payload.name || payload.email };
+    }
+  } catch (e) {}
+  try {
+    // Email:token format from our auth.js
+    if (token.includes(':')) {
+      const [email] = token.split(':');
+      if (email && email.includes('@') && email.includes('.')) return { email };
+    }
+  } catch (e) {}
+  return null;
+}
+
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'https://hardassets.io');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
@@ -16,6 +48,8 @@ export default async function handler(req, res) {
     if (!user || !user.email) return res.status(401).json({ error: 'Invalid token' });
 
     if (req.method === 'POST') {
+      if (!checkRate('log_post_' + user.email, 30)) return res.status(429).json({ error: 'Rate limited' });
+
       const { action, asset_type, asset_id, asset_name, old_data, new_data } = req.body;
       if (!action || !asset_type) return res.status(400).json({ error: 'Missing fields' });
 
@@ -52,6 +86,8 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'GET') {
+      if (!checkRate('log_get_' + user.email, 60)) return res.status(429).json({ error: 'Rate limited' });
+
       const limit = req.query.limit || 200;
       const offset = req.query.offset || 0;
       const response = await fetch(
@@ -80,21 +116,4 @@ export default async function handler(req, res) {
     console.error('Log error:', e);
     return res.status(500).json({ error: 'Server error' });
   }
-}
-
-function verifyToken(token) {
-  try {
-    const parts = token.split('.');
-    if (parts.length === 3) {
-      const payload = JSON.parse(Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString());
-      if (payload.email) return { email: payload.email, name: payload.name || payload.email };
-    }
-  } catch (e) {}
-  try {
-    if (token.includes(':')) {
-      const [email] = token.split(':');
-      if (email && email.includes('@')) return { email };
-    }
-  } catch (e) {}
-  return null;
 }
