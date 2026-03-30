@@ -592,23 +592,26 @@ export default function HardAssets(){
       <div style={{position:"absolute",top:-100,left:"50%",transform:"translateX(-50%)",width:400,height:400,background:"radial-gradient(ellipse,rgba(212,168,67,.06),transparent)",pointerEvents:"none"}}/>
       <div style={{position:"relative"}}>
         <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"5px 12px",borderRadius:16,border:"1px solid "+P.border,background:P.surface,fontSize:10,color:P.gold,letterSpacing:1,textTransform:"uppercase",fontWeight:600,marginBottom:20}}><div style={{width:5,height:5,borderRadius:"50%",background:P.green,animation:"pulse 2s infinite"}}/> Free — No credit card</div>
-        <h1 style={{fontSize:32,fontWeight:800,lineHeight:1.1,letterSpacing:-1,margin:"0 auto 16px",maxWidth:340}}>HardAssets.io — Track Everything That <span style={{background:`linear-gradient(90deg,${P.gold},#F5D78E,${P.gold})`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Holds Value</span></h1>
-        <p style={{fontSize:15,color:P.txS,maxWidth:300,margin:"0 auto 28px",lineHeight:1.5}}>Gold. Silver. Real estate. Crypto. Live prices & portfolio tracking for hard asset investors.</p>
+        <h1 style={{fontSize:30,fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",margin:"0 auto 16px",maxWidth:340}}>The Only Dashboard Built for <span style={{color:P.gold}}>What You Actually Own</span></h1>
+        <p style={{maxWidth:340,margin:"0 auto",textAlign:"center"}}>
+  <span style={{display:"block",fontSize:15,color:P.txS,fontWeight:500,letterSpacing:"0.5px"}}>Gold. Silver. Real estate. Crypto. Collectibles. Private notes.</span>
+  <span style={{display:"block",fontSize:14,color:"#64748B",fontWeight:400,marginTop:6}}>Live prices, risk scoring, and allocation tracking — in one free dashboard.</span>
+</p>
         <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:16,marginTop:12}}>
-  {[["🔒","Anonymous signup"],["📡","No bank links"],["💰","Free forever"]].map(([ic,t],i)=>
+  {[["🔒","No identity verification"],["📡","No bank links"],["💰","Free forever"]].map(([ic,t],i)=>
     <span key={i} style={{fontSize:12,fontWeight:500,color:P.txS}}>{ic} {t}</span>
   )}
 </div>
-        <Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>
-        <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In for Cloud Sync</Btn>
-        <div style={{fontSize:11,color:P.txM,marginTop:8}}>No sign-up required to try.</div>
+        {user&&user.email!=="guest"?<Btn onClick={()=>setView("app")} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Go to Dashboard →</Btn>:<Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>}
+        <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In to Save</Btn>
+        <div style={{fontSize:11,color:P.txM,marginTop:8}}>No account needed. Demo data loaded instantly.</div>
       </div>
     </div>
 
     {/* Stats */}
     <div style={{padding:"48px 20px",borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border,background:P.surface}}>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:12,textAlign:"center"}}>
-        {[["Live","Spot Prices"],["13+","Crypto Coins"],["Free","Forever"]].map(([n,l],i)=>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(60px,1fr))",gap:12,textAlign:"center"}}>
+        {[["Live","Spot Prices"],["20+","Crypto Coins"],["16","RE Deal Types"],["8","Metal Units"],["Free","Forever"]].map(([n,l],i)=>
           <div key={i}><div style={{fontSize:22,fontWeight:900,fontFamily:mono,color:P.gold}}>{n}</div><div style={{fontSize:10,color:P.txM,marginTop:2}}>{l}</div></div>
         )}
       </div>
@@ -638,7 +641,7 @@ export default function HardAssets(){
     <div style={{padding:"48px 20px",background:P.surface,borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border}}>
       <div style={{fontSize:10,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>How It Works</div>
       <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:24}}>Start in <span style={{color:P.gold}}>60 Seconds</span></div>
-      {[["1","Sign Up Free","Google sign-in. Data syncs across devices."],["2","Add Assets","Manual entry or CSV import. Live prices auto-fill."],["3","Full Picture","Charts, risk scores, income projections."]].map(([n,t,d],i)=>
+      {[["1","Try the Demo","Tap 'Try Live Demo' to explore a sample portfolio with live prices and risk scoring. No account needed."],["2","Make It Yours","Add your own holdings — gold, syndication deals, crypto, properties. Everything calculates automatically."],["3","Sign In to Save","When you're ready, sign in with Google or email. Your data syncs to the cloud across devices."]].map(([n,t,d],i)=>
         <div key={i} style={{display:"flex",gap:14,alignItems:"flex-start",marginBottom:20}}>
           <div style={{width:36,height:36,borderRadius:"50%",border:"2px solid "+P.gold,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:800,color:P.gold,fontFamily:mono,flexShrink:0}}>{n}</div>
           <div><div style={{fontSize:14,fontWeight:700,marginBottom:2}}>{t}</div><div style={{fontSize:12,color:P.txS,lineHeight:1.4}}>{d}</div></div>
@@ -646,24 +649,69 @@ export default function HardAssets(){
       )}
     </div>
 
-    {/* Security */}
-    <div style={{padding:"48px 20px"}}>
-      <div style={{fontSize:10,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>Security</div>
-      <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:20}}>Your Data, <span style={{color:P.gold}}>Protected</span></div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-        {[["🔒","Encrypted DB"],["🔑","Google Auth"],["👁️","Read-Only"],["🚫","No Data Sales"]].map(([ic,t],i)=>
-          <div key={i} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:10,padding:14,textAlign:"center"}}><div style={{fontSize:18,marginBottom:4}}>{ic}</div><div style={{fontSize:12,fontWeight:700}}>{t}</div></div>
+    {/* Built For */}
+    <div style={{padding:"48px 20px",background:P.surface,borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border}}>
+      <div style={{fontSize:12,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>Built For</div>
+      <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:20}}>Investors Like <span style={{color:P.gold}}>You</span></div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {[["🥇","Gold & Silver Stackers","Track every coin, bar, and round with oz conversion, live spot prices, and gain/loss."],["🏢","RE Syndication LPs","Monitor LP positions with sponsor, IRR, rate%, and annual income across all deals."],["📊","Hard Asset Allocators","One dashboard for metals, RE, crypto, notes, collectibles — with risk scoring and targets."]].map(([ic,t,d],i)=>
+          <div key={i} style={{background:P.bg,border:"1px solid "+P.border,borderRadius:12,padding:20,textAlign:"center"}}>
+            <div style={{fontSize:28,marginBottom:8}}>{ic}</div>
+            <div style={{fontSize:15,fontWeight:700,marginBottom:4}}>{t}</div>
+            <div style={{fontSize:13,color:P.txS,lineHeight:1.5}}>{d}</div>
+          </div>
         )}
       </div>
     </div>
 
+    {/* Security */}
+    <div style={{padding:"48px 20px"}}>
+      <div style={{fontSize:10,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>Security</div>
+      <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:20}}>Your Data, <span style={{color:P.gold}}>Protected</span></div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr",gap:10}}>
+        {[
+          ["🔐","You Decide What to Track","You control what goes in. Use nicknames, approximate values, or skip fields entirely."],
+          ["📡","No Bank Connections","We never connect to your bank or brokerage. Every entry is manual — no external trail."],
+          ["🔒","Encrypted at Every Layer","AES-256 encryption at rest, TLS in transit. Your portfolio is not stored in plain text."],
+          ["🗑️","Delete Anytime","Export your data and delete your account at any time. Deletion is permanent."],
+          ["👤","No Identity Required","Sign up with any name and email. We don't verify your identity or check your email."]
+        ].map(([ic,t,d],i)=>
+          <div key={i} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:12,padding:16}}>
+            <div style={{fontSize:16,marginBottom:6}}>{ic}</div>
+            <div style={{fontSize:14,fontWeight:700,marginBottom:4}}>{t}</div>
+            <div style={{fontSize:13,color:P.txS,lineHeight:1.5}}>{d}</div>
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* FAQ */}
+    <div style={{padding:"48px 20px"}}>
+      <div style={{fontSize:12,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>FAQ</div>
+      <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:24}}>Common Questions</div>
+      {[
+        ["Do I need an account?","No. Try the full dashboard as a guest with demo data. Sign in with Google or email when you want cloud sync."],
+        ["Where do prices come from?","Metals from metals.dev with real 24h change. Crypto from CoinGecko. Forex from Frankfurter API."],
+        ["Can I use any name or email?","Yes. We don't verify your identity or email. Use any alias you prefer."],
+        ["Can I delete my data?","Yes. Export CSVs from any tab, then delete your account. Deletion is permanent."],
+        ["What asset types can I track?","Precious metals, RE syndications, physical properties, crypto (20+ coins), private notes, and collectibles."],
+        ["How is my data secured?","AES-256 encryption at rest, TLS in transit. Your browser never touches the database directly."],
+        ["Is it really free?","Yes. All features included. No premium tier, no trial period."]
+      ].map(([q,a],i)=>
+        <div key={i} style={{borderBottom:"1px solid "+P.border,paddingBottom:12,marginBottom:12}}>
+          <div style={{fontSize:14,fontWeight:700,color:P.text,marginBottom:4}}>{q}</div>
+          <div style={{fontSize:13,color:P.txS,lineHeight:1.6}}>{a}</div>
+        </div>
+      )}
+    </div>
+
     {/* CTA */}
     <div style={{padding:"40px 24px",textAlign:"center"}}>
-      <div style={{fontSize:24,fontWeight:800,lineHeight:1.15,marginBottom:12}}>Ready to See Your<br/><span style={{color:P.gold}}>Complete Picture?</span></div>
-      <p style={{fontSize:13,color:P.txS,marginBottom:24,lineHeight:1.5}}>Free forever. No credit card required.</p>
-      <Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>
-      <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In for Cloud Sync</Btn>
-      <div style={{fontSize:11,color:P.txM,marginTop:8}}>No sign-up required to try.</div>
+      <div style={{fontSize:24,fontWeight:800,lineHeight:1.15,marginBottom:12}}>Your Hard Assets Deserve a <span style={{color:P.gold}}>Real Dashboard</span></div>
+      <p style={{fontSize:13,color:P.txS,marginBottom:24,lineHeight:1.5}}>Most portfolio trackers ignore gold, real estate, and alternatives. This one was built for them.</p>
+      {user&&user.email!=="guest"?<Btn onClick={()=>setView("app")} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Go to Dashboard →</Btn>:<Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>}
+      <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In to Save</Btn>
+      <div style={{fontSize:11,color:P.txM,marginTop:8}}>No account needed. Demo data loaded instantly.</div>
     </div>
 
     {/* Footer */}
