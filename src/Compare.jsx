@@ -7,13 +7,13 @@ function Logo(){return<div onClick={()=>window.location.href="/"} style={{cursor
 
 function Nav(){return<nav style={{position:"sticky",top:0,zIndex:100,padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",background:"rgba(11,15,26,.9)",borderBottom:"1px solid "+P.border}}><div style={{display:"flex",alignItems:"center",gap:20}}><Logo/><a href="/blog" style={{fontSize:13,color:P.txS,textDecoration:"none"}}>Blog</a><a href="/compare" style={{fontSize:13,fontWeight:700,color:P.gold,textDecoration:"none"}}>Compare</a></div><a href="/?demo=1" style={{padding:"8px 16px",borderRadius:10,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:12,fontWeight:700,textDecoration:"none",whiteSpace:"nowrap"}}>Try Demo →</a></nav>}
 
-const Ck=()=><span style={{display:"inline-flex",width:20,height:20,borderRadius:10,background:"rgba(52,211,153,0.15)",alignItems:"center",justifyContent:"center",fontSize:11,color:P.green,fontWeight:700,flexShrink:0}}>✓</span>;
-const Xx=()=><span style={{display:"inline-flex",width:20,height:20,borderRadius:10,background:"rgba(248,113,113,0.1)",alignItems:"center",justifyContent:"center",fontSize:11,color:P.red,opacity:0.5,fontWeight:700,flexShrink:0}}>✗</span>;
+const Ck=()=><span style={{display:"inline-flex",width:22,height:22,borderRadius:11,background:"#34D399",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{color:"#fff",fontSize:12,fontWeight:800,lineHeight:1}}>✓</span></span>;
+const Xx=()=><span style={{display:"inline-flex",width:22,height:22,borderRadius:11,background:"rgba(248,113,113,0.2)",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{color:"#F87171",fontSize:12,fontWeight:800,lineHeight:1}}>✗</span></span>;
+const Lm=()=><span style={{display:"inline-flex",width:22,height:22,borderRadius:11,background:"rgba(251,191,36,0.2)",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{color:"#FBBF24",fontSize:10,fontWeight:800,lineHeight:1}}>~</span></span>;
 
 const SL=({children})=><div style={{fontSize:11,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:12,textAlign:"center"}}>{children}</div>;
 const ST=({children})=><div style={{fontSize:"clamp(26px,3.5vw,40px)",fontWeight:800,letterSpacing:"-0.02em",marginBottom:16,lineHeight:1.15,textAlign:"center"}}>{children}</div>;
 
-// Feature data — short descriptions for scannability
 const cats=[
   {name:"Pricing",rows:[
     {f:"Price",ha:"Free forever",ku:"$249/yr",gf:"Free",mo:"$14.99/mo",em:"Free",co:"$95/yr",haG:true,kuG:false,gfG:true,moG:false,emG:true,coG:false},
@@ -128,48 +128,41 @@ export default function ComparePage(){
         <ST>Feature-by-Feature <span style={{color:P.gold}}>Comparison</span></ST>
 
         {isMobile?(
-          /* ═══ MOBILE: 2-column compare ═══ */
+          /* MOBILE TABLE */
           <div style={{marginTop:24}}>
-            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:20}}>
-              <span style={{fontSize:13,color:P.txS}}>Compare against:</span>
-              <select value={mobileComp} onChange={e=>setMobileComp(+e.target.value)} style={{background:P.elevated,border:"1px solid "+P.border,color:P.text,padding:"8px 12px",borderRadius:10,fontSize:14,fontWeight:600,fontFamily:ff,outline:"none"}}>
-                {compNames.map((n,i)=><option key={i} value={i} style={{background:P.surface}}>{n}</option>)}
-              </select>
-            </div>
-            <div style={{background:P.bg,borderRadius:16,border:"1px solid "+P.border,overflow:"hidden"}}>
-              {/* Header */}
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",borderBottom:"2px solid "+P.border}}>
-                <div style={{padding:"12px 16px",borderRight:"1px solid "+P.border,borderLeft:"3px solid "+P.gold,background:"rgba(212,168,67,0.04)"}}>
-                  <div style={{fontSize:10,color:P.gold,fontWeight:700,textTransform:"uppercase",letterSpacing:1}}>HardAssets.io</div>
-                </div>
-                <div style={{padding:"12px 16px"}}>
-                  <div style={{fontSize:10,color:P.txM,fontWeight:700,textTransform:"uppercase",letterSpacing:1}}>{compNames[mobileComp]}</div>
-                </div>
-              </div>
-              {cats.map((cat,ci)=><div key={ci}>
-                <div style={{padding:"10px 16px",background:P.elevated,fontSize:11,fontWeight:700,color:P.gold,textTransform:"uppercase",letterSpacing:1}}>{cat.name}</div>
-                {cat.rows.map((r,ri)=><div key={ri}>
-                  <div style={{padding:"8px 16px",fontSize:12,fontWeight:600,color:P.txS,background:"rgba(255,255,255,0.01)"}}>{r.f}</div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",borderBottom:"1px solid "+P.border}}>
-                    <div style={{padding:"10px 16px",borderRight:"1px solid "+P.border,borderLeft:"3px solid "+P.gold,background:"rgba(212,168,67,0.04)",display:"flex",alignItems:"center",gap:8}}>
-                      {r.haG?<Ck/>:<Xx/>}<span style={{fontSize:13,color:r.haG?P.text:P.txM,lineHeight:1.3}}>{r.ha}</span>
+            <select value={mobileComp} onChange={e=>setMobileComp(+e.target.value)} style={{background:P.elevated,border:"1px solid "+P.border,color:P.text,padding:"12px 16px",borderRadius:12,fontSize:16,fontWeight:600,width:"100%",fontFamily:ff,outline:"none",marginBottom:20,WebkitAppearance:"none",appearance:"none"}}>
+              {compNames.map((n,i)=><option key={i} value={i} style={{background:P.surface}}>{n}</option>)}
+            </select>
+
+            {cats.map((cat,ci)=><div key={ci} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,marginBottom:12,overflow:"hidden"}}>
+              <div style={{padding:"10px 16px",background:P.elevated,fontSize:13,fontWeight:700,color:P.gold,textTransform:"uppercase",letterSpacing:1.5}}>{cat.name}</div>
+              {cat.rows.map((r,ri)=>{
+                const compG=r[selComp+"G"];
+                const compVal=r[selComp];
+                return<div key={ri} style={{borderBottom:ri<cat.rows.length-1?"1px solid "+P.border:"none",padding:"12px 16px"}}>
+                  <div style={{fontSize:15,fontWeight:600,color:P.txS,marginBottom:8}}>{r.f}</div>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                    <div style={{minHeight:48,padding:"12px 16px",borderLeft:"3px solid "+P.gold,background:"rgba(212,168,67,0.04)",borderRadius:"0 10px 10px 0",display:"flex",alignItems:"center",gap:8}}>
+                      {r.highlight&&r.haG?null:r.haG?<Ck/>:<Xx/>}
+                      {r.highlight&&r.haG?<span style={{fontSize:24,fontWeight:900,color:P.gold,fontFamily:mono,textShadow:"0 0 20px rgba(212,168,67,0.3)"}}>{r.ha}</span>:<span style={{fontSize:15,color:r.haG?P.text:P.txM,lineHeight:1.3}}>{r.ha}</span>}
                     </div>
-                    <div style={{padding:"10px 16px",display:"flex",alignItems:"center",gap:8}}>
-                      {r[selComp+"G"]?<Ck/>:<Xx/>}<span style={{fontSize:13,color:r[selComp+"G"]?P.text:P.txM,lineHeight:1.3}}>{r[selComp]}</span>
+                    <div style={{minHeight:48,padding:"12px 16px",borderRadius:10,background:"rgba(255,255,255,0.015)",display:"flex",alignItems:"center",gap:8}}>
+                      {r.highlight&&!compG?null:compG?<Ck/>:<Xx/>}
+                      {r.highlight&&!compG?<span style={{fontSize:16,fontWeight:700,color:P.red,fontFamily:mono}}>{compVal}</span>:<span style={{fontSize:15,color:compG?P.text:P.txM,lineHeight:1.3}}>{compVal}</span>}
                     </div>
                   </div>
-                </div>)}
-              </div>)}
-            </div>
+                </div>;
+              })}
+            </div>)}
           </div>
         ):(
-          /* ═══ DESKTOP: Full table ═══ */
-          <div style={{overflowX:"auto",marginTop:32,borderRadius:16,border:"1px solid "+P.border,background:P.bg}}>
-            {/* Header */}
-            <div style={{display:"grid",gridTemplateColumns:"180px repeat(6,1fr)",borderBottom:"2px solid "+P.border,position:"sticky",top:0,zIndex:3,background:P.bg}}>
+          /* DESKTOP TABLE */
+          <div style={{marginTop:32,background:P.surface,border:"1px solid "+P.border,borderRadius:20,overflow:"hidden"}}>
+            {/* Header row */}
+            <div style={{display:"grid",gridTemplateColumns:"180px repeat(6,1fr)",borderBottom:"2px solid "+P.border,position:"sticky",top:0,zIndex:3,background:P.surface}}>
               <div style={{padding:"16px 20px",borderRight:"1px solid "+P.border}}/>
               <div style={{padding:"16px 14px",borderLeft:"3px solid "+P.gold,background:"rgba(212,168,67,0.04)",borderRight:"1px solid "+P.border,textAlign:"center"}}>
-                <div style={{fontSize:9,color:P.gold,background:P.goldMed,display:"inline-block",padding:"2px 8px",borderRadius:4,fontWeight:700,letterSpacing:1,marginBottom:4}}>YOU ARE HERE</div>
+                <div style={{background:P.goldMed,color:P.gold,fontSize:10,padding:"2px 8px",borderRadius:4,fontWeight:700,display:"inline-block",marginBottom:4}}>Best Value</div>
                 <div style={{fontSize:13,fontWeight:800,color:P.gold}}>HardAssets.io</div>
               </div>
               {compNames.map((n,i)=><div key={i} style={{padding:"16px 14px",borderRight:i<4?"1px solid "+P.border:"none",textAlign:"center"}}>
@@ -178,22 +171,24 @@ export default function ComparePage(){
             </div>
             {/* Body */}
             {cats.map((cat,ci)=><div key={ci}>
-              <div style={{padding:"10px 20px",background:P.elevated,fontSize:11,fontWeight:700,color:P.gold,textTransform:"uppercase",letterSpacing:1.5,gridColumn:"1/-1"}}>{cat.name}</div>
+              <div style={{background:P.elevated,fontSize:13,color:P.gold,textTransform:"uppercase",letterSpacing:1.5,fontWeight:700,padding:"10px 20px",borderTop:"1px solid "+P.border}}>{cat.name}</div>
               {cat.rows.map((r,ri)=>{const alt=ri%2===1;return<div key={ri} style={{display:"grid",gridTemplateColumns:"180px repeat(6,1fr)",borderBottom:"1px solid "+P.border,background:alt?"rgba(255,255,255,0.015)":"transparent"}}>
-                <div style={{padding:"12px 20px",borderRight:"1px solid "+P.border,fontSize:13,fontWeight:600,color:P.text,display:"flex",alignItems:"center"}}>{r.f}</div>
+                <div style={{padding:"12px 20px",borderRight:"1px solid "+P.border,fontSize:15,fontWeight:600,color:P.txS,display:"flex",alignItems:"center"}}>{r.f}</div>
                 <div style={{padding:"12px 14px",borderLeft:"3px solid "+P.gold,background:"rgba(212,168,67,0.04)",borderRight:"1px solid "+P.border,display:"flex",alignItems:"center",gap:8}}>
-                  {r.haG?<Ck/>:<Xx/>}<span style={{fontSize:r.highlight?16:13,fontWeight:r.highlight?800:400,color:r.haG?P.text:P.txM,fontFamily:r.highlight?mono:ff}}>{r.ha}</span>
+                  {r.highlight&&r.haG?null:r.haG?<Ck/>:<Xx/>}
+                  {r.highlight&&r.haG?<span style={{fontSize:24,fontWeight:900,color:P.gold,fontFamily:mono,textShadow:"0 0 20px rgba(212,168,67,0.3)"}}>{r.ha}</span>:<span style={{fontSize:14,color:r.haG?P.text:P.txM}}>{r.ha}</span>}
                 </div>
                 {[r.ku,r.gf,r.mo,r.em,r.co].map((v,vi)=>{const g=r[compKeys[vi]+"G"];return<div key={vi} style={{padding:"12px 14px",borderRight:vi<4?"1px solid "+P.border:"none",display:"flex",alignItems:"center",gap:8}}>
-                  {g?<Ck/>:<Xx/>}<span style={{fontSize:r.highlight?14:13,color:g?P.txS:P.txM,fontWeight:r.highlight?700:400,fontFamily:r.highlight?mono:ff}}>{v}</span>
+                  {r.highlight&&!g?null:g?<Ck/>:<Xx/>}
+                  {r.highlight&&!g?<span style={{color:P.red,fontFamily:mono,fontSize:16,fontWeight:700}}>{v}</span>:<span style={{fontSize:14,color:g?P.text:P.txM}}>{v}</span>}
                 </div>})}
               </div>})}
             </div>)}
           </div>
         )}
 
-        <div style={{textAlign:"center",marginTop:28}}>
-          <a href="/?demo=1" style={{display:"inline-block",padding:"14px 32px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:15,fontWeight:700,textDecoration:"none"}}>Try HardAssets Free — No Sign-Up Required →</a>
+        <div style={{textAlign:"center",marginTop:32}}>
+          <a href="/?demo=1" style={{display:"inline-block",padding:"16px 36px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:16,fontWeight:700,textDecoration:"none"}}>Try HardAssets Free — No Sign-Up Required →</a>
         </div>
       </div>
     </div>
@@ -211,14 +206,12 @@ export default function ComparePage(){
           <div style={{maxHeight:open?2000:0,overflow:"hidden",transition:"max-height 0.5s ease"}}>
             <div style={{padding:isMobile?"0 18px 20px":"0 24px 24px"}}>
               <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:16,marginBottom:20}}>
-                {/* Their strengths */}
                 <div style={{background:P.bg,borderRadius:12,padding:18,border:"1px solid "+P.border}}>
                   <div style={{fontSize:12,fontWeight:700,color:P.txS,textTransform:"uppercase",letterSpacing:1,marginBottom:12}}>What {c.name} does well</div>
                   <div style={{display:"flex",flexDirection:"column",gap:8}}>
                     {c.theyDo.map((w,wi)=><div key={wi} style={{display:"flex",alignItems:"flex-start",gap:8,fontSize:13,color:P.txS,lineHeight:1.5}}><span style={{color:P.txM,flexShrink:0}}>•</span>{w}</div>)}
                   </div>
                 </div>
-                {/* Our advantages */}
                 <div style={{background:"rgba(212,168,67,0.03)",borderRadius:12,padding:18,border:"1px solid "+P.gold+"22"}}>
                   <div style={{fontSize:12,fontWeight:700,color:P.gold,textTransform:"uppercase",letterSpacing:1,marginBottom:12}}>What HardAssets adds</div>
                   <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -226,18 +219,17 @@ export default function ComparePage(){
                   </div>
                 </div>
               </div>
-              {/* Verdict */}
               <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:12,marginBottom:16}}>
                 <div style={{padding:"14px 18px",background:"rgba(52,211,153,0.04)",borderRadius:12,border:"1px solid rgba(52,211,153,0.15)"}}>
-                  <div style={{fontSize:10,color:P.green,textTransform:"uppercase",letterSpacing:1,marginBottom:4,fontWeight:700}}>Choose HardAssets if</div>
+                  <div style={{fontSize:10,color:P.green,textTransform:"uppercase",letterSpacing:1,marginBottom:4,fontWeight:700}}>Choose HardAssets if:</div>
                   <div style={{fontSize:13,color:P.text}}>{c.chooseUs}</div>
                 </div>
                 <div style={{padding:"14px 18px",background:P.bg,borderRadius:12,border:"1px solid "+P.border}}>
-                  <div style={{fontSize:10,color:P.txM,textTransform:"uppercase",letterSpacing:1,marginBottom:4,fontWeight:700}}>Consider {c.name} if</div>
+                  <div style={{fontSize:10,color:P.txM,textTransform:"uppercase",letterSpacing:1,marginBottom:4,fontWeight:700}}>Consider {c.name} if:</div>
                   <div style={{fontSize:13,color:P.txS}}>{c.chooseThem}</div>
                 </div>
               </div>
-              <a href="/?demo=1" style={{display:"inline-block",padding:"10px 24px",borderRadius:10,background:P.goldSoft,color:P.gold,fontSize:13,fontWeight:700,textDecoration:"none",border:"1px solid "+P.goldMed}}>Try HardAssets Free →</a>
+              <a href="/?demo=1" style={{display:"inline-block",padding:"10px 24px",borderRadius:10,background:P.goldSoft,color:P.gold,fontSize:14,fontWeight:700,textDecoration:"none",border:"1px solid "+P.goldMed,marginTop:16}}>Try HardAssets Free →</a>
             </div>
           </div>
         </div>})}
@@ -269,20 +261,23 @@ export default function ComparePage(){
         <div style={{fontSize:"clamp(26px,4vw,40px)",fontWeight:800,lineHeight:1.15,marginBottom:32}}>Stop Paying to Track<br/>What You <span style={{color:P.gold}}>Own</span></div>
 
         <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr 1fr",gap:16,marginBottom:32}}>
-          <div style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,padding:24,opacity:0.6}}>
-            <div style={{fontSize:14,fontWeight:600,color:P.txM}}>Kubera</div>
-            <div style={{fontSize:24,fontWeight:800,color:P.red,fontFamily:mono,marginTop:4}}>$249/yr</div>
-            <div style={{fontSize:12,color:P.txM,marginTop:4}}>$2,490 over 10 years</div>
+          <div style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,padding:24,opacity:0.6,textAlign:"center"}}>
+            <div style={{fontSize:15,fontWeight:600,color:P.txM}}>Kubera</div>
+            <div style={{fontSize:28,fontWeight:800,color:P.red,fontFamily:mono,marginTop:6}}>$249/yr</div>
+            <div style={{fontSize:13,color:P.txM,marginTop:6}}>$2,490 over 10 years</div>
+            <div style={{fontSize:12,color:P.txM,marginTop:8}}>Excellent for DeFi and bank syncing</div>
           </div>
-          <div style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,padding:24,opacity:0.6}}>
-            <div style={{fontSize:14,fontWeight:600,color:P.txM}}>Monarch</div>
-            <div style={{fontSize:24,fontWeight:800,color:P.red,fontFamily:mono,marginTop:4}}>$14.99/mo</div>
-            <div style={{fontSize:12,color:P.txM,marginTop:4}}>$1,800 over 10 years</div>
+          <div style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,padding:24,opacity:0.6,textAlign:"center"}}>
+            <div style={{fontSize:15,fontWeight:600,color:P.txM}}>Monarch</div>
+            <div style={{fontSize:28,fontWeight:800,color:P.red,fontFamily:mono,marginTop:6}}>$14.99/mo</div>
+            <div style={{fontSize:13,color:P.txM,marginTop:6}}>$1,800 over 10 years</div>
+            <div style={{fontSize:12,color:P.txM,marginTop:8}}>Best for budgeting and spending</div>
           </div>
-          <div style={{background:"rgba(212,168,67,0.04)",border:"2px solid "+P.gold,borderRadius:16,padding:24,boxShadow:"0 0 40px rgba(212,168,67,0.12)"}}>
-            <div style={{fontSize:14,fontWeight:700,color:P.gold}}>HardAssets</div>
-            <div style={{fontSize:32,fontWeight:900,color:P.gold,fontFamily:mono,marginTop:4}}>$0</div>
-            <div style={{fontSize:12,color:P.gold,marginTop:4}}>Free forever</div>
+          <div style={{background:"rgba(212,168,67,0.04)",border:"2px solid "+P.gold,borderRadius:16,padding:24,textAlign:"center",boxShadow:"0 0 40px rgba(212,168,67,0.12)"}}>
+            <div style={{fontSize:15,fontWeight:700,color:P.gold}}>HardAssets</div>
+            <div style={{fontSize:36,fontWeight:900,color:P.gold,fontFamily:mono,marginTop:6}}>$0</div>
+            <div style={{fontSize:13,color:P.gold,marginTop:6}}>Free forever</div>
+            <div style={{fontSize:12,color:P.txS,marginTop:8}}>Built for hard asset investors</div>
           </div>
         </div>
 
@@ -290,7 +285,7 @@ export default function ComparePage(){
           <a href="/?demo=1" style={{padding:"16px 36px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:16,fontWeight:700,textDecoration:"none"}}>Try Live Demo →</a>
           <a href="/#features" style={{padding:"16px 36px",borderRadius:14,border:"1px solid "+P.border,background:"transparent",color:P.txS,fontSize:16,fontWeight:600,textDecoration:"none"}}>See All Features</a>
         </div>
-        <div style={{marginTop:14,fontSize:12,color:P.txM}}>No sign-up required. No credit card. No trial period that expires.</div>
+        <div style={{marginTop:14,fontSize:13,color:P.txM}}>No sign-up required. No credit card. No trial period that expires.</div>
       </div>
     </div>
 

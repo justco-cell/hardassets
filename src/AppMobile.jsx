@@ -508,7 +508,7 @@ export default function HardAssets(){
   };
 
   // Auto-trigger demo from ?demo=1 URL param
-  useEffect(()=>{const p=new URLSearchParams(window.location.search);if(p.get("demo")&&!user){setUser({name:"Guest",email:"guest"});setMetals(DEMO_DATA.metals);setSynds(DEMO_DATA.syndications);setCrypto(DEMO_DATA.crypto);setProperties(DEMO_DATA.properties);setNotesLending(DEMO_DATA.notesLending);setCollectibles(DEMO_DATA.collectibles);setTargets(DEMO_DATA.targets);setView("app");window.history.replaceState({},"","/");setTimeout(()=>refreshPrices(),500)}},[]);
+  useEffect(()=>{const p=new URLSearchParams(window.location.search);if(p.get("demo")&&(!user||user.email==="guest")){setUser({name:"Guest",email:"guest"});setMetals(DEMO_DATA.metals);setSynds(DEMO_DATA.syndications);setCrypto(DEMO_DATA.crypto);setProperties(DEMO_DATA.properties);setNotesLending(DEMO_DATA.notesLending);setCollectibles(DEMO_DATA.collectibles);setTargets(DEMO_DATA.targets);setView("app");window.history.replaceState({},"","/");setTimeout(()=>refreshPrices(),500)}else if(p.get("login")){setView("login");window.history.replaceState({},"","/")}},[]);
 
   // Fetch on mount
   useEffect(()=>{if(view==="app")refreshPrices()},[view]);
