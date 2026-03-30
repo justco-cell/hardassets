@@ -809,21 +809,44 @@ export default function HardAssets(){
     <Sheet open={showFaq} onClose={()=>setShowFaq(false)} title="Help & FAQ">
       <div style={{display:"flex",flexDirection:"column",gap:14}}>
         {[
-          ["How do I add a holding?","Tap '+ Add' at the top of any tab. Fill the form and tap submit."],
-          ["How do I edit or delete?","Tap any holding card to edit. Use the Delete button at the bottom of the edit form."],
-          ["Where do live prices come from?","Metals from metals.dev, crypto from CoinGecko. Tap 'Refresh' to update."],
-          ["How does oz-per-unit work?","1oz coin = 1 oz, 100oz bar = 100 oz, 1kg = 32.15 oz. Value = qty × oz/unit × spot."],
-          ["What is Cap Rate?","(Annual Rent - Expenses) / Property Value × 100. Measures return independent of financing."],
-          ["Syndications vs Physical RE?","Syndications = passive LP investments. Physical RE = properties you own directly."],
-          ["How do targets work?","Set ideal % per asset class in Portfolio. Compare actual vs target to rebalance."],
-          ["Is data saved automatically?","Yes, auto-saves to cloud within 800ms with Google sign-in. Guest = local only."],
-          ["Can I import from CSV?","Yes! Every tab has Import. Export from Excel as CSV, then import."],
-          ["What do risk scores mean?","1-3 = Low (green), 4-6 = Medium (gold), 7-8 = High (orange), 9-10 = Very High (red)."],
-          ["How is income calculated?","Syndication distributions + property cash flow + note interest, all annualized."],
-          ["What if I sign out?","Data saves to cloud. Sign back in with same Google account to restore."]
-        ].map(([q,a],i)=><div key={i} style={{borderBottom:`1px solid ${P.border}`,paddingBottom:10}}>
-          <div style={{fontSize:13,fontWeight:700,color:P.text,marginBottom:4}}>{q}</div>
-          <div style={{fontSize:12,color:P.txS,lineHeight:1.5}}>{a}</div>
+          {section:"Basics",items:[
+            ["How do I add a holding?","Tap '+ Add' at the top of any tab. Fill the form and tap submit."],
+            ["How do I edit or delete?","Tap any holding card to edit. Tap '✓ Save' at the top. To delete, tap 'Delete' at the bottom — you'll be asked to confirm."],
+            ["CSV import/export?","Every tab has Import and Export. Export from Excel as CSV, then import. Column names match automatically."],
+            ["Is data saved automatically?","Yes, auto-saves to cloud with Google sign-in. Guest data is local only."],
+          ]},
+          {section:"Metals",items:[
+            ["Oz-per-unit?","1oz = 1, 1/2oz = 0.5, 1/4oz = 0.25, 1/10oz = 0.1, 10oz = 10, 100oz = 100, 1kg = 32.15, Gram = 0.032. Value = qty × oz/unit × spot price."],
+            ["Price sources?","Metals from metals.dev with real 24h change. Crypto from CoinGecko with 24h change. Tap 'Refresh' to update."],
+          ]},
+          {section:"Syndications",items:[
+            ["Syndications vs Physical RE?","Syndications = passive LP investments managed by sponsors. Physical RE = property you own directly with mortgage and tenants."],
+            ["Key fields?","Rate % = preferred annual return. Projected IRR = sponsor's total return estimate. Strategy = deal type (Multifamily, BTR, Hotel, etc.). Income = Invested × Rate%."],
+          ]},
+          {section:"Deal Analyzer",items:[
+            ["Cap Rate?","(Annual Rent - Expenses) ÷ Value × 100. Measures return without financing. Target: ≥ 6%."],
+            ["CoC Return?","Annual Cash Flow ÷ Total Cash In × 100. Total Cash In = down payment + closing costs. Target: ≥ 8%."],
+            ["DSCR?","Net Operating Income ÷ Annual Mortgage. Target: ≥ 1.25. Below 1.0 = negative cash flow."],
+            ["Equity Multiple?","Total Return ÷ Total Cash Invested. If $100K in → $230K back = 2.3x. Target: ≥ 1.8x. Includes cash flow over hold period + sale proceeds."],
+            ["Break-Even Occupancy?","(Expenses + Mortgage) ÷ Gross Rent × 100. Minimum occupancy to cover all costs. Target: ≤ 85%. Lower = safer."],
+            ["Input fields?","Closing %: buyer costs (3% typical). Hold Period: years you plan to own. Appreciation %: annual value growth (3% historical avg). Mgmt %: management fee (10% typical). Term: loan length."],
+            ["Investment Summary?","Shows total cash in, cumulative cash flow, estimated sale price (with appreciation), remaining loan, net sale proceeds (minus 6% selling costs), total return, and equity multiple."],
+          ]},
+          {section:"Portfolio & More",items:[
+            ["Target allocations?","Set ideal % per asset class in Portfolio. Visual bars show actual vs target."],
+            ["Risk scores?","1-3 = Low (green), 4-6 = Medium (gold), 7-8 = High (orange), 9-10 = Very High (red)."],
+            ["Income calculation?","Syndication distributions + property cash flow + note interest, all annualized."],
+            ["Performance chart?","Shows portfolio value over time. Snapshots save daily on login. Use 1M/3M/6M/1Y/All to zoom."],
+            ["Physical RE fields?","Equity = Value - Mortgage. Monthly CF = Rent - Expenses - Mortgage Payment. Cap Rate auto-calculated."],
+            ["Notes & Lending?","Track hard money, private notes, P2P. Income = Balance × Rate%. Status: Performing, Late, Default, Paid Off."],
+            ["Collectibles?","Track watches, wine, art, cars, jewelry. Gain = Current Value - Purchase Price. Track serial numbers and insurance."],
+          ]},
+        ].map((sec,si)=><div key={si}>
+          <div style={{fontSize:11,fontWeight:700,color:P.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:8,marginTop:si>0?16:0}}>{sec.section}</div>
+          {sec.items.map(([q,a],i)=><div key={i} style={{borderBottom:`1px solid ${P.border}`,paddingBottom:8,marginBottom:8}}>
+            <div style={{fontSize:13,fontWeight:700,color:P.text,marginBottom:3}}>{q}</div>
+            <div style={{fontSize:12,color:P.txS,lineHeight:1.6}}>{a}</div>
+          </div>)}
         </div>)}
       </div>
     </Sheet>

@@ -960,22 +960,55 @@ export default function HardAssetsWeb(){
     </Modal>
     <Modal open={showFaq} onClose={()=>setShowFaq(false)} title="Dashboard Help & FAQ" wide>
       <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        {/* Section headers + Q&A */}
         {[
-          ["How do I add a new holding?","Click the '+ Add' button at the top of any tab (Metals, Syndications, Crypto, Properties, Notes, Collectibles). Fill in the form and click the submit button."],
-          ["How do I edit or delete a holding?","Click on any row in the table to open the edit form. Make your changes and click 'Save Changes'. To delete, click the red 'Delete' button at the bottom of the edit form."],
-          ["Where do the live prices come from?","Metal prices (gold, silver, platinum, palladium) come from metals.dev API. Crypto prices (BTC, ETH, SOL, and 10+ coins) come from CoinGecko. Click 'Refresh Prices' in the top bar to update."],
-          ["How does oz-per-unit work for metals?","Different metal forms contain different troy ounces. A 1oz coin = 1 oz, a 100oz bar = 100 oz, a 1kg bar = 32.15 oz. The dashboard multiplies your quantity × oz/unit × spot price for accurate valuation."],
-          ["What is Cap Rate?","Cap Rate = (Annual Rental Income - Annual Expenses) / Property Value × 100. It measures a property's return independent of financing. Higher cap rates generally mean higher returns but may indicate higher risk."],
-          ["What's the difference between Syndications and Physical RE?","Syndications are passive LP (limited partner) investments in deals managed by sponsors. Physical RE is property you own directly — tracking purchase price, mortgage, rental income, and cash flow."],
-          ["How do target allocations work?","Click 'Set Targets' in the Portfolio tab to set your ideal percentage for each asset class. The dashboard compares your actual allocation vs targets so you can see where to rebalance."],
-          ["Is my data saved automatically?","Yes. All changes auto-save to the cloud within seconds when you're signed in with Google. Guest mode data is stored locally only and will be lost if you clear your browser."],
-          ["Can I import from a spreadsheet?","Yes! Every tab has an 'Import' button that accepts CSV files. Export from Excel/Sheets as CSV, then import. Column names are matched automatically. You can also export your data to CSV anytime."],
-          ["What do the risk scores mean?","Risk is rated 1-10: Green (1-3) = Low risk, Gold (4-6) = Medium, Orange (7-8) = High, Red (9-10) = Very High. Set risk based on your own assessment of each holding."],
-          ["How is portfolio income calculated?","Annual income includes: syndication distributions (invested × rate%), property rental cash flow (rent - expenses - mortgage × 12), and note/lending interest (balance × rate%). All are summed in the Portfolio tab."],
-          ["What happens if I sign out?","Your data is saved to the cloud. Sign back in with the same Google account and everything loads automatically. Guest data is not saved to the cloud."]
-        ].map(([q,a],i)=><div key={i} style={{borderBottom:i<11?`1px solid ${P.border}`:"none",paddingBottom:12}}>
-          <div style={{fontSize:14,fontWeight:700,color:P.text,marginBottom:6}}>{q}</div>
-          <div style={{fontSize:13,color:P.txS,lineHeight:1.6}}>{a}</div>
+          {section:"Getting Started",items:[
+            ["How do I add a new holding?","Click the '+ Add' button at the top of any tab (Metals, Syndications, Crypto, Properties, Notes, Collectibles). Fill in the form and click the submit button."],
+            ["How do I edit or delete a holding?","Click on any row in the table to open the edit form. Make your changes and click the '✓ Save' button in the top-right corner. To delete, click the red 'Delete' button at the bottom of the edit form — you'll be asked to confirm."],
+            ["Can I import from a spreadsheet?","Yes! Every tab has an 'Import' button that accepts CSV files. Export from Excel/Sheets as CSV, then import. Column names are matched automatically. You can also export your data to CSV anytime."],
+            ["Is my data saved automatically?","Yes. All changes auto-save to the cloud within seconds when you're signed in with Google. Guest mode data is stored locally only and will be lost if you clear your browser."],
+            ["What happens if I sign out?","Your data is saved to the cloud. Sign back in with the same Google account and everything loads automatically. Guest data is not saved to the cloud."],
+          ]},
+          {section:"Precious Metals",items:[
+            ["How does oz-per-unit work?","Different metal forms contain different troy ounces: 1oz coin = 1 oz, 1/2 oz = 0.5 oz, 1/4 oz = 0.25 oz, 1/10 oz = 0.1 oz, 10oz bar = 10 oz, 100oz bar = 100 oz, 1kg bar = 32.15 oz, Gram = 0.032 oz. The dashboard multiplies quantity × oz/unit × live spot price for accurate valuation."],
+            ["Where do metal prices come from?","Gold, silver, platinum, and palladium prices come from the metals.dev API with real 24-hour change percentages calculated from yesterday's close. Click 'Refresh Prices' to update."],
+            ["What is the Gold/Silver ratio?","The ratio of gold price to silver price (e.g., Gold $3,000 ÷ Silver $30 = 100:1). Historically, a high ratio (above 80) suggests silver is undervalued relative to gold. You can see this on the Markets tab."],
+          ]},
+          {section:"Real Estate Syndications",items:[
+            ["What's the difference between Syndications and Physical RE?","Syndications are passive LP (limited partner) investments in deals managed by sponsors — you wire capital and receive distributions. Physical RE is property you own directly with your own mortgage, tenants, and cash flow."],
+            ["What are the syndication fields?","Deal Name: the project name. Sponsor: the GP managing the deal. Invested: your LP capital. Rate %: the preferred return (annual distribution rate). Projected IRR: the sponsor's estimated total return. Strategy: deal type (Multifamily, BTR, Hotel, etc.). Location: state/country. Status: Active, Pending, Exited, or Default."],
+            ["How is syndication income calculated?","Annual Income = Invested Amount × Rate %. For example, $100,000 invested at 8% rate = $8,000/year estimated income."],
+          ]},
+          {section:"Deal Analyzer",items:[
+            ["What is Cap Rate?","Cap Rate = (Annual Rental Income - Annual Expenses) ÷ Property Value × 100. It measures a property's return independent of financing. Target: ≥ 6%. Higher cap rates mean higher returns but may indicate higher risk or a less desirable market."],
+            ["What is Cash-on-Cash (CoC) Return?","CoC Return = Annual Cash Flow ÷ Total Cash Invested × 100. Total Cash Invested includes your down payment plus closing costs. Target: ≥ 8%. This tells you your actual return on the cash you put in."],
+            ["What is DSCR?","Debt Service Coverage Ratio = Net Operating Income ÷ Annual Mortgage Payment. Target: ≥ 1.25. A DSCR of 1.25 means the property earns 25% more than needed to cover the mortgage. Below 1.0 means negative cash flow."],
+            ["What is Equity Multiple?","Equity Multiple = Total Return ÷ Total Cash Invested. If you invest $100K and get back $230K total (cash flow over the hold period + sale proceeds), that's a 2.3x equity multiple. Target: ≥ 1.8x. This is the single most important metric for syndication and rental property investors."],
+            ["What is Break-Even Occupancy?","Break-Even Occupancy = (Total Expenses + Mortgage) ÷ Gross Rent at 100% Occupancy × 100. This tells you the minimum occupancy needed to cover all costs. Target: ≤ 85%. Below 80% is strong — the deal can survive a downturn. Above 95% is risky."],
+            ["What do the Deal Analyzer inputs mean?","Purchase Price: total acquisition cost. Monthly Rent: gross rental income per month. Tax/yr & Insurance/yr: annual property tax and insurance. Maintenance/mo: monthly repairs/upkeep budget. Vacancy %: expected vacancy rate (8% is typical). Mgmt %: property management fee as % of effective rent (10% is typical). Down %: your down payment as % of price. Rate %: mortgage interest rate. Term: loan length in years. Closing %: buyer closing costs as % of price (3% typical). Hold Period: how many years you plan to own it. Appreciation %/yr: expected annual property value increase (3% is historical average)."],
+            ["How is the Investment Summary calculated?","Total Cash In = Down Payment + Closing Costs. Total Cash Flow = Annual Cash Flow × Hold Period. Est. Sale Price = Purchase Price × (1 + Appreciation%)^Hold Years. Loan Balance at Sale is the remaining mortgage. Sale Proceeds = Sale Price - Remaining Loan - 6% selling costs. Total Return = Total Cash Flow + Sale Proceeds. Equity Multiple = Total Return ÷ Total Cash In."],
+          ]},
+          {section:"Crypto & Markets",items:[
+            ["Where do crypto prices come from?","All crypto prices come from CoinGecko's free API, including 24-hour change percentages. We track 20+ coins: BTC, ETH, SOL, ADA, DOT, AVAX, LINK, MATIC, XRP, DOGE, ATOM, UNI, AAVE, BNB, LTC, NEAR, APT, ARB, OP, FIL."],
+            ["What's on the Markets tab?","Live prices for precious metals (with 24h change from yesterday's close), 20+ crypto coins (with 24h change), and 16 currency exchange rates vs USD from the Frankfurter API. You can search and sort crypto by price or alphabetically."],
+          ]},
+          {section:"Portfolio & Analysis",items:[
+            ["How do target allocations work?","Click 'Set Targets' in the Portfolio tab to set your ideal percentage for each asset class. The dashboard compares your actual allocation vs targets with visual bars so you can see where to rebalance."],
+            ["How is portfolio income calculated?","Annual income includes: syndication distributions (invested × rate%), property rental cash flow (rent - expenses - mortgage × 12), and note/lending interest (balance × rate%). All are summed in the Portfolio tab."],
+            ["What is the Performance chart?","The chart on the Portfolio tab shows your total portfolio value over time. A snapshot is saved once per day when you log in, and a weekly backup runs automatically. Use the time range buttons (1W, 1M, 3M, 6M, 1Y, All) to zoom in/out."],
+            ["What do the risk scores mean?","Risk is rated 1-10: Green (1-3) = Low risk, Gold (4-6) = Medium, Orange (7-8) = High, Red (9-10) = Very High. Set risk based on your own assessment of each holding. The portfolio tab shows a weighted average risk score."],
+          ]},
+          {section:"Other Asset Types",items:[
+            ["What can I track in Physical RE?","Properties you own: name, address, type (SFH, Duplex, etc.), purchase price, current value, mortgage balance, monthly rent, expenses, and mortgage payment. The dashboard auto-calculates equity, monthly cash flow, annual cash flow, and cap rate."],
+            ["What are Notes & Lending?","Private loans you've made: hard money loans, private notes, P2P lending, bridge loans, etc. Track principal, outstanding balance, interest rate, maturity date, collateral, LTV, and status (Performing, Late, Default, Paid Off). Income is auto-calculated from balance × rate."],
+            ["What can I track in Collectibles?","Watches, wine, art, cars, jewelry, coins, memorabilia, handbags, sneakers, etc. Track purchase price, current value, brand/maker, serial number, storage location, insurance value, and whether it's insured. Gain and gain % are auto-calculated."],
+          ]},
+        ].map((sec,si)=><div key={si}>
+          <div style={{fontSize:12,fontWeight:700,color:P.gold,textTransform:"uppercase",letterSpacing:1.5,marginBottom:10,marginTop:si>0?20:0}}>{sec.section}</div>
+          {sec.items.map(([q,a],i)=><div key={i} style={{borderBottom:`1px solid ${P.border}`,paddingBottom:12,marginBottom:12}}>
+            <div style={{fontSize:14,fontWeight:700,color:P.text,marginBottom:6}}>{q}</div>
+            <div style={{fontSize:13,color:P.txS,lineHeight:1.7}}>{a}</div>
+          </div>)}
         </div>)}
       </div>
     </Modal>
