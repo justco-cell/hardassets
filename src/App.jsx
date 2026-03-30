@@ -531,6 +531,92 @@ function ContactPg({onNav}){
     </div></div>);
 }
 
+function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
+  const[mode,setMode]=useState("login");
+  const[email,setEmail]=useState("");const[pass,setPass]=useState("");const[name,setName]=useState("");
+  const[err,setErr]=useState("");const[loading,setLoading]=useState(false);
+  const[hp,setHp]=useState("");const[turnstileToken,setTurnstileToken]=useState(null);
+  const gBtnRef=useRef(null);const doneRef=useRef(false);const turnstileRef=useRef(null);
+
+  // Render Google Sign-In button
+  useEffect(()=>{
+    if(doneRef.current)return;
+    const render=()=>{if(!window.google?.accounts?.id||!gBtnRef.current||doneRef.current)return;doneRef.current=true;
+      window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:window._gsiCallback});
+      window.google.accounts.id.renderButton(gBtnRef.current,{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:340})};
+    if(window.google?.accounts?.id){render()}else{const id=setInterval(()=>{if(window.google?.accounts?.id){clearInterval(id);render()}},300);return()=>clearInterval(id)}
+  },[]);
+
+  // Render Turnstile on signup
+  useEffect(()=>{
+    if(mode!=="signup"||!window.turnstile)return;
+    const el=document.getElementById("turnstile-web");
+    if(!el)return;
+    if(turnstileRef.current){try{window.turnstile.remove(turnstileRef.current)}catch(e){}}
+    turnstileRef.current=window.turnstile.render(el,{sitekey:"0x4AAAAAAACyFuvo1WJClT69B",callback:t=>setTurnstileToken(t),"error-callback":()=>setTurnstileToken(null),theme:"dark",size:"invisible"});
+  },[mode]);
+
+  const submit=async()=>{
+    setErr("");
+    if(!email||!pass){setErr("Email and password required.");return}
+    if(mode==="signup"&&!name.trim()){setErr("Name required.");return}
+    if(pass.length<8){setErr("Password must be at least 8 characters.");return}
+    if(hp){setErr("");return} // honeypot — silently do nothing
+    if(mode==="signup"&&!turnstileToken){setErr("Security verification loading. Please wait a moment and try again.");return}
+    setLoading(true);
+    const result=await onEmailAuth(mode==="signup"?"signup":"login",email,pass,mode==="signup"?name.trim():undefined);
+    if(result?.error){setErr(result.error);if(window.turnstile&&turnstileRef.current)try{window.turnstile.reset(turnstileRef.current)}catch(e){}}
+    setLoading(false);
+  };
+
+  return<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={onClose}>
+    <div onClick={e=>e.stopPropagation()} style={{background:P.surface,border:`1px solid ${P.border}`,borderRadius:24,padding:"36px 36px 28px",maxWidth:420,width:"90%",position:"relative"}}>
+      <button onClick={onClose} style={{position:"absolute",top:16,right:16,background:P.elevated,border:"none",color:P.txS,width:32,height:32,borderRadius:16,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+
+      <div style={{textAlign:"center",marginBottom:24}}>
+        <div style={{width:56,height:56,borderRadius:16,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:24,fontWeight:900,color:P.bg,marginBottom:16,boxShadow:`0 8px 32px rgba(212,168,67,0.3)`}}>H</div>
+        <div style={{fontSize:22,fontWeight:800,color:P.text}}>Welcome</div>
+      </div>
+
+      {/* Google Sign-In */}
+      <div ref={gBtnRef} style={{display:"flex",justifyContent:"center",marginBottom:16,minHeight:44}}/>
+
+      {/* Divider */}
+      <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16}}><div style={{flex:1,height:1,background:P.border}}/><span style={{fontSize:12,color:P.txM}}>or use email</span><div style={{flex:1,height:1,background:P.border}}/></div>
+
+      {/* Sign In / Sign Up tabs */}
+      <div style={{display:"flex",marginBottom:16,borderRadius:10,overflow:"hidden",border:"1px solid "+P.border}}>
+        {["login","signup"].map(m=><button key={m} onClick={()=>{setMode(m);setErr("")}} style={{flex:1,padding:"10px 0",background:mode===m?P.goldSoft:"transparent",color:mode===m?P.gold:P.txM,border:"none",fontSize:13,fontWeight:700,cursor:"pointer",textTransform:"uppercase",letterSpacing:1,fontFamily:ff}}>{m==="login"?"Sign In":"Sign Up"}</button>)}
+      </div>
+
+      {/* Form fields */}
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {mode==="signup"&&<FF label="Name" value={name} onChange={setName} placeholder="Your name"/>}
+        <FF label="Email" value={email} onChange={setEmail} placeholder="you@email.com"/>
+        <FF label="Password" value={pass} onChange={setPass} placeholder="Min. 8 characters" type="password"/>
+
+        {/* Honeypot — invisible to humans */}
+        <div style={{position:"absolute",left:"-9999px",opacity:0,height:0,overflow:"hidden"}}><input type="text" value={hp} onChange={e=>setHp(e.target.value)} tabIndex={-1} autoComplete="off"/></div>
+
+        {/* Turnstile widget — invisible */}
+        {mode==="signup"&&<div id="turnstile-web"/>}
+
+        {err&&<div style={{color:P.red,fontSize:13,display:"flex",alignItems:"center",gap:6}}><span>⚠</span>{err}</div>}
+
+        <Btn onClick={submit} full style={{marginTop:4,opacity:loading?0.6:1}}>{loading?"Please wait...":(mode==="login"?"Sign In":"Create Account")}</Btn>
+      </div>
+
+      {/* Guest link */}
+      <div style={{textAlign:"center",marginTop:14}}>
+        <button onClick={onGuestLogin} style={{background:"none",border:"none",color:P.txM,fontSize:13,cursor:"pointer",textDecoration:"underline",fontFamily:ff}}>Continue as guest</button>
+      </div>
+
+      {syncing&&<div style={{textAlign:"center",marginTop:12,fontSize:13,color:P.gold}}>Loading your portfolio...</div>}
+      <div style={{textAlign:"center",marginTop:20,fontSize:11,color:P.txM}}>Data encrypted and saved securely to the cloud.</div>
+    </div>
+  </div>;
+}
+
 const DEMO_DATA={
   metals:[
     {id:"d1",metal:"Gold",unit:"1 oz",qty:25,costPerUnit:1850,spot:0,name:"Gold 1 oz",risk:3,dateInvested:"2023-03-15",notes:"American Eagles"},
@@ -648,12 +734,10 @@ export default function HardAssetsWeb(){
     setSyncing(false);setView("app");refreshPrices();
   };
 
-  useEffect(()=>{
-    if(view!=="login")return;
-    const initGSI=()=>{if(!window.google?.accounts?.id)return;window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleLogin});const el=document.getElementById("gsi-btn-web");if(el)window.google.accounts.id.renderButton(el,{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:340})};
-    const t=setTimeout(()=>{if(window.google?.accounts?.id){initGSI()}else{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=()=>setTimeout(initGSI,100);document.head.appendChild(s)}},100);
-    return()=>clearTimeout(t);
-  },[view]);
+  // Expose GSI callback globally for LoginModal
+  useEffect(()=>{window._gsiCallback=handleGoogleLogin},[]);
+
+  // GSI init is now handled inside LoginModal
 
   const logout=()=>{if(window.posthog)window.posthog.reset();setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setProperties([]);setNotesLending([]);setCollectibles([]);try{sessionStorage.removeItem("ha_user");sessionStorage.removeItem("ha_token")}catch(e){}setView("home")};
   const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setMetals(DEMO_DATA.metals);setSynds(DEMO_DATA.syndications);setCrypto(DEMO_DATA.crypto);setProperties(DEMO_DATA.properties);setNotesLending(DEMO_DATA.notesLending);setCollectibles(DEMO_DATA.collectibles);setTargets(DEMO_DATA.targets);setView("app");refreshPrices();if(window.posthog)window.posthog.capture('user_logged_in',{method:'guest'});};
@@ -798,18 +882,13 @@ export default function HardAssetsWeb(){
   // ═══ HOME (with login modal) & CONTACT ═══
   if(view==="home"||view==="login") return <>
     <HomePage onNav={v=>{if(v==="demo"){guestLogin();return}if(v==="app"&&user)setView("app");else setView(v)}} user={user}/>
-    {view==="login"&&(!user||user.email==="guest")&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setView("home")}>
-      <div onClick={e=>e.stopPropagation()} style={{background:P.surface,border:`1px solid ${P.border}`,borderRadius:24,padding:40,maxWidth:420,width:"90%",textAlign:"center",position:"relative"}}>
-        <button onClick={()=>setView("home")} style={{position:"absolute",top:16,right:16,background:P.elevated,border:"none",color:P.txS,width:32,height:32,borderRadius:16,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
-        <div style={{width:64,height:64,borderRadius:18,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:28,fontWeight:900,color:P.bg,marginBottom:24,boxShadow:`0 12px 40px rgba(212,168,67,0.3)`}}>H</div>
-        <div style={{fontSize:26,fontWeight:800,color:P.text,marginBottom:6}}>Sign In</div>
-        <div style={{fontSize:14,color:P.txS,marginBottom:32,lineHeight:1.5}}>Track your investments in one dashboard</div>
-        <div id="gsi-btn-web" style={{display:"flex",justifyContent:"center",marginBottom:16}}/>
-        <button onClick={()=>{guestLogin();setView("app")}} style={{padding:"14px 28px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
-        {syncing&&<div style={{marginTop:20,fontSize:14,color:P.gold}}>Loading your portfolio...</div>}
-        <div style={{marginTop:32,fontSize:11,color:P.txM}}>Data encrypted and saved securely to the cloud.</div>
-      </div>
-    </div>}
+    {view==="login"&&(!user||user.email==="guest")&&<LoginModal onClose={()=>setView("home")} onGuestLogin={()=>{guestLogin();setView("app")}} onEmailAuth={async(action,email,pass,name)=>{
+      const res=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password:pass,name,_ts:Date.now()})});
+      const d=await res.json();if(d.error)return{error:d.error};
+      setAuthToken(d.token);setUser({email:d.email,name:d.name||email.split("@")[0]});setView("app");
+      if(d.token){setSyncing(true);const saved=await cloudLoad(d.token);if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices()}
+      return{};
+    }} syncing={syncing}/>}
   </>;
   if(view==="contact") return <ContactPg onNav={v=>setView(v)}/>;
 

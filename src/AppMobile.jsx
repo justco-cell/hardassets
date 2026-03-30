@@ -347,6 +347,57 @@ const DEMO_DATA={
   targets:{"Precious Metals":25,"Real Estate":35,"Crypto":10,"Equities":10,"Alternatives":10,"Cash":5,"Fixed Income":5}
 };
 
+function MobileLoginSheet({onClose,onGuestLogin,onEmailAuth,syncing}){
+  const[mode,setMode]=useState("login");
+  const[em,setEm]=useState("");const[pw,setPw]=useState("");const[nm,setNm]=useState("");
+  const[err,setErr]=useState("");const[loading,setLoading]=useState(false);const[hp,setHp]=useState("");
+  const gRef=useRef(null);const doneRef=useRef(false);
+
+  useEffect(()=>{
+    if(doneRef.current)return;
+    const render=()=>{if(!window.google?.accounts?.id||!gRef.current||doneRef.current)return;doneRef.current=true;
+      window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:window._gsiCallbackMobile});
+      window.google.accounts.id.renderButton(gRef.current,{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:300})};
+    if(window.google?.accounts?.id){render()}else{const id=setInterval(()=>{if(window.google?.accounts?.id){clearInterval(id);render()}},300);return()=>clearInterval(id)}
+  },[]);
+
+  const submit=async()=>{
+    setErr("");if(!em||!pw){setErr("Email and password required.");return}
+    if(mode==="signup"&&!nm.trim()){setErr("Name required.");return}
+    if(pw.length<8){setErr("Password must be at least 8 characters.");return}
+    if(hp)return;
+    setLoading(true);
+    const result=await onEmailAuth(mode==="signup"?"signup":"login",em,pw,nm.trim());
+    if(result?.error)setErr(result.error);
+    setLoading(false);
+  };
+
+  return<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={onClose}>
+    <div onClick={e=>e.stopPropagation()} style={{background:P.surface,borderRadius:"24px 24px 0 0",padding:"28px 24px 36px",width:"100%",maxWidth:430,position:"relative",maxHeight:"90vh",overflow:"auto"}}>
+      <button onClick={onClose} style={{position:"absolute",top:12,right:16,background:P.elevated,border:"none",color:P.txS,width:32,height:32,borderRadius:16,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <div style={{width:48,height:48,borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:900,color:P.bg,marginBottom:12}}>H</div>
+        <div style={{fontSize:20,fontWeight:800}}>Welcome</div>
+      </div>
+      <div ref={gRef} style={{display:"flex",justifyContent:"center",marginBottom:14,minHeight:44}}/>
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}><div style={{flex:1,height:1,background:P.border}}/><span style={{fontSize:11,color:P.txM}}>or use email</span><div style={{flex:1,height:1,background:P.border}}/></div>
+      <div style={{display:"flex",marginBottom:14,borderRadius:10,overflow:"hidden",border:"1px solid "+P.border}}>
+        {["login","signup"].map(m=><button key={m} onClick={()=>{setMode(m);setErr("")}} style={{flex:1,padding:"10px 0",background:mode===m?P.goldSoft:"transparent",color:mode===m?P.gold:P.txM,border:"none",fontSize:12,fontWeight:700,cursor:"pointer",textTransform:"uppercase",letterSpacing:1,fontFamily:ff}}>{m==="login"?"Sign In":"Sign Up"}</button>)}
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {mode==="signup"&&<FF label="Name" value={nm} onChange={setNm} placeholder="Your name"/>}
+        <FF label="Email" value={em} onChange={setEm} placeholder="you@email.com"/>
+        <FF label="Password" value={pw} onChange={setPw} placeholder="Min. 8 characters" type="password"/>
+        <div style={{position:"absolute",left:"-9999px",opacity:0,height:0,overflow:"hidden"}}><input type="text" value={hp} onChange={e=>setHp(e.target.value)} tabIndex={-1} autoComplete="off"/></div>
+        {err&&<div style={{color:P.red,fontSize:13,display:"flex",alignItems:"center",gap:6}}><span>⚠</span>{err}</div>}
+        <Btn onClick={submit} full style={{opacity:loading?0.6:1}}>{loading?"Please wait...":(mode==="login"?"Sign In":"Create Account")}</Btn>
+      </div>
+      <div style={{textAlign:"center",marginTop:12}}><button onClick={onGuestLogin} style={{background:"none",border:"none",color:P.txM,fontSize:12,cursor:"pointer",textDecoration:"underline",fontFamily:ff}}>Continue as guest</button></div>
+      {syncing&&<div style={{textAlign:"center",marginTop:10,fontSize:12,color:P.gold}}>Loading...</div>}
+    </div>
+  </div>;
+}
+
 // ═══ MAIN APP ═══
 export default function HardAssets(){
   const[view,setView]=useState(()=>{try{return sessionStorage.getItem("ha_user")?"app":"home"}catch(e){return"home"}});
@@ -447,21 +498,8 @@ export default function HardAssets(){
     refreshPrices();
   };
 
-  // Init Google Sign-In
-  useEffect(()=>{
-    if(view!=="login")return;
-    const initGSI=()=>{
-      if(!window.google?.accounts?.id)return;
-      window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleLogin});
-      const el=document.getElementById("gsi-btn");
-      if(el)window.google.accounts.id.renderButton(el,{type:"standard",shape:"rectangular",theme:"filled_black",size:"large",text:"continue_with",width:300});
-    };
-    const t=setTimeout(()=>{
-      if(window.google?.accounts?.id){initGSI()}
-      else{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;s.onload=()=>setTimeout(initGSI,100);document.head.appendChild(s)}
-    },100);
-    return()=>clearTimeout(t);
-  },[view]);
+  // Expose GSI callback globally for MobileLoginSheet
+  useEffect(()=>{window._gsiCallbackMobile=handleGoogleLogin},[]);
 
   const logout=()=>{if(window.posthog)window.posthog.reset();setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setProperties([]);setNotesLending([]);setCollectibles([]);try{sessionStorage.removeItem("ha_user");sessionStorage.removeItem("ha_token")}catch(e){}setView("home")};
   const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setMetals(DEMO_DATA.metals);setSynds(DEMO_DATA.syndications);setCrypto(DEMO_DATA.crypto);setProperties(DEMO_DATA.properties);setNotesLending(DEMO_DATA.notesLending);setCollectibles(DEMO_DATA.collectibles);setTargets(DEMO_DATA.targets);setView("app");refreshPrices();if(window.posthog)window.posthog.capture('user_logged_in',{method:'guest'})};
@@ -614,20 +652,13 @@ export default function HardAssets(){
     </div>
 
     {/* LOGIN MODAL */}
-    {view==="login"&&(!user||user.email==="guest")&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setView("home")}>
-      <div onClick={e=>e.stopPropagation()} style={{background:P.surface,borderRadius:"24px 24px 0 0",padding:"32px 24px 40px",width:"100%",maxWidth:430,position:"relative"}}>
-        <button onClick={()=>setView("home")} style={{position:"absolute",top:12,right:16,background:P.elevated,border:"none",color:P.txS,width:32,height:32,borderRadius:16,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
-        <div style={{textAlign:"center"}}>
-          <div style={{width:56,height:56,borderRadius:16,background:`linear-gradient(135deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:24,fontWeight:900,color:P.bg,marginBottom:20,boxShadow:`0 8px 32px rgba(212,168,67,0.3)`}}>H</div>
-          <div style={{fontSize:22,fontWeight:800,marginBottom:6}}>Sign In</div>
-          <div style={{fontSize:13,color:P.txS,marginBottom:28}}>Track your investments in one dashboard</div>
-          <div id="gsi-btn" style={{display:"flex",justifyContent:"center",marginBottom:14}}/>
-          <button onClick={guestLogin} style={{width:"100%",padding:"14px 20px",borderRadius:14,border:`1px solid ${P.border}`,background:"transparent",color:P.txS,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:ff}}>Continue as Guest</button>
-          {syncing&&<div style={{marginTop:16,fontSize:13,color:P.gold}}>Loading your portfolio...</div>}
-          <div style={{marginTop:24,fontSize:10,color:P.txM}}>Data saved securely. Free forever.</div>
-        </div>
-      </div>
-    </div>}
+    {view==="login"&&(!user||user.email==="guest")&&<MobileLoginSheet onClose={()=>setView("home")} onGuestLogin={guestLogin} onEmailAuth={async(action,email,pass,name)=>{
+      const r=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password:pass,name,_ts:Date.now()})});
+      const d=await r.json();if(d.error)return{error:d.error};
+      setAuthToken(d.token);setUser({email:d.email,name:d.name||email.split("@")[0]});setView("app");
+      setSyncing(true);const saved=await cloudLoad(d.token);if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices();
+      return{};
+    }} syncing={syncing}/>}
   </div>;
 
   const NAV=[{key:"portfolio",label:"Portfolio",d:"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"},{key:"markets",label:"Markets",d:"M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"},{key:"metals",label:"Metals",d:"M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"},{key:"realestate",label:"Synds",d:"M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"},{key:"properties",label:"RE",d:"M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4z"},{key:"notes",label:"Notes",d:"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"},{key:"collectibles",label:"Collect",d:"M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"},{key:"crypto",label:"Crypto",d:"M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"},{key:"analyzer",label:"Analyze",d:"M9 7h6m0 10v-3m-3 3v-6m-3 6v-1m6-9a2 2 0 012 2v8a2 2 0 01-2 2H9a2 2 0 01-2-2V9a2 2 0 012-2"}];
