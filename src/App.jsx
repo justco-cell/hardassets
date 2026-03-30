@@ -742,7 +742,6 @@ export default function HardAssetsWeb(){
 
   return<div style={{fontFamily:ff,background:P.bg,color:P.text,minHeight:"100vh",display:"flex",WebkitUserSelect:"none",userSelect:"none"}} onContextMenu={e=>e.preventDefault()} onCopy={e=>e.preventDefault()}>
     <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes modalIn{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}*{box-sizing:border-box}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:${P.txF};border-radius:3px}input::placeholder{color:${P.txF}}select option{background:${P.surface}}`}</style>
-    {user?.email==="guest"&&<div id="demo-banner" style={{background:`linear-gradient(90deg,${P.goldSoft},${P.surface})`,borderBottom:`1px solid ${P.gold}22`,padding:"10px 24px",display:"flex",justifyContent:"center",alignItems:"center",gap:12,position:"relative"}}><span style={{fontSize:13,color:P.gold}}>📋 Demo Portfolio — Sign in with Google to save your own data</span><button onClick={()=>document.getElementById("demo-banner").style.display="none"} style={{position:"absolute",right:16,background:"none",border:"none",color:P.txM,fontSize:16,cursor:"pointer"}}>✕</button></div>}
 
     {/* SIDEBAR */}
     <div style={{width:sideCollapsed?72:240,minHeight:"100vh",background:P.surface,borderRight:`1px solid ${P.border}`,display:"flex",flexDirection:"column",transition:"width 0.3s",overflow:"hidden",position:"sticky",top:0,flexShrink:0}}>
@@ -755,6 +754,7 @@ export default function HardAssetsWeb(){
 
     {/* MAIN */}
     <div style={{flex:1,minWidth:0}}>
+      {user?.email==="guest"&&<div id="demo-banner" style={{background:`linear-gradient(90deg,${P.goldSoft},${P.surface})`,borderBottom:`1px solid ${P.gold}22`,padding:"8px 24px",display:"flex",justifyContent:"center",alignItems:"center",gap:12}}><span style={{fontSize:12,color:P.gold}}>📋 Demo Portfolio — Sign in with Google to save your own data</span><button onClick={()=>document.getElementById("demo-banner").style.display="none"} style={{background:"none",border:"none",color:P.txM,fontSize:14,cursor:"pointer",marginLeft:8}}>✕</button></div>}
       {/* Top bar */}
       <div style={{padding:"14px 32px",borderBottom:`1px solid ${P.border}`,display:"flex",justifyContent:"space-between",alignItems:"center",position:"sticky",top:0,background:`${P.bg}F0`,backdropFilter:"blur(20px)",zIndex:50}}>
         <div style={{display:"flex",alignItems:"center",gap:16}}><div style={{fontSize:22,fontWeight:800,color:P.text,letterSpacing:-0.5}}>{NAV.find(n=>n.key===tab)?.label}</div>{lastRefresh&&<span style={{fontSize:11,color:P.txS,background:P.greenSoft,padding:"3px 10px",borderRadius:6,fontWeight:600}}>● Updated {lastRefresh}</span>}</div>
