@@ -29,7 +29,7 @@ async function fetchMetalPrices(){
     if(!r.ok)return null;
     const d=await r.json();
     if(d.status!=="success"||!d.metals)return null;
-    return{gold:d.metals.gold||0,silver:d.metals.silver||0,platinum:d.metals.platinum||0,palladium:d.metals.palladium||0};
+    return{gold:d.metals.gold||0,silver:d.metals.silver||0,platinum:d.metals.platinum||0,palladium:d.metals.palladium||0,goldChg:d.changes?.gold||0,silverChg:d.changes?.silver||0,platChg:d.changes?.platinum||0,palladiumChg:d.changes?.palladium||0};
   }catch(e){console.log("Metal API err:",e);return null}
 }
 
@@ -512,10 +512,8 @@ export default function HardAssets(){
     setPrices(prev=>{
       const next={...prev};
       if(mp){
-        if(mp.gold){next.goldChg=prev.gold>0?((mp.gold-prev.gold)/prev.gold*100):0;next.gold=mp.gold}
-        if(mp.silver){next.silverChg=prev.silver>0?((mp.silver-prev.silver)/prev.silver*100):0;next.silver=mp.silver}
-        if(mp.platinum){next.platChg=prev.platinum>0?((mp.platinum-prev.platinum)/prev.platinum*100):0;next.platinum=mp.platinum}
-        if(mp.palladium)next.palladium=mp.palladium;
+        next.gold=mp.gold;next.silver=mp.silver;next.platinum=mp.platinum;next.palladium=mp.palladium;
+        next.goldChg=mp.goldChg||0;next.silverChg=mp.silverChg||0;next.platChg=mp.platChg||0;
       }
       if(cp){
         if(cp.BTC){next.btc=cp.BTC.price;next.btcChg=cp.BTC.change}
