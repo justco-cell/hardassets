@@ -425,6 +425,10 @@ export default function HardAssets(){
   const editSaveRef=useRef(null);
   const[confirmDelete,setConfirmDelete]=useState(null);
   const[showFaq,setShowFaq]=useState(false);
+  const[showDeleteAccount,setShowDeleteAccount]=useState(false);
+  const[deleteConfirmText,setDeleteConfirmText]=useState("");
+  const[deleteLoading,setDeleteLoading]=useState(false);
+  const[deleteError,setDeleteError]=useState("");
   const[user,setUser]=useState(()=>{try{const s=sessionStorage.getItem("ha_user");return s?JSON.parse(s):null}catch(e){return null}});
   const[authToken,setAuthToken]=useState(()=>sessionStorage.getItem("ha_token")||null);
   const[syncing,setSyncing]=useState(false);
@@ -903,6 +907,7 @@ export default function HardAssets(){
             <div style={{fontSize:12,color:P.txS,lineHeight:1.6}}>{a}</div>
           </div>)}
         </div>)}
+        {user&&user.email!=="guest"&&<div style={{marginTop:24,paddingTop:16,borderTop:"1px solid "+P.border,textAlign:"center"}}><button onClick={()=>{setShowFaq(false);setTimeout(()=>{setShowDeleteAccount(true);setDeleteConfirmText("");setDeleteError("")},300)}} style={{background:"none",border:"none",color:P.red,fontSize:13,cursor:"pointer",fontFamily:ff,opacity:0.7}}>Delete Account</button></div>}
       </div>
     </Sheet>
     <Sheet open={showActivity} onClose={()=>setShowActivity(false)} title="Activity Log">
@@ -928,6 +933,27 @@ export default function HardAssets(){
             </div>
           </div>})}
         {activityLogs.filter(l=>activityFilter==="all"||l.action===activityFilter).length===0&&<div style={{padding:30,textAlign:"center",color:P.txM,fontSize:12}}>No activity yet</div>}
+      </div>
+    </Sheet>
+    <Sheet open={showDeleteAccount} onClose={()=>setShowDeleteAccount(false)} title="Delete Account">
+      <div style={{textAlign:"center",padding:"8px 0"}}>
+        <div style={{width:48,height:48,borderRadius:14,background:"rgba(248,113,113,0.1)",display:"inline-flex",alignItems:"center",justifyContent:"center",marginBottom:14}}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={P.red} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/></svg></div>
+        <div style={{fontSize:16,fontWeight:800,color:P.red,marginBottom:6}}>This action is permanent</div>
+        <div style={{fontSize:13,color:P.txS,lineHeight:1.6,marginBottom:16}}>Deleting your account will <strong style={{color:P.text}}>permanently remove</strong> all your portfolio data, activity history, snapshots, and credentials.</div>
+        <div style={{fontSize:13,fontWeight:700,color:P.red,marginBottom:16}}>This cannot be undone.</div>
+        <div style={{fontSize:12,color:P.txS,marginBottom:8}}>Type <strong style={{color:P.text,fontFamily:mono}}>DELETE</strong> to confirm:</div>
+        <input value={deleteConfirmText} onChange={e=>setDeleteConfirmText(e.target.value)} placeholder="Type DELETE" style={{width:"100%",maxWidth:240,background:P.bg,border:`2px solid ${deleteConfirmText==="DELETE"?P.red:P.border}`,borderRadius:12,color:P.text,fontSize:16,padding:"14px",textAlign:"center",outline:"none",fontFamily:mono,fontWeight:700,letterSpacing:2,boxSizing:"border-box"}}/>
+        {deleteError&&<div style={{color:P.red,fontSize:12,marginTop:8}}>{deleteError}</div>}
+        <div style={{display:"flex",gap:10,justifyContent:"center",marginTop:16}}>
+          <Btn variant="ghost" onClick={()=>setShowDeleteAccount(false)} style={{fontSize:13}}>Cancel</Btn>
+          <Btn variant="danger" onClick={async()=>{
+            if(deleteConfirmText!=="DELETE"){setDeleteError("Please type DELETE exactly.");return}
+            setDeleteLoading(true);setDeleteError("");
+            try{const r=await fetch("/api/delete-account",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken},body:JSON.stringify({confirmation:"DELETE"})});
+            const d=await r.json();if(d.success){logout();setShowDeleteAccount(false)}else{setDeleteError(d.error||"Failed. Try again.")}
+            }catch(e){setDeleteError("Connection error.")}setDeleteLoading(false);
+          }} style={{opacity:deleteConfirmText==="DELETE"?1:0.4,fontSize:13}}>{deleteLoading?"Deleting...":"Delete Account"}</Btn>
+        </div>
       </div>
     </Sheet>
   </div>

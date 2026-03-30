@@ -688,6 +688,10 @@ export default function HardAssetsWeb(){
   const editSaveRef=useRef(null);
   const[confirmDelete,setConfirmDelete]=useState(null);
   const[showFaq,setShowFaq]=useState(false);
+  const[showDeleteAccount,setShowDeleteAccount]=useState(false);
+  const[deleteConfirmText,setDeleteConfirmText]=useState("");
+  const[deleteLoading,setDeleteLoading]=useState(false);
+  const[deleteError,setDeleteError]=useState("");
   const[sideCollapsed,setSC]=useState(false);
   const[user,setUser]=useState(()=>{try{const s=sessionStorage.getItem("ha_user");return s?JSON.parse(s):null}catch(e){return null}});
   const[authToken,setAuthToken]=useState(()=>sessionStorage.getItem("ha_token")||null);
@@ -929,6 +933,7 @@ export default function HardAssetsWeb(){
       <div style={{padding:sideCollapsed?"20px 16px":"20px",display:"flex",alignItems:"center",gap:12,borderBottom:`1px solid ${P.border}`,cursor:"pointer"}} onClick={()=>setSC(!sideCollapsed)}><div style={{width:38,height:38,borderRadius:12,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:900,color:P.bg,flexShrink:0,boxShadow:`0 4px 16px rgba(212,168,67,0.2)`}}>H</div>{!sideCollapsed&&<div><div style={{fontSize:17,fontWeight:800,color:P.text,letterSpacing:-0.4,whiteSpace:"nowrap"}}>HardAssets</div><div style={{fontSize:9,color:P.txM,letterSpacing:2,textTransform:"uppercase"}}>Portfolio Intelligence</div></div>}</div>
       <div style={{padding:"12px 8px",flex:1}}>{NAV.map(n=>{const a=tab===n.key;return<button key={n.key} onClick={()=>{setTab(n.key);if(window.posthog)window.posthog.capture('tab_viewed',{tab:n.key})}} style={{display:"flex",alignItems:"center",gap:12,width:"100%",padding:"12px 16px",border:"none",borderRadius:12,cursor:"pointer",marginBottom:4,fontFamily:ff,background:a?P.goldSoft:"transparent"}}><div style={{width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={a?P.gold:P.txM} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={n.d}/></svg></div>{!sideCollapsed&&<span style={{fontSize:14,fontWeight:a?600:500,color:a?P.gold:P.txS,whiteSpace:"nowrap"}}>{n.label}</span>}</button>})}</div>
       <button onClick={()=>{setShowActivity(true);fetchLogs(authToken).then(setActivityLogs)}} style={{display:"flex",alignItems:"center",gap:12,width:"calc(100% - 16px)",padding:"10px 16px",border:"none",borderRadius:12,cursor:"pointer",margin:"0 8px 4px",fontFamily:ff,background:"transparent"}}><div style={{width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={P.txM} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>{!sideCollapsed&&<span style={{fontSize:13,fontWeight:500,color:P.txS,whiteSpace:"nowrap"}}>Activity Log</span>}</button>
+      {user&&user.email!=="guest"&&<button onClick={()=>{setShowDeleteAccount(true);setDeleteConfirmText("");setDeleteError("")}} style={{display:"flex",alignItems:"center",gap:12,width:"calc(100% - 16px)",padding:"10px 16px",border:"none",borderRadius:12,cursor:"pointer",margin:"0 8px 2px",fontFamily:ff,background:"transparent"}}><div style={{width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={P.red} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></div>{!sideCollapsed&&<span style={{fontSize:13,fontWeight:500,color:P.red,whiteSpace:"nowrap",opacity:0.7}}>Delete Account</span>}</button>}
       <button onClick={()=>setView("home")} style={{display:"flex",alignItems:"center",gap:12,width:"calc(100% - 16px)",padding:"10px 16px",border:"none",borderRadius:12,cursor:"pointer",margin:"0 8px 8px",fontFamily:ff,background:"transparent"}}><div style={{width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={P.txM} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3"/></svg></div>{!sideCollapsed&&<span style={{fontSize:13,fontWeight:500,color:P.txS,whiteSpace:"nowrap"}}>Home Page</span>}</button>
       <div style={{padding:sideCollapsed?"16px":"16px 20px",borderTop:`1px solid ${P.border}`,display:"flex",alignItems:"center",gap:10,cursor:"pointer"}} onClick={logout}><div style={{width:32,height:32,borderRadius:10,background:`linear-gradient(145deg,${P.elevated},${P.surface})`,border:`1px solid ${P.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,overflow:"hidden"}}>{user?.picture?<img src={user.picture} style={{width:32,height:32,borderRadius:10}} referrerPolicy="no-referrer"/>:<span style={{fontSize:13,fontWeight:700,color:P.gold}}>{(user?.name||"?")[0]}</span>}</div>{!sideCollapsed&&<div><div style={{fontSize:13,fontWeight:600,color:P.text}}>{user?.name||"User"}</div><div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:6,height:6,borderRadius:3,background:syncing?P.orange:user?.email!=="guest"?P.green:P.txM,boxShadow:user?.email!=="guest"?`0 0 6px ${P.green}`:"none"}}/><span style={{fontSize:11,color:P.txM}}>{syncing?"Syncing...":user?.email!=="guest"?"Synced":"Guest"}</span></div></div>}</div>
     </div>
@@ -1047,6 +1052,33 @@ export default function HardAssetsWeb(){
             </div>
           </div>})}
         {activityLogs.filter(l=>activityFilter==="all"||l.action===activityFilter).length===0&&<div style={{padding:40,textAlign:"center",color:P.txM}}>No activity yet</div>}
+      </div>
+    </Modal>
+    <Modal open={showDeleteAccount} onClose={()=>setShowDeleteAccount(false)} title="Delete Account">
+      <div style={{textAlign:"center",padding:"8px 0"}}>
+        <div style={{width:56,height:56,borderRadius:16,background:"rgba(248,113,113,0.1)",display:"inline-flex",alignItems:"center",justifyContent:"center",marginBottom:16}}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={P.red} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/></svg></div>
+        <div style={{fontSize:18,fontWeight:800,color:P.red,marginBottom:8}}>This action is permanent</div>
+        <div style={{fontSize:14,color:P.txS,lineHeight:1.6,maxWidth:360,margin:"0 auto 20px"}}>Deleting your account will <strong style={{color:P.text}}>permanently remove</strong> all your data from our servers:</div>
+        <div style={{textAlign:"left",maxWidth:320,margin:"0 auto 24px"}}>
+          {["All portfolio holdings (metals, syndications, crypto, properties, notes, collectibles)","Target allocations and settings","Activity history and snapshots","Your account credentials"].map((t,i)=><div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,marginBottom:8}}><span style={{color:P.red,flexShrink:0,marginTop:2}}>•</span><span style={{fontSize:13,color:P.txS,lineHeight:1.5}}>{t}</span></div>)}
+        </div>
+        <div style={{fontSize:14,fontWeight:700,color:P.red,marginBottom:16}}>This cannot be undone. There is no way to recover your data after deletion.</div>
+        <div style={{fontSize:13,color:P.txS,marginBottom:8}}>Type <strong style={{color:P.text,fontFamily:mono}}>DELETE</strong> to confirm:</div>
+        <input value={deleteConfirmText} onChange={e=>setDeleteConfirmText(e.target.value)} placeholder="Type DELETE" style={{width:"100%",maxWidth:280,background:P.bg,border:`2px solid ${deleteConfirmText==="DELETE"?P.red:P.border}`,borderRadius:12,color:P.text,fontSize:16,padding:"14px",textAlign:"center",outline:"none",fontFamily:mono,fontWeight:700,letterSpacing:2,boxSizing:"border-box"}}/>
+        {deleteError&&<div style={{color:P.red,fontSize:13,marginTop:8}}>{deleteError}</div>}
+        <div style={{display:"flex",gap:12,justifyContent:"center",marginTop:20}}>
+          <Btn variant="ghost" onClick={()=>setShowDeleteAccount(false)}>Cancel</Btn>
+          <Btn variant="danger" onClick={async()=>{
+            if(deleteConfirmText!=="DELETE"){setDeleteError("Please type DELETE exactly to confirm.");return}
+            setDeleteLoading(true);setDeleteError("");
+            try{const r=await fetch("/api/delete-account",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+authToken},body:JSON.stringify({confirmation:"DELETE"})});
+            const d=await r.json();
+            if(d.success){logout();setShowDeleteAccount(false)}
+            else{setDeleteError(d.error||"Failed to delete. Please try again.")}
+            }catch(e){setDeleteError("Connection error. Please try again.")}
+            setDeleteLoading(false);
+          }} style={{opacity:deleteConfirmText==="DELETE"?1:0.4,padding:"12px 24px"}}>{deleteLoading?"Deleting...":"Permanently Delete Account"}</Btn>
+        </div>
       </div>
     </Modal>
   </div>
