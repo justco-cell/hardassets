@@ -10,20 +10,21 @@ function checkRate(key, max) {
 
 function verifyToken(token) {
   try {
-    // Google JWT (3-part token)
     const parts = token.split('.');
     if (parts.length === 3) {
       const payload = JSON.parse(Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString());
-      // Check expiration
       if (payload.exp && payload.exp * 1000 < Date.now()) return null;
-      if (payload.email) return { email: payload.email, name: payload.name || payload.email };
+      if (payload.email) return {
+        email: payload.email,
+        name: payload.name || null,
+        picture: payload.picture || null
+      };
     }
   } catch (e) {}
   try {
-    // Email:token format from our auth.js
     if (token.includes(':')) {
       const [email] = token.split(':');
-      if (email && email.includes('@') && email.includes('.')) return { email };
+      if (email && email.includes('@') && email.includes('.')) return { email, name: null, picture: null };
     }
   } catch (e) {}
   return null;
@@ -51,7 +52,7 @@ export default async function handler(req, res) {
     const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/user_data?user_id=eq.${encodeURIComponent(user.email)}&select=data`,
+      `${SUPABASE_URL}/rest/v1/user_data?user_id=eq.${encodeURIComponent(user.email)}&select=data,name,picture`,
       {
         headers: {
           'apikey': SUPABASE_KEY,
@@ -62,10 +63,15 @@ export default async function handler(req, res) {
     );
 
     const rows = await response.json();
-    if (rows && rows.length > 0 && rows[0].data) {
-      return res.status(200).json({ data: rows[0].data });
+    if (rows && rows.length > 0) {
+      return res.status(200).json({
+        data: rows[0].data || null,
+        name: rows[0].name || user.name,
+        picture: rows[0].picture || user.picture,
+        email: user.email
+      });
     }
-    return res.status(200).json({ data: null });
+    return res.status(200).json({ data: null, name: user.name, picture: user.picture, email: user.email });
   } catch (e) {
     console.error('Load error:', e);
     return res.status(500).json({ error: 'Server error' });

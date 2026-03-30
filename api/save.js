@@ -10,20 +10,24 @@ function checkRate(key, max) {
 
 function verifyToken(token) {
   try {
-    // Google JWT (3-part token)
     const parts = token.split('.');
     if (parts.length === 3) {
       const payload = JSON.parse(Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString());
-      // Check expiration
       if (payload.exp && payload.exp * 1000 < Date.now()) return null;
-      if (payload.email) return { email: payload.email, name: payload.name || payload.email };
+      if (payload.email) return {
+        email: payload.email,
+        name: payload.name || null,
+        picture: payload.picture || null,
+        given_name: payload.given_name || null,
+        family_name: payload.family_name || null,
+        locale: payload.locale || null
+      };
     }
   } catch (e) {}
   try {
-    // Email:token format from our auth.js
     if (token.includes(':')) {
       const [email] = token.split(':');
-      if (email && email.includes('@') && email.includes('.')) return { email };
+      if (email && email.includes('@') && email.includes('.')) return { email, name: null, picture: null };
     }
   } catch (e) {}
   return null;
@@ -50,7 +54,6 @@ export default async function handler(req, res) {
     const { data } = req.body;
     if (!data) return res.status(400).json({ error: 'No data' });
 
-    // Reject oversized payloads
     const size = JSON.stringify(data).length;
     if (size > 1048576) return res.status(413).json({ error: 'Payload too large' });
 
@@ -70,6 +73,10 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           user_id: user.email,
           email: user.email,
+          name: user.name || null,
+          picture: user.picture || null,
+          last_login: new Date().toISOString(),
+          auth_provider: user.picture ? 'google' : 'email',
           data: data,
           updated_at: new Date().toISOString()
         })

@@ -557,7 +557,7 @@ export default function HardAssetsWeb(){
   useEffect(()=>{try{if(authToken)sessionStorage.setItem("ha_token",authToken);else sessionStorage.removeItem("ha_token")}catch(e){}},[authToken]);
 
   // Restore data on mount if session exists
-  useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
+  useEffect(()=>{if(authToken&&user&&user.email!=="guest"){setSyncing(true);cloudLoad(authToken).then(saved=>{if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets);if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}))}setSyncing(false);refreshPrices()}).catch(()=>setSyncing(false))}},[]);
 
   // Auto-save to Supabase on data change
   const saveTimer=useRef(null);
@@ -574,7 +574,7 @@ export default function HardAssetsWeb(){
     try{const payload=JSON.parse(atob(token.split('.')[1]));setUser({name:payload.name||payload.email,email:payload.email,picture:payload.picture});if(window.posthog){window.posthog.identify(payload.email,{name:payload.name||payload.email,email:payload.email});window.posthog.capture('user_logged_in',{method:'google'})}}catch(e){setUser({name:"User",email:"user@hardassets.io"})}
     setSyncing(true);
     const saved=await cloudLoad(token);
-    if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}
+    if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets);if(saved.name||saved.picture)setUser(prev=>({...prev,name:saved.name||prev.name,picture:saved.picture||prev.picture}))}
     setSyncing(false);setView("app");refreshPrices();
   };
 

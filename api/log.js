@@ -16,14 +16,13 @@ function verifyToken(token) {
       const payload = JSON.parse(Buffer.from(parts[1].replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString());
       // Check expiration
       if (payload.exp && payload.exp * 1000 < Date.now()) return null;
-      if (payload.email) return { email: payload.email, name: payload.name || payload.email };
+      if (payload.email) return { email: payload.email, name: payload.name || null, picture: payload.picture || null };
     }
   } catch (e) {}
   try {
-    // Email:token format from our auth.js
     if (token.includes(':')) {
       const [email] = token.split(':');
-      if (email && email.includes('@') && email.includes('.')) return { email };
+      if (email && email.includes('@') && email.includes('.')) return { email, name: null, picture: null };
     }
   } catch (e) {}
   return null;
@@ -65,6 +64,7 @@ export default async function handler(req, res) {
           },
           body: JSON.stringify({
             user_id: user.email,
+            user_name: user.name || user.email,
             action,
             asset_type,
             asset_id: asset_id || null,
