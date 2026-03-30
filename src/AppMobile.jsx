@@ -381,7 +381,7 @@ export default function HardAssets(){
   const[snapRange,setSnapRange]=useState("3M");
 
   // Persist session
-  useEffect(()=>{try{if(user)sessionStorage.setItem("ha_user",JSON.stringify(user));else sessionStorage.removeItem("ha_user")}catch(e){}},[user]);
+  useEffect(()=>{try{if(user&&user.email!=="guest")sessionStorage.setItem("ha_user",JSON.stringify(user));else sessionStorage.removeItem("ha_user")}catch(e){}},[user]);
   useEffect(()=>{try{if(authToken)sessionStorage.setItem("ha_token",authToken);else sessionStorage.removeItem("ha_token")}catch(e){}},[authToken]);
 
   // Restore data on mount if session exists
