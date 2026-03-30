@@ -781,7 +781,7 @@ export default function HardAssetsWeb(){
   // ═══ HOME (with login modal) & CONTACT ═══
   if(view==="home"||view==="login") return <>
     <HomePage onNav={v=>{if(v==="demo"){guestLogin();return}if(v==="app"&&user)setView("app");else setView(v)}} user={user}/>
-    {view==="login"&&!user&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setView("home")}>
+    {view==="login"&&(!user||user.email==="guest")&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setView("home")}>
       <div onClick={e=>e.stopPropagation()} style={{background:P.surface,border:`1px solid ${P.border}`,borderRadius:24,padding:40,maxWidth:420,width:"90%",textAlign:"center",position:"relative"}}>
         <button onClick={()=>setView("home")} style={{position:"absolute",top:16,right:16,background:P.elevated,border:"none",color:P.txS,width:32,height:32,borderRadius:16,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
         <div style={{width:64,height:64,borderRadius:18,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:28,fontWeight:900,color:P.bg,marginBottom:24,boxShadow:`0 12px 40px rgba(212,168,67,0.3)`}}>H</div>

@@ -614,7 +614,7 @@ export default function HardAssets(){
     </div>
 
     {/* LOGIN MODAL */}
-    {view==="login"&&!user&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setView("home")}>
+    {view==="login"&&(!user||user.email==="guest")&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",backdropFilter:"blur(8px)",zIndex:2000,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setView("home")}>
       <div onClick={e=>e.stopPropagation()} style={{background:P.surface,borderRadius:"24px 24px 0 0",padding:"32px 24px 40px",width:"100%",maxWidth:430,position:"relative"}}>
         <button onClick={()=>setView("home")} style={{position:"absolute",top:12,right:16,background:P.elevated,border:"none",color:P.txS,width:32,height:32,borderRadius:16,fontSize:15,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
         <div style={{textAlign:"center"}}>
