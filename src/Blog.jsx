@@ -31,7 +31,7 @@ function Nav({current}){
       <Logo onClick={()=>window.location.href="/"}/>
       <a href="/blog" style={{fontSize:13,fontWeight:current==="blog"?700:400,color:current==="blog"?P.gold:P.txS,textDecoration:"none"}}>Blog</a>
     </div>
-    <a href="/" style={{padding:"8px 18px",borderRadius:10,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:13,fontWeight:700,textDecoration:"none"}}>Track Your Assets Free →</a>
+    <a href="/?demo=1" style={{padding:"8px 18px",borderRadius:10,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:13,fontWeight:700,textDecoration:"none"}}>Try Live Demo →</a>
   </nav>;
 }
 
@@ -39,7 +39,7 @@ function CTA(){
   return <div style={{margin:"60px 0 0",padding:"48px 32px",background:P.surface,borderRadius:20,border:"1px solid "+P.border,textAlign:"center"}}>
     <div style={{fontSize:24,fontWeight:800,color:P.text,marginBottom:8}}>Ready to Track Your <span style={{color:P.gold}}>Hard Assets</span>?</div>
     <p style={{fontSize:15,color:P.txS,maxWidth:480,margin:"0 auto 24px",lineHeight:1.6}}>Gold, silver, real estate syndications, crypto, private notes, collectibles — all in one free dashboard with live prices.</p>
-    <a href="/" style={{display:"inline-block",padding:"14px 32px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:15,fontWeight:700,textDecoration:"none"}}>Start Tracking Free — No Credit Card →</a>
+    <a href="/?demo=1" style={{display:"inline-block",padding:"14px 32px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:15,fontWeight:700,textDecoration:"none"}}>Try Live Demo →</a>
   </div>;
 }
 

@@ -5,7 +5,7 @@ const ff="'Inter',-apple-system,sans-serif",mono="'JetBrains Mono',monospace";
 
 function Logo(){return<div onClick={()=>window.location.href="/"} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:10}}><div style={{width:32,height:32,borderRadius:10,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:P.bg}}>H</div><span style={{fontSize:17,fontWeight:800,color:P.text,letterSpacing:-.5}}>Hard<span style={{color:P.gold}}>Assets</span></span></div>}
 
-function Nav(){return<nav style={{position:"sticky",top:0,zIndex:100,padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",background:"rgba(11,15,26,.9)",borderBottom:"1px solid "+P.border}}><div style={{display:"flex",alignItems:"center",gap:20}}><Logo/><a href="/blog" style={{fontSize:13,color:P.txS,textDecoration:"none"}}>Blog</a><a href="/compare" style={{fontSize:13,fontWeight:700,color:P.gold,textDecoration:"none"}}>Compare</a></div><a href="/" style={{padding:"8px 16px",borderRadius:10,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:12,fontWeight:700,textDecoration:"none",whiteSpace:"nowrap"}}>Try Demo →</a></nav>}
+function Nav(){return<nav style={{position:"sticky",top:0,zIndex:100,padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",background:"rgba(11,15,26,.9)",borderBottom:"1px solid "+P.border}}><div style={{display:"flex",alignItems:"center",gap:20}}><Logo/><a href="/blog" style={{fontSize:13,color:P.txS,textDecoration:"none"}}>Blog</a><a href="/compare" style={{fontSize:13,fontWeight:700,color:P.gold,textDecoration:"none"}}>Compare</a></div><a href="/?demo=1" style={{padding:"8px 16px",borderRadius:10,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:12,fontWeight:700,textDecoration:"none",whiteSpace:"nowrap"}}>Try Demo →</a></nav>}
 
 const Ck=()=><span style={{display:"inline-flex",width:20,height:20,borderRadius:10,background:"rgba(52,211,153,0.15)",alignItems:"center",justifyContent:"center",fontSize:11,color:P.green,fontWeight:700,flexShrink:0}}>✓</span>;
 const Xx=()=><span style={{display:"inline-flex",width:20,height:20,borderRadius:10,background:"rgba(248,113,113,0.1)",alignItems:"center",justifyContent:"center",fontSize:11,color:P.red,opacity:0.5,fontWeight:700,flexShrink:0}}>✗</span>;
@@ -193,7 +193,7 @@ export default function ComparePage(){
         )}
 
         <div style={{textAlign:"center",marginTop:28}}>
-          <a href="/" style={{display:"inline-block",padding:"14px 32px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:15,fontWeight:700,textDecoration:"none"}}>Try HardAssets Free — No Sign-Up Required →</a>
+          <a href="/?demo=1" style={{display:"inline-block",padding:"14px 32px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:15,fontWeight:700,textDecoration:"none"}}>Try HardAssets Free — No Sign-Up Required →</a>
         </div>
       </div>
     </div>
@@ -237,7 +237,7 @@ export default function ComparePage(){
                   <div style={{fontSize:13,color:P.txS}}>{c.chooseThem}</div>
                 </div>
               </div>
-              <a href="/" style={{display:"inline-block",padding:"10px 24px",borderRadius:10,background:P.goldSoft,color:P.gold,fontSize:13,fontWeight:700,textDecoration:"none",border:"1px solid "+P.goldMed}}>Try HardAssets Free →</a>
+              <a href="/?demo=1" style={{display:"inline-block",padding:"10px 24px",borderRadius:10,background:P.goldSoft,color:P.gold,fontSize:13,fontWeight:700,textDecoration:"none",border:"1px solid "+P.goldMed}}>Try HardAssets Free →</a>
             </div>
           </div>
         </div>})}
@@ -287,7 +287,7 @@ export default function ComparePage(){
         </div>
 
         <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap"}}>
-          <a href="/" style={{padding:"16px 36px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:16,fontWeight:700,textDecoration:"none"}}>Try Live Demo →</a>
+          <a href="/?demo=1" style={{padding:"16px 36px",borderRadius:14,background:`linear-gradient(135deg,${P.gold},#B8912E)`,color:P.bg,fontSize:16,fontWeight:700,textDecoration:"none"}}>Try Live Demo →</a>
           <a href="/#features" style={{padding:"16px 36px",borderRadius:14,border:"1px solid "+P.border,background:"transparent",color:P.txS,fontSize:16,fontWeight:600,textDecoration:"none"}}>See All Features</a>
         </div>
         <div style={{marginTop:14,fontSize:12,color:P.txM}}>No sign-up required. No credit card. No trial period that expires.</div>

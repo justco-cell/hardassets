@@ -420,6 +420,9 @@ export default function HardAssets(){
   const logout=()=>{if(window.posthog)window.posthog.reset();setUser(null);setAuthToken(null);setMetals([]);setSynds([]);setCrypto([]);setProperties([]);setNotesLending([]);setCollectibles([]);try{sessionStorage.removeItem("ha_user");sessionStorage.removeItem("ha_token")}catch(e){}setView("home")};
   const guestLogin=()=>{setUser({name:"Guest",email:"guest"});setMetals(DEMO_DATA.metals);setSynds(DEMO_DATA.syndications);setCrypto(DEMO_DATA.crypto);setProperties(DEMO_DATA.properties);setNotesLending(DEMO_DATA.notesLending);setCollectibles(DEMO_DATA.collectibles);setTargets(DEMO_DATA.targets);setView("app");refreshPrices();if(window.posthog)window.posthog.capture('user_logged_in',{method:'guest'})};
 
+  // Auto-trigger demo from ?demo=1 URL param
+  useEffect(()=>{if(new URLSearchParams(window.location.search).get("demo")&&!user){guestLogin();window.history.replaceState({},"","/")}},[]);
+
   // Live price refresh
   const refreshPrices=async()=>{
     setRefreshing(true);
