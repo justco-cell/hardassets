@@ -270,16 +270,16 @@ function HomePage({onNav,user}){
   ];
   const S={nav:{position:"sticky",top:0,zIndex:100,padding:"16px 40px",display:"flex",justifyContent:"space-between",alignItems:"center",backdropFilter:"blur(20px)",background:"rgba(11,15,26,.85)",borderBottom:"1px solid "+P.border},
     section:{padding:"80px 40px",maxWidth:1100,margin:"0 auto"},
-    sLabel:{fontSize:12,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:12},
+    sLabel:{fontSize:12,color:P.gold,textTransform:"uppercase",letterSpacing:"0.12em",fontWeight:700,marginBottom:12},
     sTitle:{fontSize:"clamp(26px,3.5vw,32px)",fontWeight:800,letterSpacing:"-.5px",marginBottom:16,lineHeight:1.15},
-    card:{background:P.surface,border:"1px solid "+P.border,borderRadius:12,padding:28,transition:"all .3s"},
+    card:{background:"rgba(255,255,255,0.03)",backdropFilter:"blur(10px)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:12,padding:28,transition:"all 0.3s ease",cursor:"default"},
     trustCard:{background:P.surface,border:"1px solid "+P.border,borderRadius:12,padding:24},
     fq:{display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer",fontSize:15,fontWeight:600,padding:"20px 0",borderBottom:"1px solid "+P.border},
     mstat:{background:P.elevated,borderRadius:8,padding:"12px 14px",border:"1px solid "+P.border}};
   const Logo=({big})=><div onClick={()=>window.scrollTo({top:0,behavior:"smooth"})} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:big?14:10}}><div style={{width:big?40:32,height:big?40:32,borderRadius:big?12:10,background:`linear-gradient(145deg,${P.gold},#B8912E)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:big?20:16,fontWeight:900,color:P.bg}}>H</div><span style={{fontSize:big?22:17,fontWeight:800,color:P.text,letterSpacing:-.5}}>Hard<span style={{color:P.gold}}>Assets</span></span></div>;
 
   return(<div style={{background:P.bg,minHeight:"100vh",color:P.text,fontFamily:ff}}>
-    <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}`}</style>
+    <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes pulseGlow{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,100,0.4)}50%{box-shadow:0 0 0 6px rgba(0,255,100,0)}}@keyframes slideIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes countFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}`}</style>
     <nav style={S.nav}>
       <Logo/>
       <div style={{display:"flex",gap:20,alignItems:"center"}}>
@@ -291,11 +291,11 @@ function HomePage({onNav,user}){
     </nav>
 
     <div style={{padding:"8px 40px",background:P.surface,borderBottom:"1px solid "+P.border,display:"flex",justifyContent:"center",gap:24,alignItems:"center",fontSize:12,fontFamily:mono,overflow:"hidden"}}>
-      <span style={{color:P.txM}}>LIVE</span><div style={{width:5,height:5,borderRadius:3,background:livePrices?P.green:P.txM}}/>
+      <span style={{color:P.txM}}>LIVE</span><div style={{width:5,height:5,borderRadius:3,background:livePrices?P.green:P.txM,animation:"pulseGlow 2s ease-in-out infinite"}}/>
       {(livePrices?[
         ["Au",livePrices.gold],["Ag",livePrices.silver],["Pt",livePrices.platinum],
         ["BTC",livePrices.btc,livePrices.btcChg],["ETH",livePrices.eth,livePrices.ethChg],["SOL",livePrices.sol,livePrices.solChg]
-      ].map(([s,v,chg],i)=>{const p=v>999?"$"+Math.round(v).toLocaleString():"$"+(v||0).toFixed(2);return<span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.text}}>{p}</span>{chg!=null&&<span style={{color:chg>=0?P.green:P.red,fontSize:11}}> {chg>=0?"+":""}{chg.toFixed(1)}%</span>}</span>})
+      ].map(([s,v,chg],i)=>{const p=v>999?"$"+Math.round(v).toLocaleString():"$"+(v||0).toFixed(2);return<span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.text}}>{p}</span>{chg!=null&&<span style={{color:chg>=0?P.green:P.red,fontSize:11,textShadow:chg>=0?"0 0 8px rgba(0,255,136,0.5)":"0 0 8px rgba(255,68,68,0.5)"}}> {chg>=0?"+":""}{chg.toFixed(1)}%</span>}</span>})
       :[["Au","—"],["Ag","—"],["Pt","—"],["BTC","—"],["ETH","—"],["SOL","—"]].map(([s,v],i)=>
         <span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.txM}}>{v}</span></span>
       ))}
@@ -304,6 +304,8 @@ function HomePage({onNav,user}){
     {/* Hero */}
     <div style={{textAlign:"center",padding:"80px 40px 60px",position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:-200,left:"50%",transform:"translateX(-50%)",width:800,height:600,background:"radial-gradient(ellipse,rgba(212,168,67,.06) 0%,transparent 60%)",pointerEvents:"none"}}/>
+<div style={{position:"absolute",top:-100,right:-100,width:600,height:600,background:"radial-gradient(circle,rgba(212,175,55,0.06),transparent 70%)",filter:"blur(140px)",pointerEvents:"none"}}/>
+<div style={{position:"absolute",bottom:-100,left:-100,width:600,height:600,background:"radial-gradient(circle,rgba(30,60,120,0.08),transparent 70%)",filter:"blur(140px)",pointerEvents:"none"}}/>
       <div style={{position:"relative"}}>
         <h1 style={{fontSize:"clamp(30px,5vw,46px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",maxWidth:720,margin:"0 auto 20px"}}>The Only Free Portfolio Tracker Built for <span style={{color:P.gold}}>Hard Assets</span></h1>
         <p style={{maxWidth:560,margin:"0 auto",textAlign:"center"}}>
@@ -319,7 +321,7 @@ function HomePage({onNav,user}){
 
         {/* Dashboard Mockup */}
         <div style={{maxWidth:960,margin:"0 auto"}}>
-          <div style={{background:P.surface,border:"1px solid "+P.border,borderRadius:12,overflow:"hidden",boxShadow:"0 40px 80px rgba(0,0,0,.5)"}}>
+          <div style={{background:P.surface,border:"1px solid "+P.border,borderRadius:12,overflow:"hidden",boxShadow:"0 20px 60px rgba(0,0,0,0.4)",animation:"float 4s ease-in-out infinite"}}>
             <div style={{display:"flex",alignItems:"center",gap:6,padding:"10px 16px",background:P.bg,borderBottom:"1px solid "+P.border}}>
               <div style={{width:8,height:8,borderRadius:"50%",background:"#ef4444"}}/><div style={{width:8,height:8,borderRadius:"50%",background:"#f59e0b"}}/><div style={{width:8,height:8,borderRadius:"50%",background:"#10b981"}}/>
               <div style={{marginLeft:12,padding:"4px 12px",background:P.elevated,borderRadius:6,fontSize:11,color:P.txM,fontFamily:mono,flex:1,textAlign:"center"}}>hardassets.io/dashboard</div>
@@ -359,17 +361,17 @@ function HomePage({onNav,user}){
         <p style={{fontSize:16,color:P.txS,maxWidth:540,margin:"0 auto",lineHeight:1.6}}>No more juggling spreadsheets across asset classes.</p>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",gap:14,marginTop:40}}>
-        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◆</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Precious Metals Tracker</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Track physical gold, silver, platinum & palladium with cost basis and real-time gain/loss. Live spot prices with oz-per-unit conversion.</p></div>
-        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◫</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>RE Syndication LP Tracker</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Monitor LP positions with rate %, projected IRR, and sponsor tracking across 16 deal types.</p></div>
+        <div style={S.card} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(212,175,55,0.3)";e.currentTarget.style.boxShadow="0 0 20px rgba(212,175,55,0.08) inset"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.07)";e.currentTarget.style.boxShadow="none"}}><div style={{fontSize:18,marginBottom:12}}>◆</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Precious Metals Tracker</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Track physical gold, silver, platinum & palladium with cost basis and real-time gain/loss. Live spot prices with oz-per-unit conversion.</p></div>
+        <div style={S.card} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(212,175,55,0.3)";e.currentTarget.style.boxShadow="0 0 20px rgba(212,175,55,0.08) inset"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.07)";e.currentTarget.style.boxShadow="none"}}><div style={{fontSize:18,marginBottom:12}}>◫</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>RE Syndication LP Tracker</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Monitor LP positions with rate %, projected IRR, and sponsor tracking across 16 deal types.</p></div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:14,marginTop:14}}>
-        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>⊞</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Deal Analyzer</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Full cash flow calculator with CoC, Cap Rate, DSCR, and quick pass/fail tests.</p></div>
-        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>Ⓒ</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Crypto Portfolio</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Track BTC, ETH, SOL & 10+ coins with live prices from CoinGecko, cost basis, and risk scoring.</p></div>
-        <div style={S.card}><div style={{fontSize:18,marginBottom:12}}>◉</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Master Portfolio</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Complete allocation across 11 asset classes with targets, risk scoring & income estimates.</p></div>
+        <div style={S.card} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(212,175,55,0.3)";e.currentTarget.style.boxShadow="0 0 20px rgba(212,175,55,0.08) inset"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.07)";e.currentTarget.style.boxShadow="none"}}><div style={{fontSize:18,marginBottom:12}}>⊞</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Deal Analyzer</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Full cash flow calculator with CoC, Cap Rate, DSCR, and quick pass/fail tests.</p></div>
+        <div style={S.card} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(212,175,55,0.3)";e.currentTarget.style.boxShadow="0 0 20px rgba(212,175,55,0.08) inset"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.07)";e.currentTarget.style.boxShadow="none"}}><div style={{fontSize:18,marginBottom:12}}>Ⓒ</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Crypto Portfolio</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Track BTC, ETH, SOL & 10+ coins with live prices from CoinGecko, cost basis, and risk scoring.</p></div>
+        <div style={S.card} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(212,175,55,0.3)";e.currentTarget.style.boxShadow="0 0 20px rgba(212,175,55,0.08) inset"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.07)";e.currentTarget.style.boxShadow="none"}}><div style={{fontSize:18,marginBottom:12}}>◉</div><h3 style={{fontSize:16,fontWeight:700,marginBottom:8}}>Master Portfolio</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>Complete allocation across 11 asset classes with targets, risk scoring & income estimates.</p></div>
       </div>
       <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginTop:14}}>
         {[["📡","Live Metal Prices"],["💰","Live Crypto Prices"],["📊","CSV Import"],["📥","CSV Export"],["🎯","Risk Ratings"],["📝","Notes"],["✏️","Inline Edit"],["☁️","Cloud Sync"]].map(([ic,lb],i)=>
-          <div key={i} style={{...S.card,textAlign:"center",padding:20}}><div style={{fontSize:18,marginBottom:6}}>{ic}</div><div style={{fontSize:11,fontWeight:600}}>{lb}</div></div>
+          <div key={i} style={{...S.card,textAlign:"center",padding:20}} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(212,175,55,0.3)";e.currentTarget.style.boxShadow="0 0 20px rgba(212,175,55,0.08) inset"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.07)";e.currentTarget.style.boxShadow="none"}}><div style={{fontSize:18,marginBottom:6}}>{ic}</div><div style={{fontSize:11,fontWeight:600}}>{lb}</div></div>
         )}
       </div>
     </div>
@@ -390,7 +392,7 @@ function HomePage({onNav,user}){
             ["Every Asset Type","Metals, syndications, crypto, properties, notes, collectibles — all in one place",
               `<div style="display:flex;flex-direction:column;gap:6"><div style="display:flex;align-items:center;gap:8;padding:8px;background:#0B0F1A;border-radius:8px;border:1px solid rgba(148,163,184,0.08)"><div style="width:28px;height:28px;border-radius:8px;background:rgba(212,168,67,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#D4A843">Au</div><span style="font-size:12px;font-weight:600;color:#F1F5F9;flex:1">Gold American Eagle</span><span style="font-family:monospace;font-size:12px;font-weight:700;color:#D4A843">$76,250</span></div><div style="display:flex;align-items:center;gap:8;padding:8px;background:#0B0F1A;border-radius:8px;border:1px solid rgba(148,163,184,0.08)"><div style="width:28px;height:28px;border-radius:8px;background:rgba(96,165,250,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#60A5FA">RE</div><span style="font-size:12px;font-weight:600;color:#F1F5F9;flex:1">Pinnacle West LP</span><span style="font-family:monospace;font-size:12px;font-weight:700;color:#60A5FA">$100K</span></div><div style="display:flex;align-items:center;gap:8;padding:8px;background:#0B0F1A;border-radius:8px;border:1px solid rgba(148,163,184,0.08)"><div style="width:28px;height:28px;border-radius:8px;background:rgba(167,139,250,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#A78BFA">₿</div><span style="font-size:12px;font-weight:600;color:#F1F5F9;flex:1">Bitcoin</span><span style="font-family:monospace;font-size:12px;font-weight:700;color:#A78BFA">$218K</span></div></div>`]
           ].map(([title,caption,mockup],i)=>
-            <div key={i} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,overflow:"hidden"}}>
+            <div key={i} style={{background:P.surface,border:"1px solid "+P.border,borderRadius:16,overflow:"hidden",transform:"perspective(1000px) rotateX(3deg) rotateY(-4deg)",transition:"transform 0.5s ease"}} onMouseEnter={e=>e.currentTarget.style.transform="perspective(1000px) rotateX(0) rotateY(0)"} onMouseLeave={e=>e.currentTarget.style.transform="perspective(1000px) rotateX(3deg) rotateY(-4deg)"}>
               <div style={{padding:20,background:P.bg,borderBottom:"1px solid "+P.border,minHeight:140}} dangerouslySetInnerHTML={{__html:mockup}}/>
               <div style={{padding:"16px 20px"}}><div style={{fontSize:15,fontWeight:700,color:P.text,marginBottom:4}}>{title}</div><div style={{fontSize:12,color:P.txS,lineHeight:1.5}}>{caption}</div></div>
             </div>
@@ -462,7 +464,7 @@ function HomePage({onNav,user}){
         <div style={S.sTitle}>Investors Who <span style={{color:P.gold}}>Think Different</span></div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20,marginTop:36}}>
           {[["🥇","Precious Metals Stackers","Track every coin, bar, and round with real cost basis across gold, silver, platinum."],["🏢","RE Syndication LPs","Monitor LP positions across sponsors and deal types with rate tracking and IRR projections."],["📊","Hard Asset Allocators","See complete allocation across physical and alternative assets with target comparison and risk scoring."]].map(([ic,t,d],i)=>
-            <div key={i} style={{...S.card,textAlign:"center",padding:28}}><div style={{fontSize:28,marginBottom:12}}>{ic}</div><h3 style={{fontSize:15,fontWeight:700,marginBottom:6}}>{t}</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>{d}</p></div>
+            <div key={i} style={{...S.card,textAlign:"center",padding:28}} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(212,175,55,0.3)";e.currentTarget.style.boxShadow="0 0 20px rgba(212,175,55,0.08) inset"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.07)";e.currentTarget.style.boxShadow="none"}}><div style={{fontSize:28,marginBottom:12}}>{ic}</div><h3 style={{fontSize:15,fontWeight:700,marginBottom:6}}>{t}</h3><p style={{fontSize:15,color:P.txS,lineHeight:1.5}}>{d}</p></div>
           )}
         </div>
       </div>
