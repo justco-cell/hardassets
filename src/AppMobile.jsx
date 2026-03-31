@@ -596,7 +596,7 @@ export default function HardAssets(){
       <div style={{position:"absolute",top:-100,left:"50%",transform:"translateX(-50%)",width:400,height:400,background:"radial-gradient(ellipse,rgba(212,168,67,.06),transparent)",pointerEvents:"none"}}/>
       <div style={{position:"relative"}}>
         <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"5px 12px",borderRadius:16,border:"1px solid "+P.border,background:P.surface,fontSize:10,color:P.gold,letterSpacing:1,textTransform:"uppercase",fontWeight:600,marginBottom:20}}><div style={{width:5,height:5,borderRadius:"50%",background:P.green,animation:"pulse 2s infinite"}}/> Free — No credit card</div>
-        <h1 style={{fontSize:30,fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",margin:"0 auto 16px",maxWidth:340}}>The Only Dashboard Built for <span style={{color:P.gold}}>What You Actually Own</span></h1>
+        <h1 style={{fontSize:30,fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",margin:"0 auto 16px",maxWidth:340}}>The Only Free Portfolio Tracker Built for <span style={{color:P.gold}}>Hard Assets</span></h1>
         <p style={{maxWidth:340,margin:"0 auto",textAlign:"center"}}>
   <span style={{display:"block",fontSize:15,color:P.txS,fontWeight:500,letterSpacing:"0.5px"}}>Gold. Silver. Real estate. Crypto. Collectibles. Private notes.</span>
   <span style={{display:"block",fontSize:14,color:"#64748B",fontWeight:400,marginTop:6}}>Live prices, risk scoring, and allocation tracking — in one free dashboard.</span>
@@ -607,7 +607,7 @@ export default function HardAssets(){
   )}
 </div>
         {user&&user.email!=="guest"?<Btn onClick={()=>setView("app")} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Go to Dashboard →</Btn>:<Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>}
-        <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In to Save</Btn>
+        <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign Up Free</Btn>
         <div style={{fontSize:11,color:P.txM,marginTop:8}}>No account needed. Demo data loaded instantly.</div>
       </div>
     </div>
@@ -645,7 +645,7 @@ export default function HardAssets(){
     <div style={{padding:"48px 20px",background:P.surface,borderTop:"1px solid "+P.border,borderBottom:"1px solid "+P.border}}>
       <div style={{fontSize:10,color:P.gold,textTransform:"uppercase",letterSpacing:3,fontWeight:700,marginBottom:8,textAlign:"center"}}>How It Works</div>
       <div style={{fontSize:22,fontWeight:800,textAlign:"center",marginBottom:24}}>Start in <span style={{color:P.gold}}>60 Seconds</span></div>
-      {[["1","Try the Demo","Tap 'Try Live Demo' to explore a sample portfolio with live prices and risk scoring. No account needed."],["2","Make It Yours","Add your own holdings — gold, syndication deals, crypto, properties. Everything calculates automatically."],["3","Sign In to Save","When you're ready, sign in with Google or email. Your data syncs to the cloud across devices."]].map(([n,t,d],i)=>
+      {[["1","Try the Demo","Tap 'Try Live Demo' to explore a sample portfolio with live prices and risk scoring. No account needed."],["2","Make It Yours","Add your own holdings — gold, syndication deals, crypto, properties. Everything calculates automatically."],["3","Sign Up Free","When you're ready, sign in with Google or email. Your data syncs to the cloud across devices."]].map(([n,t,d],i)=>
         <div key={i} style={{display:"flex",gap:14,alignItems:"flex-start",marginBottom:20}}>
           <div style={{width:36,height:36,borderRadius:"50%",border:"2px solid "+P.gold,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:800,color:P.gold,fontFamily:mono,flexShrink:0}}>{n}</div>
           <div><div style={{fontSize:14,fontWeight:700,marginBottom:2}}>{t}</div><div style={{fontSize:12,color:P.txS,lineHeight:1.4}}>{d}</div></div>
@@ -714,7 +714,7 @@ export default function HardAssets(){
       <div style={{fontSize:24,fontWeight:800,lineHeight:1.15,marginBottom:12}}>Your Hard Assets Deserve a <span style={{color:P.gold}}>Real Dashboard</span></div>
       <p style={{fontSize:13,color:P.txS,marginBottom:24,lineHeight:1.5}}>Most portfolio trackers ignore gold, real estate, and alternatives. This one was built for them.</p>
       {user&&user.email!=="guest"?<Btn onClick={()=>setView("app")} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Go to Dashboard →</Btn>:<Btn onClick={()=>{guestLogin()}} style={{padding:"14px 28px",fontSize:14,width:"100%",maxWidth:280}}>Try Live Demo →</Btn>}
-      <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign In to Save</Btn>
+      <Btn variant="ghost" onClick={()=>setView("login")} style={{padding:"12px 28px",fontSize:13,width:"100%",maxWidth:280,marginTop:8}}>Sign Up Free</Btn>
       <div style={{fontSize:11,color:P.txM,marginTop:8}}>No account needed. Demo data loaded instantly.</div>
     </div>
 

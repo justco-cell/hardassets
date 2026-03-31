@@ -305,7 +305,7 @@ function HomePage({onNav,user}){
     <div style={{textAlign:"center",padding:"80px 40px 60px",position:"relative",overflow:"hidden"}}>
       <div style={{position:"absolute",top:-200,left:"50%",transform:"translateX(-50%)",width:800,height:600,background:"radial-gradient(ellipse,rgba(212,168,67,.06) 0%,transparent 60%)",pointerEvents:"none"}}/>
       <div style={{position:"relative"}}>
-        <h1 style={{fontSize:"clamp(30px,5vw,46px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",maxWidth:720,margin:"0 auto 20px"}}>The Only Dashboard Built for <span style={{color:P.gold}}>What You Actually Own</span></h1>
+        <h1 style={{fontSize:"clamp(30px,5vw,46px)",fontWeight:800,lineHeight:1.08,letterSpacing:"-0.02em",maxWidth:720,margin:"0 auto 20px"}}>The Only Free Portfolio Tracker Built for <span style={{color:P.gold}}>Hard Assets</span></h1>
         <p style={{maxWidth:560,margin:"0 auto",textAlign:"center"}}>
           <span style={{display:"block",fontSize:17,color:P.txS,fontWeight:500,letterSpacing:"0.5px"}}>Gold. Silver. Real estate. Crypto. Collectibles. Private notes.</span>
           <span style={{display:"block",fontSize:16,color:"#64748B",fontWeight:400,marginTop:8}}>Live prices, risk scoring, and allocation tracking — in one free dashboard.</span>
@@ -313,7 +313,7 @@ function HomePage({onNav,user}){
         <div style={{display:"flex",gap:24,justifyContent:"center",flexWrap:"wrap",marginTop:16,marginBottom:24}}>{[["🔒","No identity verification"],["📡","No bank connections"],["💰","Free forever"]].map(([ic,t],i)=><span key={i} style={{fontSize:13,fontWeight:500,color:P.txS}}>{ic} {t}</span>)}</div>
         <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap",marginBottom:12}}>
           {user&&user.email!=="guest"?<Btn onClick={()=>onNav("app")} style={{padding:"16px 32px",fontSize:16}}>Go to Dashboard →</Btn>:<Btn onClick={()=>onNav("demo")} style={{padding:"16px 32px",fontSize:16}}>Try Live Demo →</Btn>}
-          <Btn variant="ghost" onClick={()=>onNav("login")} style={{padding:"16px 32px",fontSize:15}}>Sign In to Save</Btn>
+          <Btn variant="ghost" onClick={()=>onNav("login")} style={{padding:"16px 32px",fontSize:15}}>Sign Up Free</Btn>
         </div>
         <div style={{fontSize:12,color:P.txM}}>No account needed. Demo data loaded instantly.</div>
 
