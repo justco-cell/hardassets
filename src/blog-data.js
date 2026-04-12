@@ -151,6 +151,122 @@ export const POSTS = [
 
       <p>If you're building a portfolio of syndication LP positions, having all your deals in one place — alongside your metals, crypto, and other hard assets — gives you the complete allocation picture you need.</p>
     `
+  },
+  {
+    slug: "how-much-gold-should-you-own",
+    title: "How Much Gold Should You Own? A Portfolio Allocation Guide for 2026",
+    date: "2026-04-12",
+    excerpt: "Gold hit $5,595/oz in January 2026. Central banks bought 1,100+ tonnes for the third straight year. The question isn't whether to own gold — it's how much of your portfolio should be in it.",
+    metaDescription: "How much gold should you own? Expert-backed allocation data for 2026 — from 5% starter to 25% conviction portfolios. Free tracking dashboard included.",
+    thumbnail: "/blog-gold-allocation.svg",
+    heroImage: "/blog-gold-allocation.svg",
+    content: `
+      <p><strong>How much gold should I own in my portfolio?</strong> It's the question every hard asset investor asks — and the answer has changed dramatically. Gold hit $5,595/oz in January 2026, up 65% in 2025 alone. Central banks bought over 1,100 tonnes for the third consecutive year. The dollar's purchasing power continues to erode. The question isn't <em>whether</em> to own gold — it's <em>how much</em>.</p>
+
+      <p>This guide breaks down gold portfolio allocation percentage recommendations backed by data, historical portfolio models, and practical frameworks for different risk profiles. Whether you're a first-time buyer or a seasoned stacker, you'll walk away knowing exactly how much of your savings should be in gold.</p>
+
+      <h2>What the Data Says: Historical Gold Allocations</h2>
+
+      <p>The ideal gold allocation isn't a mystery — several well-known portfolio models have been tested over decades:</p>
+
+      <p><strong>Ray Dalio's All-Weather Portfolio: 7.5% gold.</strong> Designed to perform in any economic environment — inflation, deflation, rising growth, falling growth. The 7.5% gold allocation acts as an inflation hedge and crisis buffer. This portfolio returned ~7.5% annualized over 30 years with significantly lower drawdowns than a 60/40 stock/bond mix.</p>
+
+      <p><strong>Harry Browne's Permanent Portfolio: 25% gold.</strong> Equal parts stocks, long-term bonds, cash, and gold. The gold quarter isn't just a hedge — it's a core engine of the portfolio. Since 1972, this model returned ~8.5% annualized with a maximum drawdown under 13%. The 25% gold investment portfolio allocation is the most aggressive mainstream recommendation.</p>
+
+      <p><strong>Typical financial advisor recommendation: 5-10%.</strong> Most traditional advisors suggest a modest gold allocation as "portfolio insurance." This is the floor, not the ceiling. It's enough to provide some protection but not enough to meaningfully benefit from a gold bull market.</p>
+
+      <p><strong>Academic research: 10-20% is the sweet spot.</strong> Multiple peer-reviewed studies — including research from the World Gold Council — show that portfolios with 10-20% allocated to gold had better risk-adjusted returns (higher Sharpe ratios) over 20-year periods compared to portfolios with no gold or only 5%. The gold portfolio allocation percentage that optimizes for both return and reduced volatility consistently lands in this range.</p>
+
+      <h2>How Much Gold Should I Own Based on My Risk Profile?</h2>
+
+      <p>Most financial experts recommend allocating 5-15% of your portfolio to gold, though investors with strong conviction in the dollar debasement thesis may allocate up to 25%. The right percentage depends on your risk tolerance, investment timeline, and existing diversification across other hard assets like silver, real estate, and crypto.</p>
+
+      <p>Here are three practical tiers:</p>
+
+      <h3>Conservative: 5-10% Gold Allocation</h3>
+
+      <p><strong>Best for:</strong> Investors who already have a diversified stock/bond portfolio and want basic inflation protection.</p>
+
+      <p>At 5-10%, gold acts as portfolio insurance. You won't capture massive upside in a gold bull run, but you'll reduce overall portfolio volatility and have a crisis hedge. This is the "set it and forget it" tier — buy some gold coins or a gold ETF and rebalance annually.</p>
+
+      <p>A 5-10% gold investment portfolio allocation is appropriate if you're primarily invested in equities, have a long time horizon (20+ years), and view gold as a defensive position rather than a growth driver.</p>
+
+      <h3>Moderate: 10-15% Gold Allocation</h3>
+
+      <p><strong>Best for:</strong> Investors who believe we're in a sustained precious metals bull market and want meaningful exposure.</p>
+
+      <p>At 10-15%, gold becomes a significant portfolio driver. You'll see real impact on your returns during gold rallies and real protection during equity drawdowns. This is where the academic research shows optimal risk-adjusted returns.</p>
+
+      <p>This tier makes sense if you're concerned about fiscal deficits, currency devaluation, or geopolitical risk — but still want most of your capital in growth assets.</p>
+
+      <h3>Conviction / Macro: 15-25% Gold Allocation</h3>
+
+      <p><strong>Best for:</strong> Investors with strong views on dollar debasement, de-dollarization, or monetary system restructuring.</p>
+
+      <p>At 15-25%, you're making a macro bet. This is Harry Browne territory. You believe fiat currencies are structurally losing value, central bank gold buying signals a monetary shift, and gold will be re-priced significantly higher over the next decade.</p>
+
+      <p>This is not fringe — Ray Dalio, Stanley Druckenmiller, and multiple sovereign wealth funds are positioned in this range. But it requires conviction and the ability to hold through periods when equities outperform.</p>
+
+      <p>If you're asking "how much of my savings should be in gold" and your answer involves the words "sound money" or "monetary reset," you're probably in this tier.</p>
+
+      <h2>Physical Gold vs Gold ETFs vs Gold Mining Stocks — Does It Matter for Allocation?</h2>
+
+      <p>All three count toward your gold portfolio allocation percentage, but they behave differently:</p>
+
+      <p><strong>Physical Gold (bars, coins, rounds):</strong> Zero counterparty risk. You hold it, you own it. No exchange, broker, or custodian can freeze or rehypothecate it. Downsides: storage costs, insurance, less liquid for rebalancing. Best for: long-term holders, privacy-focused investors, anyone who wants gold they can physically access.</p>
+
+      <p><strong>Gold ETFs (GLD, IAU, SGOL):</strong> Convenient, liquid, easy to rebalance. You buy and sell like a stock. Downsides: counterparty risk (you own shares in a trust, not physical metal), management fees (0.25-0.40%), and the gold may be lent out. Best for: investors who want gold exposure in a brokerage account.</p>
+
+      <p><strong>Gold Mining Stocks (GDX, individual miners):</strong> Leveraged exposure to gold prices — miners' profits expand faster than gold's price increases. Downsides: company-specific risk, operational risk, management risk. A gold miner can go bankrupt even if gold goes up. Best for: investors who want amplified returns and can stomach higher volatility.</p>
+
+      <p>For most investors, the ideal gold allocation is a mix: physical gold as the foundation (50-70% of your gold allocation), ETFs for liquidity and rebalancing (20-40%), and optional mining stock exposure (0-20%) for leverage.</p>
+
+      <h2>Don't Forget Silver, Crypto, and Real Estate</h2>
+
+      <p>Gold allocation should be part of a broader <a href="/blog/why-track-hard-assets-separately">hard assets vs paper assets</a> strategy. Gold isn't the only hard asset worth owning:</p>
+
+      <p><strong>Silver:</strong> The gold-silver ratio sat above 80:1 for most of 2025 — compared to a historical average of 15:1 and a modern average of ~60:1. Many precious metals investors see silver as significantly undervalued relative to gold and allocate 20-30% of their metals position to silver. If you're new to silver, check out our <a href="/blog/gold-silver-ratio-what-it-means">silver stacking guide</a>.</p>
+
+      <p><strong>Crypto (BTC as digital gold):</strong> Bitcoin's "digital gold" narrative has strengthened since the ETF approvals. Some investors are replacing a portion of their gold allocation with BTC — typically 5-10% of their total portfolio. See our <a href="/blog/why-track-hard-assets-separately">gold vs bitcoin comparison</a> for a deeper dive.</p>
+
+      <p><strong>Real estate syndications:</strong> For income-producing hard assets, LP positions in multifamily, self-storage, and BTR syndications offer 6-12% preferred returns plus projected IRRs of 13-20%. Unlike gold, these generate cash flow while you hold.</p>
+
+      <p>A well-rounded hard asset portfolio might look like: 30-40% precious metals (gold + silver), 25-35% real estate, 10-20% crypto, and the remainder in collectibles, private notes, or cash equivalents.</p>
+
+      <h2>How to Track Your Gold Allocation in Real Time</h2>
+
+      <p>Knowing your ideal gold allocation is one thing. Actually tracking it across physical bars, coins, ETFs, and other hard assets is another.</p>
+
+      <p>Most portfolio trackers (Mint, Personal Capital, Monarch) can't track physical gold at all. They're built for stocks and bank accounts. Try entering "25 American Gold Eagle 1oz coins at $1,850 cost basis" into Fidelity's portfolio tracker. It can't.</p>
+
+      <p><a href="/">HardAssets.io</a> is the <a href="/">free hard asset portfolio tracker</a> built specifically for this. It tracks:</p>
+
+      <ul>
+        <li><strong>Physical precious metals</strong> — gold, silver, platinum, palladium with 8 unit types, automatic oz-per-unit conversion, and live spot prices from metals.dev</li>
+        <li><strong>Crypto</strong> — 20+ coins with live CoinGecko prices</li>
+        <li><strong>Real estate syndications</strong> — LP positions with sponsor, IRR, rate%, and income tracking</li>
+        <li><strong>Physical properties</strong> — equity, cash flow, cap rate calculations</li>
+        <li><strong>Collectibles, private notes</strong> — watches, wine, art, hard money loans</li>
+      </ul>
+
+      <p>The Portfolio tab shows your <strong>actual allocation vs target allocation</strong> — so you can see at a glance whether your gold portfolio allocation percentage is where you want it. If you're at 8% gold but targeting 15%, the dashboard shows the gap.</p>
+
+      <p><strong>Try the free live demo at <a href="/?demo=1">HardAssets.io</a></strong> — no sign-up required. A pre-loaded sample portfolio shows you exactly how it works.</p>
+
+      <h2>The Bottom Line</h2>
+
+      <p>How much gold should you own? There's no single right answer, but the data consistently supports these ranges:</p>
+
+      <ul>
+        <li><strong>Minimum:</strong> 5% — basic portfolio insurance</li>
+        <li><strong>Optimal:</strong> 10-15% — best risk-adjusted returns per academic research</li>
+        <li><strong>Conviction:</strong> 15-25% — for macro-focused investors betting on monetary restructuring</li>
+      </ul>
+
+      <p>The most important thing is to actually <em>know</em> your current gold allocation. If you can't answer "what percentage of my total portfolio is in gold?" within 5 seconds, you need a better tracking system.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Past performance does not guarantee future results. Consult a qualified financial advisor before making investment decisions.</em></p>
+    `
   }
 ];
 

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="gbg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F1729"/><stop offset="100%" stop-color="#0B0F1A"/>
+    </linearGradient>
+    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ECC94B"/><stop offset="100%" stop-color="#B8912E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#gbg)"/>
+  <!-- Gold bar stack -->
+  <g transform="translate(160,180)">
+    <rect width="200" height="50" rx="6" fill="#D4A843" opacity="0.9"/><rect x="5" y="5" width="190" height="40" rx="4" fill="#ECC94B" opacity="0.3"/>
+    <rect y="60" width="200" height="50" rx="6" fill="#D4A843" opacity="0.8"/><rect x="5" y="65" width="190" height="40" rx="4" fill="#ECC94B" opacity="0.25"/>
+    <rect y="120" width="200" height="50" rx="6" fill="#D4A843" opacity="0.7"/><rect x="5" y="125" width="190" height="40" rx="4" fill="#ECC94B" opacity="0.2"/>
+    <rect y="180" width="200" height="50" rx="6" fill="#D4A843" opacity="0.6"/>
+  </g>
+  <!-- Allocation donut -->
+  <g transform="translate(700,300)">
+    <circle r="140" fill="none" stroke="#1E293B" stroke-width="40"/>
+    <circle r="140" fill="none" stroke="#D4A843" stroke-width="40" stroke-dasharray="352 528" stroke-dashoffset="0" stroke-linecap="round"/>
+    <circle r="140" fill="none" stroke="#60A5FA" stroke-width="40" stroke-dasharray="220 660" stroke-dashoffset="-352" stroke-linecap="round"/>
+    <circle r="140" fill="none" stroke="#A78BFA" stroke-width="40" stroke-dasharray="176 704" stroke-dashoffset="-572" stroke-linecap="round"/>
+    <circle r="140" fill="none" stroke="#34D399" stroke-width="40" stroke-dasharray="88 792" stroke-dashoffset="-748" stroke-linecap="round"/>
+    <circle r="140" fill="none" stroke="#FB923C" stroke-width="40" stroke-dasharray="44 836" stroke-dashoffset="-836" stroke-linecap="round"/>
+    <text y="-10" text-anchor="middle" fill="#D4A843" font-family="Arial,sans-serif" font-size="36" font-weight="900">40%</text>
+    <text y="20" text-anchor="middle" fill="#94A3B8" font-family="Arial,sans-serif" font-size="14" font-weight="600">PRECIOUS METALS</text>
+  </g>
+  <!-- Legend -->
+  <g transform="translate(920,180)" font-family="Arial,sans-serif" font-size="13">
+    <rect width="14" height="14" rx="3" fill="#D4A843"/><text x="22" y="12" fill="#F1F5F9" font-weight="600">Precious Metals 40%</text>
+    <rect y="28" width="14" height="14" rx="3" fill="#60A5FA"/><text x="22" y="40" fill="#F1F5F9" font-weight="600">Real Estate 25%</text>
+    <rect y="56" width="14" height="14" rx="3" fill="#A78BFA"/><text x="22" y="68" fill="#F1F5F9" font-weight="600">Crypto 20%</text>
+    <rect y="84" width="14" height="14" rx="3" fill="#34D399"/><text x="22" y="96" fill="#F1F5F9" font-weight="600">Collectibles 10%</text>
+    <rect y="112" width="14" height="14" rx="3" fill="#FB923C"/><text x="22" y="124" fill="#F1F5F9" font-weight="600">Private Notes 5%</text>
+  </g>
+  <!-- Title -->
+  <text x="600" y="560" text-anchor="middle" fill="#F1F5F9" font-family="Arial,sans-serif" font-size="22" font-weight="800">How Much Gold Should You Own?</text>
+  <text x="600" y="590" text-anchor="middle" fill="#94A3B8" font-family="Arial,sans-serif" font-size="14">2026 Portfolio Allocation Guide — HardAssets.io</text>
+</svg>
