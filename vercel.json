@@ -1,4 +1,6 @@
 {
+  "trailingSlash": false,
+  "cleanUrls": true,
   "crons": [
     {
       "path": "/api/cron-snapshot",
@@ -7,8 +9,12 @@
   ],
   "rewrites": [
     { "source": "/blog", "destination": "/index.html" },
+    { "source": "/blog/", "destination": "/index.html" },
     { "source": "/blog/:slug", "destination": "/index.html" },
-    { "source": "/compare", "destination": "/index.html" }
+    { "source": "/blog/:slug/", "destination": "/index.html" },
+    { "source": "/compare", "destination": "/index.html" },
+    { "source": "/compare/", "destination": "/index.html" },
+    { "source": "/((?!api|_next|assets|.*\\..*).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
