@@ -100,8 +100,9 @@ export default function ComparePage(){
     <div style={{textAlign:"center",padding:isMobile?"48px 20px 40px":"80px 24px 60px",position:"relative"}}>
       <div style={{position:"absolute",top:-100,left:"50%",transform:"translateX(-50%)",width:600,height:400,background:"radial-gradient(ellipse,rgba(212,168,67,.06),transparent)",pointerEvents:"none"}}/>
       <div style={{position:"relative",maxWidth:720,margin:"0 auto"}}>
-        <h1 style={{fontSize:"clamp(32px,5vw,48px)",fontWeight:800,lineHeight:1.1,letterSpacing:"-0.02em",marginBottom:20}}>The Only Dashboard Built for What You <span style={{color:P.gold}}>Actually Own</span></h1>
-        <p style={{fontSize:isMobile?16:18,color:P.txS,lineHeight:1.6,maxWidth:580,margin:"0 auto 16px"}}>Most portfolio trackers were built for stocks and ETFs. HardAssets was built for gold bars, rental properties, syndication deals, and everything Wall Street ignores.</p>
+        <h1 style={{fontSize:"clamp(32px,5vw,48px)",fontWeight:800,lineHeight:1.1,letterSpacing:"-0.02em",marginBottom:20}}>The Only <span style={{color:P.gold}}>Private</span> Dashboard for Hard Asset Investors</h1>
+        <p style={{fontSize:isMobile?16:18,color:P.txS,lineHeight:1.6,maxWidth:600,margin:"0 auto 16px"}}>Track gold, silver, real estate, crypto, and collectibles — with no identity verification, no bank connections, and no one looking over your shoulder. The only tracker where you control what you share.</p>
+        <div style={{display:"flex",gap:isMobile?12:20,justifyContent:"center",flexWrap:"wrap",margin:"16px 0"}}>{[["🔒","No identity verification"],["📡","No bank connections"],["👤","Use any alias"]].map(([ic,t],i)=><span key={i} style={{fontSize:13,fontWeight:600,color:P.gold}}>{ic} {t}</span>)}</div>
         <p style={{fontSize:13,color:P.txM}}>Comparing HardAssets against 5 popular alternatives — honestly and transparently.</p>
       </div>
     </div>
