@@ -367,6 +367,7 @@ function MobileLoginSheet({onClose,onGuestLogin,onEmailAuth,syncing}){
   const[mode,setMode]=useState("login");
   const[em,setEm]=useState("");const[pw,setPw]=useState("");const[nm,setNm]=useState("");
   const[err,setErr]=useState("");const[loading,setLoading]=useState(false);const[hp,setHp]=useState("");const[formLoadedAt]=useState(Date.now());
+  const[showPass,setShowPass]=useState(false);const[resetMode,setResetMode]=useState(false);const[resetSent,setResetSent]=useState(false);
   const gRef=useRef(null);const doneRef=useRef(false);
 
   useEffect(()=>{
@@ -400,18 +401,40 @@ function MobileLoginSheet({onClose,onGuestLogin,onEmailAuth,syncing}){
       <div style={{display:"flex",marginBottom:14,borderRadius:10,overflow:"hidden",border:"1px solid "+P.border}}>
         {["login","signup"].map(m=><button key={m} onClick={()=>{setMode(m);setErr("")}} style={{flex:1,padding:"10px 0",background:mode===m?P.goldSoft:"transparent",color:mode===m?P.gold:P.txM,border:"none",fontSize:12,fontWeight:700,cursor:"pointer",textTransform:"uppercase",letterSpacing:1,fontFamily:ff}}>{m==="login"?"Sign In":"Sign Up"}</button>)}
       </div>
+      {resetMode?<div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {resetSent?<div style={{textAlign:"center",padding:"16px 0"}}>
+          <div style={{fontSize:15,fontWeight:700,color:P.green,marginBottom:6}}>Reset link sent!</div>
+          <div style={{fontSize:12,color:P.txS}}>Check your email for a reset link.</div>
+          <button onClick={()=>{setResetMode(false);setResetSent(false);setErr("")}} style={{background:"none",border:"none",color:P.gold,fontSize:12,cursor:"pointer",marginTop:12,fontFamily:ff}}>Back to Sign In</button>
+        </div>:<>
+          <div style={{fontSize:13,color:P.txS,marginBottom:6}}>Enter your email for a reset link.</div>
+          <FF label="Email" value={em} onChange={setEm} placeholder="you@email.com"/>
+          {err&&<div style={{color:P.red,fontSize:12}}><span>⚠ </span>{err}</div>}
+          <Btn onClick={async()=>{if(!em){setErr("Enter your email.");return}setLoading(true);setErr("");try{await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"reset",email:em,password:"placeholder"})});setResetSent(true)}catch(e){setErr("Could not send.")}setLoading(false)}} full style={{opacity:loading?0.6:1}}>{loading?"Sending...":"Send Reset Link"}</Btn>
+          <button onClick={()=>{setResetMode(false);setErr("")}} style={{background:"none",border:"none",color:P.txM,fontSize:12,cursor:"pointer",fontFamily:ff,marginTop:4}}>Back to Sign In</button>
+        </>}
+      </div>:<>
       <div style={{display:"flex",flexDirection:"column",gap:10}}>
         {mode==="signup"&&<FF label="Name" value={nm} onChange={setNm} placeholder="Any name or alias"/>}
-        <FF label="Email" value={em} onChange={setEm} placeholder="Any email — not verified"/>
-        <FF label="Password" value={pw} onChange={setPw} placeholder="Min. 8 characters" type="password"/>
+        <FF label="Email" value={em} onChange={setEm} placeholder={mode==="signup"?"Any email — not verified":"you@email.com"}/>
+        <div style={{position:"relative"}}>
+          <FF label="Password" value={pw} onChange={setPw} placeholder="Min. 8 characters" type={showPass?"text":"password"}/>
+          <button onClick={()=>setShowPass(!showPass)} style={{position:"absolute",right:12,top:32,background:"none",border:"none",color:P.txM,fontSize:11,cursor:"pointer",fontFamily:ff}}>{showPass?"Hide":"Show"}</button>
+        </div>
         <div style={{position:"absolute",left:"-9999px",opacity:0,height:0,overflow:"hidden"}}><input type="text" value={hp} onChange={e=>setHp(e.target.value)} tabIndex={-1} autoComplete="off"/></div>
-        {mode==="signup"&&<div style={{fontSize:11,color:P.txM,fontStyle:"italic",marginTop:-4}}>We don't verify your identity. Use any alias you prefer.</div>}
-        {err&&<div style={{color:P.red,fontSize:13,display:"flex",alignItems:"center",gap:6}}><span>⚠</span>{err}</div>}
+        {mode==="signup"&&<div style={{fontSize:11,color:P.txM,fontStyle:"italic"}}>We don't verify your identity. Use any alias you prefer.</div>}
+        {err&&<div style={{color:P.red,fontSize:12,display:"flex",alignItems:"center",gap:6}}><span>⚠</span>{err}</div>}
         <Btn onClick={submit} full style={{opacity:loading?0.6:1}}>{loading?"Please wait...":(mode==="login"?"Sign In":"Create Account")}</Btn>
+        {mode==="login"&&<button onClick={()=>{setResetMode(true);setErr("")}} style={{background:"none",border:"none",color:P.txM,fontSize:11,cursor:"pointer",fontFamily:ff,textAlign:"center"}}>Forgot password?</button>}
       </div>
-      <div style={{textAlign:"center",marginTop:12}}><button onClick={onGuestLogin} style={{background:"none",border:"none",color:P.txM,fontSize:12,cursor:"pointer",textDecoration:"underline",fontFamily:ff}}>Continue as guest</button></div>
-      {syncing&&<div style={{textAlign:"center",marginTop:10,fontSize:12,color:P.gold}}>Loading...</div>}
-      <div style={{textAlign:"center",marginTop:12,fontSize:11,color:P.txS}}>🔒 No identity verification required.</div>
+      <div style={{textAlign:"center",marginTop:10,fontSize:12,color:P.txS}}>
+        {mode==="login"?<>Don't have an account? <button onClick={()=>{setMode("signup");setErr("")}} style={{background:"none",border:"none",color:P.gold,fontWeight:600,cursor:"pointer",fontSize:12,fontFamily:ff}}>Sign up</button></>:
+        <>Already have an account? <button onClick={()=>{setMode("login");setErr("")}} style={{background:"none",border:"none",color:P.gold,fontWeight:600,cursor:"pointer",fontSize:12,fontFamily:ff}}>Sign in</button></>}
+      </div>
+      <div style={{textAlign:"center",marginTop:6}}><button onClick={onGuestLogin} style={{background:"none",border:"none",color:P.txM,fontSize:11,cursor:"pointer",textDecoration:"underline",fontFamily:ff}}>Continue as guest</button></div>
+      </>}
+      {syncing&&<div style={{textAlign:"center",marginTop:8,fontSize:12,color:P.gold}}>Loading...</div>}
+      <div style={{textAlign:"center",marginTop:12,fontSize:10,color:P.txM}}>🔒 Your portfolio stays private.</div>
     </div>
   </div>;
 }

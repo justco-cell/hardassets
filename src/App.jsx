@@ -567,6 +567,7 @@ function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
   const[email,setEmail]=useState("");const[pass,setPass]=useState("");const[name,setName]=useState("");
   const[err,setErr]=useState("");const[loading,setLoading]=useState(false);
   const[hp,setHp]=useState("");const[turnstileToken,setTurnstileToken]=useState(null);const[formLoadedAt]=useState(Date.now());
+  const[showPass,setShowPass]=useState(false);const[resetMode,setResetMode]=useState(false);const[resetSent,setResetSent]=useState(false);
   const gBtnRef=useRef(null);const doneRef=useRef(false);const turnstileRef=useRef(null);
 
   // Render Google Sign-In button
@@ -587,12 +588,20 @@ function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
     turnstileRef.current=window.turnstile.render(el,{sitekey:"0x4AAAAAAACyFuvo1WJClT69B",callback:t=>setTurnstileToken(t),"error-callback":()=>setTurnstileToken(null),theme:"dark",size:"invisible"});
   },[mode]);
 
+  const submitReset=async()=>{
+    if(!email){setErr("Enter your email address.");return}
+    setLoading(true);setErr("");
+    try{await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"reset",email,password:"placeholder_for_reset"})});
+    setResetSent(true)}catch(e){setErr("Could not send reset email.")}
+    setLoading(false);
+  };
+
   const submit=async()=>{
     setErr("");
     if(!email||!pass){setErr("Email and password required.");return}
     if(mode==="signup"&&!name.trim()){setErr("Name required.");return}
     if(pass.length<8){setErr("Password must be at least 8 characters.");return}
-    if(hp){setErr("");return} // honeypot — silently do nothing
+    if(hp){setErr("");return}
     setLoading(true);
     const result=await onEmailAuth(mode==="signup"?"signup":"login",email,pass,mode==="signup"?name.trim():undefined,turnstileToken,formLoadedAt);
     if(result?.error){setErr(result.error);if(window.turnstile&&turnstileRef.current)try{window.turnstile.reset(turnstileRef.current)}catch(e){}}
@@ -619,31 +628,56 @@ function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
         {["login","signup"].map(m=><button key={m} onClick={()=>{setMode(m);setErr("")}} style={{flex:1,padding:"10px 0",background:mode===m?P.goldSoft:"transparent",color:mode===m?P.gold:P.txM,border:"none",fontSize:13,fontWeight:700,cursor:"pointer",textTransform:"uppercase",letterSpacing:1,fontFamily:ff}}>{m==="login"?"Sign In":"Sign Up"}</button>)}
       </div>
 
+      {/* Password Reset Mode */}
+      {resetMode?<div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {resetSent?<div style={{textAlign:"center",padding:"20px 0"}}>
+          <div style={{fontSize:16,fontWeight:700,color:P.green,marginBottom:8}}>Reset link sent!</div>
+          <div style={{fontSize:13,color:P.txS}}>Check your email for a password reset link.</div>
+          <button onClick={()=>{setResetMode(false);setResetSent(false);setErr("")}} style={{background:"none",border:"none",color:P.gold,fontSize:13,cursor:"pointer",marginTop:16,fontFamily:ff}}>Back to Sign In</button>
+        </div>:<>
+          <div style={{fontSize:14,color:P.txS,marginBottom:8}}>Enter your email and we'll send a reset link.</div>
+          <FF label="Email" value={email} onChange={setEmail} placeholder="you@email.com"/>
+          {err&&<div style={{color:P.red,fontSize:13,display:"flex",alignItems:"center",gap:6}}><span>⚠</span>{err}</div>}
+          <Btn onClick={submitReset} full style={{opacity:loading?0.6:1}}>{loading?"Sending...":"Send Reset Link"}</Btn>
+          <button onClick={()=>{setResetMode(false);setErr("")}} style={{background:"none",border:"none",color:P.txM,fontSize:13,cursor:"pointer",fontFamily:ff,marginTop:4}}>Back to Sign In</button>
+        </>}
+      </div>:<>
       {/* Form fields */}
       <div style={{display:"flex",flexDirection:"column",gap:10}}>
         {mode==="signup"&&<FF label="Name" value={name} onChange={setName} placeholder="Any name or alias"/>}
-        <FF label="Email" value={email} onChange={setEmail} placeholder="Any email — not verified"/>
-        <FF label="Password" value={pass} onChange={setPass} placeholder="Min. 8 characters" type="password"/>
+        <FF label="Email" value={email} onChange={setEmail} placeholder={mode==="signup"?"Any email — not verified":"you@email.com"}/>
+        <div style={{position:"relative"}}>
+          <FF label="Password" value={pass} onChange={setPass} placeholder="Min. 8 characters" type={showPass?"text":"password"}/>
+          <button onClick={()=>setShowPass(!showPass)} style={{position:"absolute",right:12,top:32,background:"none",border:"none",color:P.txM,fontSize:12,cursor:"pointer",fontFamily:ff}}>{showPass?"Hide":"Show"}</button>
+        </div>
 
         {/* Honeypot — invisible to humans */}
         <div style={{position:"absolute",left:"-9999px",opacity:0,height:0,overflow:"hidden"}}><input type="text" value={hp} onChange={e=>setHp(e.target.value)} tabIndex={-1} autoComplete="off"/></div>
 
         {mode==="signup"&&<div style={{fontSize:12,color:P.txM,fontStyle:"italic"}}>We don't verify your identity. Use any alias you prefer.</div>}
-        {/* Turnstile widget — invisible */}
         {mode==="signup"&&<div id="turnstile-web"/>}
 
         {err&&<div style={{color:P.red,fontSize:13,display:"flex",alignItems:"center",gap:6}}><span>⚠</span>{err}</div>}
 
         <Btn onClick={submit} full style={{marginTop:4,opacity:loading?0.6:1}}>{loading?"Please wait...":(mode==="login"?"Sign In":"Create Account")}</Btn>
+
+        {mode==="login"&&<button onClick={()=>{setResetMode(true);setErr("")}} style={{background:"none",border:"none",color:P.txM,fontSize:12,cursor:"pointer",fontFamily:ff,textAlign:"center"}}>Forgot password?</button>}
+      </div>
+
+      {/* Mode switch */}
+      <div style={{textAlign:"center",marginTop:12,fontSize:13,color:P.txS}}>
+        {mode==="login"?<>Don't have an account? <button onClick={()=>{setMode("signup");setErr("")}} style={{background:"none",border:"none",color:P.gold,fontWeight:600,cursor:"pointer",fontSize:13,fontFamily:ff}}>Sign up</button></>:
+        <>Already have an account? <button onClick={()=>{setMode("login");setErr("")}} style={{background:"none",border:"none",color:P.gold,fontWeight:600,cursor:"pointer",fontSize:13,fontFamily:ff}}>Sign in</button></>}
       </div>
 
       {/* Guest link */}
-      <div style={{textAlign:"center",marginTop:14}}>
-        <button onClick={onGuestLogin} style={{background:"none",border:"none",color:P.txM,fontSize:13,cursor:"pointer",textDecoration:"underline",fontFamily:ff}}>Continue as guest</button>
+      <div style={{textAlign:"center",marginTop:8}}>
+        <button onClick={onGuestLogin} style={{background:"none",border:"none",color:P.txM,fontSize:12,cursor:"pointer",textDecoration:"underline",fontFamily:ff}}>Continue as guest</button>
       </div>
+      </>}
 
       {syncing&&<div style={{textAlign:"center",marginTop:12,fontSize:13,color:P.gold}}>Loading your portfolio...</div>}
-      <div style={{textAlign:"center",marginTop:20,fontSize:12,color:P.txS}}>🔒 No identity verification required. Use any name and email.</div>
+      <div style={{textAlign:"center",marginTop:16,fontSize:11,color:P.txM}}>🔒 Your portfolio stays private. <a href="/privacy" style={{color:P.txM,textDecoration:"underline"}}>Privacy Policy</a></div>
     </div>
   </div>;
 }
