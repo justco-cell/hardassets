@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="hbg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F1729"/><stop offset="100%" stop-color="#0B0F1A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#hbg)"/>
+  <!-- Left: Hard Assets -->
+  <rect x="60" y="80" width="500" height="460" rx="20" fill="#111827" stroke="#D4A843" stroke-width="2"/>
+  <text x="310" y="130" text-anchor="middle" fill="#D4A843" font-family="Arial,sans-serif" font-size="22" font-weight="800">HARD ASSETS</text>
+  <!-- Bars -->
+  <g font-family="Arial,sans-serif">
+    <rect x="100" y="160" width="400" height="36" rx="6" fill="rgba(212,168,67,0.15)"/>
+    <rect x="100" y="160" width="360" height="36" rx="6" fill="#D4A843" opacity="0.8"/>
+    <text x="115" y="184" fill="#0B0F1A" font-size="14" font-weight="700">Gold</text>
+    <text x="450" y="184" fill="#0B0F1A" font-size="14" font-weight="800">+65%</text>
+    <rect x="100" y="210" width="400" height="36" rx="6" fill="rgba(148,163,184,0.1)"/>
+    <rect x="100" y="210" width="400" height="36" rx="6" fill="#94A3B8" opacity="0.7"/>
+    <text x="115" y="234" fill="#0B0F1A" font-size="14" font-weight="700">Silver</text>
+    <text x="440" y="234" fill="#0B0F1A" font-size="14" font-weight="800">+138%</text>
+    <rect x="100" y="260" width="400" height="36" rx="6" fill="rgba(96,165,250,0.1)"/>
+    <rect x="100" y="260" width="180" height="36" rx="6" fill="#60A5FA" opacity="0.7"/>
+    <text x="115" y="284" fill="#0B0F1A" font-size="14" font-weight="700">RE Syndications</text>
+    <rect x="100" y="310" width="400" height="36" rx="6" fill="rgba(167,139,250,0.1)"/>
+    <rect x="100" y="310" width="100" height="36" rx="6" fill="#A78BFA" opacity="0.7"/>
+    <text x="115" y="334" fill="#0B0F1A" font-size="14" font-weight="700">Bitcoin</text>
+  </g>
+  <text x="310" y="400" text-anchor="middle" fill="#34D399" font-family="Arial,sans-serif" font-size="13" font-weight="600">Zero counterparty risk</text>
+  <text x="310" y="420" text-anchor="middle" fill="#34D399" font-family="Arial,sans-serif" font-size="13" font-weight="600">Inflation protection</text>
+  <text x="310" y="440" text-anchor="middle" fill="#34D399" font-family="Arial,sans-serif" font-size="13" font-weight="600">Tangible value</text>
+  <!-- Right: Paper Assets -->
+  <rect x="640" y="80" width="500" height="460" rx="20" fill="#111827" stroke="#475569" stroke-width="2"/>
+  <text x="890" y="130" text-anchor="middle" fill="#64748B" font-family="Arial,sans-serif" font-size="22" font-weight="800">PAPER ASSETS</text>
+  <g font-family="Arial,sans-serif">
+    <rect x="680" y="160" width="400" height="36" rx="6" fill="rgba(248,113,113,0.08)"/>
+    <rect x="680" y="160" width="120" height="36" rx="6" fill="#F87171" opacity="0.5"/>
+    <text x="695" y="184" fill="#F1F5F9" font-size="14" font-weight="700">S&amp;P 500</text>
+    <text x="810" y="184" fill="#F87171" font-size="14" font-weight="700">Volatile</text>
+    <rect x="680" y="210" width="400" height="36" rx="6" fill="rgba(248,113,113,0.08)"/>
+    <rect x="680" y="210" width="60" height="36" rx="6" fill="#F87171" opacity="0.4"/>
+    <text x="695" y="234" fill="#F1F5F9" font-size="14" font-weight="700">Bonds</text>
+    <text x="755" y="234" fill="#F87171" font-size="14" font-weight="700">Neg. real return</text>
+    <rect x="680" y="260" width="400" height="36" rx="6" fill="rgba(248,113,113,0.08)"/>
+    <rect x="680" y="260" width="80" height="36" rx="6" fill="#F87171" opacity="0.4"/>
+    <text x="695" y="284" fill="#F1F5F9" font-size="14" font-weight="700">US Dollar</text>
+    <text x="775" y="284" fill="#F87171" font-size="14" font-weight="700">-11%</text>
+  </g>
+  <text x="890" y="400" text-anchor="middle" fill="#F87171" font-family="Arial,sans-serif" font-size="13" font-weight="600" opacity="0.7">Counterparty dependent</text>
+  <text x="890" y="420" text-anchor="middle" fill="#F87171" font-family="Arial,sans-serif" font-size="13" font-weight="600" opacity="0.7">Eroded by inflation</text>
+  <text x="890" y="440" text-anchor="middle" fill="#F87171" font-family="Arial,sans-serif" font-size="13" font-weight="600" opacity="0.7">Digital promises</text>
+  <!-- VS badge -->
+  <circle cx="600" cy="310" r="36" fill="#1E293B" stroke="#D4A843" stroke-width="2"/>
+  <text x="600" y="317" text-anchor="middle" fill="#D4A843" font-family="Arial,sans-serif" font-size="18" font-weight="900">VS</text>
+  <!-- Footer -->
+  <text x="600" y="580" text-anchor="middle" fill="#F1F5F9" font-family="Arial,sans-serif" font-size="18" font-weight="800">Hard Assets vs Paper Assets: The 2026 Scorecard</text>
+  <text x="600" y="605" text-anchor="middle" fill="#64748B" font-family="Arial,sans-serif" font-size="13">HardAssets.io</text>
+</svg>
