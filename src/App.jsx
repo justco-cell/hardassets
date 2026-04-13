@@ -242,7 +242,8 @@ function HomePage({onNav,user}){
   const[legalModal,setLegalModal]=useState(null);
   const[livePrices,setLivePrices]=useState(null);
   useEffect(()=>{
-    (async()=>{
+    // Delay price fetch so browser renders page first (reduces main-thread blocking)
+    const timer=setTimeout(async()=>{
       try{
         const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
         const p={};
@@ -251,7 +252,8 @@ function HomePage({onNav,user}){
           if(cp.BTC)p.btcChg=cp.BTC.change;if(cp.ETH)p.ethChg=cp.ETH.change;if(cp.SOL)p.solChg=cp.SOL.change}
         if(Object.keys(p).length>0)setLivePrices(p);
       }catch(e){}
-    })();
+    },800); // 800ms delay — let browser render first
+    return()=>clearTimeout(timer);
   },[]);
   const faqs=[
     ["Do I need to create an account?","No. You can try the full dashboard as a guest with demo data — no sign-up required. Sign in with Google when you want cloud sync and cross-device access."],
