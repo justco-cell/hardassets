@@ -52,6 +52,10 @@ export const POSTS = [
       <h2>The Bottom Line</h2>
 
       <p>If you own hard assets, you need a tracker built for hard assets. Your brokerage app was never designed to show the full picture. A purpose-built dashboard gives you the allocation visibility, risk awareness, and income tracking you need to make better investment decisions.</p>
+
+      <p>Read our <a href="/blog/how-much-gold-should-you-own">gold allocation guide</a> to decide how much to hold, check the <a href="/blog/gold-silver-ratio-what-it-means">gold/silver ratio analysis</a>, or explore <a href="/blog/hard-assets-vs-paper-assets">hard assets vs paper assets</a>. Ready to track? <strong><a href="/?demo=1">Try HardAssets.io free</a></strong> — see our <a href="/blog/best-precious-metals-portfolio-trackers">tracker comparison</a> for why we built it.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice.</em></p>
     `
   },
   {
@@ -97,6 +101,10 @@ export const POSTS = [
       <p>The <strong>HardAssets.io Markets tab</strong> shows the live gold/silver ratio alongside real-time spot prices for gold, silver, platinum, and palladium. You can monitor the ratio daily and track your physical holdings with automatic oz-per-unit conversion.</p>
 
       <p>Whether you're a long-term stacker or an active ratio trader, having live data at your fingertips helps you make better decisions about when and what to buy.</p>
+
+      <p>New to silver? Read our <a href="/blog/silver-stacking-for-beginners">silver stacking guide for beginners</a>. Wondering how much gold to own? Check the <a href="/blog/how-much-gold-should-you-own">gold allocation guide</a>. Considering Bitcoin alongside metals? See <a href="/blog/gold-vs-bitcoin-2026">gold vs bitcoin in 2026</a>. <strong><a href="/?demo=1">Try HardAssets.io free</a></strong> to track your metals with live spot prices.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice.</em></p>
     `
   },
   {
@@ -150,6 +158,10 @@ export const POSTS = [
       </ul>
 
       <p>If you're building a portfolio of syndication LP positions, having all your deals in one place — alongside your metals, crypto, and other hard assets — gives you the complete allocation picture you need.</p>
+
+      <p>Learn about <a href="/blog/hard-assets-vs-paper-assets">hard assets vs paper assets</a>, see our <a href="/blog/how-much-gold-should-you-own">gold allocation guide</a>, or explore <a href="/blog/silver-stacking-for-beginners">silver stacking for beginners</a>. <strong><a href="/?demo=1">Try HardAssets.io free</a></strong> — the <a href="/blog/best-precious-metals-portfolio-trackers">best portfolio tracker</a> for syndication investors.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice.</em></p>
     `
   },
   {
