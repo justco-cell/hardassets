@@ -603,8 +603,10 @@ function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
     if(pass.length<8){setErr("Password must be at least 8 characters.");return}
     if(hp){setErr("");return}
     setLoading(true);
-    const result=await onEmailAuth(mode==="signup"?"signup":"login",email,pass,mode==="signup"?name.trim():undefined,turnstileToken,formLoadedAt);
-    if(result?.error){setErr(result.error);if(window.turnstile&&turnstileRef.current)try{window.turnstile.reset(turnstileRef.current)}catch(e){}}
+    try{
+      const result=await onEmailAuth(mode==="signup"?"signup":"login",email,pass,mode==="signup"?name.trim():undefined,turnstileToken,formLoadedAt);
+      if(result?.error){setErr(result.error);if(window.turnstile&&turnstileRef.current)try{window.turnstile.reset(turnstileRef.current)}catch(e){}}
+    }catch(e){setErr("Something went wrong. Please try again.")}
     setLoading(false);
   };
 
@@ -952,11 +954,16 @@ export default function HardAssetsWeb(){
   if(view==="home"||view==="login") return <>
     <HomePage onNav={v=>{if(v==="demo"){guestLogin();return}if(v==="app"&&user)setView("app");else setView(v)}} user={user}/>
     {view==="login"&&(!user||user.email==="guest")&&<LoginModal onClose={()=>setView("home")} onGuestLogin={()=>{guestLogin();setView("app")}} onEmailAuth={async(action,email,pass,name,turnstileToken,formLoadedAt)=>{
-      const res=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password:pass,name,turnstileToken,_ts:formLoadedAt})});
-      const d=await res.json();if(d.error)return{error:d.error};
-      setAuthToken(d.token);setUser({email:d.email,name:d.name||email.split("@")[0]});setView("app");
-      if(d.token){setSyncing(true);const saved=await cloudLoad(d.token);if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices()}
-      return{};
+      try{
+        const res=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password:pass,name,turnstileToken,_ts:formLoadedAt})});
+        if(!res.ok){const d=await res.json().catch(()=>({}));return{error:d.error||"Request failed ("+res.status+")"}}
+        const d=await res.json();if(d.error)return{error:d.error};
+        if(!d.token)return{error:"No token received. Please try again."};
+        setAuthToken(d.token);setUser({email:d.email||email,name:d.name||email.split("@")[0]});setView("app");
+        setSyncing(true);const saved=await cloudLoad(d.token);if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices();
+        if(window.posthog)window.posthog.capture('user_logged_in',{method:'email',action});
+        return{};
+      }catch(e){return{error:"Connection error. Please check your internet and try again."}}
     }} syncing={syncing}/>}
   </>;
   if(view==="contact") return <ContactPg onNav={v=>setView(v)}/>;

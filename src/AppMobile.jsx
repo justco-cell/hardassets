@@ -384,8 +384,10 @@ function MobileLoginSheet({onClose,onGuestLogin,onEmailAuth,syncing}){
     if(pw.length<8){setErr("Password must be at least 8 characters.");return}
     if(hp)return;
     setLoading(true);
-    const result=await onEmailAuth(mode==="signup"?"signup":"login",em,pw,nm.trim(),formLoadedAt);
-    if(result?.error)setErr(result.error);
+    try{
+      const result=await onEmailAuth(mode==="signup"?"signup":"login",em,pw,nm.trim(),formLoadedAt);
+      if(result?.error)setErr(result.error);
+    }catch(e){setErr("Something went wrong. Please try again.")}
     setLoading(false);
   };
 
@@ -749,11 +751,16 @@ export default function HardAssets(){
 
     {/* LOGIN MODAL */}
     {view==="login"&&(!user||user.email==="guest")&&<MobileLoginSheet onClose={()=>setView("home")} onGuestLogin={guestLogin} onEmailAuth={async(action,email,pass,name,formLoadedAt)=>{
-      const r=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password:pass,name,_ts:formLoadedAt})});
-      const d=await r.json();if(d.error)return{error:d.error};
-      setAuthToken(d.token);setUser({email:d.email,name:d.name||email.split("@")[0]});setView("app");
-      setSyncing(true);const saved=await cloudLoad(d.token);if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices();
-      return{};
+      try{
+        const r=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,email,password:pass,name,_ts:formLoadedAt})});
+        if(!r.ok){const d=await r.json().catch(()=>({}));return{error:d.error||"Request failed ("+r.status+")"}}
+        const d=await r.json();if(d.error)return{error:d.error};
+        if(!d.token)return{error:"No token received. Please try again."};
+        setAuthToken(d.token);setUser({email:d.email||email,name:d.name||email.split("@")[0]});setView("app");
+        setSyncing(true);const saved=await cloudLoad(d.token);if(saved){if(saved.metals?.length>0)setMetals(saved.metals);if(saved.syndications?.length>0)setSynds(saved.syndications);if(saved.crypto?.length>0)setCrypto(saved.crypto);if(saved.properties?.length>0)setProperties(saved.properties);if(saved.notesLending?.length>0)setNotesLending(saved.notesLending);if(saved.collectibles?.length>0)setCollectibles(saved.collectibles);if(saved.targets)setTargets(saved.targets)}setSyncing(false);refreshPrices();
+        if(window.posthog)window.posthog.capture('user_logged_in',{method:'email',action});
+        return{};
+      }catch(e){return{error:"Connection error. Please try again."}}
     }} syncing={syncing}/>}
   </div>;
 

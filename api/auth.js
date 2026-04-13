@@ -14,7 +14,13 @@ function rateLimit(key, limit, windowMs = 3600000) {
 const DISPOSABLE_DOMAINS = ['tempmail.com','throwaway.email','guerrillamail.com','mailinator.com','10minutemail.com','trashmail.com','yopmail.com','sharklasers.com','guerrillamailblock.com','grr.la','dispostable.com','maildrop.cc','fakeinbox.com','tempail.com','temp-mail.org'];
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://hardassets.io');
+  const origin = req.headers.origin || '';
+  const allowed = ['https://hardassets.io', 'https://www.hardassets.io'];
+  if (allowed.includes(origin) || origin.endsWith('.vercel.app')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', 'https://hardassets.io');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('X-Content-Type-Options', 'nosniff');
