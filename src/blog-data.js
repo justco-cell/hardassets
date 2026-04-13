@@ -223,11 +223,11 @@ export const POSTS = [
 
       <h2>Don't Forget Silver, Crypto, and Real Estate</h2>
 
-      <p>Gold allocation should be part of a broader <a href="/blog/why-track-hard-assets-separately">hard assets vs paper assets</a> strategy. Gold isn't the only hard asset worth owning:</p>
+      <p>Gold allocation should be part of a broader <a href="/blog/hard-assets-vs-paper-assets">hard assets vs paper assets</a> strategy. Gold isn't the only hard asset worth owning:</p>
 
-      <p><strong>Silver:</strong> The gold-silver ratio sat above 80:1 for most of 2025 — compared to a historical average of 15:1 and a modern average of ~60:1. Many precious metals investors see silver as significantly undervalued relative to gold and allocate 20-30% of their metals position to silver. If you're new to silver, check out our <a href="/blog/gold-silver-ratio-what-it-means">silver stacking guide</a>.</p>
+      <p><strong>Silver:</strong> The gold-silver ratio sat above 80:1 for most of 2025 — compared to a historical average of 15:1 and a modern average of ~60:1. Many precious metals investors see silver as significantly undervalued relative to gold and allocate 20-30% of their metals position to silver. If you're new to silver, check out our <a href="/blog/silver-stacking-for-beginners">silver stacking guide</a>.</p>
 
-      <p><strong>Crypto (BTC as digital gold):</strong> Bitcoin's "digital gold" narrative has strengthened since the ETF approvals. Some investors are replacing a portion of their gold allocation with BTC — typically 5-10% of their total portfolio. See our <a href="/blog/why-track-hard-assets-separately">gold vs bitcoin comparison</a> for a deeper dive.</p>
+      <p><strong>Crypto (BTC as digital gold):</strong> Bitcoin's "digital gold" narrative has strengthened since the ETF approvals. Some investors are replacing a portion of their gold allocation with BTC — typically 5-10% of their total portfolio. See our <a href="/blog/gold-vs-bitcoin-2026">gold vs bitcoin comparison</a> for a deeper dive.</p>
 
       <p><strong>Real estate syndications:</strong> For income-producing hard assets, LP positions in multifamily, self-storage, and BTR syndications offer 6-12% preferred returns plus projected IRRs of 13-20%. Unlike gold, these generate cash flow while you hold.</p>
 
@@ -251,7 +251,7 @@ export const POSTS = [
 
       <p>The Portfolio tab shows your <strong>actual allocation vs target allocation</strong> — so you can see at a glance whether your gold portfolio allocation percentage is where you want it. If you're at 8% gold but targeting 15%, the dashboard shows the gap.</p>
 
-      <p><strong>Try the free live demo at <a href="/?demo=1">HardAssets.io</a></strong> — no sign-up required. A pre-loaded sample portfolio shows you exactly how it works.</p>
+      <p><strong>Try the free live demo at <a href="/?demo=1">HardAssets.io</a></strong> — no sign-up required. A pre-loaded sample portfolio shows you exactly how it works. See our <a href="/blog/best-precious-metals-portfolio-trackers">full tracker comparison</a> to understand why we built it.</p>
 
       <h2>The Bottom Line</h2>
 
@@ -364,7 +364,7 @@ export const POSTS = [
       Real estate syndications (LP positions) offer 6-12% preferred returns plus appreciation. Physical rental properties generate monthly cash flow. Both are tangible, income-producing hard assets.</p>
 
       <p><strong>Growth (10-20%): Crypto</strong><br/>
-      Bitcoin's fixed supply (21 million cap) makes it a digital hard asset. ETH and SOL add ecosystem exposure. Keep this volatile allocation sized for your risk tolerance. Read our <a href="/blog/why-track-hard-assets-separately">gold vs bitcoin in 2026</a> comparison.</p>
+      Bitcoin's fixed supply (21 million cap) makes it a digital hard asset. ETH and SOL add ecosystem exposure. Keep this volatile allocation sized for your risk tolerance. Read our <a href="/blog/gold-vs-bitcoin-2026">gold vs bitcoin in 2026</a> comparison.</p>
 
       <p><strong>Alternative (5-15%): Collectibles, Notes, Commodities</strong><br/>
       Watches, wine, art — appreciating tangibles with zero correlation to markets. Private notes secured by real estate collateral — 8-12% yields. Commodity exposure through physical holdings or targeted ETFs.</p>
@@ -389,7 +389,7 @@ export const POSTS = [
 
       <p>The Portfolio tab shows your <strong>actual allocation across all asset classes</strong> — so you can see at a glance what percentage of your wealth is in hard assets vs paper. If you're targeting 70% hard / 30% paper but you're actually at 40/60, the dashboard shows the gap.</p>
 
-      <p><strong><a href="/?demo=1">Try the free live demo</a></strong> — no sign-up required. A pre-loaded sample portfolio shows exactly how it works. If you're ready to <a href="/blog/why-track-hard-assets-separately">start stacking silver</a>, track everything in one place.</p>
+      <p><strong><a href="/?demo=1">Try the free live demo</a></strong> — no sign-up required. A pre-loaded sample portfolio shows exactly how it works. If you're ready to <a href="/blog/silver-stacking-for-beginners">start stacking silver</a>, track everything in one place. See our <a href="/blog/best-precious-metals-portfolio-trackers">tracker comparison</a> for alternatives.</p>
 
       <h2>The Bottom Line</h2>
 
@@ -537,7 +537,7 @@ export const POSTS = [
 
       <p><strong>The stacker's playbook:</strong> When the GSR is above 80, silver is historically cheap relative to gold — stack silver aggressively. When the ratio contracts below 50, some stackers swap silver for gold, effectively increasing their total ounces over time through ratio trading.</p>
 
-      <p>Read more in our <a href="/blog/gold-silver-ratio-what-it-means">gold-to-silver ratio deep dive</a>.</p>
+      <p>Read more in our <a href="/blog/gold-silver-ratio-what-it-means">gold-to-silver ratio deep dive</a>. Also see our <a href="/blog/gold-vs-bitcoin-2026">gold vs bitcoin comparison</a> if you're considering both metals and crypto.</p>
 
       <h2>How to Track Your Silver Stack Value</h2>
 
@@ -562,7 +562,7 @@ export const POSTS = [
         <li><strong>CSV import:</strong> Bulk import your entire stack from a spreadsheet</li>
       </ul>
 
-      <p><strong><a href="/?demo=1">Try the free live demo</a></strong> — it takes 30 seconds to add your first silver position. No sign-up required. See our <a href="/blog/how-much-gold-should-you-own">portfolio allocation guide</a> for how silver fits into a broader hard asset strategy.</p>
+      <p><strong><a href="/?demo=1">Try the free live demo</a></strong> — it takes 30 seconds to add your first silver position. No sign-up required. See our <a href="/blog/how-much-gold-should-you-own">portfolio allocation guide</a> for how silver fits into a broader hard asset strategy, or read our <a href="/blog/best-precious-metals-portfolio-trackers">tracker comparison</a>.</p>
 
       <h2>Start Small, Stack Consistently</h2>
 
@@ -676,7 +676,7 @@ export const POSTS = [
 
       <p>The Portfolio tab shows your actual gold vs Bitcoin split as a percentage of your total hard asset portfolio. If you're targeting 60/40 but you're actually at 80/20 because gold ran up, the dashboard shows the gap — so you know when to rebalance.</p>
 
-      <p><strong><a href="/?demo=1">Try the free live demo</a></strong> — no sign-up required. A pre-loaded portfolio shows exactly how gold and Bitcoin tracking works side by side.</p>
+      <p><strong><a href="/?demo=1">Try the free live demo</a></strong> — no sign-up required. A pre-loaded portfolio shows exactly how gold and Bitcoin tracking works side by side. See our <a href="/blog/best-precious-metals-portfolio-trackers">full tracker comparison</a> for how we stack up.</p>
 
       <h2>The Bottom Line</h2>
 
