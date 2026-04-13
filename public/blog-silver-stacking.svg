@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="sbg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F1729"/><stop offset="100%" stop-color="#0B0F1A"/>
+    </linearGradient>
+    <linearGradient id="slv2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E2E8F0"/><stop offset="100%" stop-color="#94A3B8"/>
+    </linearGradient>
+    <radialGradient id="sglow" cx="50%" cy="45%"><stop offset="0%" stop-color="#94A3B8" stop-opacity="0.08"/><stop offset="70%" stop-color="#0B0F1A" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#sbg)"/>
+  <rect width="1200" height="630" fill="url(#sglow)"/>
+  <!-- Silver coins stack -->
+  <g transform="translate(200,200)">
+    <ellipse cx="0" cy="0" rx="120" ry="30" fill="#94A3B8" opacity="0.15"/>
+    <ellipse cx="0" cy="-20" rx="110" ry="28" fill="#94A3B8" opacity="0.2"/>
+    <ellipse cx="0" cy="-40" rx="100" ry="26" fill="#94A3B8" opacity="0.25"/>
+    <ellipse cx="0" cy="-60" rx="90" ry="24" fill="#94A3B8" opacity="0.3"/>
+    <ellipse cx="0" cy="-80" rx="80" ry="22" fill="url(#slv2)" opacity="0.5"/>
+    <circle cx="0" cy="-110" r="60" fill="#111827" stroke="#94A3B8" stroke-width="2.5"/>
+    <circle cx="0" cy="-110" r="50" fill="none" stroke="#94A3B8" stroke-width="0.5" opacity="0.3"/>
+    <text x="0" y="-115" text-anchor="middle" fill="#94A3B8" font-family="Georgia,serif" font-size="28" font-weight="700">Ag</text>
+    <text x="0" y="-92" text-anchor="middle" fill="#94A3B8" font-family="Arial,sans-serif" font-size="10" opacity="0.6">1 TROY OZ</text>
+  </g>
+  <!-- Product categories -->
+  <g transform="translate(500,100)" font-family="Arial,sans-serif">
+    <rect width="620" height="420" rx="20" fill="#111827" stroke="rgba(148,163,184,0.15)" stroke-width="1"/>
+    <text x="310" y="40" text-anchor="middle" fill="#E2E8F0" font-size="18" font-weight="800">SILVER BUYING GUIDE</text>
+    <!-- Eagles -->
+    <rect x="24" y="65" width="275" height="80" rx="12" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.12)" stroke-width="1"/>
+    <text x="44" y="92" fill="#E2E8F0" font-size="14" font-weight="700">American Silver Eagles</text>
+    <text x="44" y="112" fill="#94A3B8" font-size="11">Most recognized · $5-8 premium</text>
+    <text x="44" y="130" fill="#34D399" font-size="10" font-weight="600">Best for: First purchase</text>
+    <!-- Rounds -->
+    <rect x="320" y="65" width="275" height="80" rx="12" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.12)" stroke-width="1"/>
+    <text x="340" y="92" fill="#E2E8F0" font-size="14" font-weight="700">Generic 1oz Rounds</text>
+    <text x="340" y="112" fill="#94A3B8" font-size="11">Lowest premium · $2-3 over spot</text>
+    <text x="340" y="130" fill="#94A3B8" font-size="10" font-weight="600">Best for: Pure weight</text>
+    <!-- Bars -->
+    <rect x="24" y="160" width="275" height="80" rx="12" fill="rgba(148,163,184,0.08)" stroke="rgba(148,163,184,0.12)" stroke-width="1"/>
+    <text x="44" y="187" fill="#E2E8F0" font-size="14" font-weight="700">10oz &amp; 100oz Bars</text>
+    <text x="44" y="207" fill="#94A3B8" font-size="11">Best $/oz · Harder to sell small</text>
+    <text x="44" y="225" fill="#94A3B8" font-size="10" font-weight="600">Best for: Large purchases</text>
+    <!-- Junk -->
+    <rect x="320" y="160" width="275" height="80" rx="12" fill="rgba(148,163,184,0.08)" stroke="#D4A843" stroke-width="1.5"/>
+    <text x="340" y="187" fill="#E2E8F0" font-size="14" font-weight="700">Junk Silver (Pre-1965)</text>
+    <text x="340" y="207" fill="#94A3B8" font-size="11">90% silver · Divisible · No reporting</text>
+    <text x="340" y="225" fill="#D4A843" font-size="10" font-weight="700">★ RECOMMENDED STARTER</text>
+    <!-- Starter stack -->
+    <rect x="24" y="265" width="572" height="70" rx="12" fill="rgba(212,168,67,0.06)" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>
+    <text x="310" y="295" text-anchor="middle" fill="#D4A843" font-size="13" font-weight="700">BEGINNER STARTER STACK</text>
+    <text x="310" y="318" text-anchor="middle" fill="#94A3B8" font-size="12">10× Silver Eagles + $50 face junk silver + 1× 10oz bar</text>
+    <!-- Price indicator -->
+    <text x="310" y="380" text-anchor="middle" fill="#E2E8F0" font-size="36" font-weight="900" font-family="'JetBrains Mono',monospace">$34.18<text font-size="14" fill="#94A3B8">/oz spot</text></text>
+    <text x="310" y="405" text-anchor="middle" fill="#34D399" font-size="14" font-weight="600">+138% in 2025</text>
+  </g>
+  <!-- Footer -->
+  <text x="600" y="570" text-anchor="middle" fill="#F1F5F9" font-family="Arial,sans-serif" font-size="18" font-weight="800">Silver Stacking for Beginners</text>
+  <text x="600" y="595" text-anchor="middle" fill="#64748B" font-family="Arial,sans-serif" font-size="13">The Complete 2026 Guide — HardAssets.io</text>
+</svg>

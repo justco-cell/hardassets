@@ -11,6 +11,7 @@ const routes = [
   'blog/index.html',
   'blog/how-much-gold-should-you-own/index.html',
   'blog/hard-assets-vs-paper-assets/index.html',
+  'blog/silver-stacking-for-beginners/index.html',
   'blog/why-track-hard-assets-separately/index.html',
   'blog/gold-silver-ratio-what-it-means/index.html',
   'blog/what-is-real-estate-syndication/index.html',

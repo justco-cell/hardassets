@@ -401,6 +401,177 @@ export const POSTS = [
 
       <p><em>This content is for informational purposes only and does not constitute financial advice. Past performance does not guarantee future results. Consult a qualified financial advisor before making investment decisions.</em></p>
     `
+  },
+  {
+    slug: "silver-stacking-for-beginners",
+    title: "Silver Stacking for Beginners: How to Start, What to Buy, and How to Track Your Stack",
+    date: "2026-04-12",
+    excerpt: "Silver exploded 138% in 2025. London vault inventories collapsed 75%. If you've been thinking about stacking silver, you're not alone — and you're not too late. Here's everything a beginner needs to know.",
+    metaDescription: "Silver stacking for beginners: what to buy first, bars vs coins, junk silver explained, and how to track your growing stack for free. Updated for 2026.",
+    thumbnail: "/blog-silver-stacking.svg",
+    heroImage: "/blog-silver-stacking.svg",
+    content: `
+      <p><strong>Silver stacking for beginners</strong> has never been more relevant. Silver exploded 138% in 2025 during what the community now calls the "Great Silver Squeeze." London vault inventories collapsed 75%. China imposed export controls on refined silver. The US government designated silver a critical mineral. Industrial demand from solar panels, EVs, and AI data centers hit record highs while mine supply stagnated.</p>
+
+      <p>If you've been thinking about stacking silver, you're not alone — and you're not too late. This <strong>silver stacking guide</strong> covers everything a beginner needs to know: what to buy, where to buy, how to store, and how to track your growing stack.</p>
+
+      <h2>What Is Silver Stacking? (And Why People Do It)</h2>
+
+      <p>Silver stacking is the practice of systematically buying and accumulating physical silver over time as a long-term store of wealth. Unlike trading, stacking focuses on acquiring ounces at the best available premium regardless of short-term price movements. Stackers typically buy coins, bars, and constitutional silver from dealers or local coin shops.</p>
+
+      <p>The stacking community — r/Silverbugs, r/WallStreetSilver, local coin shop regulars, precious metals forums — is one of the most passionate in investing. But why do people stack silver?</p>
+
+      <ul>
+        <li><strong>Inflation hedge:</strong> Silver has preserved purchasing power for thousands of years. The dollar has lost 97% of its value since 1913. An ounce of silver still buys roughly what it bought centuries ago.</li>
+        <li><strong>Industrial demand:</strong> Silver is essential for solar panels, electronics, EVs, medical devices, and water purification. Unlike gold (which is mostly hoarded), silver gets consumed. Supply is shrinking while demand is growing.</li>
+        <li><strong>Undervalued relative to gold:</strong> The gold-to-silver ratio sat above 80:1 for most of 2024-2025 — compared to a historical average around 15:1. Many stackers believe silver is dramatically underpriced relative to gold.</li>
+        <li><strong>Outside the banking system:</strong> Silver in your safe isn't an entry on someone else's balance sheet. No bank can freeze it. No exchange can halt trading. No company can dilute it.</li>
+        <li><strong>Accessible entry point:</strong> Unlike gold at $5,500+/oz, silver at ~$34/oz lets beginners start building a meaningful stack without a large upfront investment.</li>
+      </ul>
+
+      <p>If the <a href="/blog/hard-assets-vs-paper-assets">hard assets vs paper assets</a> thesis resonates with you, silver is one of the most accessible entry points.</p>
+
+      <h2>What Silver Should Beginners Buy First?</h2>
+
+      <p>This is the question every new stacker asks. Here's your <strong>how to start stacking silver</strong> roadmap:</p>
+
+      <h3>American Silver Eagles (ASEs)</h3>
+      <p>The most recognized silver coin in the world. 1 troy ounce of .999 fine silver, minted by the US Mint, legal tender ($1 face value). Premium: typically $5-8 over spot price. Every stacker should own some Eagles — they're the most liquid, most trusted, and easiest to sell anywhere in the world. Downsides: highest premium per ounce, and the premium doesn't always track spot price proportionally.</p>
+
+      <h3>Generic 1oz Rounds</h3>
+      <p>Private mint silver rounds — same 1oz of .999 silver, lower premium ($2-3 over spot). Brands like Buffalo, Sunshine Mint, Asahi. These are the <strong>best silver to stack</strong> for pure weight accumulation. No numismatic value, no collectibility — just silver. If your goal is "most ounces for my dollars," generic rounds are your friend.</p>
+
+      <h3>10oz and 100oz Bars</h3>
+      <p>The lowest cost per ounce. A 100oz bar might carry only $0.50-1.00/oz over spot. Brands: PAMP Suisse, Royal Canadian Mint, Johnson Matthey, Sunshine. Downsides: harder to sell in small quantities (you can't break a 100oz bar in half), and less portable. Best for investors making larger purchases ($3,000+).</p>
+
+      <h3>Junk Silver / Constitutional Silver</h3>
+      <p><strong>Junk silver for beginners</strong> is arguably the smartest first purchase. These are pre-1965 US coins (dimes, quarters, half dollars) that contain 90% silver. A $1 face value of junk silver contains approximately 0.715 troy ounces of silver.</p>
+
+      <p>Why stackers love junk silver:</p>
+      <ul>
+        <li>No reporting requirements (unlike bars over 1,000oz)</li>
+        <li>Infinitely divisible — you can spend a single dime</li>
+        <li>Instantly recognizable — everyone knows what a quarter looks like</li>
+        <li>Often available at or below spot price per ounce of silver content</li>
+        <li>If silver ever becomes a medium of exchange again, these are the most practical form</li>
+      </ul>
+
+      <h3>Sovereign Coins (Maples, Britannias, Philharmonics)</h3>
+      <p>Government-minted coins from Canada, UK, Austria, and others. Similar premiums to Eagles, recognized internationally. Canadian Silver Maple Leafs have .9999 purity (four nines) — the purest sovereign coin. Good for diversification beyond US Mint products.</p>
+
+      <h3>The Beginner Starter Stack</h3>
+      <p>If you're just getting started with your <strong>silver stacking strategy</strong>, here's what I'd recommend as a first purchase:</p>
+      <ul>
+        <li><strong>10× American Silver Eagles</strong> — your foundation, most liquid</li>
+        <li><strong>$50 face value junk silver</strong> — approximately 35.75 oz of silver, divisible, practical</li>
+        <li><strong>1× 10oz silver bar</strong> — lowest premium per ounce in your starter stack</li>
+      </ul>
+      <p>Total: approximately 55.75 troy ounces. At $34/oz spot, that's roughly $1,900 in silver content plus premiums. You can start smaller — even 5 Eagles and $20 face junk is a solid beginning.</p>
+
+      <h2>Silver Bars vs Silver Coins: Which Is Better for Stacking?</h2>
+
+      <p>The <strong>silver bars vs coins</strong> debate is one of the oldest in the stacking community. Here's the honest breakdown:</p>
+
+      <p><strong>Silver Coins (Eagles, Maples, rounds):</strong></p>
+      <ul>
+        <li>Legal tender status (government-minted coins)</li>
+        <li>Higher premiums ($2-8 over spot)</li>
+        <li>Easier to sell in small quantities</li>
+        <li>More recognizable to casual buyers</li>
+        <li>Better for barter/emergency scenarios</li>
+      </ul>
+
+      <p><strong>Silver Bars (10oz, 100oz, kilo):</strong></p>
+      <ul>
+        <li>Lowest premium per ounce ($0.50-2 over spot)</li>
+        <li>Most efficient for large purchases</li>
+        <li>Easier to store (stackable, uniform)</li>
+        <li>Harder to sell in small amounts</li>
+        <li>Some bars require assay for resale</li>
+      </ul>
+
+      <p><strong>The answer:</strong> Both. Coins for liquidity and flexibility, bars for cost efficiency. Most experienced stackers use a mix — coins for the first $5,000-10,000 of their stack, then bars for scaling up.</p>
+
+      <h2>Where to Buy Silver (Without Getting Ripped Off)</h2>
+
+      <p><strong>Reputable online dealers:</strong></p>
+      <ul>
+        <li><strong>SD Bullion</strong> — consistently lowest premiums, fast shipping</li>
+        <li><strong>JM Bullion</strong> — wide selection, good for beginners, frequent sales</li>
+        <li><strong>APMEX</strong> — largest selection, higher premiums, good for rare/collectible pieces</li>
+        <li><strong>Monument Metals</strong> — competitive pricing, solid reputation</li>
+        <li><strong>Bold Precious Metals</strong> — low premiums, smaller but reliable</li>
+      </ul>
+
+      <p><strong>Local coin shops (LCS):</strong> Walk in, buy with cash, no paper trail. Build a relationship with your LCS — they'll call you when deals come in. Prices are negotiable, especially for larger purchases. This is the most private way to buy.</p>
+
+      <p><strong>r/PMsForSale:</strong> Reddit's peer-to-peer precious metals marketplace. Experienced buyers and sellers, often below dealer prices. Use established sellers with feedback history. Ship via USPS Priority with tracking.</p>
+
+      <p><strong>Avoid:</strong> eBay (high fake rate, high prices), pawn shops (massive markups), "collectible" silver from TV ads (absurd premiums for mediocre coins), and any dealer that won't show you their spot + premium breakdown.</p>
+
+      <p>Always price-check against spot. If someone's charging $50/oz for a generic round when spot is $34, walk away.</p>
+
+      <h2>How to Store Your Silver Safely</h2>
+
+      <p><strong>Home safe:</strong> The most common choice. Get a fireproof, waterproof safe (UL-rated, minimum 1 hour fire protection). Bolt it to the floor or wall. Don't tell people about your stack. A $300-500 safe protects thousands in silver.</p>
+
+      <p><strong>Bank safe deposit box:</strong> Accessible during business hours, relatively secure. Downsides: not FDIC insured (the box contents aren't covered), accessible only when the bank is open, and in extreme scenarios the government can seal safe deposit boxes (see: Executive Order 6102 in 1933).</p>
+
+      <p><strong>Private vault storage:</strong> Companies like SD Bullion Vault, Brink's, and Delaware Depository offer fully insured, allocated storage. You own specific bars/coins, not a claim on a pool. Best for large stacks ($50K+) where home storage becomes impractical.</p>
+
+      <p><strong>Insurance:</strong> Your homeowner's or renter's insurance may cover some precious metals, but limits are often $200-500 for "collectibles." For larger stacks, add a specific rider or use a separate precious metals insurance policy.</p>
+
+      <h2>The Gold-to-Silver Ratio: When to Stack More Silver</h2>
+
+      <p>The gold-to-silver ratio (GSR) is the number of silver ounces it takes to buy one ounce of gold. At $5,500 gold and $34 silver, the ratio is approximately 161:1.</p>
+
+      <p>Historical context:</p>
+      <ul>
+        <li>Ancient Rome: 12:1 (fixed by law)</li>
+        <li>US Coinage Act of 1792: 15:1</li>
+        <li>20th century average: ~50-60:1</li>
+        <li>2011 silver spike: 32:1</li>
+        <li>March 2020 (COVID): 125:1</li>
+        <li>2025 average: ~80:1</li>
+      </ul>
+
+      <p><strong>The stacker's playbook:</strong> When the GSR is above 80, silver is historically cheap relative to gold — stack silver aggressively. When the ratio contracts below 50, some stackers swap silver for gold, effectively increasing their total ounces over time through ratio trading.</p>
+
+      <p>Read more in our <a href="/blog/gold-silver-ratio-what-it-means">gold-to-silver ratio deep dive</a>.</p>
+
+      <h2>How to Track Your Silver Stack Value</h2>
+
+      <p>Here's the dirty secret of silver stacking: most stackers have no idea what their stack is actually worth. They know how many ounces they have (roughly), but they don't track cost basis, current value, gain/loss, or how silver fits into their total portfolio allocation.</p>
+
+      <p>Common approaches and their problems:</p>
+      <ul>
+        <li><strong>Spreadsheet:</strong> Works until you have 50+ purchases across different products at different prices. Then it's a maintenance nightmare.</li>
+        <li><strong>Handwritten ledger:</strong> Charming but impractical. No live spot price updates.</li>
+        <li><strong>Memory:</strong> "I think I have about 200 ounces." Not good enough when your stack represents real wealth.</li>
+      </ul>
+
+      <p>If you want to know <strong>how to track silver stack value</strong> properly, you need a tool built for physical metals — not a stock portfolio tracker.</p>
+
+      <p><a href="/">HardAssets.io</a> is the <a href="/">free precious metals tracker</a> that solves this. It tracks your silver with:</p>
+
+      <ul>
+        <li><strong>8 unit types:</strong> 1oz, 1/2oz, 1/4oz, 1/10oz, 10oz, 100oz, 1kg, gram — proper oz-per-unit conversion</li>
+        <li><strong>Live spot prices:</strong> Updated from metals.dev, showing real 24-hour change</li>
+        <li><strong>Cost basis tracking:</strong> Enter what you paid, see your total gain/loss at current spot</li>
+        <li><strong>Portfolio allocation:</strong> See silver as a percentage of your total hard asset portfolio (including gold, crypto, real estate, collectibles)</li>
+        <li><strong>CSV import:</strong> Bulk import your entire stack from a spreadsheet</li>
+      </ul>
+
+      <p><strong><a href="/?demo=1">Try the free live demo</a></strong> — it takes 30 seconds to add your first silver position. No sign-up required. See our <a href="/blog/how-much-gold-should-you-own">portfolio allocation guide</a> for how silver fits into a broader hard asset strategy.</p>
+
+      <h2>Start Small, Stack Consistently</h2>
+
+      <p>You don't need $10,000 to start stacking silver. Buy 5 ounces this month. Buy 10 next month. Visit your local coin shop and pick up some junk silver dimes. Set up a monthly buy from SD Bullion or JM Bullion. The point isn't to go all-in on day one — it's to build the habit of converting depreciating dollars into appreciating silver, one ounce at a time.</p>
+
+      <p>Welcome to the stack. 🥈</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Past performance does not guarantee future results. Consult a qualified financial advisor before making investment decisions.</em></p>
+    `
   }
 ];
 
