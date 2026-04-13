@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="tbg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0F1729"/><stop offset="100%" stop-color="#0B0F1A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#tbg)"/>
+  <!-- Table header -->
+  <rect x="60" y="60" width="1080" height="50" rx="12" fill="#111827"/>
+  <g font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#52647A">
+    <text x="100" y="90">Tracker</text>
+    <text x="280" y="90">Price</text>
+    <text x="380" y="90">Metals</text>
+    <text x="480" y="90">Crypto</text>
+    <text x="570" y="90">Real Estate</text>
+    <text x="690" y="90">Collectibles</text>
+    <text x="810" y="90">Live Prices</text>
+    <text x="930" y="90">Cost Basis</text>
+    <text x="1050" y="90">Mobile</text>
+  </g>
+  <!-- HardAssets row (highlighted) -->
+  <rect x="60" y="120" width="1080" height="56" rx="0" fill="rgba(212,168,67,0.06)" stroke="#D4A843" stroke-width="1"/>
+  <rect x="60" y="120" width="4" height="56" fill="#D4A843"/>
+  <g font-family="Arial,sans-serif" font-size="13">
+    <text x="100" y="153" fill="#D4A843" font-weight="800">HardAssets.io</text>
+    <text x="280" y="153" fill="#34D399" font-weight="700">Free</text>
+    <text x="395" y="153" fill="#34D399" font-size="16">✓</text>
+    <text x="495" y="153" fill="#34D399" font-size="16">✓</text>
+    <text x="600" y="153" fill="#34D399" font-size="16">✓</text>
+    <text x="720" y="153" fill="#34D399" font-size="16">✓</text>
+    <text x="840" y="153" fill="#34D399" font-size="16">✓</text>
+    <text x="960" y="153" fill="#34D399" font-size="16">✓</text>
+    <text x="1070" y="153" fill="#34D399" font-size="16">✓</text>
+  </g>
+  <!-- GoldFolio row -->
+  <rect x="60" y="186" width="1080" height="56" rx="0" fill="transparent"/>
+  <g font-family="Arial,sans-serif" font-size="13">
+    <text x="100" y="219" fill="#A0AEC0" font-weight="600">GoldFolio</text>
+    <text x="280" y="219" fill="#A0AEC0">Free+</text>
+    <text x="395" y="219" fill="#34D399" font-size="16">✓</text>
+    <text x="495" y="219" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="600" y="219" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="720" y="219" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="840" y="219" fill="#34D399" font-size="16">✓</text>
+    <text x="960" y="219" fill="#34D399" font-size="16">✓</text>
+    <text x="1070" y="219" fill="#34D399" font-size="16">✓</text>
+  </g>
+  <!-- Kubera row -->
+  <rect x="60" y="252" width="1080" height="56" rx="0" fill="rgba(255,255,255,0.01)"/>
+  <g font-family="Arial,sans-serif" font-size="13">
+    <text x="100" y="285" fill="#A0AEC0" font-weight="600">Kubera</text>
+    <text x="280" y="285" fill="#F87171">$150/yr</text>
+    <text x="395" y="285" fill="#FBBF24" font-size="13">~</text>
+    <text x="495" y="285" fill="#34D399" font-size="16">✓</text>
+    <text x="600" y="285" fill="#34D399" font-size="16">✓</text>
+    <text x="720" y="285" fill="#FBBF24" font-size="13">~</text>
+    <text x="840" y="285" fill="#34D399" font-size="16">✓</text>
+    <text x="960" y="285" fill="#34D399" font-size="16">✓</text>
+    <text x="1070" y="285" fill="#34D399" font-size="16">✓</text>
+  </g>
+  <!-- Gainesville row -->
+  <rect x="60" y="318" width="1080" height="56" rx="0" fill="transparent"/>
+  <g font-family="Arial,sans-serif" font-size="13">
+    <text x="100" y="351" fill="#A0AEC0" font-weight="600">Gainesville</text>
+    <text x="280" y="351" fill="#A0AEC0">Free</text>
+    <text x="395" y="351" fill="#34D399" font-size="16">✓</text>
+    <text x="495" y="351" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="600" y="351" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="720" y="351" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="840" y="351" fill="#34D399" font-size="16">✓</text>
+    <text x="960" y="351" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="1070" y="351" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+  </g>
+  <!-- Delta row -->
+  <rect x="60" y="384" width="1080" height="56" rx="0" fill="rgba(255,255,255,0.01)"/>
+  <g font-family="Arial,sans-serif" font-size="13">
+    <text x="100" y="417" fill="#A0AEC0" font-weight="600">Delta/CoinGecko</text>
+    <text x="280" y="417" fill="#A0AEC0">Free+</text>
+    <text x="395" y="417" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="495" y="417" fill="#34D399" font-size="16">✓</text>
+    <text x="600" y="417" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="720" y="417" fill="#F87171" font-size="14" opacity="0.5">✗</text>
+    <text x="840" y="417" fill="#34D399" font-size="16">✓</text>
+    <text x="960" y="417" fill="#34D399" font-size="16">✓</text>
+    <text x="1070" y="417" fill="#34D399" font-size="16">✓</text>
+  </g>
+  <!-- Winner badge -->
+  <rect x="60" y="470" width="1080" height="50" rx="12" fill="rgba(212,168,67,0.08)" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>
+  <text x="600" y="500" text-anchor="middle" fill="#D4A843" font-family="Arial,sans-serif" font-size="14" font-weight="700">★ HardAssets.io: Only free tracker covering metals + crypto + real estate + collectibles + notes</text>
+  <!-- Title -->
+  <text x="600" y="565" text-anchor="middle" fill="#F1F5F9" font-family="Arial,sans-serif" font-size="20" font-weight="800">Best Precious Metals Portfolio Trackers 2026</text>
+  <text x="600" y="590" text-anchor="middle" fill="#64748B" font-family="Arial,sans-serif" font-size="13">Compared — HardAssets.io</text>
+</svg>

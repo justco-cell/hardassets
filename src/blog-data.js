@@ -688,6 +688,161 @@ export const POSTS = [
 
       <p><em>This content is for informational purposes only and does not constitute financial advice. Past performance does not guarantee future results. Consult a qualified financial advisor before making investment decisions.</em></p>
     `
+  },
+  {
+    slug: "best-precious-metals-portfolio-trackers",
+    title: "The Best Free Precious Metals Portfolio Trackers in 2026 (Compared)",
+    date: "2026-04-13",
+    excerpt: "Your gold is in a safe, silver at a vault, crypto on three exchanges, and syndication updates arrive via PDF. You have no idea what your total hard asset portfolio is worth. These trackers fix that.",
+    metaDescription: "Compare the best free precious metals portfolio trackers for 2026. Features, pricing, and asset coverage — gold, silver, crypto, and real estate side by side.",
+    thumbnail: "/blog-tracker-comparison.svg",
+    heroImage: "/blog-tracker-comparison.svg",
+    content: `
+      <p>If you own physical gold, silver, crypto, or other hard assets, you know the pain: your gold is in a safe, your silver is at a vault, your crypto is on three exchanges, and your real estate syndication updates come via quarterly PDF. You have no unified view. You have no idea what your total hard asset portfolio is actually worth — or what percentage of your net worth it represents. A good <strong>precious metals portfolio tracker</strong> solves this. We tested every major option in 2026 and compared them head to head.</p>
+
+      <h2>What to Look for in a Precious Metals Portfolio Tracker</h2>
+
+      <p>The best precious metals portfolio tracker should offer real-time spot price integration, cost basis tracking, support for multiple metals including gold, silver, platinum, and palladium, allocation visualization charts, and ideally cross-asset tracking for crypto and real estate. It should be free, mobile-friendly, and privacy-focused.</p>
+
+      <p>Here's our full criteria for evaluating each <strong>gold tracker app free</strong> option:</p>
+
+      <ul>
+        <li><strong>Real-time spot prices:</strong> Does it pull live gold, silver, platinum, and palladium prices automatically? Or do you have to manually enter prices?</li>
+        <li><strong>Cost basis tracking:</strong> Can you enter what you paid and see your gain/loss at current spot?</li>
+        <li><strong>Multi-metal support:</strong> Gold, silver, platinum, palladium — and unit types (1oz coins, 10oz bars, 100oz bars, kilo, gram)?</li>
+        <li><strong>Cross-asset support:</strong> Can you also track crypto, real estate, collectibles, and private notes in the same dashboard?</li>
+        <li><strong>Allocation charts:</strong> Does it show your portfolio breakdown as a visual chart so you can see if you're overweight in one area?</li>
+        <li><strong>Free vs paid:</strong> Is it free or does it require a subscription?</li>
+        <li><strong>Privacy:</strong> Does it connect to your bank accounts or require real identity verification?</li>
+        <li><strong>Export:</strong> Can you export your data as CSV?</li>
+        <li><strong>Mobile:</strong> Does it work well on phones and tablets?</li>
+      </ul>
+
+      <h2>The Best Precious Metals Portfolio Trackers for 2026</h2>
+
+      <h3>1. HardAssets.io — Best Free All-in-One Hard Asset Tracker</h3>
+
+      <p><strong>Price:</strong> Free<br/>
+      <strong>Assets tracked:</strong> Gold, silver, platinum, palladium, 20+ crypto coins, real estate syndications, physical properties, private notes, collectibles (watches, wine, art, cars)<br/>
+      <strong>Key features:</strong></p>
+      <ul>
+        <li>Real-time spot prices via metals.dev API with 24-hour change</li>
+        <li>8 unit types with automatic oz-per-unit conversion (1oz, 1/2oz, 1/4oz, 1/10oz, 10oz, 100oz, 1kg, gram)</li>
+        <li>Cost basis tracking with gain/loss calculation</li>
+        <li>Portfolio allocation pie chart with target allocation comparison</li>
+        <li>Portfolio performance chart over time</li>
+        <li>Deal Analyzer (cap rate, CoC, DSCR, equity multiple)</li>
+        <li>CSV import and export on every tab</li>
+        <li>Live Markets page with metals, 20+ crypto, and 16 forex pairs</li>
+        <li>No identity verification — sign up with any name and email</li>
+        <li>Risk scoring (1-10) per asset with color coding</li>
+      </ul>
+      <p><strong>Best for:</strong> Investors who own multiple types of hard assets and want one unified dashboard — the <strong>best gold portfolio tracker</strong> for anyone who also holds silver, crypto, real estate, or collectibles.</p>
+      <p><strong>Limitations:</strong> Newer platform (launched 2026), PWA rather than native app store app.</p>
+      <p><strong>Verdict:</strong> The only free <strong>precious metals investment tracker app</strong> that handles metals AND crypto AND real estate AND collectibles AND private notes in one view. If you own more than just gold, this is the clear winner. <a href="/?demo=1">Try it free</a>.</p>
+
+      <h3>2. GoldFolio — Best Dedicated Gold &amp; Silver Tracker</h3>
+
+      <p><strong>Price:</strong> Free with optional premium tier<br/>
+      <strong>Assets tracked:</strong> Gold, silver, platinum, palladium<br/>
+      <strong>Key features:</strong> Barcode scanning for coins, historical price charts, multiple portfolio support, coin-level detail, numismatic value tracking</p>
+      <p><strong>Best for:</strong> Pure precious metals collectors who want detailed coin-level tracking and don't need crypto or real estate.</p>
+      <p><strong>Limitations:</strong> Metals only — no crypto, no real estate, no collectibles, no broader portfolio allocation view. If you own anything beyond metals, you'll need a second app.</p>
+      <p><strong>Verdict:</strong> Excellent <strong>silver stack tracker</strong> and <strong>bullion portfolio tracker</strong> if precious metals are your only asset class. The barcode scanning feature is genuinely useful for large collections. But for most hard asset investors, the lack of cross-asset support is a dealbreaker.</p>
+
+      <h3>3. Gainesville Coins Portfolio Tracker — Best Dealer-Integrated Tracker</h3>
+
+      <p><strong>Price:</strong> Free<br/>
+      <strong>Assets tracked:</strong> Gold, silver, platinum, palladium<br/>
+      <strong>Key features:</strong> Integrated with Gainesville Coins dealer, spot price alerts, simple interface, purchase history tracking</p>
+      <p><strong>Best for:</strong> Gainesville Coins customers who want to track their purchases in one place.</p>
+      <p><strong>Limitations:</strong> Tied to one dealer ecosystem, limited features compared to dedicated trackers, no cost basis for purchases made elsewhere, no crypto or real estate.</p>
+      <p><strong>Verdict:</strong> Serviceable if you buy exclusively from Gainesville, but too limited for most stackers.</p>
+
+      <h3>4. Kubera — Best Premium Net Worth Tracker</h3>
+
+      <p><strong>Price:</strong> $150/year<br/>
+      <strong>Assets tracked:</strong> Stocks, bonds, crypto, real estate (Zillow integration), metals (manual entry), bank accounts, collectibles (manual)<br/>
+      <strong>Key features:</strong> Bank/exchange integrations via Plaid, beautiful UI, net worth tracking over time, dead man's switch for estate planning</p>
+      <p><strong>Best for:</strong> High-net-worth individuals who want to track their entire financial picture including traditional investments. See our <a href="/compare">full HardAssets vs Kubera comparison</a>.</p>
+      <p><strong>Limitations:</strong> $150/year is steep for a tracker. Metals require manual entry — no specialized stacker features like oz-per-unit conversion or unit type tracking. Not designed for the precious metals community.</p>
+      <p><strong>Verdict:</strong> Excellent product, wrong audience. If you're primarily a stock/bond investor who also owns some gold, Kubera works. If you're primarily a hard asset investor, you're paying $150/year for features you don't need while missing features you do.</p>
+
+      <h3>5. Delta / CoinGecko — Best for Crypto-First Investors</h3>
+
+      <p><strong>Price:</strong> Free with premium options<br/>
+      <strong>Assets tracked:</strong> 10,000+ crypto coins, some metals price tracking<br/>
+      <strong>Key features:</strong> Exchange integrations, portfolio analytics, price alerts, news feed, DeFi tracking</p>
+      <p><strong>Best for:</strong> Crypto-heavy investors who want extensive altcoin tracking and exchange connectivity.</p>
+      <p><strong>Limitations:</strong> Not built for physical metals — no cost basis for bullion, no unit type conversion, no real estate syndications, no collectibles. The metals "tracking" is just price watching, not portfolio management.</p>
+      <p><strong>Verdict:</strong> Best-in-class for crypto portfolio tracking, but calling it a <strong>gold silver tracker app</strong> would be a stretch. Use it alongside HardAssets.io if you need deep DeFi analytics.</p>
+
+      <h2>Precious Metals Portfolio Tracker Comparison Table</h2>
+
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <tr style="border-bottom:2px solid rgba(148,163,184,0.15)">
+          <th style="text-align:left;padding:10px;color:#52647A">Feature</th>
+          <th style="text-align:center;padding:10px;color:#D4A843;font-weight:800">HardAssets.io</th>
+          <th style="text-align:center;padding:10px;color:#A0AEC0">GoldFolio</th>
+          <th style="text-align:center;padding:10px;color:#A0AEC0">Kubera</th>
+          <th style="text-align:center;padding:10px;color:#A0AEC0">Gainesville</th>
+          <th style="text-align:center;padding:10px;color:#A0AEC0">Delta</th>
+        </tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Price</td><td style="text-align:center;color:#34D399;font-weight:700">Free</td><td style="text-align:center">Free+</td><td style="text-align:center;color:#F87171">$150/yr</td><td style="text-align:center">Free</td><td style="text-align:center">Free+</td></tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Precious Metals</td><td style="text-align:center;color:#34D399">✓ Full</td><td style="text-align:center;color:#34D399">✓ Full</td><td style="text-align:center;color:#FBBF24">~ Manual</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#F87171">✗</td></tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Crypto</td><td style="text-align:center;color:#34D399">✓ 20+ coins</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#34D399">✓ 10,000+</td></tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Real Estate</td><td style="text-align:center;color:#34D399">✓ Synds + properties</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#34D399">✓ Zillow</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td></tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Collectibles</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#FBBF24">~ Manual</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td></tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Private Notes</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td></tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Live Spot Prices</td><td style="text-align:center;color:#34D399">✓ metals.dev</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#34D399">✓ crypto</td></tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Cost Basis</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#34D399">✓</td></tr>
+        <tr style="border-bottom:1px solid rgba(148,163,184,0.08)"><td style="padding:10px">Oz-Per-Unit</td><td style="text-align:center;color:#34D399">✓ 8 types</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td></tr>
+        <tr><td style="padding:10px">Deal Analyzer</td><td style="text-align:center;color:#34D399">✓</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td><td style="text-align:center;color:#F87171">✗</td></tr>
+      </table>
+
+      <h2>Why Most Stackers Still Use Spreadsheets (And Why They Shouldn't)</h2>
+
+      <p>Let's be honest — a huge number of precious metals investors track their stack in Google Sheets, Excel, or handwritten ledgers. It's understandable. Spreadsheets are flexible, familiar, and free.</p>
+
+      <p>But they have serious problems for <strong>tracking gold and silver investments</strong>:</p>
+
+      <ul>
+        <li><strong>No real-time pricing:</strong> You have to manually look up spot prices and update cells. Most stackers do this once a month at best — meaning their portfolio value is stale 29 days out of 30.</li>
+        <li><strong>Formula errors:</strong> One wrong cell reference and your entire portfolio value is wrong. You might not notice for months.</li>
+        <li><strong>No allocation visualization:</strong> A spreadsheet can't show you a pie chart of your portfolio breakdown or compare your actual allocation to your target.</li>
+        <li><strong>No mobile access:</strong> Google Sheets on a phone is painful. You won't update it at a coin show or dealer when you need to make a buy decision.</li>
+        <li><strong>No oz-per-unit conversion:</strong> You have to manually calculate that a 100oz bar is worth 100× spot, a kilo bar is worth 32.15× spot, and junk silver is worth 0.715× face value in silver content. Purpose-built trackers do this automatically.</li>
+      </ul>
+
+      <p>A dedicated <strong>bullion portfolio tracker</strong> saves hours of manual work and eliminates the errors that cost real money. If you're ready to <a href="/blog/silver-stacking-for-beginners">start stacking silver</a>, start tracking properly from day one.</p>
+
+      <h2>How to Set Up Your Portfolio Tracker in 5 Minutes</h2>
+
+      <p>Here's how to get started with HardAssets.io — it takes under 5 minutes:</p>
+
+      <ol>
+        <li><strong>Go to <a href="/">hardassets.io</a></strong> and click "Try Live Demo" to see a pre-loaded sample portfolio instantly — no sign-up needed</li>
+        <li><strong>Explore the dashboard:</strong> Click through Portfolio, Metals, Syndications, Crypto, and other tabs to see how tracking works</li>
+        <li><strong>Add your first position:</strong> Click "+ Add" on the Metals tab, select your metal (gold, silver, platinum, palladium), choose the unit type (1oz coin, 10oz bar, etc.), enter quantity and cost per unit</li>
+        <li><strong>Watch it calculate:</strong> Your total value updates in real time with live spot prices. Cost basis, gain/loss, and allocation percentages are automatic.</li>
+        <li><strong>Add other assets:</strong> Add crypto positions, real estate syndications, physical properties, collectibles — see your complete <a href="/blog/hard-assets-vs-paper-assets">hard assets vs paper assets</a> allocation</li>
+        <li><strong>Sign in to save:</strong> When you're ready, sign in with Google or email to save your data to the cloud and access it from any device</li>
+      </ol>
+
+      <p>Read our <a href="/blog/how-much-gold-should-you-own">gold allocation guide</a> and <a href="/blog/gold-vs-bitcoin-2026">gold vs bitcoin comparison</a> for help deciding how much to allocate to each asset.</p>
+
+      <p><strong><a href="/?demo=1">Try HardAssets.io free</a></strong> — the best <strong>precious metals portfolio tracker</strong> for hard asset investors in 2026.</p>
+
+      <h2>The Bottom Line</h2>
+
+      <p>If you only own physical gold and silver, GoldFolio is a solid dedicated tracker. If you're willing to pay $150/year and want bank integrations, Kubera works. If you're primarily crypto, Delta/CoinGecko is best-in-class.</p>
+
+      <p>But if you own a mix of precious metals, crypto, real estate, collectibles, or private notes — which most serious hard asset investors do — HardAssets.io is the only free <strong>gold silver tracker app</strong> that puts everything in one dashboard. No other tool gives you metals with oz-per-unit conversion, crypto with live CoinGecko prices, real estate syndications with IRR tracking, a deal analyzer, AND a portfolio allocation view — for $0.</p>
+
+      <p>Your stack deserves a real tracker. <a href="/?demo=1">Try it free</a>.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Product features and pricing may change. We built HardAssets.io and are obviously biased — but the comparison data above is accurate as of April 2026.</em></p>
+    `
   }
 ];
 

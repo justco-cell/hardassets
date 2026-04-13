@@ -13,6 +13,7 @@ const routes = [
   'blog/hard-assets-vs-paper-assets/index.html',
   'blog/silver-stacking-for-beginners/index.html',
   'blog/gold-vs-bitcoin-2026/index.html',
+  'blog/best-precious-metals-portfolio-trackers/index.html',
   'blog/why-track-hard-assets-separately/index.html',
   'blog/gold-silver-ratio-what-it-means/index.html',
   'blog/what-is-real-estate-syndication/index.html',
