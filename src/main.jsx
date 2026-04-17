@@ -6,6 +6,7 @@ const App = lazy(() => import('./App.jsx'))
 const AppMobile = lazy(() => import('./AppMobile.jsx'))
 const BlogModule = lazy(() => import('./Blog.jsx'))
 const ComparePage = lazy(() => import('./Compare.jsx'))
+const ResetPassword = lazy(() => import('./ResetPassword.jsx'))
 
 const path = window.location.pathname
 
@@ -34,6 +35,12 @@ if (path === '/compare' || path === '/compare/') {
   root.render(
     <React.StrictMode>
       <Suspense fallback={<Loader />}><ComparePage /></Suspense>
+    </React.StrictMode>
+  )
+} else if (path === '/reset' || path === '/reset/') {
+  root.render(
+    <React.StrictMode>
+      <Suspense fallback={<Loader />}><ResetPassword /></Suspense>
     </React.StrictMode>
   )
 } else if (path === '/blog' || path === '/blog/') {

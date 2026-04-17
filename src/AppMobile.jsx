@@ -405,14 +405,14 @@ function MobileLoginSheet({onClose,onGuestLogin,onEmailAuth,syncing}){
       </div>
       {resetMode?<div style={{display:"flex",flexDirection:"column",gap:10}}>
         {resetSent?<div style={{textAlign:"center",padding:"16px 0"}}>
-          <div style={{fontSize:15,fontWeight:700,color:P.green,marginBottom:6}}>Reset link sent!</div>
-          <div style={{fontSize:12,color:P.txS}}>Check your email for a reset link.</div>
+          <div style={{fontSize:15,fontWeight:700,color:P.green,marginBottom:6}}>Check your inbox</div>
+          <div style={{fontSize:12,color:P.txS}}>If that email is registered, a reset link is on its way. Expires in 1 hour.</div>
           <button onClick={()=>{setResetMode(false);setResetSent(false);setErr("")}} style={{background:"none",border:"none",color:P.gold,fontSize:12,cursor:"pointer",marginTop:12,fontFamily:ff}}>Back to Sign In</button>
         </div>:<>
           <div style={{fontSize:13,color:P.txS,marginBottom:6}}>Enter your email for a reset link.</div>
           <FF label="Email" value={em} onChange={setEm} placeholder="you@email.com"/>
           {err&&<div style={{color:P.red,fontSize:12}}><span>⚠ </span>{err}</div>}
-          <Btn onClick={async()=>{if(!em){setErr("Enter your email.");return}setLoading(true);setErr("");try{await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"reset",email:em,password:"placeholder"})});setResetSent(true)}catch(e){setErr("Could not send.")}setLoading(false)}} full style={{opacity:loading?0.6:1}}>{loading?"Sending...":"Send Reset Link"}</Btn>
+          <Btn onClick={async()=>{if(!em){setErr("Enter your email.");return}setLoading(true);setErr("");try{const r=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"reset",email:em,_ts:formLoadedAt,hp})});if(r.ok){setResetSent(true);if(window.posthog)window.posthog.capture('password_reset_requested')}else{const d=await r.json().catch(()=>({}));setErr(d.error||"Could not send.")}}catch(e){setErr("Could not send.")}setLoading(false)}} full style={{opacity:loading?0.6:1}}>{loading?"Sending...":"Send Reset Link"}</Btn>
           <button onClick={()=>{setResetMode(false);setErr("")}} style={{background:"none",border:"none",color:P.txM,fontSize:12,cursor:"pointer",fontFamily:ff,marginTop:4}}>Back to Sign In</button>
         </>}
       </div>:<>

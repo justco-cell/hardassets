@@ -593,8 +593,11 @@ function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
   const submitReset=async()=>{
     if(!email){setErr("Enter your email address.");return}
     setLoading(true);setErr("");
-    try{await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"reset",email,password:"placeholder_for_reset"})});
-    setResetSent(true)}catch(e){setErr("Could not send reset email.")}
+    try{
+      const r=await fetch("/api/auth",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"reset",email,_ts:formLoadedAt,hp})});
+      if(r.ok){setResetSent(true);if(window.posthog)window.posthog.capture('password_reset_requested')}
+      else{const d=await r.json().catch(()=>({}));setErr(d.error||"Could not send reset email. Please try again.")}
+    }catch(e){setErr("Could not send reset email.")}
     setLoading(false);
   };
 
@@ -635,8 +638,8 @@ function LoginModal({onClose,onGuestLogin,onEmailAuth,syncing}){
       {/* Password Reset Mode */}
       {resetMode?<div style={{display:"flex",flexDirection:"column",gap:10}}>
         {resetSent?<div style={{textAlign:"center",padding:"20px 0"}}>
-          <div style={{fontSize:16,fontWeight:700,color:P.green,marginBottom:8}}>Reset link sent!</div>
-          <div style={{fontSize:13,color:P.txS}}>Check your email for a password reset link.</div>
+          <div style={{fontSize:16,fontWeight:700,color:P.green,marginBottom:8}}>Check your inbox</div>
+          <div style={{fontSize:13,color:P.txS}}>If that email is registered, a reset link is on its way. The link expires in 1 hour.</div>
           <button onClick={()=>{setResetMode(false);setResetSent(false);setErr("")}} style={{background:"none",border:"none",color:P.gold,fontSize:13,cursor:"pointer",marginTop:16,fontFamily:ff}}>Back to Sign In</button>
         </div>:<>
           <div style={{fontSize:14,color:P.txS,marginBottom:8}}>Enter your email and we'll send a reset link.</div>

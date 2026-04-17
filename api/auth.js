@@ -27,8 +27,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { action, email, password, name, _ts, turnstileToken, hp } = req.body;
-  if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+  const { action, email, password, name, _ts, turnstileToken, hp, token: resetToken } = req.body;
 
   const ip = req.headers['x-forwarded-for'] || req.headers['x-real-ip'] || 'unknown';
 
@@ -38,17 +37,24 @@ export default async function handler(req, res) {
   // Time check — form submitted under 2 seconds = bot
   if (_ts && (Date.now() - _ts) < 2000) return res.status(400).json({ error: 'Please try again.' });
 
-  // Email format
-  const atIdx = email.indexOf('@');
-  if (atIdx < 1 || !email.includes('.', atIdx) || email.length < 5) return res.status(400).json({ error: 'Invalid email address.' });
+  // Email required for signup / login / reset. reset_password uses a token instead.
+  if (action !== 'reset_password') {
+    if (!email) return res.status(400).json({ error: 'Email is required.' });
+    const atIdx = email.indexOf('@');
+    if (atIdx < 1 || !email.includes('.', atIdx) || email.length < 5) return res.status(400).json({ error: 'Invalid email address.' });
+  }
 
-  // Password minimum 8 characters (server-side enforcement)
-  if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+  // Password required for signup / login / reset_password. reset (forgot) does not carry a password.
+  if (action !== 'reset') {
+    if (!password) return res.status(400).json({ error: 'Password is required.' });
+    if (password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters.' });
+  }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
   // TODO: Upgrade to bcrypt/argon2 for production
-  const passHash = crypto.createHash('sha256').update(password + 'hardassets_salt_2026').digest('hex');
+  const hashPassword = (pw) => crypto.createHash('sha256').update(pw + 'hardassets_salt_2026').digest('hex');
+  const passHash = password ? hashPassword(password) : null;
 
   try {
     if (action === 'signup') {
@@ -122,6 +128,104 @@ export default async function handler(req, res) {
         }
       );
       return res.status(200).json({ token: `${email}:${token}`, name: user.name, email });
+
+    } else if (action === 'reset') {
+      // Forgot password: always responds with success, regardless of whether the
+      // email is in auth_users. This prevents attackers from enumerating accounts.
+      // Rate limits are enforced silently — an attacker who exceeds them also sees success.
+
+      rateLimit('reset_email_' + (email || '').toLowerCase(), 3);
+      rateLimit('reset_ip_' + ip, 10);
+
+      // Look up user. If absent, we still respond success and do no work.
+      const findRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/auth_users?email=eq.${encodeURIComponent(email)}&select=id,email`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      const users = await findRes.json();
+
+      if (users && users.length > 0) {
+        const user = users[0];
+        const resetPlain = crypto.randomBytes(32).toString('hex');
+        const resetHash = crypto.createHash('sha256').update(resetPlain).digest('hex');
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+
+        const updRes = await fetch(
+          `${SUPABASE_URL}/rest/v1/auth_users?id=eq.${user.id}`,
+          {
+            method: 'PATCH',
+            headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reset_token_hash: resetHash, reset_token_expires_at: expiresAt })
+          }
+        );
+
+        const RESEND_KEY = process.env.RESEND_API_KEY;
+        if (RESEND_KEY && updRes.ok) {
+          const resetUrl = `https://hardassets.io/reset?token=${resetPlain}`;
+          try {
+            await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                from: 'HardAssets.io <noreply@hardassets.io>',
+                to: user.email,
+                subject: 'Reset your HardAssets.io password',
+                html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#0B0F1A;color:#E8ECF4;">
+  <div style="text-align:center;margin-bottom:24px;">
+    <div style="display:inline-block;width:56px;height:56px;border-radius:16px;background:linear-gradient(145deg,#D4A843,#B8912E);line-height:56px;font-size:24px;font-weight:900;color:#0B0F1A;">H</div>
+  </div>
+  <h2 style="margin:0 0 16px;font-size:20px;color:#E8ECF4;">Reset your password</h2>
+  <p style="margin:0 0 24px;font-size:15px;line-height:1.5;color:#A8B2C7;">We received a request to reset the password for your HardAssets.io account. Click the button below to choose a new password.</p>
+  <div style="text-align:center;margin:32px 0;"><a href="${resetUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(145deg,#D4A843,#B8912E);color:#0B0F1A;font-weight:700;text-decoration:none;border-radius:10px;font-size:15px;">Reset password</a></div>
+  <p style="margin:0 0 12px;font-size:13px;color:#A8B2C7;">Or copy this link into your browser:<br><span style="word-break:break-all;color:#D4A843;">${resetUrl}</span></p>
+  <p style="margin:24px 0 0;font-size:13px;color:#A8B2C7;">This link expires in 1 hour.</p>
+  <p style="margin:16px 0 0;font-size:13px;color:#A8B2C7;">If you didn't request this, ignore this email — your password won't change.</p>
+</div>`
+              })
+            });
+          } catch (e) { console.error('Reset email send failed:', e); }
+        }
+      }
+
+      return res.status(200).json({ success: true });
+
+    } else if (action === 'reset_password') {
+      // Consume a reset token and set a new password.
+      if (!rateLimit('reset_pw_' + ip, 10)) return res.status(429).json({ error: 'Too many attempts. Please try again later.' });
+
+      if (!resetToken || typeof resetToken !== 'string' || resetToken.length < 32) {
+        return res.status(400).json({ error: 'Invalid or expired link.' });
+      }
+
+      const tokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+      const nowIso = new Date().toISOString();
+
+      const findRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/auth_users?reset_token_hash=eq.${tokenHash}&reset_token_expires_at=gt.${encodeURIComponent(nowIso)}&select=id,email,name`,
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      );
+      const users = await findRes.json();
+      if (!users || users.length === 0) return res.status(400).json({ error: 'Invalid or expired link.' });
+
+      const user = users[0];
+      const newSessionToken = crypto.randomBytes(32).toString('hex');
+      const updRes = await fetch(
+        `${SUPABASE_URL}/rest/v1/auth_users?id=eq.${user.id}`,
+        {
+          method: 'PATCH',
+          headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            password_hash: passHash,
+            token: newSessionToken,
+            reset_token_hash: null,
+            reset_token_expires_at: null
+          })
+        }
+      );
+      if (!updRes.ok) return res.status(500).json({ error: 'Could not update password. Please try again.' });
+
+      // Sign the user in immediately on the device they used to reset.
+      return res.status(200).json({ success: true, token: `${user.email}:${newSessionToken}`, name: user.name, email: user.email });
 
     } else {
       return res.status(400).json({ error: 'Invalid action.' });
