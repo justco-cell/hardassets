@@ -61,7 +61,7 @@ jobs:
           # --permission-mode acceptEdits auto-approves file edits (and common fs Bash ops).
           # --max-turns bounds runaway loops; 50 gives enough headroom for research + build.
           claude_args: >-
-            --model claude-opus-4-7
+            --model claude-sonnet-4-6
             --allowedTools Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch
             --permission-mode acceptEdits
             --max-turns 50

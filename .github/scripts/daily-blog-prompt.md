@@ -8,11 +8,18 @@ YOUR TASK: Research, plan, write, and create ONE new SEO-optimized blog post tod
 
 ## STEP 1: EXPLORE THE REPO & EXISTING CONTENT
 
-- Look at the blog directory structure to understand file format (MDX/MD/TSX), frontmatter schema, and naming conventions
-- List all existing blog posts so you don't duplicate a topic
-- Check if the blog index auto-discovers posts or needs manual updates
-- Note shared components used in blog posts
-- Check public/images/blog/ for existing image patterns
+The blog is self-contained in a small set of files. To conserve tokens (this run has a strict input-token-per-minute budget), read ONLY what you need:
+
+- `src/Blog.jsx` — the blog rendering component. Read this first to understand how posts are structured and rendered.
+- `src/blog-data.js` — the actual post data (titles, slugs, bodies, frontmatter). This is where new posts get added.
+- `public/images/blog/` — list the directory (Glob) to see existing SVG patterns; only read individual SVGs if you're copying a style.
+- `social/` — list the directory to see prior social drafts if the folder exists.
+
+DO NOT read `src/App.jsx` or `src/AppMobile.jsx` — those are the main SPA (~185KB each) and have nothing to do with blog posts. Reading them wastes tens of thousands of tokens per turn.
+
+DO NOT read node_modules, dist/, .git/, or anything in .claudeignore.
+
+List existing blog posts so you don't duplicate a topic. Check if the blog index auto-discovers posts or needs manual updates.
 
 ---
 
