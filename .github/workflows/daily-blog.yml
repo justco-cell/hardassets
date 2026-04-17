@@ -1,0 +1,92 @@
+name: Daily Blog Post
+
+# Schedule: 13:00 UTC daily = 9:00 AM US Eastern (EDT; shifts to 8:00 AM during EST).
+# Also runs on-demand via the Actions UI "Run workflow" button.
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  # Needed so the workflow can push the generated post back to the repo.
+  contents: write
+
+concurrency:
+  # Never run two daily-post jobs at once. A later scheduled run supersedes a stuck earlier one.
+  group: daily-blog
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    name: Research, write, and commit today's blog post
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Default GITHUB_TOKEN is persisted in the clone so `git push` works later.
+          persist-credentials: true
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install project dependencies
+        run: npm ci
+
+      - name: Load blog prompt into the workflow environment
+        # The prompt is multi-kilobyte — load it into GITHUB_ENV with a heredoc
+        # so the next step can pass it to claude-code-action as a single string.
+        run: |
+          {
+            echo 'BLOG_PROMPT<<PROMPT_EOF'
+            cat .github/scripts/daily-blog-prompt.md
+            echo
+            echo 'PROMPT_EOF'
+          } >> "$GITHUB_ENV"
+
+      - name: Run Claude Code to generate today's post
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: ${{ env.BLOG_PROMPT }}
+          # --allowedTools whitelists what the agent can use without prompts.
+          # --permission-mode acceptEdits auto-approves file edits (and common fs Bash ops).
+          # --max-turns bounds runaway loops; 50 gives enough headroom for research + build.
+          claude_args: >-
+            --model claude-opus-4-7
+            --allowedTools Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch
+            --permission-mode acceptEdits
+            --max-turns 50
+
+      - name: Configure git identity (HardAssets Bot)
+        run: |
+          git config user.name "HardAssets Bot"
+          git config user.email "bot@hardassets.io"
+
+      - name: Commit and push if Claude Code produced changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "::notice title=No changes::Claude Code ran but produced no file changes. Nothing to commit."
+            exit 0
+          fi
+          git commit -m "blog: daily post - $(date -u +%Y-%m-%d)"
+          git push origin "${GITHUB_REF_NAME}"
+          echo "::notice title=Committed::Daily post committed and pushed to ${GITHUB_REF_NAME}."
+
+      - name: Summarize committed changes
+        if: always()
+        run: |
+          echo "=============================================="
+          echo "HEAD commit:"
+          git log -1 --format='%h %s%n  author: %an <%ae>%n  date:   %ad' --date=iso || true
+          echo "----------------------------------------------"
+          echo "Files in the last commit:"
+          git diff-tree --no-commit-id --name-status -r HEAD || true
+          echo "=============================================="
