@@ -57,11 +57,13 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: ${{ env.BLOG_PROMPT }}
+          # Pin model via settings JSON. The --model flag in claude_args isn't
+          # reliably honored by this action version; settings.model is.
+          settings: '{"model": "claude-sonnet-4-6"}'
           # --allowedTools whitelists what the agent can use without prompts.
           # --permission-mode acceptEdits auto-approves file edits (and common fs Bash ops).
           # --max-turns bounds runaway loops; 50 gives enough headroom for research + build.
           claude_args: >-
-            --model claude-sonnet-4-6
             --allowedTools Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch
             --permission-mode acceptEdits
             --max-turns 50
