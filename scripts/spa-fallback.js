@@ -18,6 +18,7 @@ const routes = [
   'blog/gold-silver-ratio-what-it-means/index.html',
   'blog/what-is-real-estate-syndication/index.html',
   'compare/index.html',
+  'reset/index.html',
 ];
 
 for (const route of routes) {
