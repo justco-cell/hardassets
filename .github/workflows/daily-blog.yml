@@ -10,6 +10,8 @@ on:
 permissions:
   # Needed so the workflow can push the generated post back to the repo.
   contents: write
+  # Required by anthropics/claude-code-action@v1 for OIDC token exchange.
+  id-token: write
 
 concurrency:
   # Never run two daily-post jobs at once. A later scheduled run supersedes a stuck earlier one.
