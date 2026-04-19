@@ -61,7 +61,8 @@ jobs:
           prompt: ${{ env.BLOG_PROMPT }}
           # Pin model via settings JSON. The --model flag in claude_args isn't
           # reliably honored by this action version; settings.model is.
-          settings: '{"model": "claude-sonnet-4-6"}'
+          # Haiku 4.5 is cheaper and faster than Sonnet/Opus — plenty for blog writing.
+          settings: '{"model": "claude-haiku-4-5-20251001"}'
           # --allowedTools whitelists what the agent can use without prompts.
           # --permission-mode acceptEdits auto-approves file edits (and common fs Bash ops).
           # --max-turns bounds runaway loops; 50 gives enough headroom for research + build.
