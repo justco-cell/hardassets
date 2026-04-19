@@ -24,6 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
+    # Job-level env propagates to every step, including subprocesses launched
+    # by the composite Claude Code action (which doesn't redeclare ANTHROPIC_MODEL
+    # in its own env block, so it inherits this one).
+    env:
+      ANTHROPIC_MODEL: claude-haiku-4-5-20251001
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -54,19 +60,34 @@ jobs:
             echo 'PROMPT_EOF'
           } >> "$GITHUB_ENV"
 
+      - name: Debug model config
+        # Prints the env var the Claude Code CLI should pick up. Lets us
+        # verify model pinning before the action runs, from the workflow log.
+        run: echo "Model will be → ANTHROPIC_MODEL=$ANTHROPIC_MODEL"
+
       - name: Run Claude Code to generate today's post
         uses: anthropics/claude-code-action@v1
+        env:
+          # Redundant with job-level env but belt-and-suspenders: guarantees
+          # ANTHROPIC_MODEL is present for the action's own subprocess env,
+          # even if a future action version shadows the parent env block.
+          ANTHROPIC_MODEL: claude-haiku-4-5-20251001
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: ${{ env.BLOG_PROMPT }}
-          # Pin model via settings JSON. The --model flag in claude_args isn't
-          # reliably honored by this action version; settings.model is.
-          # Haiku 4.5 is cheaper and faster than Sonnet/Opus — plenty for blog writing.
+          # `model:` is not a documented input on claude-code-action@v1 —
+          # composite actions silently ignore unknown `with:` keys. Left here
+          # in case a future version adds direct support.
+          model: claude-haiku-4-5-20251001
+          # settings.model is the documented path for pinning via this action.
           settings: '{"model": "claude-haiku-4-5-20251001"}'
-          # --allowedTools whitelists what the agent can use without prompts.
-          # --permission-mode acceptEdits auto-approves file edits (and common fs Bash ops).
-          # --max-turns bounds runaway loops; 50 gives enough headroom for research + build.
+          # --model inside claude_args is the CLI-native way. Whether it wins
+          # over settings.model depends on the CLI's precedence.
+          # --allowedTools whitelists tools the agent can use without prompting.
+          # --permission-mode acceptEdits auto-approves file edits.
+          # --max-turns bounds runaway loops.
           claude_args: >-
+            --model claude-haiku-4-5-20251001
             --allowedTools Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch
             --permission-mode acceptEdits
             --max-turns 50
