@@ -28,7 +28,7 @@ jobs:
     # by the composite Claude Code action (which doesn't redeclare ANTHROPIC_MODEL
     # in its own env block, so it inherits this one).
     env:
-      ANTHROPIC_MODEL: claude-haiku-4-5-20251001
+      ANTHROPIC_MODEL: claude-haiku-4-5
 
     steps:
       - name: Checkout repository
@@ -71,23 +71,23 @@ jobs:
           # Redundant with job-level env but belt-and-suspenders: guarantees
           # ANTHROPIC_MODEL is present for the action's own subprocess env,
           # even if a future action version shadows the parent env block.
-          ANTHROPIC_MODEL: claude-haiku-4-5-20251001
+          ANTHROPIC_MODEL: claude-haiku-4-5
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: ${{ env.BLOG_PROMPT }}
           # `model:` is not a documented input on claude-code-action@v1 —
           # composite actions silently ignore unknown `with:` keys. Left here
           # in case a future version adds direct support.
-          model: claude-haiku-4-5-20251001
+          model: claude-haiku-4-5
           # settings.model is the documented path for pinning via this action.
-          settings: '{"model": "claude-haiku-4-5-20251001"}'
+          settings: '{"model": "claude-haiku-4-5"}'
           # --model inside claude_args is the CLI-native way. Whether it wins
           # over settings.model depends on the CLI's precedence.
           # --allowedTools whitelists tools the agent can use without prompting.
           # --permission-mode acceptEdits auto-approves file edits.
           # --max-turns bounds runaway loops.
           claude_args: >-
-            --model claude-haiku-4-5-20251001
+            --model claude-haiku-4-5
             --allowedTools Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch
             --permission-mode acceptEdits
             --max-turns 50
