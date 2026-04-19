@@ -10,8 +10,6 @@ on:
 permissions:
   # Needed so the workflow can push the generated post back to the repo.
   contents: write
-  # Required by anthropics/claude-code-action@v1 for OIDC token exchange.
-  id-token: write
 
 concurrency:
   # Never run two daily-post jobs at once. A later scheduled run supersedes a stuck earlier one.
@@ -23,12 +21,6 @@ jobs:
     name: Research, write, and commit today's blog post
     runs-on: ubuntu-latest
     timeout-minutes: 30
-
-    # Job-level env propagates to every step, including subprocesses launched
-    # by the composite Claude Code action (which doesn't redeclare ANTHROPIC_MODEL
-    # in its own env block, so it inherits this one).
-    env:
-      ANTHROPIC_MODEL: claude-haiku-4-5
 
     steps:
       - name: Checkout repository
@@ -49,48 +41,42 @@ jobs:
       - name: Install project dependencies
         run: npm ci
 
-      - name: Load blog prompt into the workflow environment
-        # The prompt is multi-kilobyte — load it into GITHUB_ENV with a heredoc
-        # so the next step can pass it to claude-code-action as a single string.
-        run: |
-          {
-            echo 'BLOG_PROMPT<<PROMPT_EOF'
-            cat .github/scripts/daily-blog-prompt.md
-            echo
-            echo 'PROMPT_EOF'
-          } >> "$GITHUB_ENV"
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
 
-      - name: Debug model config
-        # Prints the env var the Claude Code CLI should pick up. Lets us
-        # verify model pinning before the action runs, from the workflow log.
-        run: echo "Model will be → ANTHROPIC_MODEL=$ANTHROPIC_MODEL"
+      - name: Preflight API health check
+        # Catch rate-limit / balance problems with one cheap call BEFORE we
+        # spend a full agent run hitting the same error. Exit cleanly on bad
+        # status so GitHub doesn't burn a red X on a transient issue.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          STATUS=$(curl -s -o /tmp/api-response.json -w "%{http_code}" https://api.anthropic.com/v1/messages \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d '{"model":"claude-haiku-4-5-20251001","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}')
+          echo "API preflight status: $STATUS"
+          cat /tmp/api-response.json
+          echo ""
+          if [ "$STATUS" != "200" ]; then
+            echo "::warning::API preflight returned $STATUS - skipping run to avoid wasting rate limit"
+            exit 1
+          fi
+          echo "API is healthy, proceeding with blog generation"
 
       - name: Run Claude Code to generate today's post
-        uses: anthropics/claude-code-action@v1
+        timeout-minutes: 25
         env:
-          # Redundant with job-level env but belt-and-suspenders: guarantees
-          # ANTHROPIC_MODEL is present for the action's own subprocess env,
-          # even if a future action version shadows the parent env block.
-          ANTHROPIC_MODEL: claude-haiku-4-5
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          prompt: ${{ env.BLOG_PROMPT }}
-          # `model:` is not a documented input on claude-code-action@v1 —
-          # composite actions silently ignore unknown `with:` keys. Left here
-          # in case a future version adds direct support.
-          model: claude-haiku-4-5
-          # settings.model is the documented path for pinning via this action.
-          settings: '{"model": "claude-haiku-4-5"}'
-          # --model inside claude_args is the CLI-native way. Whether it wins
-          # over settings.model depends on the CLI's precedence.
-          # --allowedTools whitelists tools the agent can use without prompting.
-          # --permission-mode acceptEdits auto-approves file edits.
-          # --max-turns bounds runaway loops.
-          claude_args: >-
-            --model claude-haiku-4-5
-            --allowedTools Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch
-            --permission-mode acceptEdits
-            --max-turns 50
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          PROMPT=$(cat .github/scripts/daily-blog-prompt.md)
+          claude --print \
+            --model claude-haiku-4-5-20251001 \
+            --permission-mode acceptEdits \
+            --allowedTools Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch \
+            --max-budget-usd 2 \
+            "$PROMPT"
 
       - name: Configure git identity (HardAssets Bot)
         run: |
