@@ -1,24 +1,21 @@
-// Post-build script: copy index.html to common SPA routes
-// This ensures Vercel serves index.html for all SPA routes
+// Post-build script: copy index.html to each SPA route so Vercel serves the
+// right file for every in-app URL.
+//
+// Blog slugs are discovered dynamically from src/blog-data.js. That way the
+// daily blog automation (which only edits blog-data.js) doesn't also have to
+// edit this list — new posts are handled on the next build automatically.
 import { copyFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
+import { POSTS } from '../src/blog-data.js';
 
 const dist = 'dist';
 const indexHtml = join(dist, 'index.html');
 
-// All SPA routes that need to serve index.html
 const routes = [
   'blog/index.html',
-  'blog/how-much-gold-should-you-own/index.html',
-  'blog/hard-assets-vs-paper-assets/index.html',
-  'blog/silver-stacking-for-beginners/index.html',
-  'blog/gold-vs-bitcoin-2026/index.html',
-  'blog/best-precious-metals-portfolio-trackers/index.html',
-  'blog/why-track-hard-assets-separately/index.html',
-  'blog/gold-silver-ratio-what-it-means/index.html',
-  'blog/what-is-real-estate-syndication/index.html',
   'compare/index.html',
   'reset/index.html',
+  ...POSTS.map(p => `blog/${p.slug}/index.html`),
 ];
 
 for (const route of routes) {
