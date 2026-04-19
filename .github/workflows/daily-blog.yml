@@ -25,11 +25,13 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Check out repository (full history)
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Default GITHUB_TOKEN is persisted in the clone so `git push` works later.
+          # GITHUB_TOKEN is persisted in the clone so `git push` authenticates
+          # using the workflow's own token — no PAT, no HTTPS username/password.
+          token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
 
       - name: Set up Node.js 20
@@ -80,9 +82,11 @@ jobs:
             echo "::notice title=No changes::Claude Code ran but produced no file changes. Nothing to commit."
             exit 0
           fi
-          git commit -m "blog: daily post - $(date -u +%Y-%m-%d)"
-          git push origin "${GITHUB_REF_NAME}"
-          echo "::notice title=Committed::Daily post committed and pushed to ${GITHUB_REF_NAME}."
+          git commit -m "blog: daily post - $(date +%Y-%m-%d)"
+          # persist-credentials:true from checkout means the GITHUB_TOKEN is
+          # already baked into the origin remote. Plain `git push` works.
+          git push
+          echo "::notice title=Committed::Daily post committed and pushed."
 
       - name: Summarize committed changes
         if: always()
