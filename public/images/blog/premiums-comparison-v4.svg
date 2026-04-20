@@ -1,0 +1,61 @@
+<svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#D4A843"/>
+      <stop offset="100%" style="stop-color:#B8912E"/>
+    </linearGradient>
+    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#C0C0C0"/>
+      <stop offset="100%" style="stop-color:#A8A8A8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="500" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="300" y="32" font-size="22" font-weight="bold" fill="#F1F5F9" text-anchor="middle">Spot Price vs Premium</text>
+  <text x="300" y="52" font-size="12" fill="#7A8599" text-anchor="middle">Illustrative example at April 2026 prices</text>
+
+  <!-- ========== GOLD ========== -->
+  <text x="30" y="84" font-size="15" font-weight="700" fill="#D4A843">Gold 1oz Coin</text>
+
+  <!-- Gold Spot row -->
+  <text x="30" y="115" font-size="13" fill="#A8B2C7">Spot Price</text>
+  <rect x="150" y="100" width="300" height="22" fill="url(#goldGrad)" rx="3"/>
+  <text x="465" y="117" font-size="14" font-weight="700" fill="#F1F5F9">$4,804</text>
+
+  <!-- Gold Premium row (bar 25px wide ≈ 4.9% visually) -->
+  <text x="30" y="147" font-size="13" fill="#A8B2C7">Premium</text>
+  <rect x="150" y="132" width="25" height="22" fill="#10B981" rx="3"/>
+  <text x="465" y="149" font-size="14" font-weight="700" fill="#10B981">+$235 (4.9%)</text>
+
+  <!-- Gold total row -->
+  <rect x="15" y="168" width="570" height="44" fill="#1E293B" stroke="#D4A843" stroke-width="2" rx="6"/>
+  <text x="30" y="196" font-size="14" font-weight="700" fill="#A8B2C7">You Pay</text>
+  <text x="570" y="198" font-size="20" font-weight="800" fill="#D4A843" text-anchor="end">$5,039</text>
+
+  <!-- ========== SILVER ========== -->
+  <text x="30" y="252" font-size="15" font-weight="700" fill="#C0C0C0">Silver 100oz Bar</text>
+
+  <!-- Silver Spot row -->
+  <text x="30" y="283" font-size="13" fill="#A8B2C7">Spot Price</text>
+  <rect x="150" y="268" width="300" height="22" fill="url(#silverGrad)" rx="3"/>
+  <text x="465" y="285" font-size="14" font-weight="700" fill="#F1F5F9">$8,050</text>
+
+  <!-- Silver Premium row (bar 10px = 2% visually, visibly smaller than gold's 25px) -->
+  <text x="30" y="315" font-size="13" fill="#A8B2C7">Premium</text>
+  <rect x="150" y="300" width="10" height="22" fill="#10B981" rx="3"/>
+  <text x="465" y="317" font-size="14" font-weight="700" fill="#10B981">+$161 (2%)</text>
+
+  <!-- Silver total row -->
+  <rect x="15" y="336" width="570" height="44" fill="#1E293B" stroke="#C0C0C0" stroke-width="2" rx="6"/>
+  <text x="30" y="364" font-size="14" font-weight="700" fill="#A8B2C7">You Pay</text>
+  <text x="570" y="366" font-size="20" font-weight="800" fill="#C0C0C0" text-anchor="end">$8,211</text>
+
+  <!-- ========== KEY INSIGHT ========== -->
+  <rect x="15" y="400" width="570" height="90" fill="#1E293B" stroke="#D4A843" stroke-width="1" rx="6"/>
+  <text x="300" y="428" font-size="14" font-weight="700" fill="#D4A843" text-anchor="middle">Key Insight</text>
+  <text x="300" y="453" font-size="12" fill="#CBD5E1" text-anchor="middle">Premium varies by product type. Bars typically offer lower premiums than coins.</text>
+  <text x="300" y="473" font-size="12" fill="#CBD5E1" text-anchor="middle">Your true cost basis = spot price + premium paid at purchase.</text>
+</svg>

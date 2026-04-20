@@ -972,10 +972,10 @@ export const POSTS = [
     date: "2026-04-20",
     excerpt: "Spot price is what you see on the news, but you never pay it. Here's why precious metals premiums exist, how they vary by product, and why tracking them matters for your true cost basis.",
     metaDescription: "Learn why precious metals have premiums over spot price, how they vary by coin type and dealer, and why accurate cost basis tracking matters for taxes and performance.",
-    thumbnail: "/images/blog/premiums-comparison-v3.svg",
-    heroImage: "/images/blog/premiums-comparison-v3.svg",
+    thumbnail: "/images/blog/premiums-comparison-v4.svg",
+    heroImage: "/images/blog/premiums-comparison-v4.svg",
     content: `
-      <p>When you see that gold is trading at $2,450 per ounce, you might assume you can buy a 1-oz coin at that price. You can't. You'll actually pay $2,570 — or more, depending on where you buy. That $120 difference is the <strong>premium</strong>, and it's one of the most misunderstood concepts in precious metals investing.</p>
+      <p>When you see that gold is trading at $4,804 per ounce, you might assume you can buy a 1-oz coin at that price. You can't. You'll actually pay around $5,039 — or more, depending on where you buy. That $235 difference is the <strong>premium</strong>, and it's one of the most misunderstood concepts in precious metals investing.</p>
 
       <p>If you're tracking your hard asset portfolio seriously, understanding premiums is essential. They affect your actual cost basis, your true rate of return, and the real dollar value of your holdings at any point in time.</p>
 
@@ -985,7 +985,7 @@ export const POSTS = [
 
       <p><strong>Formula: What You Pay = Spot Price + Premium</strong></p>
 
-      <p>If spot gold is $2,450/oz and you buy a 1-oz American Gold Eagle coin with a $120 premium, your actual cost per ounce is $2,570. That's your true cost basis for tax reporting and performance tracking.</p>
+      <p>If spot gold is $4,804/oz and you buy a 1-oz American Gold Eagle coin with a $235 premium (about 4.9%), your actual cost per ounce is $5,039. That's your true cost basis for tax reporting and performance tracking.</p>
 
       <h2>Why Premiums Exist: The Real Costs Behind Every Coin</h2>
 
@@ -1029,9 +1029,9 @@ export const POSTS = [
 
       <h2>Tracking Your Real Cost Basis</h2>
 
-      <p>Here's why this matters: if you bought 10 oz of gold coins when spot was $2,000/oz at a 5% premium, you paid $21,000 (10 oz × $2,000 + 5% markup = $2,100/oz × 10 oz). Today, if you sell those same 10 oz at current spot of $2,450/oz with a 4% premium, you receive $25,480 (10 oz × $2,450 + 4% = $2,548/oz × 10 oz).</p>
+      <p>Here's why this matters: if you bought 10 oz of gold coins two years ago when spot was around $3,500/oz at a 5% premium, you paid $36,750 (10 oz × $3,500 + 5% markup = $3,675/oz × 10 oz). Today, if you sell those same 10 oz at the current spot of $4,804/oz with a 4% premium, you receive roughly $49,960 (10 oz × $4,804 + 4% = $4,996/oz × 10 oz).</p>
 
-      <p>Your gain is $4,480, not $4,500. And your cost basis was $2,100/oz, not $2,000/oz. If you ignore the premium, you'll underestimate what you actually invested and overestimate your returns.</p>
+      <p>Your actual gain is about $13,210, not the $13,040 a spot-only calculation suggests. And your cost basis was $3,675/oz, not $3,500/oz. If you ignore the premium on both sides of the trade, you'll get the wrong numbers for both your cost basis and your realized gain.</p>
 
       <p>For tax purposes, the IRS wants your true cost basis — what you actually paid. For performance tracking, you need to know whether your precious metals outpaced inflation or underperformed the stock market. Both require accurate premium-inclusive calculations.</p>
 
