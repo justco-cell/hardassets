@@ -972,8 +972,8 @@ export const POSTS = [
     date: "2026-04-20",
     excerpt: "Spot price is what you see on the news, but you never pay it. Here's why precious metals premiums exist, how they vary by product, and why tracking them matters for your true cost basis.",
     metaDescription: "Learn why precious metals have premiums over spot price, how they vary by coin type and dealer, and why accurate cost basis tracking matters for taxes and performance.",
-    thumbnail: "/images/blog/premiums-comparison.svg",
-    heroImage: "/images/blog/premiums-comparison.svg",
+    thumbnail: "/images/blog/premiums-comparison-v2.svg",
+    heroImage: "/images/blog/premiums-comparison-v2.svg",
     content: `
       <p>When you see that gold is trading at $2,450 per ounce, you might assume you can buy a 1-oz coin at that price. You can't. You'll actually pay $2,570 — or more, depending on where you buy. That $120 difference is the <strong>premium</strong>, and it's one of the most misunderstood concepts in precious metals investing.</p>
 
