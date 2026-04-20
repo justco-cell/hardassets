@@ -1,0 +1,59 @@
+<svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#D4A843;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="480" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="300" y="35" font-size="22" font-weight="bold" fill="#F1F5F9" text-anchor="middle">What Drives Precious Metals Premiums?</text>
+
+  <!-- Manufacturing costs -->
+  <g>
+    <rect x="40" y="65" width="520" height="65" fill="#1E293B" stroke="#D4A843" stroke-width="1.5" rx="4"/>
+    <circle cx="80" cy="100" r="18" fill="#D4A843"/>
+    <text x="80" y="105" font-size="20" font-weight="bold" fill="#0B0F1A" text-anchor="middle">⚙</text>
+    <text x="110" y="100" font-size="14" font-weight="600" fill="#F1F5F9">Minting & Refining Costs</text>
+    <text x="110" y="120" font-size="12" fill="#CBD5E1">Converting raw metal into finished 1-oz coins or bars requires labor, equipment, dies, and quality control.</text>
+  </g>
+
+  <!-- Shipping & insurance -->
+  <g>
+    <rect x="40" y="150" width="520" height="65" fill="#1E293B" stroke="#10B981" stroke-width="1.5" rx="4"/>
+    <circle cx="80" cy="185" r="18" fill="#10B981"/>
+    <text x="80" y="190" font-size="20" font-weight="bold" fill="#0B0F1A" text-anchor="middle">📦</text>
+    <text x="110" y="185" font-size="14" font-weight="600" fill="#F1F5F9">Shipping & Insurance</text>
+    <text x="110" y="205" font-size="12" fill="#CBD5E1">Getting bullion from vault to you safely costs money. Dealer insurance protects both parties during transport.</text>
+  </g>
+
+  <!-- Dealer overhead -->
+  <g>
+    <rect x="40" y="235" width="520" height="65" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5" rx="4"/>
+    <circle cx="80" cy="270" r="18" fill="#F59E0B"/>
+    <text x="80" y="275" font-size="20" font-weight="bold" fill="#0B0F1A" text-anchor="middle">🏪</text>
+    <text x="110" y="270" font-size="14" font-weight="600" fill="#F1F5F9">Dealer Overhead & Profit</text>
+    <text x="110" y="290" font-size="12" fill="#CBD5E1">Rent, staff, payment processing, and customer service. The dealer's margin covers real business costs.</text>
+  </g>
+
+  <!-- Market conditions -->
+  <g>
+    <rect x="40" y="320" width="520" height="65" fill="#1E293B" stroke="#06B6D4" stroke-width="1.5" rx="4"/>
+    <circle cx="80" cy="355" r="18" fill="#06B6D4"/>
+    <text x="80" y="360" font-size="20" font-weight="bold" fill="#0B0F1A" text-anchor="middle">📈</text>
+    <text x="110" y="355" font-size="14" font-weight="600" fill="#F1F5F9">Market Volatility & Demand</text>
+    <text x="110" y="375" font-size="12" fill="#CBD5E1">High demand spikes premiums. If spot drops fast, dealers raise markups to avoid losses on old inventory.</text>
+  </g>
+
+  <!-- Product rarity -->
+  <g>
+    <rect x="40" y="405" width="520" height="65" fill="#1E293B" stroke="#EC4899" stroke-width="1.5" rx="4"/>
+    <circle cx="80" cy="440" r="18" fill="#EC4899"/>
+    <text x="80" y="445" font-size="20" font-weight="bold" fill="#0B0F1A" text-anchor="middle">💎</text>
+    <text x="110" y="440" font-size="14" font-weight="600" fill="#F1F5F9">Rarity & Collectibility</text>
+    <text x="110" y="460" font-size="12" fill="#CBD5E1">Rare coins or limited mintages command higher premiums. Bars offer the tightest premiums.</text>
+  </g>
+</svg>
