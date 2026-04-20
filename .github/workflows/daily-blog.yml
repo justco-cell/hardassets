@@ -1,10 +1,14 @@
 name: Daily Blog Post
 
-# Schedule: 13:00 UTC daily = 9:00 AM US Eastern (EDT; shifts to 8:00 AM during EST).
+# Schedule: 13:00 UTC primary + 14:00 UTC backup (9:00 AM + 10:00 AM EDT).
+# GitHub's cron is best-effort and sometimes skips ticks — the backup
+# catches those misses. Both slots hit the same job; the idempotency
+# check in the first step no-ops the second run if the first succeeded.
 # Also runs on-demand via the Actions UI "Run workflow" button.
 on:
   schedule:
     - cron: '0 13 * * *'
+    - cron: '0 14 * * *'
   workflow_dispatch: {}
 
 permissions:
@@ -32,22 +36,43 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
 
+      - name: Check if today's post already committed
+        # Makes the dual-cron schedule idempotent. If the 13:00 UTC run
+        # already landed a "blog: daily post - YYYY-MM-DD" commit, the
+        # 14:00 UTC backup no-ops instead of spending API budget on a
+        # duplicate post. `exit 0` only ends a single step — we set an
+        # output and gate the remaining steps on it.
+        id: idempotency
+        run: |
+          today=$(date -u +%Y-%m-%d)
+          if git log --since="${today}T00:00:00Z" --grep="^blog: daily post - ${today}$" --oneline | grep -q .; then
+            echo "::notice title=Already posted today::Daily post for ${today} already committed. Skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No post yet for ${today} — proceeding."
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up Node.js 20
+        if: steps.idempotency.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Install project dependencies
+        if: steps.idempotency.outputs.skip != 'true'
         run: npm ci
 
       - name: Install Claude Code CLI
+        if: steps.idempotency.outputs.skip != 'true'
         run: npm install -g @anthropic-ai/claude-code
 
       - name: Preflight API health check
         # Catch rate-limit / balance problems with one cheap call BEFORE we
         # spend a full agent run hitting the same error. Exit cleanly on bad
         # status so GitHub doesn't burn a red X on a transient issue.
+        if: steps.idempotency.outputs.skip != 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
@@ -66,6 +91,7 @@ jobs:
           echo "API is healthy, proceeding with blog generation"
 
       - name: Run Claude Code to generate today's post
+        if: steps.idempotency.outputs.skip != 'true'
         timeout-minutes: 25
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -79,11 +105,13 @@ jobs:
             "$PROMPT"
 
       - name: Configure git identity (HardAssets Bot)
+        if: steps.idempotency.outputs.skip != 'true'
         run: |
           git config user.name "HardAssets Bot"
           git config user.email "bot@hardassets.io"
 
       - name: Commit and push if Claude Code produced changes
+        if: steps.idempotency.outputs.skip != 'true'
         run: |
           git add -A
           if git diff --staged --quiet; then
@@ -97,7 +125,9 @@ jobs:
           echo "::notice title=Committed::Daily post committed and pushed."
 
       - name: Summarize committed changes
-        if: always()
+        # Runs on success or failure, but skips cleanly if the idempotency
+        # check told us there was nothing to do this run.
+        if: always() && steps.idempotency.outputs.skip != 'true'
         run: |
           echo "=============================================="
           echo "HEAD commit:"
