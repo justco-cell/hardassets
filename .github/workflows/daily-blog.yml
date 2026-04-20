@@ -68,6 +68,38 @@ jobs:
         if: steps.idempotency.outputs.skip != 'true'
         run: npm install -g @anthropic-ai/claude-code
 
+      - name: Install image validation toolchain
+        # Renderer fallback chain: rsvg-convert (primary, ships in most
+        # distros), ImageMagick (broad SVG support), @resvg/resvg-js-cli
+        # (pure-JS, available via npx). Claude picks whichever succeeds
+        # first when validating SVGs in STEP 4B of the prompt.
+        if: steps.idempotency.outputs.skip != 'true'
+        run: |
+          set +e  # Don't fail if one tool has issues; we have fallbacks
+
+          echo "Installing rsvg-convert (primary renderer)..."
+          sudo apt-get update -qq
+          sudo apt-get install -y librsvg2-bin
+          if command -v rsvg-convert &> /dev/null; then
+            echo "✅ rsvg-convert installed: $(rsvg-convert --version)"
+          else
+            echo "⚠️ rsvg-convert not available"
+          fi
+
+          echo "Installing ImageMagick (first fallback)..."
+          sudo apt-get install -y imagemagick
+          if command -v convert &> /dev/null; then
+            echo "✅ ImageMagick installed: $(convert --version | head -1)"
+          else
+            echo "⚠️ ImageMagick not available"
+          fi
+
+          echo "Pre-installing @resvg/resvg-js-cli (final fallback)..."
+          npm install -g @resvg/resvg-js-cli || echo "⚠️ resvg-js-cli will be installed on-demand via npx"
+
+          echo "Image toolchain setup complete"
+          set -e
+
       - name: Preflight API health check
         # Catch rate-limit / balance problems with one cheap call BEFORE we
         # spend a full agent run hitting the same error. Exit cleanly on bad
@@ -103,6 +135,18 @@ jobs:
             --allowedTools Read,Write,Edit,Glob,Grep,Bash,WebSearch,WebFetch \
             --max-budget-usd 2 \
             "$PROMPT"
+
+      - name: Clean up temporary validation files
+        # Defense-in-depth against Claude forgetting STEP 4B's cleanup.
+        # Removes recent PNGs in the blog folder (from failed/orphaned
+        # validation renders) and any /tmp/validate*.png artifacts.
+        # -mmin -60 restricts to files created in the last hour so we
+        # don't blow away any legitimate PNGs that might live here.
+        if: steps.idempotency.outputs.skip != 'true'
+        run: |
+          find public/images/blog/ -name "*.png" -mmin -60 -delete 2>/dev/null || true
+          rm -f /tmp/validate.png /tmp/validate*.png 2>/dev/null || true
+          echo "Cleaned up temporary validation files"
 
       - name: Configure git identity (HardAssets Bot)
         if: steps.idempotency.outputs.skip != 'true'

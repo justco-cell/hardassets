@@ -4,3 +4,7 @@ node_modules/
 .DS_Store
 dist/
 .vercel/
+
+# Temporary image validation artifacts
+public/images/blog/*.png
+/tmp/validate*.png
