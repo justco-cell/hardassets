@@ -1,0 +1,86 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="400" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <g>
+    <text x="40" y="52" font-size="28" font-weight="900" fill="#F1F5F9" font-family="Inter, sans-serif">Central Bank Gold Buying</text>
+    <text x="40" y="78" font-size="13" fill="#94A3B8" font-family="Inter, sans-serif">Net annual purchases in tonnes (World Gold Council)</text>
+  </g>
+
+  <!-- Bars: 2020 through 2026 forecast -->
+  <g font-family="Inter, sans-serif">
+    <!-- 2020: 255t -->
+    <rect x="60" y="275" width="38" height="45" fill="#D4A843" opacity="0.45"/>
+    <text x="79" y="335" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="monospace">2020</text>
+    <text x="79" y="268" font-size="11" fill="#F1F5F9" text-anchor="middle" font-weight="700">255</text>
+
+    <!-- 2021: 450t -->
+    <rect x="118" y="239" width="38" height="81" fill="#D4A843" opacity="0.55"/>
+    <text x="137" y="335" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="monospace">2021</text>
+    <text x="137" y="232" font-size="11" fill="#F1F5F9" text-anchor="middle" font-weight="700">450</text>
+
+    <!-- 2022: 1082t -->
+    <rect x="176" y="125" width="38" height="195" fill="#D4A843"/>
+    <text x="195" y="335" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="monospace">2022</text>
+    <text x="195" y="118" font-size="11" fill="#F1F5F9" text-anchor="middle" font-weight="700">1,082</text>
+
+    <!-- 2023: 1037t -->
+    <rect x="234" y="133" width="38" height="187" fill="#D4A843"/>
+    <text x="253" y="335" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="monospace">2023</text>
+    <text x="253" y="126" font-size="11" fill="#F1F5F9" text-anchor="middle" font-weight="700">1,037</text>
+
+    <!-- 2024: 1045t -->
+    <rect x="292" y="131" width="38" height="189" fill="#D4A843"/>
+    <text x="311" y="335" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="monospace">2024</text>
+    <text x="311" y="124" font-size="11" fill="#F1F5F9" text-anchor="middle" font-weight="700">1,045</text>
+
+    <!-- 2025: 863t -->
+    <rect x="350" y="165" width="38" height="155" fill="#D4A843" opacity="0.85"/>
+    <text x="369" y="335" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="monospace">2025</text>
+    <text x="369" y="158" font-size="11" fill="#F1F5F9" text-anchor="middle" font-weight="700">863</text>
+
+    <!-- 2026 forecast: 800t -->
+    <rect x="408" y="177" width="38" height="143" fill="#34D399"/>
+    <text x="427" y="335" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="monospace">2026f</text>
+    <text x="427" y="170" font-size="11" fill="#F1F5F9" text-anchor="middle" font-weight="700">~800</text>
+  </g>
+
+  <!-- Axes -->
+  <line x1="50" y1="320" x2="470" y2="320" stroke="#52647A" stroke-width="1.5"/>
+  <line x1="50" y1="320" x2="50" y2="110" stroke="#52647A" stroke-width="1.5"/>
+  <text x="45" y="324" font-size="10" fill="#94A3B8" text-anchor="end" font-family="monospace">0</text>
+  <text x="45" y="220" font-size="10" fill="#94A3B8" text-anchor="end" font-family="monospace">500</text>
+  <text x="45" y="125" font-size="10" fill="#94A3B8" text-anchor="end" font-family="monospace">1,000</text>
+
+  <!-- Top buyers panel -->
+  <g font-family="Inter, sans-serif">
+    <text x="510" y="115" font-size="16" font-weight="800" fill="#F1F5F9">Top Buyers (2025-26)</text>
+
+    <g transform="translate(510, 140)">
+      <rect x="0" y="0" width="260" height="38" rx="6" fill="#111827" stroke="rgba(148,163,184,0.1)"/>
+      <text x="14" y="23" font-size="13" fill="#F1F5F9" font-weight="700">🇨🇳 China (PBOC)</text>
+      <text x="246" y="23" font-size="13" fill="#D4A843" text-anchor="end" font-weight="700">2,850 t</text>
+    </g>
+
+    <g transform="translate(510, 186)">
+      <rect x="0" y="0" width="260" height="38" rx="6" fill="#111827" stroke="rgba(148,163,184,0.1)"/>
+      <text x="14" y="23" font-size="13" fill="#F1F5F9" font-weight="700">🇵🇱 Poland (NBP)</text>
+      <text x="246" y="23" font-size="13" fill="#D4A843" text-anchor="end" font-weight="700">+80 t</text>
+    </g>
+
+    <g transform="translate(510, 232)">
+      <rect x="0" y="0" width="260" height="38" rx="6" fill="#111827" stroke="rgba(148,163,184,0.1)"/>
+      <text x="14" y="23" font-size="13" fill="#F1F5F9" font-weight="700">🇰🇿 Kazakhstan</text>
+      <text x="246" y="23" font-size="13" fill="#D4A843" text-anchor="end" font-weight="700">+25 t</text>
+    </g>
+
+    <g transform="translate(510, 278)">
+      <rect x="0" y="0" width="260" height="38" rx="6" fill="#111827" stroke="rgba(148,163,184,0.1)"/>
+      <text x="14" y="23" font-size="13" fill="#F1F5F9" font-weight="700">🇧🇷 Brazil (BCB)</text>
+      <text x="246" y="23" font-size="13" fill="#D4A843" text-anchor="end" font-weight="700">+15 t</text>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="400" y="390" font-size="11" fill="#52647A" text-anchor="middle" font-family="monospace">Sources: World Gold Council · PBOC reserves disclosure · April 2026</text>
+</svg>
