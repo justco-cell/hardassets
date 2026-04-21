@@ -2,6 +2,120 @@
 // Content is HTML strings for zero-dependency rendering
 export const POSTS = [
   {
+    slug: "central-bank-gold-buying-2026",
+    title: "Central Bank Gold Buying Surge in 2026: Why Governments Are Hoarding Gold",
+    date: "2026-04-21",
+    excerpt: "Central banks bought 1,100+ tonnes of gold in 2025 — a record. In April 2026, they're still buying. Here's what the data shows and why it signals a major shift in global monetary policy.",
+    metaDescription: "Central banks buying record gold in 2026 — what it means for precious metals investors. De-dollarization, monetary reset, and portfolio strategy explained.",
+    thumbnail: "/images/blog/central-bank-gold-buying.svg",
+    heroImage: "/images/blog/central-bank-gold-buying.svg",
+    content: `
+      <p>Central banks bought over 1,100 tonnes of gold in 2025. That's the third consecutive year of record-level purchases. In 2026, they haven't stopped.</p>
+
+      <p>This isn't small money. It's not a casual move. Central banks — the institutions that control national currency, set monetary policy, and hold the largest reserves on Earth — are dumping fiat currency and buying physical gold at historic rates. If you're trying to understand the precious metals bull market, the geopolitical landscape, or the future of the US dollar, <strong>central bank gold buying is the single most important signal</strong>.</p>
+
+      <h2>The Numbers: Central Bank Gold Purchases in 2025-2026</h2>
+
+      <p><strong>2023:</strong> 1,037 tonnes purchased — breaking a 55-year record.</p>
+      <p><strong>2024:</strong> 1,037 tonnes purchased — matching the record.</p>
+      <p><strong>2025:</strong> 1,100+ tonnes purchased — new all-time high.</p>
+      <p><strong>2026 (first quarter):</strong> Central banks continued buying, with China, India, Poland, Turkey, and Singapore leading.</p>
+
+      <p>For context, 1,100 tonnes is enough to fill 200 standard shipping containers. The total value: at current spot prices of $4,763/oz, that's roughly $180+ billion in gold — more than the GDP of many nations.</p>
+
+      <p>This three-year trend represents a structural shift. Central banks don't buy gold on a whim. Every purchase signals a loss of confidence in some other asset — almost always US Treasury bonds and the US dollar.</p>
+
+      <h2>Which Central Banks Are Buying? The De-Dollarization Club</h2>
+
+      <p>The central bank gold buying surge is led by the countries with the most to gain from reducing their reliance on the US dollar:</p>
+
+      <ul>
+        <li><strong>China:</strong> The People's Bank of China has been in a multi-year buying cycle, adding gold at a steady pace to diversify away from USD reserves.</li>
+        <li><strong>India:</strong> The Reserve Bank of India bought 100+ tonnes in 2024-2025, signaling confidence in a gold-backed alternative monetary order.</li>
+        <li><strong>Turkey:</strong> Central Bank of the Republic of Turkey increased reserves by 60% over recent years, making it one of the top 5 gold-holding nations.</li>
+        <li><strong>Poland:</strong> Bought 100 tonnes in a single purchase in 2024 — the largest single purchase by any central bank in decades.</li>
+        <li><strong>Singapore, Brazil, UAE, Saudi Arabia:</strong> All added significant gold positions in 2024-2025.</li>
+      </ul>
+
+      <p>Notice who's NOT on the buying list: the US Federal Reserve, the European Central Bank, and most Western central banks have not materially increased holdings. Western institutions are sitting tight. Eastern and emerging-market central banks are rotating OUT of dollars and INTO gold.</p>
+
+      <h2>Why Central Banks Buy Gold: The Official Reasons</h2>
+
+      <p>Central bankers don't publicly admit "we're ditching the dollar." Instead, they cite official rationales:</p>
+
+      <p><strong>1. Diversification of reserves.</strong> Every central bank holds a mix of assets — US Treasuries, euros, yen, IMF SDRs, and gold. When any one reserve asset becomes risky or overvalued, central banks rebalance toward the safe asset: gold.</p>
+
+      <p><strong>2. Gold has zero counterparty risk.</strong> A US Treasury bill is a promise from the US government to repay. If the US defaults (or inflates away its debt), Treasuries lose value. Gold is a bar of metal in a vault — it's nobody's liability. Every ounce of gold is as good as every other ounce. No default risk, no political risk.</p>
+
+      <p><strong>3. Gold is liquid at any price.</strong> No matter the global chaos — war, cyber attacks, financial meltdown — gold can be sold for local currency anywhere on Earth. Treasuries can be frozen, delisted, or weaponized (as seen with Russia sanctions in 2022). Gold cannot.</p>
+
+      <p><strong>4. De-risking from the dollar.</strong> This is the unspoken reason. As the dollar's share of global reserves fell from 72% in 2000 to 56.92% in 2025, central banks recognized the trend: the dollar's reserve status is weakening. Building gold reserves is a hedge against that outcome.</p>
+
+      <h2>Why Now? The Macro Backdrop</h2>
+
+      <p>Central bank gold buying accelerated starting in 2022-2023 for specific reasons:</p>
+
+      <p><strong>Reason 1: US Debt Crisis</strong><br/>
+      The US national debt exceeded $36 trillion in 2025. Interest payments exceed defense spending — over $1 trillion annually. The only paths forward are massive tax increases (politically unlikely), spending cuts (politically unlikely), or currency debasement (highly likely). Central banks know this and are positioning accordingly.</p>
+
+      <p><strong>Reason 2: BRICS and De-Dollarization</strong><br/>
+      The BRICS bloc launched gold-backed settlement mechanisms in 2025, creating an alternative to the US dollar for international trade. Brazil, Russia, India, China, and South Africa represent 3 billion people. If they succeed in building an alternative payment system, the dollar's reserve status diminishes. Central banks want to be positioned in gold when that happens.</p>
+
+      <p><strong>Reason 3: Geopolitical Fragmentation</strong><br/>
+      The US has weaponized its financial system — freezing Russian reserves (2022), sanctioning Iranian banks, blocking SWIFT access for targets it dislikes. Other nations are watching and building redundancy. Gold stored in your own vaults cannot be frozen by Washington.</p>
+
+      <p><strong>Reason 4: Inflation That Won't Die</strong><br/>
+      Despite rate hikes, inflation stayed sticky through 2024-2025. This signals either that the Fed doesn't have control (bad for the dollar) or that structural forces are driving inflation (also bad for the dollar). Either way, gold is the traditional hedge.</p>
+
+      <p><strong>Reason 5: Long-Cycle Monetary Reset Signals</strong><br/>
+      History shows major monetary resets happen roughly every 50-70 years. The last reset was 1944 (Bretton Woods). We're approaching the 80-year mark. Central banks that lived through or studied the 1980s gold spike know what's coming — a massive re-rating of gold in the next monetary system. Positioning early is rational.</p>
+
+      <h2>What Central Bank Buying Signals About Future Gold Prices</h2>
+
+      <p>If central banks are right about their thesis — that fiat currencies will debase, that the dollar will lose reserve status, that gold will be re-monetized — then current gold prices are still low.</p>
+
+      <p>Think about it: central banks have purchasing power (they can print money). If they're buying gold at $4,763/oz, they're saying "this is cheap relative to what's coming." They wouldn't be buying at all-time lows (that would be foolish). They're buying in a bull market because they think it's going much higher.</p>
+
+      <p>Academic models and central banker hints suggest gold could be heading toward $7,000–$10,000/oz over the next 5-10 years. That's not consensus Wall Street thinking, but it's what the capital flows (especially central bank flows) suggest.</p>
+
+      <h2>What This Means for Your Portfolio</h2>
+
+      <p>Central bank gold buying is a signal. It tells you:</p>
+
+      <p><strong>1. Precious metals will likely outperform paper assets for years to come.</strong> If central banks are rotating out of Treasuries into gold, follow them. <a href="/blog/hard-assets-vs-paper-assets">Hard assets are outperforming paper assets for a reason</a>.</p>
+
+      <p><strong>2. Your allocation should reflect this shift.</strong> The academic consensus is 5-15% gold. If you're convinced by the central bank thesis, <a href="/blog/how-much-gold-should-you-own">moving toward 15-25% gold makes sense</a>. You're not betting against central banks; you're aligning with them.</p>
+
+      <p><strong>3. Silver will likely outperform gold.</strong> The <a href="/blog/gold-silver-ratio-what-it-means">gold/silver ratio is near 85:1 — historically high</a>. When de-dollarization accelerates and inflation spikes, silver's industrial demand plus its rarity will drive outsize gains. Many investors are building a 25-30% silver allocation within their metals holdings.</p>
+
+      <p><strong>4. Real estate and crypto also benefit from this thesis.</strong> If the dollar is weakening and hard assets are re-rating higher, <a href="/blog/what-is-real-estate-syndication">real estate syndications</a> with fixed-rate preferred returns become more attractive (they lock in real returns in an inflating currency), and Bitcoin's fixed supply narrative gains credibility.</p>
+
+      <h2>Track Your Metals Position Against the Central Bank Thesis</h2>
+
+      <p>Here's the practical question: if central banks are buying and allocating 10-25% to gold, and you don't know your own gold allocation, you're flying blind.</p>
+
+      <p><strong>HardAssets.io</strong> is the free portfolio tracker that solves this. It shows you:</p>
+
+      <ul>
+        <li>Your actual gold and silver holdings (physical bars, coins, ETFs) alongside live spot prices</li>
+        <li>Your real allocation vs your target allocation — so you can see if you're aligned with the central bank thesis or not</li>
+        <li>Silver stacking data with automatic oz-per-unit conversion (100oz bars vs 1oz coins)</li>
+        <li>Platinum, palladium, and all precious metals in one place</li>
+        <li>Integration with your real estate syndications, crypto, and collectibles for a complete hard asset picture</li>
+      </ul>
+
+      <p>The dashboard shows you exactly what the central banks know: what percentage of your total wealth is in tangible assets, and whether you're over or under-allocated relative to your goal. <strong><a href="/?demo=1">Try the free live demo at HardAssets.io</a></strong> — see how your allocation stacks up against the central bank playbook.</p>
+
+      <h2>The Bottom Line: Central Bankers Are Sending You a Message</h2>
+
+      <p>When institutions that control global monetary policy stop buying Treasury bonds and start buying gold instead — and they do it for three years in a row — that's not noise. That's a signal.</p>
+
+      <p>You don't have to agree with their thesis. But it's worth listening to what they're doing with their money, not what they're saying with their words.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Always consult a qualified financial advisor before making investment decisions.</em></p>
+    `
+  },
+  {
     slug: "why-track-hard-assets-separately",
     title: "Why You Should Track Hard Assets Separately from Your Brokerage",
     date: "2026-03-29",

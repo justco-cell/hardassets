@@ -1,0 +1,52 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#0B0F1A"/>
+
+  <!-- Grid lines -->
+  <line x1="80" y1="50" x2="80" y2="380" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+  <line x1="80" y1="380" x2="750" y2="380" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="400" y="30" font-size="24" font-weight="700" fill="#F1F5F9" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Central Bank Gold Purchases</text>
+  <text x="400" y="52" font-size="14" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">2023-2025 Record-Breaking Buying Surge</text>
+
+  <!-- Y-axis labels (tonnes) -->
+  <text x="70" y="385" font-size="12" fill="#94A3B8" text-anchor="end" font-family="monospace">0T</text>
+  <text x="70" y="325" font-size="12" fill="#94A3B8" text-anchor="end" font-family="monospace">400T</text>
+  <text x="70" y="265" font-size="12" fill="#94A3B8" text-anchor="end" font-family="monospace">800T</text>
+  <text x="70" y="205" font-size="12" fill="#94A3B8" text-anchor="end" font-family="monospace">1,200T</text>
+
+  <!-- Y-axis grid -->
+  <line x1="75" y1="320" x2="750" y2="320" stroke="rgba(212,168,67,0.1)" stroke-width="1"/>
+  <line x1="75" y1="260" x2="750" y2="260" stroke="rgba(212,168,67,0.1)" stroke-width="1"/>
+  <line x1="75" y1="200" x2="750" y2="200" stroke="rgba(212,168,67,0.1)" stroke-width="1"/>
+
+  <!-- 2023 Bar -->
+  <rect x="150" y="160" width="80" height="220" fill="#D4A843" rx="4"/>
+  <text x="190" y="395" font-size="13" font-weight="600" fill="#F1F5F9" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">2023</text>
+  <text x="190" y="145" font-size="14" font-weight="700" fill="#D4A843" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">1,037T</text>
+  <text x="190" y="163" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">55-year record</text>
+
+  <!-- 2024 Bar -->
+  <rect x="310" y="160" width="80" height="220" fill="#D4A843" rx="4"/>
+  <text x="350" y="395" font-size="13" font-weight="600" fill="#F1F5F9" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">2024</text>
+  <text x="350" y="145" font-size="14" font-weight="700" fill="#D4A843" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">1,037T</text>
+  <text x="350" y="163" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">matched 2023</text>
+
+  <!-- 2025 Bar (slightly taller) -->
+  <rect x="470" y="145" width="80" height="235" fill="#34D399" rx="4"/>
+  <text x="510" y="395" font-size="13" font-weight="600" fill="#F1F5F9" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">2025</text>
+  <text x="510" y="130" font-size="14" font-weight="700" fill="#34D399" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">1,100T</text>
+  <text x="510" y="148" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">all-time high</text>
+
+  <!-- Key insight box -->
+  <rect x="630" y="140" width="110" height="120" fill="rgba(212,168,67,0.1)" stroke="rgba(212,168,67,0.3)" stroke-width="1" rx="8"/>
+  <text x="685" y="163" font-size="11" font-weight="700" fill="#D4A843" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Key Signal:</text>
+  <text x="640" y="185" font-size="10" fill="#CBD5E1" text-anchor="start" font-family="Inter,-apple-system,sans-serif">Central banks are</text>
+  <text x="640" y="201" font-size="10" fill="#CBD5E1" text-anchor="start" font-family="Inter,-apple-system,sans-serif">dumping fiat</text>
+  <text x="640" y="217" font-size="10" fill="#CBD5E1" text-anchor="start" font-family="Inter,-apple-system,sans-serif">currencies for</text>
+  <text x="640" y="233" font-size="10" fill="#CBD5E1" text-anchor="start" font-family="Inter,-apple-system,sans-serif">physical gold</text>
+
+  <!-- Footer -->
+  <text x="400" y="430" font-size="11" fill="#475569" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Source: World Gold Council | Value: ~$180B+ at current spot prices</text>
+</svg>
