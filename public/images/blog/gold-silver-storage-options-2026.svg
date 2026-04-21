@@ -1,0 +1,56 @@
+<svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="stgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#D4A843;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <rect width="600" height="480" fill="#0B0F1A"/>
+
+  <text x="300" y="35" font-size="20" font-weight="bold" fill="#F1F5F9" text-anchor="middle">How to Store Physical Gold and Silver in 2026</text>
+  <text x="300" y="58" font-size="12" fill="#94A3B8" text-anchor="middle">Storage options ranked by stack size, cost, and accessibility</text>
+
+  <!-- Home safe -->
+  <g>
+    <rect x="40" y="80" width="520" height="90" fill="#1E293B" stroke="#D4A843" stroke-width="1.5" rx="6"/>
+    <circle cx="85" cy="125" r="22" fill="#D4A843"/>
+    <text x="85" y="132" font-size="22" font-weight="bold" fill="#0B0F1A" text-anchor="middle">🏠</text>
+    <text x="120" y="108" font-size="15" font-weight="700" fill="#F1F5F9">Home Safe</text>
+    <text x="120" y="128" font-size="12" fill="#CBD5E1">Best for: stacks under $25,000. TL-30 rated, bolted to floor, fireproof.</text>
+    <text x="120" y="146" font-size="12" fill="#CBD5E1">Cost: $500–$3,000 one-time. Pros: instant access, no fees. Cons: theft risk.</text>
+    <text x="120" y="164" font-size="11" fill="#94A3B8" font-style="italic">Homeowners insurance typically caps coverage at $1,000–$2,500.</text>
+  </g>
+
+  <!-- Safe deposit box -->
+  <g>
+    <rect x="40" y="185" width="520" height="90" fill="#1E293B" stroke="#10B981" stroke-width="1.5" rx="6"/>
+    <circle cx="85" cy="230" r="22" fill="#10B981"/>
+    <text x="85" y="237" font-size="22" font-weight="bold" fill="#0B0F1A" text-anchor="middle">🏦</text>
+    <text x="120" y="213" font-size="15" font-weight="700" fill="#F1F5F9">Bank Safe Deposit Box</text>
+    <text x="120" y="233" font-size="12" fill="#CBD5E1">Best for: $25,000–$250,000. Vault-grade protection during bank hours.</text>
+    <text x="120" y="251" font-size="12" fill="#CBD5E1">Cost: $60–$300 per year. Pros: hardened security. Cons: not FDIC-insured.</text>
+    <text x="120" y="269" font-size="11" fill="#94A3B8" font-style="italic">Access limited to branch hours. Buy private insurance separately.</text>
+  </g>
+
+  <!-- Private vault -->
+  <g>
+    <rect x="40" y="290" width="520" height="90" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5" rx="6"/>
+    <circle cx="85" cy="335" r="22" fill="#F59E0B"/>
+    <text x="85" y="342" font-size="22" font-weight="bold" fill="#0B0F1A" text-anchor="middle">🔒</text>
+    <text x="120" y="318" font-size="15" font-weight="700" fill="#F1F5F9">Private Depository Vault</text>
+    <text x="120" y="338" font-size="12" fill="#CBD5E1">Best for: $100,000+. Allocated or segregated storage with full insurance.</text>
+    <text x="120" y="356" font-size="12" fill="#CBD5E1">Cost: 0.35%–0.75% of value annually. Pros: insured, audited. Cons: fees.</text>
+    <text x="120" y="374" font-size="11" fill="#94A3B8" font-style="italic">Examples: Brink's, Delaware Depository, Texas Bullion Depository.</text>
+  </g>
+
+  <!-- Split strategy -->
+  <g>
+    <rect x="40" y="395" width="520" height="65" fill="#1E293B" stroke="#06B6D4" stroke-width="1.5" rx="6"/>
+    <circle cx="85" cy="427" r="22" fill="#06B6D4"/>
+    <text x="85" y="434" font-size="22" font-weight="bold" fill="#0B0F1A" text-anchor="middle">⚖️</text>
+    <text x="120" y="418" font-size="15" font-weight="700" fill="#F1F5F9">The Split Strategy (Recommended)</text>
+    <text x="120" y="438" font-size="12" fill="#CBD5E1">Keep 10–20% at home for emergencies. Store the rest in a vault or box.</text>
+    <text x="120" y="455" font-size="11" fill="#94A3B8" font-style="italic">Spreads single-point-of-failure risk without sacrificing access.</text>
+  </g>
+</svg>

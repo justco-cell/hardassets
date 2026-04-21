@@ -2,6 +2,112 @@
 // Content is HTML strings for zero-dependency rendering
 export const POSTS = [
   {
+    slug: "how-to-store-physical-gold-silver-safely",
+    title: "How to Store Physical Gold and Silver Safely at Home in 2026",
+    date: "2026-04-21",
+    excerpt: "With gold at $4,800/oz and silver nearing $80/oz, your stack is worth more than ever — and that changes how you should store it. Home safes, safe deposit boxes, and private vaults compared for today's price environment.",
+    metaDescription: "How to store physical gold and silver safely in 2026: home safes, safe deposit boxes, and private vaults compared. Updated for today's $4,800 gold market.",
+    thumbnail: "/images/blog/gold-silver-storage-options-2026.svg",
+    heroImage: "/images/blog/gold-silver-storage-options-2026.svg",
+    content: `
+      <p>Gold closed at <strong>$4,782 per ounce</strong> on April 21, 2026 — up roughly 43% year over year. Silver is nearly $80 per ounce, up an astonishing 180% since the start of 2025. If you started stacking two years ago, the dollar value of your collection has probably doubled. That changes everything about <strong>how to store physical gold and silver</strong> safely.</p>
+
+      <p>A 20-coin stack of American Silver Eagles that cost $700 in 2024 is worth roughly $1,800 today. A 10-oz gold position that cost $22,000 to accumulate is now worth nearly $48,000. Your old fireproof document safe from Home Depot is no longer appropriate security. Neither is the shoebox in the closet. This guide walks through how to store physical gold and silver safely in today's market — real options, what they cost, who they protect against, and how to pick the right mix for your stack size.</p>
+
+      <h2>Why Storage Strategy Matters More in 2026</h2>
+
+      <p>Every major stacker community — from r/Wallstreetsilver to the Silver Stackers forum — has shifted conversations from "what to buy" to "how to protect what I already have." The reason is math. When your precious metals portfolio was worth $15,000, a basic home safe was probably fine. At $40,000 or $80,000, you are now in a different threat model.</p>
+
+      <p>Homeowners insurance, for example, typically caps coverage on precious metals at $1,000 to $2,500 unless you specifically schedule them on a rider. Most policies also exclude coins and bullion after a certain quantity. That means a burglary of a $50,000 stack could leave you with a $2,000 payout and zero recourse.</p>
+
+      <p>Beyond theft, 2026 has delivered a reminder that geopolitical shocks move quickly. The Strait of Hormuz tensions earlier this month pushed silver up 5% in a single session. Your storage plan should assume that your metals may rise or fall 10% in a week and that the dollar value of what's in your safe is a moving target.</p>
+
+      <h2>The Three Main Options for How to Store Physical Gold and Silver</h2>
+
+      <p>For <strong>precious metals storage in 2026</strong>, investors realistically have three options for how to store physical gold and silver: home safes, bank safe deposit boxes, and private depository vaults. Each has tradeoffs around cost, accessibility, insurability, and privacy. Most serious stackers end up using a blend.</p>
+
+      <p><img src="/images/blog/gold-silver-storage-options-2026.svg" alt="How to store physical gold and silver in 2026: home safe, bank box, and private vault compared" style="width:100%;border-radius:12px;margin:16px 0;border:1px solid rgba(148,163,184,0.15);"/></p>
+
+      <h3>Option 1: Home Safe</h3>
+
+      <p>A quality home safe gives you instant access and full privacy. No one — not a bank employee, not a depository, not the government through subpoena — knows what's inside. For stacks under about $25,000, this is usually the right call.</p>
+
+      <p>The key word is <em>quality</em>. A $200 big-box-store safe is essentially a lockbox. Burglars with a pry bar open them in minutes. You want at minimum a <strong>UL-rated TL-15 or TL-30 burglary safe</strong>, which means it resists tool attack for 15 or 30 minutes. Expect to spend $1,500 to $3,500 for a decent residential-grade unit. Bolt it to a concrete floor — an unsecured 300-pound safe can be wheeled away on a dolly in three minutes.</p>
+
+      <h3>Option 2: Bank Safe Deposit Box</h3>
+
+      <p>Safe deposit boxes at commercial banks offer vault-grade physical security for $60 to $300 per year depending on box size. For mid-sized stacks ($25,000 to $250,000), they are the most cost-effective option. The box itself is inside the bank's vault, which is designed to withstand attacks that would defeat any residential safe.</p>
+
+      <p>There are three important caveats. First, <a href="https://www.fdic.gov/consumers/consumer/news/cnfall18/safedepositbox.html" rel="noopener">safe deposit boxes are not FDIC-insured</a> — the bank is not liable for contents unless you can prove negligence. Second, access is limited to bank business hours, which means no emergency weekend retrievals. Third, banks can (and have) been sealed during bank holidays, disasters, or legal proceedings. For those risks, buy a private insurance rider specifically listing your bullion by serial number or weight.</p>
+
+      <h3>Option 3: Private Depository Vault</h3>
+
+      <p>For stacks above $100,000, a private depository — Brink's, Delaware Depository, Texas Bullion Depository, International Depository Services — is the institutional-grade option. You typically pay 0.35% to 0.75% of the value stored per year, all-in with insurance included.</p>
+
+      <p>Two storage types matter here: <strong>allocated</strong> (your specific coins and bars, segregated by serial, audited) and <strong>unallocated</strong> (a claim on a pool of metal). Always choose allocated or segregated for physical holdings. Unallocated storage turns your bullion into a counterparty bet on the depository's balance sheet.</p>
+
+      <h2>What Is the Safest Way to Store Physical Gold and Silver?</h2>
+
+      <p>The safest way to store physical gold and silver depends on quantity. Under $25,000, use a TL-30 home safe bolted to the floor. From $25,000 to $250,000, add a bank safe deposit box with private insurance. Above $100,000, a private depository with allocated storage and full insurance offers the strongest protection.</p>
+
+      <h2>Home Storage Done Right: The Security Checklist</h2>
+
+      <p>Most stackers who choose home storage do so because they value privacy and instant access. Both are real benefits. But home storage only works if you follow a tight security checklist.</p>
+
+      <p><img src="/images/blog/home-safe-security-checklist-2026.svg" alt="Home storage security checklist for gold and silver — 7 rules for safe home storage of precious metals" style="width:100%;border-radius:12px;margin:16px 0;border:1px solid rgba(148,163,184,0.15);"/></p>
+
+      <p><strong>Pick the right safe.</strong> Don't buy a fireproof document safe and assume it will protect metal. Look for Underwriters Laboratories burglary ratings (TL-15, TL-30, or TL-30x6), not just fire ratings. A TL-30 rating means the safe resisted a professional attack with common tools for at least 30 minutes.</p>
+
+      <p><strong>Bolt it down.</strong> This is non-negotiable. A safe that isn't anchored to concrete is just an oversized lunchbox. Use expansion bolts or epoxy anchors sized to the safe's pre-drilled holes.</p>
+
+      <p><strong>Location matters.</strong> Don't put the safe in the master bedroom closet. That's the first spot professional burglars check. Interior basement closets, under stairs, or in a concealed wall cavity are better. Avoid garages — temperature swings and humidity damage silver toning.</p>
+
+      <p><strong>Fire rating counts.</strong> Gold melts at 1,948°F and silver at 1,763°F. A typical single-family-home fire burns at 1,100 to 1,500°F, but hot spots exceed that. Pay for a 90-minute or 120-minute fire rating. For truly irreplaceable numismatic coins, consider the extra cost of a UL Class 350-1 rated safe (keeps interior under 350°F for an hour).</p>
+
+      <p><strong>Buy a bullion insurance rider.</strong> As mentioned above, homeowners policies cap precious metals coverage at laughably low amounts. Call your insurer and ask specifically about a scheduled personal property rider for bullion. Expect to pay $5 to $10 per $1,000 of coverage per year. Some insurers require an appraisal; others accept purchase receipts.</p>
+
+      <p><strong>Keep an offline inventory.</strong> Photograph every coin and bar. Record serial numbers on bars, dates on coins, and the original purchase price (including <a href="/blog/precious-metals-premiums-spot-price">premium over spot</a>). Store one copy in a waterproof container with the safe, and another in a completely separate location — a trusted family member's home or a bank box. This inventory is what your insurance adjuster will want, and what your heirs will need.</p>
+
+      <p><strong>Operational security.</strong> Don't talk about your stack. Not at work, not on social media, not to neighbors. The biggest risk to home-stored precious metals is not random burglary — it's someone who knows you have it.</p>
+
+      <h2>How to Split Storage Across Multiple Locations</h2>
+
+      <p>The smartest stackers don't put everything in one place. A popular framework among veteran precious metals investors is the <strong>10/20/70 split</strong>: 10% at home for immediate access and emergencies, 20% in a bank safe deposit box for mid-tier security and moderate accessibility, and 70% in a private vault for the bulk of the portfolio.</p>
+
+      <p>Another common approach is the <strong>50/50 split</strong>: half at home, half in an off-site location. This works for stacks between $20,000 and $100,000 and gives you privacy plus disaster redundancy without depository fees.</p>
+
+      <p>Whichever split you choose, the principle is the same: <em>don't create a single point of failure</em>. A fire, flood, burglary, or natural disaster shouldn't wipe out your entire hard asset position. Diversification of location is as important as diversification of asset class.</p>
+
+      <h2>Legal and Tax Considerations Stackers Miss</h2>
+
+      <p>Storage choices affect more than security. They also shape how your metals are treated for tax, estate planning, and retirement accounts.</p>
+
+      <p><strong>Gold IRAs require IRS-approved depositories.</strong> If your gold or silver is in a self-directed IRA, you legally cannot take home delivery or store it at home. The IRS treats that as a distribution subject to income tax and a 10% early withdrawal penalty if you're under 59½. <a href="https://www.irs.gov/retirement-plans/plan-participant-employee/retirement-topics-ira-contribution-limits" rel="noopener">IRS rules</a> require custodial storage with approved vaults like Delaware Depository or Brink's.</p>
+
+      <p><strong>Estate planning requires documentation.</strong> If you die and your heirs can't find your stack — or don't know how to open the safe — those coins may be lost forever. Leave detailed instructions with your estate attorney, including location, combinations, and inventory. Update this annually.</p>
+
+      <p><strong>Reporting when you sell.</strong> Most precious metals sales don't trigger <a href="https://www.icta.com/dealer-reporting-guide/" rel="noopener">dealer 1099-B reporting</a>, but some do — 25+ oz of gold, 1000 oz of silver, and specific coin types. Keep records of every purchase, including location-of-storage notes, so you can prove your cost basis and holding period at tax time.</p>
+
+      <h2>How to Track Your Gold and Silver Storage in Your Portfolio</h2>
+
+      <p>Once you've locked down storage, the next problem is visibility. Most stackers own metals across multiple locations — some at home, some in a bank box, maybe some in an IRA vault — and the total never appears in any single account statement. That's exactly the problem <strong>HardAssets.io</strong> solves.</p>
+
+      <p>HardAssets.io is a free portfolio dashboard built for hard asset investors. You can log each position with its exact weight, purity, purchase price (including premium), and <em>storage location</em>. Live spot prices from metals.dev update gold, silver, platinum, and palladium values in real time. You see your total stack value, your allocation, and your unrealized gain or loss — all in one view.</p>
+
+      <p>It covers more than metals: real estate syndications, crypto (via CoinGecko), private notes, collectibles, and direct real estate all live in the same dashboard. No bank connection required, no broker integration, just clean manual tracking designed for people who own things banks don't see. <strong><a href="/?demo=1">Start tracking for free at HardAssets.io</a></strong> — the live demo loads with sample positions so you can see how storage-location tracking works before you sign up.</p>
+
+      <h2>The Bottom Line on Precious Metals Storage</h2>
+
+      <p>Knowing how to store physical gold and silver is a decision you make once and live with for years. In the current price environment — gold near $4,800, silver near $80, and geopolitical volatility pushing both — getting it right matters more than it did three years ago. Start with an honest assessment of your stack's current value. Pick the storage mix that fits that value, not the value you had when you first started buying. Bolt down your safe. Insure your bullion. Keep an offline inventory. Split across locations. And track the whole picture in one place so you can make informed allocation decisions.</p>
+
+      <p>For more context on building a balanced stack, read our guides on <a href="/blog/silver-stacking-for-beginners">silver stacking for beginners</a>, <a href="/blog/how-much-gold-should-you-own">how much gold you should own</a>, and <a href="/blog/precious-metals-premiums-spot-price">understanding premiums over spot</a>. If you want to see the full tracker comparison, here's our breakdown of the <a href="/blog/best-precious-metals-portfolio-trackers">best precious metals portfolio trackers</a>. And if you're new to thinking in terms of tangible wealth, start with <a href="/blog/why-track-hard-assets-separately">why hard assets need a separate tracker</a>.</p>
+
+      <p>Authoritative references used for market data: the <a href="https://www.gold.org/goldhub/gold-focus/2026/04/central-bank-gold-statistics-central-banks-stay-course-gold-february" rel="noopener">World Gold Council central bank statistics</a> and <a href="https://www.silverinstitute.org/silver-supply-demand/" rel="noopener">Silver Institute supply and demand reports</a>.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Always consult a qualified financial advisor before making investment decisions.</em></p>
+    `
+  },
+  {
     slug: "why-track-hard-assets-separately",
     title: "Why You Should Track Hard Assets Separately from Your Brokerage",
     date: "2026-03-29",
