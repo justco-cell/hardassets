@@ -1,0 +1,63 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#0B0F1A"/>
+
+  <!-- Axis -->
+  <line x1="100" y1="50" x2="100" y2="320" stroke="#1E293B" stroke-width="2"/>
+  <line x1="100" y1="320" x2="750" y2="320" stroke="#1E293B" stroke-width="2"/>
+
+  <!-- Y-axis labels (Million oz) -->
+  <text x="70" y="325" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">0</text>
+  <text x="70" y="270" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">100M</text>
+  <text x="70" y="215" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">200M</text>
+  <text x="70" y="160" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">300M</text>
+
+  <!-- Grid -->
+  <line x1="100" y1="265" x2="750" y2="265" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <line x1="100" y1="210" x2="750" y2="210" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <line x1="100" y1="155" x2="750" y2="155" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+  <!-- Line chart: COMEX silver stocks declining -->
+  <!-- 2020: 250M -->
+  <circle cx="140" cy="100" r="4" fill="#D4A843"/>
+  <!-- 2021: 220M -->
+  <circle cx="230" cy="148" r="4" fill="#D4A843"/>
+  <!-- 2022: 180M -->
+  <circle cx="320" cy="210" r="4" fill="#D4A843"/>
+  <!-- 2023: 140M -->
+  <circle cx="410" cy="262" r="4" fill="#D4A843"/>
+  <!-- 2024: 95M -->
+  <circle cx="500" cy="305" r="4" fill="#D4A843"/>
+  <!-- 2025: 65M -->
+  <circle cx="590" cy="335" r="4" fill="#D4A843"/>
+  <!-- 2026 (projected): 40M -->
+  <circle cx="680" cy="350" r="4" fill="#FF6B6B"/>
+
+  <!-- Lines connecting -->
+  <line x1="140" y1="100" x2="230" y2="148" stroke="#D4A843" stroke-width="2.5"/>
+  <line x1="230" y1="148" x2="320" y2="210" stroke="#D4A843" stroke-width="2.5"/>
+  <line x1="320" y1="210" x2="410" y2="262" stroke="#D4A843" stroke-width="2.5"/>
+  <line x1="410" y1="262" x2="500" y2="305" stroke="#D4A843" stroke-width="2.5"/>
+  <line x1="500" y1="305" x2="590" y2="335" stroke="#D4A843" stroke-width="2.5"/>
+  <!-- Dashed line for projection -->
+  <line x1="590" y1="335" x2="680" y2="350" stroke="#FF6B6B" stroke-width="2.5" stroke-dasharray="4,4"/>
+
+  <!-- X-axis labels -->
+  <text x="140" y="340" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">2020</text>
+  <text x="230" y="340" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">2021</text>
+  <text x="320" y="340" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">2022</text>
+  <text x="410" y="340" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">2023</text>
+  <text x="500" y="340" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">2024</text>
+  <text x="590" y="340" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">2025</text>
+  <text x="680" y="340" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">2026*</text>
+
+  <!-- Title -->
+  <text x="425" y="30" font-size="20" fill="#F1F5F9" font-family="Inter, sans-serif" text-anchor="middle" font-weight="800">COMEX Silver Stocks Depletion</text>
+
+  <!-- Legend -->
+  <circle cx="480" cy="370" r="3" fill="#D4A843"/>
+  <text x="490" y="374" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Historical</text>
+
+  <circle cx="580" cy="370" r="3" fill="#FF6B6B"/>
+  <text x="590" y="374" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Projected</text>
+</svg>
