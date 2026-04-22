@@ -1,0 +1,60 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="32" font-size="23" font-weight="700" fill="#F1F5F9" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Dollar Cost Averaging Gold &amp; Silver in 2026</text>
+  <text x="400" y="54" font-size="13" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">$500/month buys more ounces when prices dip — fewer when they spike</text>
+
+  <!-- Chart axes -->
+  <line x1="80" y1="80" x2="80" y2="370" stroke="rgba(148,163,184,0.2)" stroke-width="1"/>
+  <line x1="80" y1="370" x2="740" y2="370" stroke="rgba(148,163,184,0.2)" stroke-width="1"/>
+
+  <!-- Y-axis labels (price) -->
+  <text x="72" y="374" font-size="11" fill="#94A3B8" text-anchor="end" font-family="monospace">$4,200</text>
+  <text x="72" y="304" font-size="11" fill="#94A3B8" text-anchor="end" font-family="monospace">$4,500</text>
+  <text x="72" y="234" font-size="11" fill="#94A3B8" text-anchor="end" font-family="monospace">$4,800</text>
+  <text x="72" y="164" font-size="11" fill="#94A3B8" text-anchor="end" font-family="monospace">$5,100</text>
+  <text x="72" y="94" font-size="11" fill="#94A3B8" text-anchor="end" font-family="monospace">$5,400</text>
+
+  <!-- Gold spot price line (volatile 2026 path) -->
+  <polyline points="110,180 190,200 270,280 350,250 430,160 510,200 590,240 670,190 720,210"
+    fill="none" stroke="#D4A843" stroke-width="3"/>
+
+  <!-- Buy dots (monthly purchases) -->
+  <circle cx="110" cy="180" r="8" fill="#0B0F1A" stroke="#D4A843" stroke-width="3"/>
+  <circle cx="190" cy="200" r="8" fill="#0B0F1A" stroke="#D4A843" stroke-width="3"/>
+  <circle cx="270" cy="280" r="10" fill="#34D399" stroke="#0B0F1A" stroke-width="3"/>
+  <circle cx="350" cy="250" r="9" fill="#34D399" stroke="#0B0F1A" stroke-width="3"/>
+  <circle cx="430" cy="160" r="7" fill="#0B0F1A" stroke="#D4A843" stroke-width="3"/>
+  <circle cx="510" cy="200" r="8" fill="#0B0F1A" stroke="#D4A843" stroke-width="3"/>
+  <circle cx="590" cy="240" r="9" fill="#34D399" stroke="#0B0F1A" stroke-width="3"/>
+  <circle cx="670" cy="190" r="7" fill="#0B0F1A" stroke="#D4A843" stroke-width="3"/>
+  <circle cx="720" cy="210" r="8" fill="#0B0F1A" stroke="#D4A843" stroke-width="3"/>
+
+  <!-- Month labels -->
+  <text x="110" y="388" font-size="10" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Sep</text>
+  <text x="190" y="388" font-size="10" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Oct</text>
+  <text x="270" y="388" font-size="10" fill="#34D399" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Nov</text>
+  <text x="350" y="388" font-size="10" fill="#34D399" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Dec</text>
+  <text x="430" y="388" font-size="10" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Jan</text>
+  <text x="510" y="388" font-size="10" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Feb</text>
+  <text x="590" y="388" font-size="10" fill="#34D399" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Mar</text>
+  <text x="670" y="388" font-size="10" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Apr</text>
+
+  <!-- Annotations -->
+  <text x="270" y="310" font-size="10" font-weight="600" fill="#34D399" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">dip: more oz</text>
+  <text x="430" y="148" font-size="10" font-weight="600" fill="#D4A843" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">peak: fewer oz</text>
+
+  <!-- Legend -->
+  <rect x="560" y="80" width="175" height="75" fill="rgba(212,168,67,0.08)" stroke="rgba(212,168,67,0.25)" stroke-width="1" rx="8"/>
+  <circle cx="578" cy="102" r="5" fill="#0B0F1A" stroke="#D4A843" stroke-width="2"/>
+  <text x="592" y="106" font-size="11" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Regular buy (higher $)</text>
+  <circle cx="578" cy="124" r="6" fill="#34D399" stroke="#0B0F1A" stroke-width="2"/>
+  <text x="592" y="128" font-size="11" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Dip buy (more oz)</text>
+  <line x1="573" y1="144" x2="585" y2="144" stroke="#D4A843" stroke-width="3"/>
+  <text x="592" y="148" font-size="11" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Gold spot price</text>
+
+  <!-- Footer -->
+  <text x="400" y="425" font-size="11" fill="#475569" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Illustrative $500/month DCA across 9 months of 2026 gold price volatility · HardAssets.io</text>
+</svg>

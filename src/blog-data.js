@@ -2,6 +2,115 @@
 // Content is HTML strings for zero-dependency rendering
 export const POSTS = [
   {
+    slug: "dollar-cost-averaging-gold-silver",
+    title: "Dollar Cost Averaging Into Gold and Silver in 2026: A Stacker's Strategy Guide",
+    date: "2026-04-22",
+    excerpt: "Gold fell 8% in January 2026 before ripping back to $4,759. Silver keeps whipsawing around $78. If you've been trying to time the metals market, you're losing. Here's why dollar cost averaging into gold and silver is the strategy the pros quietly use.",
+    metaDescription: "Dollar cost averaging into gold and silver in 2026 — a free step-by-step DCA strategy guide. Smooth your cost basis through volatile spot prices and stack consistently.",
+    thumbnail: "/images/blog/dca-gold-silver-2026.svg",
+    heroImage: "/images/blog/dca-gold-silver-2026.svg",
+    content: `
+      <p>Gold opened 2026 at roughly $5,100 an ounce, got crushed 8% in January, and has spent the last three months clawing back to $4,759. Silver is swinging between $75 and $82 on every Iran headline. Bitcoin just dropped under $76,000, bounced, and dropped again. If you've been trying to "buy the dip" — and actually executing — congratulations. You are in the extreme minority.</p>
+
+      <p>Everyone else has been paralyzed. That's why <strong>dollar cost averaging into gold and silver</strong> is the quiet workhorse strategy for serious stackers in 2026. It doesn't require you to call tops. It doesn't require you to be smarter than the market. It just requires you to show up every month and convert depreciating dollars into real metal — and let the math do the rest.</p>
+
+      <h2>What Is Dollar Cost Averaging in Precious Metals?</h2>
+
+      <p>Dollar cost averaging in precious metals is the practice of buying a fixed dollar amount of gold or silver on a fixed schedule — weekly, monthly, or quarterly — regardless of spot price. When metals are cheap, your fixed budget buys more ounces. When metals are expensive, it buys fewer. Over time, your average cost per ounce drifts below the market's average price, because you mechanically bought more during dips.</p>
+
+      <p>That's the entire idea. There's nothing magic about it. It's the same strategy that powers every 401(k) contribution in America, applied to physical gold and silver instead of index funds. The difference is that with metals, <strong>you</strong> have to set up the discipline — nobody does it for you.</p>
+
+      <h2>Why DCA Works Especially Well for Gold and Silver Investors</h2>
+
+      <p>Precious metals are uniquely suited to dollar cost averaging for three reasons rooted in how the market actually behaves.</p>
+
+      <p><strong>Metals are mean-reverting around long-term trends.</strong> Gold doesn't compound like a productive business — it tracks currency debasement, real rates, and geopolitical risk in long secular waves punctuated by sharp reversals. DCA captures those reversals automatically. When gold spiked to $5,160 in January, the crowd was euphoric. When it dumped to $4,500 weeks later, the crowd panicked. A DCA-er bought both — and the dip buy was worth 15% more ounces than the peak buy at the same dollar amount.</p>
+
+      <p><strong>Premiums over spot compress during quiet markets and explode during panic.</strong> When spot drops and the r/wallstreetsilver crowd rushes in, Silver Eagle premiums can jump from $4/oz to $12/oz overnight. By DCA-ing across calm and panic periods alike, you capture the cheap-premium windows that lump-sum buyers miss entirely. Your true all-in cost basis, including premiums, ends up meaningfully lower than someone who waited for "the right moment."</p>
+
+      <p><strong>Physical metals are emotionally hard to buy.</strong> Clicking "place order" for $5,000 of gold at an all-time high is psychologically brutal, even when the thesis is right. A $500 monthly autobuy removes the decision. You're not timing — you're stacking. This is the same reason <a href="/blog/silver-stacking-for-beginners">silver stacking</a> works as a multi-decade habit: the ritual beats the gymnastics.</p>
+
+      <h2>How to Set Up a Monthly Gold and Silver DCA Plan</h2>
+
+      <p>A workable precious metals DCA plan has four moving parts: amount, cadence, product mix, and automation. Here's how most serious stackers actually structure it.</p>
+
+      <p><strong>1. Pick a sustainable monthly number.</strong> Somewhere between 3% and 10% of your take-home pay, after essential bills and retirement contributions. If $800/month feels tight, $400/month for a year is better than $1,000/month that you quit in March. Consistency is the variable that matters most — the compounding effect of DCA only shows up if you actually show up.</p>
+
+      <p><strong>2. Choose a cadence you can execute.</strong> Monthly is the default. Some stackers prefer bi-weekly on payday because it lines up with cash flow and increases buying frequency (more data points = smoother cost basis). Quarterly works if your budget is lumpy — just pre-commit the amount.</p>
+
+      <p><strong>3. Decide your gold-to-silver mix in advance.</strong> The classic 2026 split is somewhere between 60/40 and 70/30 in favor of gold by dollar value. Why weight gold? It's the reserve asset central banks are hoarding and the lower-volatility store of wealth. Silver gets the smaller slice because it moves harder — when it runs, a 30% silver position can do the work of a 60% position. (If you want the deeper logic, our <a href="/blog/gold-silver-ratio-what-it-means">gold-to-silver ratio guide</a> explains the historical cycles.)</p>
+
+      <p><strong>4. Automate what you can.</strong> SD Bullion, JM Bullion, and several other dealers run autopay programs where a fixed dollar amount executes on the first of each month. OWNx and similar accumulation platforms let you stack fractional ounces automatically. Local coin shops won't do autopay, but a recurring calendar reminder plus a standing agreement with your LCS can accomplish the same thing.</p>
+
+      <p>A sample $600/month plan that works for most people: $420 into gold (alternating between 1/10oz fractional Gold Eagles and 1gram bars for flexibility), $180 into silver (split across Silver Eagles for liquidity and 10oz bars for premium efficiency). Over 12 months, that's $7,200 deployed across 12 entry points covering whatever price action 2026 throws at you.</p>
+
+      <h2>DCA vs Lump Sum: Which Is Better for Precious Metals in 2026?</h2>
+
+      <p>This is the most argued question in the community, and the honest answer is "it depends on what you're optimizing for." The academic research — Vanguard's widely-cited 2012 study and its updates — finds that lump-sum investing beats DCA about 66% of the time over long periods in equity markets, simply because markets go up more often than they go down.</p>
+
+      <p>Precious metals are different. Gold spent the 1980–2000 period grinding sideways and lower. Silver famously traded under $10/oz for more than a decade before its 2011 spike. If you'd lump-summed into metals in 1980, you'd have waited 27 years to break even in nominal terms. DCA would have pulled you through those periods far more tolerably.</p>
+
+      <p>In 2026 specifically, gold is trading near all-time highs after a 3-year bull run. Lump-summing $50,000 into gold at $5,100 in early January would already be sitting on an unrealized loss. A DCA-er deploying the same $50,000 over 12 months is currently near breakeven — because they bought the February dip, caught the March rally, and are still buying today. Same capital, dramatically different outcome, pure luck of entry timing.</p>
+
+      <p>The practical framework most stackers use: <strong>If your position is already established and you're just adding to it, DCA the additions.</strong> If you have a windfall and you're convinced metals are materially undervalued (we're probably not there today at $4,759 gold), a partial lump sum — say 30-50% — with the rest DCA'd over 6 months strikes a balance. Pure lump-summing at highs is the move most people regret.</p>
+
+      <p><img src="/images/blog/dca-vs-lump-sum-2026.svg" alt="DCA vs lump sum investing in gold 2026 comparison" style="width:100%;border-radius:12px;border:1px solid rgba(148,163,184,0.1);margin:16px 0"/></p>
+
+      <h2>How Much Should You Allocate to a Precious Metals DCA?</h2>
+
+      <p>Most mainstream financial advisors recommend 5-10% of total portfolio in precious metals. Ray Dalio's All-Weather model puts it at 7.5%. Investors convinced by the <a href="/blog/central-bank-gold-buying-2026">central bank gold buying thesis</a> typically run 15-25%. The right number depends on your conviction, your age, and your other holdings.</p>
+
+      <p>Whatever your target allocation, your DCA plan should be sized so you reach that target within a reasonable timeframe — usually 2-3 years. If you're 10% underweight metals on a $500,000 portfolio, that's a $50,000 gap. At $1,500/month, you close it in about three years while capturing whatever volatility shows up along the way. Our <a href="/blog/how-much-gold-should-you-own">portfolio allocation guide</a> walks through sizing in more detail.</p>
+
+      <h2>Common Mistakes Stackers Make with Dollar Cost Averaging</h2>
+
+      <p>DCA is simple, which is exactly why people screw it up. The mistakes are almost always behavioral, not technical.</p>
+
+      <p><strong>Stopping when prices drop.</strong> This is the single biggest failure mode. Gold falls 10%, your monthly buy "feels stupid," and you skip it. That was the most valuable purchase of the year. If you can't buy during corrections, you don't have a DCA strategy — you have a momentum strategy that happens to use a calendar.</p>
+
+      <p><strong>Ramping up during rallies.</strong> The mirror image. Gold rips 20% in a month, you get excited, and you triple your buy. You just inverted DCA — you're now lump-summing at highs and throttling down at lows. Keep the dollar amount fixed. The whole point is that you don't adjust based on price.</p>
+
+      <p><strong>Ignoring premiums.</strong> A 1oz Silver Eagle at a 15% premium over spot is a much worse DCA buy than a 10oz Sunshine bar at a 3% premium. If your monthly buy is small and premium-heavy (all Eagles), your effective cost basis is 8-10% above spot before you even start. Rotate in some lower-premium bars and rounds — especially when you're scaling a position. See our <a href="/blog/precious-metals-premiums-spot-price">precious metals premiums guide</a> for the details.</p>
+
+      <p><strong>Not tracking cost basis.</strong> After 18 months, you have 24 purchases at 24 different prices across 5 different products. Ask yourself your true average cost per ounce. If you can't answer in 10 seconds, you're flying blind — and you will definitely get your capital gains wrong at tax time.</p>
+
+      <p><strong>DCA-ing with borrowed money.</strong> If you're putting metals buys on a credit card that carries a balance, you're paying 22% APR to dollar cost average into a 6-8% annualized return. The math does not work. DCA with cash you already have.</p>
+
+      <h2>Tax and Cost Basis Considerations When DCA-ing Metals</h2>
+
+      <p>Here's where most DCA stackers quietly lose money: the IRS treats physical gold and silver as "collectibles," taxed at up to 28% on long-term capital gains (versus 15-20% for stocks). When you eventually sell, the IRS wants to know your cost basis for every lot — the amount you paid, when you bought it, and which specific coins or bars you're selling.</p>
+
+      <p>With a year of monthly DCA purchases, you have 12 tax lots. Two years, 24. Five years of aggressive stacking plus some ratio trades, you're easily past 80 lots across gold, silver, and fractional units. Without meticulous records, you'll default to FIFO (first-in, first-out) on sales — which usually means realizing your oldest, lowest-cost-basis coins first and paying maximum tax.</p>
+
+      <p>The fix is boring but critical: log every purchase the day you make it, with date, product, quantity, spot price, premium paid, and total out-of-pocket. A 2-minute discipline each month saves you thousands in tax optimization later. This is also where using a real <a href="/blog/best-precious-metals-portfolio-trackers">precious metals portfolio tracker</a> pays for itself.</p>
+
+      <h2>How to Track Your Gold and Silver DCA Progress</h2>
+
+      <p>A DCA strategy that isn't tracked is just wishful thinking. You need to know your running average cost per ounce, your total ounces accumulated, your unrealized gain/loss at current spot, and your actual allocation versus target — at any given moment, with live prices.</p>
+
+      <p>That's exactly what <a href="/">HardAssets.io</a> was built for. It's a free portfolio tracker specifically designed for dollar cost averaging into physical precious metals:</p>
+
+      <ul>
+        <li><strong>Per-purchase cost basis</strong> — log every DCA buy with date, product, and the actual price you paid including premium. The tracker computes your weighted average cost per ounce across all lots automatically.</li>
+        <li><strong>Live spot prices</strong> — gold and silver pull from metals.dev every few minutes, so your unrealized gain/loss reflects the real market, not yesterday's close.</li>
+        <li><strong>8 unit types</strong> — 1oz, 1/2oz, 1/4oz, 1/10oz, 1gram, 10oz, 100oz, 1kg — correctly converted so your totals add up whether you're stacking Maples or 100oz bars.</li>
+        <li><strong>Allocation vs target</strong> — set your target gold/silver percentage and see drift in real time. When metals run and allocation overshoots, you'll know.</li>
+        <li><strong>All hard assets in one place</strong> — DCA into gold and silver alongside your real estate syndications, private notes, crypto, and collectibles. One net worth number, one source of truth.</li>
+        <li><strong>CSV import</strong> — if you already have 18 months of buys in a spreadsheet, upload them and start tracking in minutes.</li>
+      </ul>
+
+      <p>Start tracking for free at <a href="/?demo=1">HardAssets.io</a> — the demo is pre-loaded with sample DCA positions so you can see exactly how cost basis accumulates across a dozen monthly buys. No sign-up required.</p>
+
+      <h2>The Bottom Line on DCA for Precious Metals</h2>
+
+      <p>Gold at $4,759, silver at $78, Bitcoin at $76,000 — the spot prices are going to keep moving, and you are not going to time them. Every stacker you respect figured this out eventually. The ones who built serious positions did it by converting consistent cash flow into consistent ounces, month after month, through every rally and every panic.</p>
+
+      <p>Set the dollar amount. Pick the cadence. Automate what you can. Track every purchase. Then get on with your life. In three years, you'll have an allocation that would have been psychologically impossible to build any other way — and a cost basis the tape can't touch.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Past performance does not guarantee future results. Always consult a qualified financial advisor before making investment decisions.</em></p>
+    `
+  },
+  {
     slug: "central-bank-gold-buying-2026",
     title: "Central Bank Gold Buying Surge in 2026: Why Governments Are Hoarding Gold",
     date: "2026-04-21",

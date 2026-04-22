@@ -1,0 +1,52 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="32" font-size="23" font-weight="700" fill="#F1F5F9" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">DCA vs. Lump Sum: $12,000 Into Gold in 2026</text>
+  <text x="400" y="54" font-size="13" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Illustrative scenarios through April 2026 (gold ~$4,759/oz)</text>
+
+  <!-- Left column: Lump Sum -->
+  <rect x="60" y="90" width="340" height="280" fill="rgba(212,168,67,0.05)" stroke="rgba(212,168,67,0.25)" stroke-width="1" rx="14"/>
+  <text x="230" y="122" font-size="17" font-weight="700" fill="#D4A843" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Lump Sum — Jan 2026</text>
+  <text x="230" y="146" font-size="12" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">$12,000 invested at $5,160/oz peak</text>
+
+  <!-- Lump sum bar -->
+  <rect x="110" y="180" width="240" height="44" fill="#D4A843" rx="6"/>
+  <text x="230" y="208" font-size="15" font-weight="700" fill="#0B0F1A" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">2.33 oz acquired</text>
+
+  <text x="80" y="250" font-size="12" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Avg cost basis:</text>
+  <text x="350" y="250" font-size="13" font-weight="700" fill="#F1F5F9" text-anchor="end" font-family="Inter,-apple-system,sans-serif">$5,160/oz</text>
+
+  <text x="80" y="278" font-size="12" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Value today ($4,759):</text>
+  <text x="350" y="278" font-size="13" font-weight="700" fill="#F87171" text-anchor="end" font-family="Inter,-apple-system,sans-serif">$11,088</text>
+
+  <text x="80" y="306" font-size="12" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Unrealized gain/loss:</text>
+  <text x="350" y="306" font-size="13" font-weight="700" fill="#F87171" text-anchor="end" font-family="Inter,-apple-system,sans-serif">-$912 (-7.6%)</text>
+
+  <text x="230" y="350" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">One entry. Whole position exposed to timing risk.</text>
+
+  <!-- Right column: DCA -->
+  <rect x="420" y="90" width="340" height="280" fill="rgba(52,211,153,0.05)" stroke="rgba(52,211,153,0.25)" stroke-width="1" rx="14"/>
+  <text x="590" y="122" font-size="17" font-weight="700" fill="#34D399" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">DCA — $3K/month × 4</text>
+  <text x="590" y="146" font-size="12" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Jan–Apr 2026 across price swings</text>
+
+  <!-- DCA bar (slightly longer, reflects more ounces) -->
+  <rect x="460" y="180" width="270" height="44" fill="#34D399" rx="6"/>
+  <text x="595" y="208" font-size="15" font-weight="700" fill="#0B0F1A" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">2.51 oz acquired</text>
+
+  <text x="440" y="250" font-size="12" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Avg cost basis:</text>
+  <text x="740" y="250" font-size="13" font-weight="700" fill="#F1F5F9" text-anchor="end" font-family="Inter,-apple-system,sans-serif">$4,781/oz</text>
+
+  <text x="440" y="278" font-size="12" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Value today ($4,759):</text>
+  <text x="740" y="278" font-size="13" font-weight="700" fill="#34D399" text-anchor="end" font-family="Inter,-apple-system,sans-serif">$11,946</text>
+
+  <text x="440" y="306" font-size="12" fill="#CBD5E1" font-family="Inter,-apple-system,sans-serif">Unrealized gain/loss:</text>
+  <text x="740" y="306" font-size="13" font-weight="700" fill="#34D399" text-anchor="end" font-family="Inter,-apple-system,sans-serif">-$54 (-0.5%)</text>
+
+  <text x="590" y="350" font-size="11" fill="#94A3B8" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Smoother cost basis. Closer to spot. Less regret.</text>
+
+  <!-- Footer -->
+  <text x="400" y="410" font-size="11" fill="#475569" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Hypothetical scenario. Past performance is not indicative of future results.</text>
+  <text x="400" y="428" font-size="11" fill="#475569" text-anchor="middle" font-family="Inter,-apple-system,sans-serif">Track your real DCA cost basis at HardAssets.io</text>
+</svg>
