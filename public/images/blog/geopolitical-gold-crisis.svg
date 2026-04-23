@@ -1,0 +1,98 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#0B0F1A"/>
+
+  <!-- Grid lines -->
+  <line x1="80" y1="50" x2="80" y2="320" stroke="#1E293B" stroke-width="1"/>
+  <line x1="80" y1="320" x2="750" y2="320" stroke="#1E293B" stroke-width="1"/>
+  <line x1="80" y1="200" x2="750" y2="200" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="80" y1="100" x2="750" y2="100" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+  <!-- Y-axis labels (price) -->
+  <text x="70" y="325" font-size="12" fill="#94A3B8" text-anchor="end">$4,400</text>
+  <text x="70" y="225" font-size="12" fill="#94A3B8" text-anchor="end">$4,600</text>
+  <text x="70" y="125" font-size="12" fill="#94A3B8" text-anchor="end">$4,800</text>
+  <text x="70" y="55" font-size="12" fill="#94A3B8" text-anchor="end">$5,000</text>
+
+  <!-- X-axis labels (dates) -->
+  <text x="110" y="345" font-size="12" fill="#94A3B8" text-anchor="middle">Mar 25</text>
+  <text x="220" y="345" font-size="12" fill="#94A3B8" text-anchor="middle">Apr 5</text>
+  <text x="330" y="345" font-size="12" fill="#94A3B8" text-anchor="middle">Apr 14</text>
+  <text x="440" y="345" font-size="12" fill="#94A3B8" text-anchor="middle">Apr 20</text>
+  <text x="550" y="345" font-size="12" fill="#94A3B8" text-anchor="middle">Apr 23</text>
+  <text x="660" y="345" font-size="12" fill="#94A3B8" text-anchor="middle">Today</text>
+
+  <!-- Y-axis label -->
+  <text x="20" y="185" font-size="13" fill="#D4A843" font-weight="600" text-anchor="middle" transform="rotate(-90 20 185)">Gold Price (USD/oz)</text>
+
+  <!-- Price line (geopolitical crisis cycle) -->
+  <!-- Mar 25: $4,400 (baseline) -->
+  <!-- Apr 5: $4,600 (tensions rise) -->
+  <!-- Apr 14: $4,793 (peak, max risk) -->
+  <!-- Apr 20: $4,750 (ceasefire announced) -->
+  <!-- Apr 23: $4,746 (stable, premium compressing) -->
+
+  <!-- Map to pixel coordinates:
+       y=320 is $4,400, y=100 is $4,800
+       So $4,400 = 320, $4,600 = 240, $4,793 = 139, $4,750 = 158, $4,746 = 160
+  -->
+
+  <!-- Background zones -->
+  <!-- Risk escalation zone (Mar 25 - Apr 14) -->
+  <rect x="80" y="50" width="250" height="270" fill="#D4A843" opacity="0.05"/>
+  <text x="205" y="75" font-size="11" fill="#D4A843" text-anchor="middle" opacity="0.7">Risk Escalation Phase</text>
+
+  <!-- Ceasefire + compression zone (Apr 14 - Apr 23) -->
+  <rect x="330" y="50" width="420" height="270" fill="#34D399" opacity="0.05"/>
+  <text x="540" y="75" font-size="11" fill="#34D399" text-anchor="middle" opacity="0.7">Premium Compression Phase</text>
+
+  <!-- Price curve -->
+  <polyline points="110,280 220,220 330,139 440,160 550,162 660,162"
+            fill="none" stroke="#D4A843" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Data points -->
+  <circle cx="110" cy="280" r="5" fill="#D4A843" stroke="#F1F5F9" stroke-width="2"/>
+  <circle cx="220" cy="220" r="5" fill="#D4A843" stroke="#F1F5F9" stroke-width="2"/>
+  <circle cx="330" cy="139" r="5" fill="#D4A843" stroke="#F1F5F9" stroke-width="2"/>
+  <circle cx="440" cy="160" r="5" fill="#34D399" stroke="#F1F5F9" stroke-width="2"/>
+  <circle cx="550" cy="162" r="5" fill="#34D399" stroke="#F1F5F9" stroke-width="2"/>
+  <circle cx="660" cy="162" r="5" fill="#34D399" stroke="#F1F5F9" stroke-width="2"/>
+
+  <!-- Price labels on points -->
+  <text x="110" y="300" font-size="13" fill="#F1F5F9" text-anchor="middle" font-weight="600">$4,400</text>
+  <text x="220" y="205" font-size="13" fill="#F1F5F9" text-anchor="middle" font-weight="600">$4,600</text>
+  <text x="330" y="115" font-size="13" fill="#F1F5F9" text-anchor="middle" font-weight="600">$4,793</text>
+  <text x="440" y="140" font-size="13" fill="#F1F5F9" text-anchor="middle" font-weight="600">$4,750</text>
+  <text x="550" y="142" font-size="13" fill="#F1F5F9" text-anchor="middle" font-weight="600">$4,746</text>
+
+  <!-- Event markers -->
+  <!-- Tensions escalate marker -->
+  <line x1="220" y1="220" x2="220" y2="250" stroke="#D4A843" stroke-width="2" stroke-dasharray="3,3"/>
+  <rect x="155" y="260" width="130" height="45" fill="#1E293B" rx="6" stroke="#D4A843" stroke-width="1"/>
+  <text x="220" y="277" font-size="11" fill="#D4A843" text-anchor="middle" font-weight="600">Tensions Rise</text>
+  <text x="220" y="292" font-size="10" fill="#94A3B8" text-anchor="middle">Political risk</text>
+  <text x="220" y="303" font-size="10" fill="#94A3B8" text-anchor="middle">premium widens</text>
+
+  <!-- Peak marker -->
+  <line x1="330" y1="139" x2="330" y2="70" stroke="#D4A843" stroke-width="2" stroke-dasharray="3,3"/>
+  <rect x="280" y="25" width="100" height="42" fill="#1E293B" rx="6" stroke="#D4A843" stroke-width="1"/>
+  <text x="330" y="40" font-size="11" fill="#D4A843" text-anchor="middle" font-weight="600">Peak Risk</text>
+  <text x="330" y="55" font-size="10" fill="#94A3B8" text-anchor="middle">April 14 High</text>
+
+  <!-- Ceasefire marker -->
+  <line x1="440" y1="160" x2="440" y2="200" stroke="#34D399" stroke-width="2" stroke-dasharray="3,3"/>
+  <rect x="370" y="210" width="140" height="45" fill="#1E293B" rx="6" stroke="#34D399" stroke-width="1"/>
+  <text x="440" y="227" font-size="11" fill="#34D399" text-anchor="middle" font-weight="600">Ceasefire</text>
+  <text x="440" y="242" font-size="10" fill="#94A3B8" text-anchor="middle">announced</text>
+  <text x="440" y="253" font-size="10" fill="#94A3B8" text-anchor="middle">April 8</text>
+
+  <!-- Title -->
+  <text x="400" y="30" font-size="20" fill="#F1F5F9" text-anchor="middle" font-weight="800">Gold Price During April 2026 Geopolitical Crisis</text>
+
+  <!-- Legend -->
+  <rect x="80" y="360" width="20" height="20" fill="#D4A843" rx="3"/>
+  <text x="110" y="375" font-size="12" fill="#F1F5F9">Risk escalation premium</text>
+
+  <rect x="380" y="360" width="20" height="20" fill="#34D399" rx="3"/>
+  <text x="410" y="375" font-size="12" fill="#F1F5F9">Premium compression &amp; stabilization</text>
+</svg>
