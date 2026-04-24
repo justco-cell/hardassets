@@ -2,6 +2,134 @@
 // Content is HTML strings for zero-dependency rendering
 export const POSTS = [
   {
+    slug: "hedge-inflation-gold-silver-2026",
+    title: "How to Hedge Inflation With Gold and Silver: A 2026 Strategy Guide",
+    date: "2026-04-24",
+    excerpt: "Fed holding rates. Inflation sticky at 3.7%. Energy shocks here to stay. Gold up 50%, silver up 131% year-over-year. Here's how to allocate into precious metals to protect your portfolio.",
+    metaDescription: "Hedge inflation with gold and silver in 2026 — allocation strategies, timing, and how to protect your portfolio from rising prices.",
+    thumbnail: "/images/blog/inflation-gold-silver-hedge.svg",
+    heroImage: "/images/blog/inflation-gold-silver-hedge.svg",
+    content: `
+      <p>You don't need a degree in macroeconomics to know inflation is real. Your grocery bills prove it. Your rent proves it. Your energy bills prove it.</p>
+
+      <p>The Federal Reserve held interest rates steady at 3.5%-3.75% in March 2026 and isn't cutting anytime soon. Inflation is projecting at 3.7% in Q2 2026 — well above the Fed's 2% target. Energy shocks from Middle East tensions are keeping fuel prices elevated. Consumer confidence is at record lows. And the kicker: <strong>the Fed doesn't have a clear path to lower rates without crashing the economy</strong>.</p>
+
+      <p>In this environment, hard assets — gold and silver — are moving from "nice to have" to "must have." They're not investments. They're insurance. And unlike insurance you pay for and never use, precious metals have already returned 50% (gold) and 131% (silver) year-over-year. Let's walk through how to hedge inflation properly and position your portfolio for what comes next.</p>
+
+      <h2>Why Inflation Makes Precious Metals Essential</h2>
+
+      <p>Inflation erodes purchasing power. A dollar today buys less than a dollar in 2023. Cash in a savings account earning 0.5% APY is losing 3.2% in real (inflation-adjusted) value every year. Bonds maturing below inflation are also losing.</p>
+
+      <p><strong>Gold and silver are inflation hedges because their value holds steady while currency values fall.</strong> When the Fed prints money, inflation rises, and the dollar weakens. Precious metals priced in weakening dollars naturally rise. It's not magic — it's arithmetic.</p>
+
+      <p>In the 1970s, inflation peaked at 13.5%, and gold rallied from $183/oz (1970) to $850/oz (1980). Real assets outperformed cash and bonds by 400-500%. The Fed is printing again. Energy prices are rising again. Inflation is sticky again. The playbook from 1970 is relevant again.</p>
+
+      <h2>What Does a Stagflation Scenario Look Like for Your Portfolio?</h2>
+
+      <p>Stagflation = stagnant growth + inflation. The economy slows, unemployment rises, but prices keep climbing. The Fed is trapped: raising rates kills growth; lowering rates accelerates inflation. Nothing works.</p>
+
+      <p>In stagflation, traditional 60/40 portfolios (60% stocks, 40% bonds) suffer because stocks fall on recession fears and bonds fall on inflation fears. Both decline simultaneously — a true diversification failure. Precious metals, however, rally in stagflation because investors flee paper assets and bid up hard assets.</p>
+
+      <p>Is stagflation coming? Not necessarily. But the probability is non-zero, and it's rising. Central banks globally are buying gold at record rates because they're pricing in this scenario. You should too.</p>
+
+      <h2>How Much Gold and Silver Should You Actually Own?</h2>
+
+      <p>Financial advisors typically recommend 5-10% of a diversified portfolio in precious metals. In the current environment, I'd argue for 10-15%, especially if you're concerned about currency debasement or geopolitical instability.</p>
+
+      <p>Here's a simple framework based on your conviction level:</p>
+
+      <ul>
+        <li><strong>Conservative (5-7%):</strong> You think inflation normalizes by 2027 and the Fed eventually cuts rates. Own core holdings (gold mostly, some silver). Sleep well.</li>
+        <li><strong>Balanced (10-12%):</strong> You think inflation sticks around and the Fed is constrained. Split 70% gold, 30% silver. Rebalance quarterly.</li>
+        <li><strong>Aggressive (15-20%):</strong> You think stagflation or currency crisis is likely. 50% gold, 30% silver, 20% mining stocks for leverage. You're positioned for the tail scenario.</li>
+      </ul>
+
+      <p>Most retail investors should sit in the 10-12% range. It's enough to protect your portfolio but not so much that you're betting the farm on a specific outcome.</p>
+
+      <h2>Physical Gold vs. Silver vs. Crypto vs. Mining Stocks: Which Allocation?</h2>
+
+      <p><strong>Physical bars and coins (bullion):</strong> The purest hedge. You own it, store it, insure it. No counterparty risk. Downside: premiums (10-25% over spot), storage costs, and liquidity friction when selling. Best for a 60-70% core allocation.</p>
+
+      <p><strong>ETFs (PHYS, PSLV, GLD, SLV):</strong> Liquid, low-cost, zero storage hassle. Downside: you're trusting the custodian, and in a true shortage, physical delivery might not be available. Good for 20-30% of your metals allocation.</p>
+
+      <p><strong>Crypto (Bitcoin primarily):</strong> Behaves like gold in some scenarios (inflation hedge, non-correlated to stocks). Behaves unlike gold in others (highly volatile, newer asset class, regulatory risk). If you include crypto, cap it at 5-10% of your metals allocation.</p>
+
+      <p><strong>Mining stocks (GDXS, SILJ):</strong> Leverage to metal prices. If gold rises 10%, some gold miners rise 20-30% because their margins expand. Downside: operational risk, geopolitical exposure, and they can underperform when the metal is strong but mining costs spike. Use as a 5-10% kicker, not your core.</p>
+
+      <p><strong>Recommended split for most investors (10-12% total):</strong></p>
+      <ul>
+        <li>6% physical gold (coins, bars, or mix)</li>
+        <li>3% physical silver</li>
+        <li>2% metals ETFs (for liquidity)</li>
+        <li>1% mining stocks (optional leverage play)</li>
+      </ul>
+
+      <h2>Gold-to-Silver Ratio: Should You Overweight Silver?</h2>
+
+      <p>Currently trading at about 61.5:1 (gold-to-silver ratio), meaning one ounce of gold is worth 61.5 ounces of silver. Historically, this ratio has ranged from 40:1 (silver premium) to 100:1 (gold premium).</p>
+
+      <p>The recent ratio narrowing from 80:1 (2022) to 61.5:1 suggests silver is outperforming and becoming relatively undervalued on a ratio basis. If the ratio reverts to 45:1 (historical median), silver would need to rise 37% relative to gold.</p>
+
+      <p><strong>Insight: If you're allocating to precious metals for inflation hedge, a 60/40 or 50/50 split (gold/silver) makes more sense than the traditional 80/20.</strong> Silver's supply deficit, industrial demand, and ratio recovery give it extra tail-risk protection.</p>
+
+      <h2>Where Should You Store Gold and Silver at Home?</h2>
+
+      <p>If you're buying physical, storage matters. Home safes, safety deposit boxes, and segregated allocated vaults each have tradeoffs:</p>
+
+      <ul>
+        <li><strong>Home safe or hidden spot:</strong> Pros — no fees, instant access, zero counterparty risk. Cons — insurance coverage capped at $15-30K typically, theft/loss risk if hidden badly, fire risk, probate risk (heirs won't find it).</li>
+        <li><strong>Safety deposit box:</strong> Pros — bank security, cheap ($50-100/year). Cons — limited access (bank hours), not insurable against bank seizure, can be frozen in lawsuits.</li>
+        <li><strong>Allocated vault (Brinks, Loomis):</strong> Pros — insured, segregated (your metal, not commingled), audited annually, accessible via ETF-like trading. Cons — $100-300/year fees, counterparty risk (what if the vault company fails?), not liquid in true systemic crisis.</li>
+      </ul>
+
+      <p>Ideal setup: core position (70%) in home safe or allocated vault. Smaller amount (30%) in bank safety deposit box for emergency access. Never leave everything in one location.</p>
+
+      <h2>Timing Your Allocation: Dollar Cost Averaging Into Gold and Silver</h2>
+
+      <p>Gold and silver are volatile. Silver especially: it's down 37% from January's peak of $121/oz but still up 131% year-over-year. Trying to time the exact bottom is futile.</p>
+
+      <p><strong>Better approach: dollar cost average in over 6-12 months.</strong> Buy 1/6th to 1/12th of your target allocation each month, regardless of price. If you want to allocate $12,000 total, buy $1,000 worth of gold/silver each month for a year.</p>
+
+      <p>This removes emotion, smooths your entry price, and ensures you don't catch a falling knife or miss a rally entirely. The timing risk is minimal if you're investing a 10-year timeframe (and inflation protection should be a multi-year play).</p>
+
+      <img src="/images/blog/metals-allocation-strategy.svg" alt="Precious metals allocation strategy showing conservative 5-7%, balanced 10-12%, and aggressive 15-20% allocation approaches with pie charts" style="margin: 24px 0; border-radius: 8px; width: 100%; height: auto;"/>
+
+      <h2>How to Track Your Inflation-Hedging Portfolio</h2>
+
+      <p>If you're building a precious metals position across physical bars, ETFs, and possibly mining stocks, you need one place to see your total allocation. Spreadsheets work but break easily when prices change hourly.</p>
+
+      <p><strong>HardAssets.io</strong> solves this with a free portfolio tracker purpose-built for hard assets:</p>
+
+      <ul>
+        <li>Add physical gold and silver holdings (bars, coins, rounds) with live spot prices updated hourly</li>
+        <li>Track ETF positions and see real-time values</li>
+        <li>Monitor your target allocation (e.g., "I want 10% precious metals") and see drift in real-time</li>
+        <li>Calculate cost basis and unrealized gains</li>
+        <li>Track all your hard assets in one place — crypto, real estate syndications, private notes, collectibles alongside metals</li>
+      </ul>
+
+      <p>The data stays on your device (Supabase backend with row-level security), so your portfolio never touches marketing servers or gets sold to ad networks. It's free, works as a PWA on phones, and offline-ready. Start tracking for free at HardAssets.io.</p>
+
+      <h2>The Inflation Hedge Playbook for 2026</h2>
+
+      <p>Here's your action plan:</p>
+
+      <ol>
+        <li><strong>Decide your conviction:</strong> Are you conservative (5%), balanced (10-12%), or aggressive (15%+)? Choose one.</li>
+        <li><strong>Calculate your dollar amount:</strong> If you have a $200k portfolio and want 10%, that's $20k to allocate.</li>
+        <li><strong>Choose your vehicle:</strong> 70% physical gold/silver, 20% ETFs (for liquidity), 10% mining stocks (optional).</li>
+        <li><strong>Dollar cost average:</strong> Buy monthly over 6-12 months to smooth entry price.</li>
+        <li><strong>Track it:</strong> Use HardAssets.io to monitor allocation and rebalance quarterly if metals rally (sell some, lock in gains).</li>
+        <li><strong>Store it:</strong> Split between home safe (core) and vault or bank box (secondary).</li>
+        <li><strong>Rebalance annually:</strong> If metals appreciate 30% and now you're at 13% instead of 10%, rebalance back to target (sell some, redeploy into stocks or bonds).</li>
+      </ol>
+
+      <p>Inflation is here. The Fed can't fight it effectively. Precious metals have already returned 50-130% year-over-year. The macro case for gold and silver is stronger in 2026 than it's been in a decade. Whether you allocate 5% or 15%, the time to move is now, not after inflation hits 5%.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Always consult a qualified financial advisor before making investment decisions.</em></p>
+    `
+  },
+  {
     slug: "silver-supply-deficit-2026",
     title: "Silver Supply Deficit 2026: Why Shortage Signals Higher Prices",
     date: "2026-04-22",

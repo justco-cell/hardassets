@@ -1,0 +1,79 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="30" font-size="20" font-weight="800" fill="#F1F5F9" text-anchor="middle" font-family="Inter, sans-serif">Precious Metals Allocation Strategy</text>
+
+  <!-- CONSERVATIVE (left column) -->
+  <g>
+    <!-- Box -->
+    <rect x="40" y="60" width="200" height="380" fill="#1E293B" stroke="#475569" stroke-width="1" rx="8"/>
+
+    <!-- Label -->
+    <text x="140" y="90" font-size="16" font-weight="700" fill="#34D399" text-anchor="middle" font-family="Inter, sans-serif">Conservative</text>
+    <text x="140" y="110" font-size="12" fill="#94A3B8" text-anchor="middle" font-family="Inter, sans-serif">5-7% allocation</text>
+
+    <!-- Pie chart circle -->
+    <circle cx="140" cy="200" r="50" fill="none" stroke="#D4A843" stroke-width="35" stroke-dasharray="157.08 157.08" stroke-dashoffset="0"/>
+    <circle cx="140" cy="200" r="50" fill="none" stroke="#38BDF8" stroke-width="15" stroke-dasharray="31.42 157.08" stroke-dashoffset="-157.08"/>
+
+    <!-- Labels -->
+    <text x="140" y="310" font-size="13" fill="#F1F5F9" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600">80% Gold</text>
+    <text x="140" y="330" font-size="13" fill="#F1F5F9" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600">20% Silver</text>
+
+    <!-- Description -->
+    <text x="50" y="360" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="start">For investors who believe inflation normalizes by 2027.</text>
+    <text x="50" y="378" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="start">Core holdings only.</text>
+  </g>
+
+  <!-- BALANCED (middle column) -->
+  <g>
+    <!-- Box -->
+    <rect x="300" y="60" width="200" height="380" fill="#1E293B" stroke="#D4A843" stroke-width="2" rx="8"/>
+
+    <!-- Label -->
+    <text x="400" y="90" font-size="16" font-weight="700" fill="#D4A843" text-anchor="middle" font-family="Inter, sans-serif">Balanced</text>
+    <text x="400" y="110" font-size="12" fill="#94A3B8" text-anchor="middle" font-family="Inter, sans-serif">10-12% allocation</text>
+
+    <!-- Pie chart -->
+    <circle cx="400" cy="200" r="50" fill="none" stroke="#D4A843" stroke-width="25" stroke-dasharray="109.96 157.08" stroke-dashoffset="0"/>
+    <circle cx="400" cy="200" r="50" fill="none" stroke="#38BDF8" stroke-width="15" stroke-dasharray="35.34 157.08" stroke-dashoffset="-109.96"/>
+    <circle cx="400" cy="200" r="50" fill="none" stroke="#8B5CF6" stroke-width="8" stroke-dasharray="11.78 157.08" stroke-dashoffset="-145.30"/>
+
+    <!-- Labels -->
+    <text x="400" y="310" font-size="13" fill="#F1F5F9" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600">70% Gold</text>
+    <text x="400" y="330" font-size="13" fill="#F1F5F9" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600">20% Silver / 10% ETFs</text>
+
+    <!-- Description -->
+    <text x="310" y="360" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="start">Most investors should target this. Inflation sticky,</text>
+    <text x="310" y="378" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="start">rates constrained. Rebalance quarterly.</text>
+  </g>
+
+  <!-- AGGRESSIVE (right column) -->
+  <g>
+    <!-- Box -->
+    <rect x="560" y="60" width="200" height="380" fill="#1E293B" stroke="#EF4444" stroke-width="1" rx="8"/>
+
+    <!-- Label -->
+    <text x="660" y="90" font-size="16" font-weight="700" fill="#EF4444" text-anchor="middle" font-family="Inter, sans-serif">Aggressive</text>
+    <text x="660" y="110" font-size="12" fill="#94A3B8" text-anchor="middle" font-family="Inter, sans-serif">15-20% allocation</text>
+
+    <!-- Pie chart -->
+    <circle cx="660" cy="200" r="50" fill="none" stroke="#D4A843" stroke-width="20" stroke-dasharray="78.54 157.08" stroke-dashoffset="0"/>
+    <circle cx="660" cy="200" r="50" fill="none" stroke="#38BDF8" stroke-width="15" stroke-dasharray="47.12 157.08" stroke-dashoffset="-78.54"/>
+    <circle cx="660" cy="200" r="50" fill="none" stroke="#8B5CF6" stroke-width="8" stroke-dasharray="31.42 157.08" stroke-dashoffset="-125.66"/>
+
+    <!-- Labels -->
+    <text x="660" y="310" font-size="13" fill="#F1F5F9" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600">50% Gold</text>
+    <text x="660" y="330" font-size="13" fill="#F1F5F9" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600">30% Silver / 20% Stocks</text>
+
+    <!-- Description -->
+    <text x="570" y="360" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="start">For stagflation/currency concerns. Added leverage</text>
+    <text x="570" y="378" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="start">with mining stocks. Higher risk, higher reward.</text>
+  </g>
+
+  <!-- Bottom callout -->
+  <rect x="40" y="465" width="720" height="25" fill="rgba(212,168,67,0.1)" stroke="#D4A843" stroke-width="1" rx="6"/>
+  <text x="400" y="483" font-size="12" fill="#D4A843" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600">Dollar cost average in over 6-12 months. Rebalance annually.</text>
+</svg>
