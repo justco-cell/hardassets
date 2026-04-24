@@ -2,6 +2,180 @@
 // Content is HTML strings for zero-dependency rendering
 export const POSTS = [
   {
+    slug: "gold-ira-vs-physical-gold-2026",
+    title: "Gold IRA vs Physical Gold in 2026: Which Is Better for You?",
+    date: "2026-04-24",
+    excerpt: "Gold hit $4,746/oz this week and tariffs on Swiss bullion are pushing premiums higher. If you're deciding between a Gold IRA and physical gold, here's the 2026 breakdown: fees, taxes, storage, and which one actually wins for your situation.",
+    metaDescription: "Gold IRA vs physical gold in 2026: complete breakdown of fees, taxes, storage, and liquidity. Updated with current gold prices and 2026 IRS rules. Free guide.",
+    thumbnail: "/images/blog/gold-ira-vs-physical-gold-2026.svg",
+    heroImage: "/images/blog/gold-ira-vs-physical-gold-2026.svg",
+    content: `
+      <p>Gold closed at $4,746/oz on April 22, 2026 — up more than 50% year over year. The 39% US tariff on Swiss gold bars is compressing dealer premiums at home and pushing some stackers toward tax-advantaged structures instead. And a lot of investors aged 50+ are quietly asking the same question: should I open a Gold IRA, or just keep buying coins I can hold in my hand?</p>
+
+      <p>The <strong>gold IRA vs physical gold</strong> choice isn't academic — it has real consequences for how much tax you'll pay, how much the "all-in" cost of ownership bleeds out of your returns, and whether you can actually touch the metal if things get weird. This guide breaks down both paths using the current 2026 tax rules, real fee ranges, and the trade-offs nobody at a dealership will walk you through.</p>
+
+      <p>By the end, you'll know which structure fits your situation — or whether the right move is some of both.</p>
+
+      <h2>What's the Difference Between a Gold IRA and Physical Gold?</h2>
+
+      <p>A Gold IRA is a self-directed retirement account holding IRS-approved gold bullion at a licensed depository, offering tax deferral but charging annual fees and restricting access before 59½. Physical gold is metal you buy and hold yourself, giving full control and instant liquidity but taxed at up to 28% as a collectible.</p>
+
+      <p>That's the featured-snippet answer. Now let's unpack why it actually matters for your portfolio.</p>
+
+      <img src="/images/blog/gold-ira-vs-physical-gold-2026.svg" alt="Gold IRA vs physical gold comparison chart showing tax, storage, fees, and access differences in 2026" style="margin: 24px 0; border-radius: 8px; width: 100%; height: auto;"/>
+
+      <h2>How a Self-Directed Gold IRA Actually Works</h2>
+
+      <p>A Gold IRA isn't a special account type at your brokerage. Fidelity and Vanguard won't open one. You need a <strong>self-directed IRA</strong> at a specialty custodian that's licensed to hold physical precious metals.</p>
+
+      <p>The moving parts:</p>
+
+      <ul>
+        <li><strong>Custodian:</strong> Handles IRS reporting and account admin. Examples include Equity Trust, STRATA Trust, and Kingdom Trust. Fees: typically $100–$300/year.</li>
+        <li><strong>Dealer:</strong> The company that actually sells you the gold. Adds a 3–10% premium over spot.</li>
+        <li><strong>Depository:</strong> An IRS-approved vault (Delaware Depository, Brinks, Loomis) where the metal is physically stored and insured. Fees: typically $100–$500/year depending on whether you choose segregated or commingled storage.</li>
+      </ul>
+
+      <p>The IRS is strict about what qualifies. Gold must be 99.5% pure — with American Gold Eagles grandfathered in at 91.67% because Congress wrote them into the tax code. Silver must be 99.9% pure. Platinum and palladium must be 99.95%. Pre-1933 US gold coins, rare coins, and most foreign sovereigns don't qualify. Neither does anything stored at your house, even if you're the custodian.</p>
+
+      <p>That last point matters: <strong>"home storage Gold IRAs" are largely a marketing fiction</strong>. The IRS treats home storage of IRA metals as a distribution, which triggers income tax plus a 10% penalty if you're under 59½. A handful of LLC structures claim to permit it; the Tax Court has not been friendly. Don't go there without a specialist CPA.</p>
+
+      <h2>How Physical Gold Ownership Works (And Why Stackers Prefer It)</h2>
+
+      <p>Buying physical gold outside a retirement account is simpler. You walk into a local coin shop (LCS), call a reputable dealer like JM Bullion or APMEX, or buy at a pawn shop. You pay spot plus a premium — typically 3–8% for 1-oz gold coins, more for fractional. You take the gold home.</p>
+
+      <p>No custodian. No annual fees. No 10% penalty for accessing it. You can sell it tomorrow for cash at your LCS, or hold it for thirty years and leave it to your kids. You decide.</p>
+
+      <p>The stacker community has strong opinions here. The phrase "not your keys, not your gold" isn't just crypto-speak — it applies to bullion too. <a href="/blog/hard-assets-vs-paper-assets">Hard assets held personally</a> carry zero counterparty risk. No custodian can freeze your account. No depository can be subpoenaed. No IRS agent can block a distribution. What's in your safe is yours.</p>
+
+      <p>The trade-off: you handle storage, you handle insurance (homeowners policies typically cap precious metals coverage at $200–$2,500 unless you add a rider), and you pay the full 28% collectibles tax rate when you sell for a gain. More on that in a moment.</p>
+
+      <h2>Gold IRA Fees in 2026: What You Actually Pay</h2>
+
+      <p>This is where Gold IRA marketing gets deceptive. Glossy brochures emphasize the tax deferral and skip over the decade of annual fees. Let's do the math.</p>
+
+      <p>On a $50,000 Gold IRA held for 10 years with typical fees:</p>
+
+      <ul>
+        <li>Setup fee: ~$150 (one-time)</li>
+        <li>Custodian fees: ~$200/year × 10 = $2,000</li>
+        <li>Storage + insurance: ~$300/year × 10 = $3,000</li>
+        <li>Dealer premium on entry: 5% × $50,000 = $2,500</li>
+        <li><strong>Total 10-year cost: roughly $7,650, or about 15.3% of the initial account value.</strong></li>
+      </ul>
+
+      <img src="/images/blog/gold-ira-fees-breakdown-2026.svg" alt="Bar chart showing typical Gold IRA fees breakdown over 10 years including custodian, storage, and dealer premium costs" style="margin: 24px 0; border-radius: 8px; width: 100%; height: auto;"/>
+
+      <p>You can lower these numbers by negotiating a flat fee with some custodians, or by choosing commingled storage instead of segregated. But you can't eliminate them. Compare that to a $50,000 position in SGOL or IAU in a regular brokerage IRA — expense ratios run 0.17–0.25%, or roughly $85–$125 per year, with no storage or custodian fees at all.</p>
+
+      <p>Gold IRAs make sense when the tax deferral is worth more than the fee drag. Roth Gold IRAs shine even more — after-tax contributions grow and distribute tax-free, which is powerful if you believe gold is heading higher. But you'll want to run the numbers for your own bracket.</p>
+
+      <h2>The 28% Collectibles Tax (And Why It Hurts Physical Holders)</h2>
+
+      <p>Here's the tax rule that trips up every new stacker: <strong>the IRS treats physical gold as a "collectible," which caps long-term capital gains at 28% instead of the 15–20% that applies to stocks</strong>. If you hold for less than a year, gains are taxed as ordinary income. If you hold for more than a year, the maximum federal rate is 28% — plus the 3.8% Net Investment Income Tax for high earners, plus state tax.</p>
+
+      <p>In California or New York, that combined rate can exceed 40% on gold gains. On stocks, those same taxpayers would pay a combined 33–37%. That 5–7 percentage point gap is meaningful on a big win.</p>
+
+      <img src="/images/blog/gold-tax-comparison-2026.svg" alt="Tax rate comparison for stocks, physical gold, gold ETFs, traditional Gold IRA, and Roth Gold IRA in 2026" style="margin: 24px 0; border-radius: 8px; width: 100%; height: auto;"/>
+
+      <p>A nasty surprise for a lot of people: <strong>most gold ETFs are also taxed as collectibles</strong>, because the IRS looks through to the underlying asset. GLD, IAU, SGOL, and PHYS all get hit with the 28% rate. The only way to legitimately escape the collectibles rate is to hold inside a qualified retirement account, or to own gold mining stocks (which are equities, not commodities) and get the standard 15–20% LTCG rate. The IRS has published <a href="https://www.irs.gov/retirement-plans/investments-in-collectibles-in-individually-directed-qualified-plan-accounts" target="_blank" rel="noopener">specific guidance on collectibles in retirement accounts</a> confirming this distinction.</p>
+
+      <p>So the tax arithmetic:</p>
+
+      <ul>
+        <li>Buy physical gold → 28% federal cap at sale</li>
+        <li>Buy a gold ETF in a taxable account → 28% federal cap at sale</li>
+        <li>Buy gold (physical or ETF) in a Traditional Gold IRA → 0% along the way, ordinary income at distribution</li>
+        <li>Buy gold (physical or ETF) in a Roth Gold IRA → 0% along the way, 0% at distribution (qualified)</li>
+      </ul>
+
+      <p>The Roth Gold IRA is mathematically the most tax-efficient way to own gold if you think prices will rise and you'll want to distribute after 59½.</p>
+
+      <h2>Storage: IRS Depository vs Your Home Safe</h2>
+
+      <p>Inside a Gold IRA, you cannot store the metal yourself. Period. The IRS requires it to live at an approved third-party depository. Most people never physically see their IRA gold — it's a line item on a statement, backed by segregated (yours alone) or commingled (pooled) storage at a bonded vault.</p>
+
+      <p>Outside an IRA, storage is your problem. Options:</p>
+
+      <ul>
+        <li><strong>Home safe:</strong> Cheapest. Fireproof, bolted-down safes run $300–$1,500. Risk: theft, fire (most residential safes are rated for 30 min at 1,200°F, not forever), forgetting the combination.</li>
+        <li><strong>Safe deposit box:</strong> $50–$300/year at a bank branch. Risk: not FDIC insured, and in certain circumstances (bank failure, subpoena) access can be restricted.</li>
+        <li><strong>Private vaulting:</strong> Companies like Brinks, Loomis, and IDS offer retail vault storage for 0.5–1% annually. Risk: counterparty — but usually insured up to full value.</li>
+      </ul>
+
+      <p>A common stacker setup: keep the "working stack" (coins you might sell or trade) at home, move the "long-term stack" into private vaulting or a bank box, and treat the IRA as a tax-advantaged satellite allocation. That way you get liquidity, insurance, and tax efficiency all at once.</p>
+
+      <h2>When a Gold IRA Makes Sense</h2>
+
+      <p>A Gold IRA is a good fit when:</p>
+
+      <ul>
+        <li>You already have a 401(k) or IRA balance that's heavily weighted in stocks and you want precious metals exposure without selling taxable assets.</li>
+        <li>You're 50+ and thinking about retirement income planning — the tax deferral compounds over the remaining years until distribution.</li>
+        <li>You believe gold will significantly outperform and you want to avoid the 28% collectibles drag on your gains.</li>
+        <li>You don't need the liquidity before 59½.</li>
+        <li>You're comfortable with depository storage and don't need to touch the metal.</li>
+      </ul>
+
+      <p>Many investors who are <a href="/blog/central-bank-gold-buying-2026">watching central banks accumulate gold at record levels</a> — 1,100+ tonnes in 2025 per the World Gold Council — use a Gold IRA to quietly build a similar position inside their retirement plan. That's hard to argue with if tax efficiency matters to you.</p>
+
+      <h2>When Physical Gold Makes More Sense</h2>
+
+      <p>Physical gold wins when:</p>
+
+      <ul>
+        <li>You want instant liquidity and don't want to wait for a custodian to process distributions.</li>
+        <li>You're younger than 59½ and don't want your gold locked up for decades.</li>
+        <li>You value sovereignty — the peace of mind of holding metal you can physically defend, hide, or transport.</li>
+        <li>Your position is small enough ($5k–$25k) that annual IRA fees would crush your returns. Below about $25,000, fees eat too much of the account to be worth it.</li>
+        <li>You want to use gold in an emergency — power grid failure, bank shutdown, capital controls. A gold coin at home is useful; a gold bar in a Delaware vault is not.</li>
+      </ul>
+
+      <p>For most stackers building a precious metals portfolio on a budget, physical gold (supplemented by silver) is the right starting point. You can always open an IRA later once the position is substantial. Premiums matter more than people think at this stage — our <a href="/blog/precious-metals-premiums-spot-price">guide to precious metals premiums</a> explains how to avoid overpaying at the retail level.</p>
+
+      <h2>Should You Do Both? The Hybrid Approach Most Investors Miss</h2>
+
+      <p>Here's what most "Gold IRA vs physical gold" articles don't tell you: the question isn't binary. Most serious hard asset investors own both.</p>
+
+      <p>A reasonable split for someone with a $500,000 net worth allocating 10% to gold ($50,000 target):</p>
+
+      <ul>
+        <li>$20,000 in physical coins and small bars at home or in a safe deposit box — for liquidity, sovereignty, and emergency use.</li>
+        <li>$30,000 in a Roth or Traditional Gold IRA — for tax-efficient long-term growth.</li>
+      </ul>
+
+      <p>This gives you the best of both structures: the control and flexibility of personal gold, plus the tax deferral of the IRA. You can also fold in gold mining stocks inside your regular brokerage IRA for equity-like tax treatment — another topic covered in our <a href="/blog/how-much-gold-should-you-own">portfolio allocation guide</a>.</p>
+
+      <p>The World Gold Council's research on allocation has repeatedly shown that 5–15% in gold reduces portfolio volatility while improving risk-adjusted returns — regardless of whether the gold sits in an IRA or a safe. The structure doesn't change the diversification benefit; it only changes the tax and liquidity characteristics.</p>
+
+      <h2>How to Track Gold IRA and Physical Gold Holdings in Your Portfolio</h2>
+
+      <p>Here's the practical problem once you split between a Gold IRA and personal physical gold: <strong>no brokerage app tracks both</strong>. Your Gold IRA custodian shows only the IRA balance. Your home safe isn't on any dashboard. Mint-and-coin-dealer purchase receipts live in a shoebox. And when someone asks "what's your gold allocation as a percentage of net worth?" — you're guessing.</p>
+
+      <p><strong>HardAssets.io</strong> is a free portfolio tracker built exactly for this problem. It lets you:</p>
+
+      <ul>
+        <li>Log your physical coins and bars with real-time spot prices updated hourly from metals.dev</li>
+        <li>Track your Gold IRA holdings alongside personal gold so you see total metal exposure</li>
+        <li>Set a target allocation (e.g., 10% gold) and see your drift versus plan</li>
+        <li>Record cost basis on every purchase so you know your entry price and unrealized gain — critical for tax planning when you eventually sell</li>
+        <li>Track silver, platinum, crypto, real estate syndications, private notes, and collectibles in the same dashboard</li>
+      </ul>
+
+      <p>Your data lives in Supabase with row-level security, the app installs as a PWA on both iOS and Android, and it costs nothing. <strong><a href="/?demo=1">Start tracking for free at HardAssets.io</a></strong> — and finally see your real hard asset allocation across both the IRA and the safe in one place.</p>
+
+      <h2>The Bottom Line: Gold IRA vs Physical Gold in 2026</h2>
+
+      <p>With gold at $4,746/oz, Swiss tariffs compressing the bar market, and <a href="/blog/gold-geopolitical-crisis-2026">geopolitical risk staying elevated</a>, the decision between a Gold IRA and physical gold is more consequential than it was five years ago.</p>
+
+      <p>Pick physical gold if you're early in your stacking journey, under 59½, value sovereignty, or can't commit large sums. Pick a Gold IRA (preferably Roth) if you're building a long-term position of $25,000+, you're tax-sensitive, and you don't need the metal in hand. Pick both if you want the full benefit of both structures and can spread your allocation accordingly.</p>
+
+      <p>The worst decision is paralysis. Gold's role in a portfolio is to be there when you need it — and the tracking starts the moment you buy the first ounce.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Always consult a qualified financial advisor before making investment decisions.</em></p>
+    `
+  },
+  {
     slug: "silver-supply-deficit-2026",
     title: "Silver Supply Deficit 2026: Why Shortage Signals Higher Prices",
     date: "2026-04-22",

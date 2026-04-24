@@ -1,0 +1,53 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-size="22" fill="#F1F5F9" font-family="Inter, sans-serif" text-anchor="middle" font-weight="800">Gold IRA vs. Physical Gold (2026)</text>
+  <text x="400" y="62" font-size="13" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">Side-by-side comparison for retirement investors</text>
+
+  <!-- Column headers -->
+  <rect x="50" y="85" width="340" height="40" fill="#1E293B" rx="8"/>
+  <text x="220" y="110" font-size="15" fill="#D4A843" font-family="Inter, sans-serif" text-anchor="middle" font-weight="700">Gold IRA</text>
+
+  <rect x="410" y="85" width="340" height="40" fill="#1E293B" rx="8"/>
+  <text x="580" y="110" font-size="15" fill="#D4A843" font-family="Inter, sans-serif" text-anchor="middle" font-weight="700">Physical Gold (Personal)</text>
+
+  <!-- Row 1: Tax Treatment -->
+  <text x="50" y="150" font-size="12" fill="#64748B" font-family="Inter, sans-serif" font-weight="700">TAX TREATMENT</text>
+  <rect x="50" y="158" width="340" height="50" fill="#111827" rx="6" stroke="#1E293B"/>
+  <text x="65" y="180" font-size="13" fill="#34D399" font-family="Inter, sans-serif" font-weight="700">Tax-deferred growth</text>
+  <text x="65" y="198" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Distributions taxed as ordinary income</text>
+
+  <rect x="410" y="158" width="340" height="50" fill="#111827" rx="6" stroke="#1E293B"/>
+  <text x="425" y="180" font-size="13" fill="#FF6B6B" font-family="Inter, sans-serif" font-weight="700">28% collectibles rate</text>
+  <text x="425" y="198" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Max long-term capital gains tax</text>
+
+  <!-- Row 2: Storage -->
+  <text x="50" y="232" font-size="12" fill="#64748B" font-family="Inter, sans-serif" font-weight="700">STORAGE</text>
+  <rect x="50" y="240" width="340" height="50" fill="#111827" rx="6" stroke="#1E293B"/>
+  <text x="65" y="262" font-size="13" fill="#F1F5F9" font-family="Inter, sans-serif" font-weight="700">IRS-approved depository only</text>
+  <text x="65" y="280" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">No home storage allowed</text>
+
+  <rect x="410" y="240" width="340" height="50" fill="#111827" rx="6" stroke="#1E293B"/>
+  <text x="425" y="262" font-size="13" fill="#34D399" font-family="Inter, sans-serif" font-weight="700">Home safe, bank box, or vault</text>
+  <text x="425" y="280" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Full control, full responsibility</text>
+
+  <!-- Row 3: Annual Fees -->
+  <text x="50" y="314" font-size="12" fill="#64748B" font-family="Inter, sans-serif" font-weight="700">ANNUAL FEES</text>
+  <rect x="50" y="322" width="340" height="50" fill="#111827" rx="6" stroke="#1E293B"/>
+  <text x="65" y="344" font-size="13" fill="#FF6B6B" font-family="Inter, sans-serif" font-weight="700">$250–$500+ per year</text>
+  <text x="65" y="362" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Custodian + storage + insurance</text>
+
+  <rect x="410" y="322" width="340" height="50" fill="#111827" rx="6" stroke="#1E293B"/>
+  <text x="425" y="344" font-size="13" fill="#34D399" font-family="Inter, sans-serif" font-weight="700">$0 to small insurance cost</text>
+  <text x="425" y="362" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">One-time 3–10% dealer premium</text>
+
+  <!-- Row 4: Access -->
+  <text x="50" y="396" font-size="12" fill="#64748B" font-family="Inter, sans-serif" font-weight="700">ACCESS BEFORE AGE 59½</text>
+  <rect x="50" y="404" width="340" height="36" fill="#111827" rx="6" stroke="#1E293B"/>
+  <text x="65" y="427" font-size="13" fill="#FF6B6B" font-family="Inter, sans-serif" font-weight="700">10% penalty + ordinary income tax</text>
+
+  <rect x="410" y="404" width="340" height="36" fill="#111827" rx="6" stroke="#1E293B"/>
+  <text x="425" y="427" font-size="13" fill="#34D399" font-family="Inter, sans-serif" font-weight="700">Immediate — no penalty, no age limit</text>
+</svg>

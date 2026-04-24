@@ -1,0 +1,54 @@
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-size="22" fill="#F1F5F9" font-family="Inter, sans-serif" text-anchor="middle" font-weight="800">Typical Gold IRA Fees in 2026</text>
+  <text x="400" y="62" font-size="13" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">What you actually pay over a 10-year holding period on a $50,000 account</text>
+
+  <!-- Chart area -->
+  <line x1="120" y1="100" x2="120" y2="380" stroke="#1E293B" stroke-width="1"/>
+  <line x1="120" y1="380" x2="750" y2="380" stroke="#1E293B" stroke-width="1"/>
+
+  <!-- Y-axis labels -->
+  <text x="110" y="385" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">$0</text>
+  <text x="110" y="325" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">$1,000</text>
+  <text x="110" y="265" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">$2,000</text>
+  <text x="110" y="205" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">$3,000</text>
+  <text x="110" y="145" font-size="12" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="end">$4,000</text>
+
+  <!-- Grid -->
+  <line x1="120" y1="320" x2="750" y2="320" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <line x1="120" y1="260" x2="750" y2="260" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <line x1="120" y1="200" x2="750" y2="200" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="2,2"/>
+  <line x1="120" y1="140" x2="750" y2="140" stroke="#1E293B" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+  <!-- Bar 1: Setup fee (~$150) -->
+  <rect x="170" y="371" width="80" height="9" fill="#64748B" rx="2"/>
+  <text x="210" y="400" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="middle" font-weight="600">Setup</text>
+  <text x="210" y="415" font-size="11" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">$150</text>
+
+  <!-- Bar 2: Custodian 10yr ($2,000) -->
+  <rect x="290" y="260" width="80" height="120" fill="#3B82F6" rx="2"/>
+  <text x="330" y="400" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="middle" font-weight="600">Custodian</text>
+  <text x="330" y="415" font-size="11" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">$2,000 (10 yrs)</text>
+
+  <!-- Bar 3: Storage 10yr ($3,000) -->
+  <rect x="410" y="200" width="80" height="180" fill="#D4A843" rx="2"/>
+  <text x="450" y="400" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="middle" font-weight="600">Storage</text>
+  <text x="450" y="415" font-size="11" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">$3,000 (10 yrs)</text>
+
+  <!-- Bar 4: Dealer premium 5% ($2,500) -->
+  <rect x="530" y="230" width="80" height="150" fill="#FF6B6B" rx="2"/>
+  <text x="570" y="400" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif" text-anchor="middle" font-weight="600">Premium</text>
+  <text x="570" y="415" font-size="11" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">$2,500 (5%)</text>
+
+  <!-- Bar 5: Total (~$7,650) -->
+  <rect x="650" y="140" width="80" height="240" fill="#34D399" rx="2"/>
+  <text x="690" y="400" font-size="12" fill="#F1F5F9" font-family="Inter, sans-serif" text-anchor="middle" font-weight="700">Total</text>
+  <text x="690" y="415" font-size="11" fill="#94A3B8" font-family="Inter, sans-serif" text-anchor="middle">$7,650 (15.3%)</text>
+  <text x="690" y="132" font-size="12" fill="#F1F5F9" font-family="Inter, sans-serif" text-anchor="middle" font-weight="700">$7,650</text>
+
+  <!-- Footer note -->
+  <text x="400" y="435" font-size="11" fill="#64748B" font-family="Inter, sans-serif" text-anchor="middle">Estimates assume $50k account, $300/yr storage + insurance, $200/yr custodian, 5% dealer markup over spot.</text>
+</svg>
