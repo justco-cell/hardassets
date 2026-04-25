@@ -1,0 +1,105 @@
+<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="900" height="520" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="450" y="35" font-size="26" font-weight="bold" text-anchor="middle" fill="#D4A843">Hard Asset Allocation Strategies</text>
+  <text x="450" y="55" font-size="13" text-anchor="middle" fill="#94A3B8">Including Bitcoin as a tail-risk hedge</text>
+
+  <!-- CONSERVATIVE (5-7%) -->
+  <g>
+    <!-- Label -->
+    <text x="80" y="100" font-size="13" font-weight="600" fill="#D4A843">Conservative</text>
+    <text x="80" y="117" font-size="11" fill="#94A3B8">5-7% of portfolio</text>
+
+    <!-- Pie circle background -->
+    <circle cx="150" cy="220" r="80" fill="rgba(30,41,59,0.6)" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>
+
+    <!-- Gold (4-5%) - large blue section ~280 degrees -->
+    <path d="M 150 140 A 80 80 0 0 1 210 200 A 80 80 0 0 1 170 285 A 80 80 0 0 1 80 210 Z" fill="#D4A843" opacity="0.8"/>
+    <text x="140" y="210" font-size="11" font-weight="bold" fill="#0B0F1A">Gold 4-5%</text>
+
+    <!-- Silver (1-2%) - small orange section ~60 degrees -->
+    <path d="M 170 285 A 80 80 0 0 1 210 200 Z" fill="#34D399" opacity="0.7"/>
+    <text x="195" y="255" font-size="10" font-weight="bold" fill="#0B0F1A">Silver</text>
+    <text x="190" y="270" font-size="10" font-weight="bold" fill="#0B0F1A">1-2%</text>
+
+    <!-- Description -->
+    <text x="80" y="330" font-size="10" fill="#F1F5F9">Risk-averse, want proven</text>
+    <text x="80" y="345" font-size="10" fill="#F1F5F9">history, sleep easily.</text>
+    <text x="80" y="360" font-size="10" fill="#F1F5F9">Gold sufficient.</text>
+  </g>
+
+  <!-- BALANCED (10-12%) -->
+  <g>
+    <!-- Label -->
+    <text x="380" y="100" font-size="13" font-weight="600" fill="#D4A843">Balanced</text>
+    <text x="380" y="117" font-size="11" fill="#94A3B8">10-12% of portfolio</text>
+
+    <!-- Pie circle background -->
+    <circle cx="450" cy="220" r="80" fill="rgba(30,41,59,0.6)" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>
+
+    <!-- Gold (6%) - 216 degrees -->
+    <path d="M 450 140 A 80 80 0 0 1 620 220 A 80 80 0 0 1 450 220 Z" fill="#D4A843" opacity="0.8"/>
+    <text x="510" y="180" font-size="10" font-weight="bold" fill="#0B0F1A">Gold</text>
+    <text x="515" y="195" font-size="10" font-weight="bold" fill="#0B0F1A">6%</text>
+
+    <!-- Silver (3%) - 108 degrees -->
+    <path d="M 620 220 A 80 80 0 0 1 530 290 Z" fill="#34D399" opacity="0.7"/>
+    <text x="570" y="265" font-size="10" font-weight="bold" fill="#0B0F1A">Silver 3%</text>
+
+    <!-- Bitcoin (1-2%) - 36 degrees -->
+    <path d="M 530 290 A 80 80 0 0 1 470 290 Z" fill="#F59E0B" opacity="0.75"/>
+    <text x="495" y="315" font-size="9" font-weight="bold" fill="#0B0F1A">BTC 1-2%</text>
+
+    <!-- Description -->
+    <text x="380" y="330" font-size="10" fill="#F1F5F9">Believe inflation is structural,</text>
+    <text x="380" y="345" font-size="10" fill="#F1F5F9">central banks debasing.</text>
+    <text x="380" y="360" font-size="10" fill="#F1F5F9">Bitcoin is tail-risk hedge.</text>
+  </g>
+
+  <!-- AGGRESSIVE (15-20%) -->
+  <g>
+    <!-- Label -->
+    <text x="680" y="100" font-size="13" font-weight="600" fill="#D4A843">Aggressive</text>
+    <text x="680" y="117" font-size="11" fill="#94A3B8">15-20% of portfolio</text>
+
+    <!-- Pie circle background -->
+    <circle cx="750" cy="220" r="80" fill="rgba(30,41,59,0.6)" stroke="rgba(212,168,67,0.2)" stroke-width="1"/>
+
+    <!-- Gold (5%) - 120 degrees -->
+    <path d="M 750 140 A 80 80 0 0 1 819 240 Z" fill="#D4A843" opacity="0.8"/>
+    <text x="790" y="170" font-size="10" font-weight="bold" fill="#0B0F1A">Gold 5%</text>
+
+    <!-- Silver (3%) - 72 degrees -->
+    <path d="M 819 240 A 80 80 0 0 1 770 295 Z" fill="#34D399" opacity="0.7"/>
+    <text x="800" y="275" font-size="10" font-weight="bold" fill="#0B0F1A">Silver</text>
+    <text x="805" y="290" font-size="9" font-weight="bold" fill="#0B0F1A">3%</text>
+
+    <!-- Bitcoin + Crypto (4%) - 96 degrees -->
+    <path d="M 770 295 A 80 80 0 0 1 680 140 Z" fill="#F59E0B" opacity="0.75"/>
+    <text x="710" y="220" font-size="10" font-weight="bold" fill="#0B0F1A">BTC 4%</text>
+
+    <!-- Description -->
+    <text x="680" y="330" font-size="10" fill="#F1F5F9">Think old system breaking.</text>
+    <text x="680" y="345" font-size="10" fill="#F1F5F9">Bitcoin could become</text>
+    <text x="680" y="360" font-size="10" fill="#F1F5F9">reserve asset.</text>
+  </g>
+
+  <!-- Legend -->
+  <g>
+    <rect x="100" y="410" width="12" height="12" fill="#D4A843"/>
+    <text x="120" y="420" font-size="11" fill="#F1F5F9">Gold</text>
+
+    <rect x="200" y="410" width="12" height="12" fill="#34D399"/>
+    <text x="220" y="420" font-size="11" fill="#F1F5F9">Silver</text>
+
+    <rect x="320" y="410" width="12" height="12" fill="#F59E0B"/>
+    <text x="340" y="420" font-size="11" fill="#F1F5F9">Bitcoin/Crypto</text>
+  </g>
+
+  <!-- Key Insight -->
+  <rect x="50" y="455" width="800" height="50" fill="rgba(212,168,67,0.1)" stroke="rgba(212,168,67,0.3)" stroke-width="1" rx="4"/>
+  <text x="450" y="475" font-size="12" text-anchor="middle" fill="#D4A843" font-weight="600">Key Insight:</text>
+  <text x="450" y="493" font-size="11" text-anchor="middle" fill="#F1F5F9">Bitcoin's 1-4% allocation gives tail-risk protection while precious metals provide core inflation hedge.</text>
+</svg>

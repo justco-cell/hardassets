@@ -1,0 +1,66 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="30" font-size="24" font-weight="bold" text-anchor="middle" fill="#D4A843">Bitcoin vs Gold: Hard Asset Comparison</text>
+
+  <!-- Headers -->
+  <rect x="80" y="50" width="280" height="40" fill="rgba(212,168,67,0.15)" rx="4"/>
+  <text x="220" y="78" font-size="14" font-weight="bold" text-anchor="middle" fill="#D4A843">Gold</text>
+
+  <rect x="440" y="50" width="280" height="40" fill="rgba(52,211,153,0.15)" rx="4"/>
+  <text x="580" y="78" font-size="14" font-weight="bold" text-anchor="middle" fill="#34D399">Bitcoin</text>
+
+  <!-- Category: Scarcity -->
+  <text x="50" y="120" font-size="12" font-weight="600" fill="#94A3B8">Scarcity</text>
+  <rect x="80" y="105" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="100" y="130" font-size="11" fill="#F1F5F9">New mining continues</text>
+  <text x="100" y="133" font-size="11" fill="#F1F5F9"></text>
+
+  <rect x="440" y="105" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="460" y="130" font-size="11" fill="#F1F5F9">Fixed at 21M coins, permanent</text>
+
+  <!-- Category: Divisibility -->
+  <text x="50" y="180" font-size="12" font-weight="600" fill="#94A3B8">Divisibility</text>
+  <rect x="80" y="165" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="100" y="190" font-size="11" fill="#F1F5F9">Hard (requires melting/recasting)</text>
+
+  <rect x="440" y="165" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="460" y="190" font-size="11" fill="#F1F5F9">Perfect (divisible to 8 decimals)</text>
+
+  <!-- Category: Portability -->
+  <text x="50" y="240" font-size="12" font-weight="600" fill="#94A3B8">Portability</text>
+  <rect x="80" y="225" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="100" y="250" font-size="11" fill="#F1F5F9">Heavy (1kg = 22 lbs, $65k)</text>
+
+  <rect x="440" y="225" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="460" y="250" font-size="11" fill="#F1F5F9">Infinite (private key on phone)</text>
+
+  <!-- Category: Volatility -->
+  <text x="50" y="300" font-size="12" font-weight="600" fill="#94A3B8">Volatility</text>
+  <rect x="80" y="285" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="100" y="310" font-size="11" fill="#F1F5F9">3-5% weekly moves typical</text>
+
+  <rect x="440" y="285" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="460" y="310" font-size="11" fill="#F1F5F9">5-10% daily moves typical</text>
+
+  <!-- Category: Institutional Adoption -->
+  <text x="50" y="360" font-size="12" font-weight="600" fill="#94A3B8">Adoption</text>
+  <rect x="80" y="345" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="100" y="370" font-size="11" fill="#F1F5F9">5,000+ years of history</text>
+
+  <rect x="440" y="345" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="460" y="370" font-size="11" fill="#F1F5F9">16 years, accelerating fast</text>
+
+  <!-- Category: Custody -->
+  <text x="50" y="420" font-size="12" font-weight="600" fill="#94A3B8">Self-Custody</text>
+  <rect x="80" y="405" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="100" y="430" font-size="11" fill="#F1F5F9">Vault fees, counterparty risk</text>
+
+  <rect x="440" y="405" width="280" height="35" fill="rgba(30,41,59,0.5)" rx="3"/>
+  <text x="460" y="430" font-size="11" fill="#F1F5F9">Zero fees, zero counterparty risk</text>
+
+  <!-- Footer note -->
+  <text x="400" y="485" font-size="10" text-anchor="middle" fill="#94A3B8" font-style="italic">Both are inflation hedges. Neither is objectively "better" — they're complementary.</text>
+</svg>
