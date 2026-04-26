@@ -2,6 +2,158 @@
 // Content is HTML strings for zero-dependency rendering
 export const POSTS = [
   {
+    slug: "cost-basis-gold-silver-calculation",
+    title: "How to Calculate Cost Basis on Physical Gold and Silver",
+    date: "2026-04-26",
+    excerpt: "Master cost basis calculation for precious metals. Track average cost, bulk purchases, premiums, and taxes on your gold and silver holdings.",
+    metaDescription: "Learn how to calculate cost basis on physical gold and silver. Track average cost, bulk purchases, and tax reporting for your precious metals portfolio.",
+    thumbnail: "/images/blog/cost-basis-precious-metals.svg",
+    heroImage: "/images/blog/cost-basis-precious-metals.svg",
+    content: `
+      <p>You've been stacking gold and silver for years. You buy from local coin dealers, online retailers, sometimes hand-to-hand deals. Your stash grows. Then tax season hits, and you realize you have no idea what your cost basis actually is.</p>
+
+      <p>Cost basis — what you paid for an asset — matters enormously. It's the foundation of calculating capital gains, determining tax liability, and making informed selling decisions. Get it wrong, and you either overpay taxes or get audited by the IRS. Get it right, and you have a clean record that protects you when markets move and you decide to sell.</p>
+
+      <p>Unlike stocks and crypto (where brokers track everything for you), <strong>physical precious metals are your responsibility.</strong> There's no centralized record. You have a spreadsheet, some receipts, and a metal detector. This guide will show you exactly how to calculate cost basis for gold and silver — including the tricky stuff like bulk purchases, premiums, and fractional ownership.</p>
+
+      <h2>What Is Cost Basis for Gold and Silver?</h2>
+
+      <p>Cost basis is the original purchase price of an asset, including all costs to acquire it. For precious metals, it's not just the spot price — it includes dealer markup (premium), shipping, insurance, and any ancillary costs that went into getting the metal into your hands.</p>
+
+      <p>The IRS cares about cost basis because the difference between cost basis and sale price is your taxable gain (or loss). If you buy 1 ounce of gold at $1,950 (including premium) and sell it for $2,100, your gain is $150, and you owe capital gains tax on that $150. If you've been stacking for five years without recording cost basis, you have no defense when the IRS asks you to prove what you paid.</p>
+
+      <p><strong>Example:</strong> You buy 10 ounces of silver at $28/oz from a dealer. The total cost is $280. Shipping is $15. Your cost basis per ounce is ($280 + $15) / 10 = $29.50 per ounce, not $28. If you later sell 5 ounces for $30 each, your gain is ($150 proceeds) - ($147.50 cost basis) = $2.50 total gain on that sale.</p>
+
+      <h2>The Two Methods: Specific ID vs. Average Cost</h2>
+
+      <p>The IRS allows two methods for calculating cost basis on identical assets (like gold or silver). You need to pick one and document it for the IRS.</p>
+
+      <ul>
+        <li><strong>Specific Identification (Spec ID):</strong> Track each individual purchase separately. When you sell, you specify exactly which batch you're selling and calculate gain/loss based on that batch's cost. Example: "I'm selling the 5 ounces I bought on March 3rd at $28/oz." This is optimal if you have long-hold positions and recent purchases with high cost basis (to minimize gains).</li>
+        <li><strong>Average Cost Basis (ACB):</strong> Pool all your holdings together and calculate a weighted average cost. When you sell any amount, the gain/loss is based on this average. Simpler to track, but can mean higher taxes if you have old, low-cost holdings and newer, high-cost ones. Most precious metals investors use this method for simplicity.</li>
+      </ul>
+
+      <p>For most stackers, <strong>average cost basis is the right choice</strong> because you're not actively trading (selling and rebuying). You're accumulating over years. An average cost prevents the accounting nightmare of tracking each purchase separately.</p>
+
+      <h2>Step-by-Step: Calculate Your Average Cost Basis</h2>
+
+      <p>Here's the formula:</p>
+
+      <p><strong>Average Cost Basis = Total Amount Spent / Total Ounces Owned</strong></p>
+
+      <p>Let's walk through a realistic example. Say you've been stacking for three years:</p>
+
+      <ul>
+        <li><strong>Purchase 1 (Jan 2024):</strong> 5 oz gold at $2,000/oz + $50 shipping = $10,050 total cost</li>
+        <li><strong>Purchase 2 (Jun 2024):</strong> 10 oz silver at $25/oz + $30 shipping = $280 total cost</li>
+        <li><strong>Purchase 3 (Nov 2024):</strong> 3 oz gold at $2,100/oz + $45 shipping = $6,345 total cost</li>
+        <li><strong>Purchase 4 (Mar 2026):</strong> 20 oz silver at $27/oz + $40 shipping = $580 total cost</li>
+      </ul>
+
+      <p><strong>Your gold holdings:</strong> 5 + 3 = 8 oz. Total spent: $10,050 + $6,345 = $16,395. Average cost basis per oz = $16,395 / 8 = $2,049.38/oz.</p>
+
+      <p><strong>Your silver holdings:</strong> 10 + 20 = 30 oz. Total spent: $280 + $580 = $860. Average cost basis per oz = $860 / 30 = $28.67/oz.</p>
+
+      <p>Now, if you sell 5 ounces of your gold at $2,200/oz, you have a gain of ($2,200 - $2,049.38) × 5 = $753.10. That's your taxable gain.</p>
+
+      <h2>Don't Forget the Premium — It's Part of Cost Basis</h2>
+
+      <p>This is where most beginners trip up. The "spot price" you see on <a href="https://metals.dev" style="color: #D4A843;">metals.dev</a> or Kitco is the wholesale price for pure metal. What you actually pay includes dealer premium — the markup above spot that covers the dealer's cost, profit, and logistics.</p>
+
+      <p>When you buy a 1 oz American Gold Eagle coin, spot might be $2,100, but you pay $2,145 because the dealer charges a $45 premium (2.1% above spot). <strong>Your cost basis is $2,145, not $2,100.</strong></p>
+
+      <p>Premiums vary by:</p>
+
+      <ul>
+        <li>Form: Bullion bars have lower premiums (0.5-1.5%) than coins (2-4%)</li>
+        <li>Volume: Buying 100 oz gets you lower premiums than buying 1 oz</li>
+        <li>Dealer: Online dealers often have lower premiums than LCS (local coin shops)</li>
+        <li>Market conditions: During supply crunches, premiums spike</li>
+      </ul>
+
+      <p>Recommendation: When you make a purchase, record the <strong>total paid</strong> on your receipt, not the spot price. That total IS your cost basis for that batch.</p>
+
+      <h2>Handling Fractional Ownership and Bulk Deals</h2>
+
+      <p>Some purchases get complicated. Say you buy a "junk silver" lot — 100 face-value dollars of pre-1965 U.S. dimes and quarters. These coins contain 90% silver and 10% copper, and they weigh differently than pure silver. Total cost is $1,200, and the actual silver content is ~71.5 oz. Your cost basis per ounce is $1,200 / 71.5 = $16.78/oz of pure silver content.</p>
+
+      <p>Or: You buy a 500 oz lot of silver bars from an online dealer for $12,500 + $100 shipping. Cost per oz = $12,600 / 500 = $25.20/oz. Document this. Add it to your running total for your weighted average.</p>
+
+      <h2>Tax Reporting: What the IRS Actually Cares About</h2>
+
+      <p>When you sell precious metals, most dealers will issue a Form 1099-B (broker statement). The IRS gets a copy. You report the sale on <strong>Schedule D (Capital Gains and Losses)</strong> on your tax return.</p>
+
+      <p>Key fields:</p>
+
+      <ul>
+        <li><strong>Description of property:</strong> "5 oz gold bullion" or "20 oz silver coins"</li>
+        <li><strong>Date acquired:</strong> The date you bought it (if spec ID) or the date of sale (if average cost)</li>
+        <li><strong>Date sold:</strong> The date you sold it</li>
+        <li><strong>Sales price:</strong> What you received (before taxes/fees)</li>
+        <li><strong>Cost basis:</strong> What you paid (including premium and shipping)</li>
+        <li><strong>Gain/Loss:</strong> Sales price - Cost basis</li>
+      </ul>
+
+      <p>The IRS cross-references the 1099-B with your return. If your reported cost basis is lower than what you actually paid (because you didn't track it), you're overpaying taxes. If it's higher, you could be audited. Track it correctly from day one.</p>
+
+      <h2>What If You Lost Receipts? Reconstruct and Document</h2>
+
+      <p>Life happens. You've been stacking for five years, and your records are fragmented — some emails, some handwritten notes, one receipt from 2022 you found in a drawer.</p>
+
+      <p>Reconstruct what you can:</p>
+
+      <ul>
+        <li>Check your bank and credit card statements for purchases</li>
+        <li>Email dealers asking for purchase history (most retain records)</li>
+        <li>Use historical spot prices (available on <a href="https://www.lbma.org.uk" style="color: #D4A843;">LBMA</a> or COMEX) plus typical dealer premiums to estimate cost basis for hand-to-hand deals</li>
+        <li>Document what you reconstruct: "Purchased ~5 oz silver, estimated cost $140 based on bank statement on 06/15/2023 and estimated 2% premium above June 2023 spot price"</li>
+      </ul>
+
+      <p><strong>Important:</strong> This is not perfect, but it's infinitely better than saying "I don't know." Keep detailed notes of your reconstruction process. If audited, explain your methodology. The IRS is more lenient with estimates + documentation than with zero documentation.</p>
+
+      <h2>How to Track Cost Basis Moving Forward</h2>
+
+      <p>Set up a simple spreadsheet or use dedicated tracking software:</p>
+
+      <ul>
+        <li><strong>Spreadsheet columns:</strong> Date Purchased, Metal Type, Qty (oz), Price Per Oz, Premium/Shipping, Total Cost, Cost Basis Per Oz</li>
+        <li><strong>Software:</strong> <a href="/" style="color: #D4A843;">HardAssets.io</a> lets you track precious metals holdings with cost basis per position. Input your purchases, and the dashboard calculates your total cost basis, current value, and unrealized gain/loss in real time.</li>
+      </ul>
+
+      <p>Every time you buy, add a row. Every time you sell, note the date, quantity, and sale price. This becomes your capital gains record for tax reporting.</p>
+
+      <h2>Long-Term vs. Short-Term Capital Gains: Hold for 1 Year</h2>
+
+      <p>Here's a tax planning note: precious metals held for more than one year qualify for long-term capital gains rates (15% or 20% depending on income). Held for one year or less, they're taxed as ordinary income (up to 37%). <strong>Hold your precious metals for at least 12 months before selling to qualify for the lower rate.</strong></p>
+
+      <p>Track the holding period by date acquired. For average cost basis, the IRS assumes you're selling your oldest holdings first (FIFO — first in, first out), so your gains are more likely to hit long-term status if you've been holding the average pool for over a year.</p>
+
+      <h2>Real-World Scenario: Rebalancing and Tax Optimization</h2>
+
+      <p>It's 2027. Gold has doubled from $2,050 to $4,100. You want to rebalance your portfolio, taking some profits to buy <a href="/blog/what-is-real-estate-syndication" style="color: #D4A843;">real estate syndications</a>. Your cost basis was $16,395 for 8 oz. You sell 4 oz at $4,100 = $16,400 proceeds. Your taxable gain is $16,400 - ($16,395 / 8 × 4) = $16,400 - $8,197.50 = $8,202.50.</p>
+
+      <p>If held > 1 year, this is taxed at long-term rates. If < 1 year, it's ordinary income. The difference in tax bill could be $2,000+ depending on your bracket. <strong>Timing matters.</strong> Cost basis helps you quantify that impact before you sell.</p>
+
+      <h2>How to Track Your Complete Hard Asset Portfolio with Cost Basis</h2>
+
+      <p>Precious metals are just one piece of a diversified hard asset portfolio. You also own real estate syndications, crypto, private notes, and collectibles. <strong><a href="/" style="color: #D4A843;">HardAssets.io</a></strong> gives you one dashboard to track cost basis across all of these, alongside live spot prices for metals and crypto.</p>
+
+      <ul>
+        <li>Input your precious metals purchases with cost basis</li>
+        <li>Track your target allocation (e.g., "10% gold, 5% silver, 2% crypto")</li>
+        <li>See your unrealized gains in real time</li>
+        <li>Rebalance and understand tax impact before you sell</li>
+        <li>Export cost basis reports for tax preparation</li>
+      </ul>
+
+      <p>All your hard assets, all your cost basis, one free dashboard. Start tracking for free at <a href="/" style="color: #D4A843;">HardAssets.io</a>.</p>
+
+      <div style="margin-top: 40px; padding: 20px; background: rgba(212, 168, 67, 0.05); border-left: 3px solid #D4A843; border-radius: 8px;">
+        <strong>Financial Disclaimer:</strong> This content is for informational purposes only and does not constitute financial or tax advice. Tax laws vary by jurisdiction and individual circumstance. Always consult a qualified tax advisor or CPA before making investment decisions or reporting capital gains. The examples provided are illustrative and may not reflect your specific situation.
+      </div>
+    `
+  },
+  {
     slug: "bitcoin-hard-asset-inflation-hedge-2026",
     title: "Bitcoin as a Hard Asset: Building a Crypto Allocation for Inflation Protection",
     date: "2026-04-25",
