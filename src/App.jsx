@@ -236,25 +236,136 @@ function PortfolioView({metals,synds,crypto,properties=[],notesLending=[],collec
   </div>
 }
 
+// ═══ LIVE PRICE TICKER ═══
+// Only consumer of fetch{Metal,Crypto}Prices on the landing page. Dashboard has its own
+// refreshPrices() that runs only on user action — never concurrent with this ticker since
+// HomePage and dashboard are mutually exclusive views. No shared cache needed.
+function LivePriceTicker({mobile=false}){
+  const REFRESH_INTERVAL_MS=60_000;          // refetch cadence
+  const STALE_THRESHOLD_MS=5*60_000;         // dim opacity past this much staleness
+  const HIDE_AFTER_FAILURE_MS=5*60_000;      // hide ticker if both APIs fail this long
+  const MARQUEE_DURATION_S=50;               // one full visual loop
+  const REDUCED_MOTION_CYCLE_MS=5_000;       // fade-rotate cadence in reduced-motion mode
+
+  const[items,setItems]=useState(null);
+  const[lastSuccess,setLastSuccess]=useState(null);
+  const[firstFailure,setFirstFailure]=useState(null);
+  const[paused,setPaused]=useState(false);
+  const[reducedMotion,setReducedMotion]=useState(false);
+  const[staticIndex,setStaticIndex]=useState(0);
+
+  useEffect(()=>{
+    if(typeof window==="undefined"||!window.matchMedia)return;
+    const m=window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(m.matches);
+    const h=e=>setReducedMotion(e.matches);
+    m.addEventListener?.("change",h);
+    return()=>m.removeEventListener?.("change",h);
+  },[]);
+
+  useEffect(()=>{
+    let alive=true;
+    const load=async()=>{
+      const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
+      if(!alive)return;
+      const next=[];
+      if(mp){
+        if(mp.gold)next.push({sym:"GOLD",price:mp.gold,chg:mp.goldChg,type:"metal"});
+        if(mp.silver)next.push({sym:"SILVER",price:mp.silver,chg:mp.silverChg,type:"metal"});
+        if(mp.platinum)next.push({sym:"PLAT",price:mp.platinum,chg:mp.platChg,type:"metal"});
+        if(mp.palladium)next.push({sym:"PALL",price:mp.palladium,chg:mp.palladiumChg,type:"metal"});
+      }
+      if(cp){
+        for(const sym of COINS){
+          if(cp[sym])next.push({sym,price:cp[sym].price,chg:cp[sym].change,type:"crypto"});
+        }
+      }
+      if(next.length>0){
+        setItems(next);
+        setLastSuccess(Date.now());
+        setFirstFailure(null);
+      }else{
+        setFirstFailure(prev=>prev||Date.now());
+      }
+    };
+    const t=setTimeout(load,400); // small delay so initial paint isn't blocked
+    const id=setInterval(load,REFRESH_INTERVAL_MS);
+    return()=>{alive=false;clearTimeout(t);clearInterval(id);};
+  },[]);
+
+  useEffect(()=>{
+    if(!reducedMotion||!items||items.length===0)return;
+    const id=setInterval(()=>setStaticIndex(i=>(i+1)%items.length),REDUCED_MOTION_CYCLE_MS);
+    return()=>clearInterval(id);
+  },[reducedMotion,items]);
+
+  const now=Date.now();
+  if(firstFailure&&!items&&now-firstFailure>HIDE_AFTER_FAILURE_MS)return null;
+  if(items&&lastSuccess&&firstFailure&&now-lastSuccess>HIDE_AFTER_FAILURE_MS)return null;
+
+  const isStale=lastSuccess&&(now-lastSuccess)>STALE_THRESHOLD_MS;
+  const fontSize=mobile?12:13;
+  const padY=mobile?7:8;
+  const padX=mobile?16:40;
+
+  const fmtPrice=it=>{
+    if(it.type==="metal")return"$"+it.price.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+"/oz";
+    if(it.price>=1)return"$"+it.price.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    if(it.price>=0.01)return"$"+it.price.toFixed(4);
+    return"$"+it.price.toFixed(6);
+  };
+
+  if(!items){
+    return<div aria-label="Live price ticker" role="region" style={{padding:`${padY}px ${padX}px`,background:P.surface,borderBottom:`1px solid ${P.border}`,overflow:"hidden"}}>
+      <div style={{display:"flex",gap:24,alignItems:"center",fontFamily:mono,fontSize}}>
+        <span style={{color:P.txM}}>LIVE</span>
+        <div style={{width:5,height:5,borderRadius:3,background:P.txM,animation:"pulseGlow 2s ease-in-out infinite"}}/>
+        {[0,1,2,3,4,5].map(i=><span key={i} style={{display:"inline-block",height:fontSize+4,width:mobile?70:90,borderRadius:4,background:`linear-gradient(90deg,${P.elevated},rgba(148,163,184,0.18),${P.elevated})`,backgroundSize:"200% 100%",animation:"shimmer 1.6s linear infinite"}}/>)}
+      </div>
+    </div>;
+  }
+
+  const Item=({it})=>{
+    const up=(it.chg||0)>=0;
+    return<span style={{display:"inline-flex",alignItems:"baseline",gap:6,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>
+      <span style={{color:P.txM,fontWeight:600}}>{it.sym}</span>
+      <span style={{color:P.text}}>{fmtPrice(it)}</span>
+      {it.chg!=null&&<span style={{color:up?P.green:P.red,fontSize:fontSize-1}}>{up?"▲":"▼"} {Math.abs(it.chg).toFixed(2)}%</span>}
+    </span>;
+  };
+
+  if(reducedMotion){
+    const visible=mobile?3:6;
+    const slice=[];
+    for(let i=0;i<visible;i++)slice.push(items[(staticIndex+i)%items.length]);
+    return<div aria-label="Live price ticker" role="region" style={{padding:`${padY}px ${padX}px`,background:P.surface,borderBottom:`1px solid ${P.border}`,overflow:"hidden",opacity:isStale?0.6:1,transition:"opacity 0.5s"}}>
+      <div style={{display:"flex",justifyContent:"center",gap:18,alignItems:"center",fontFamily:mono,fontSize}}>
+        <span style={{color:P.txM}}>LIVE</span>
+        <div style={{width:5,height:5,borderRadius:3,background:P.green}}/>
+        {slice.map((it,i)=><span key={`${it.sym}-${i}`} style={{display:"inline-flex",gap:18,alignItems:"baseline"}}><Item it={it}/>{i<slice.length-1&&<span style={{color:P.txF}} aria-hidden="true">•</span>}</span>)}
+      </div>
+    </div>;
+  }
+
+  const onTouch=()=>setPaused(p=>!p);
+  return<div aria-label="Live price ticker" role="region"
+    onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)} onTouchStart={onTouch}
+    style={{padding:`${padY}px 0`,background:P.surface,borderBottom:`1px solid ${P.border}`,overflow:"hidden",position:"relative",opacity:isStale?0.65:1,transition:"opacity 0.5s"}}>
+    <style>{`@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+    <div style={{position:"absolute",left:0,top:0,bottom:0,width:48,background:`linear-gradient(to right,${P.surface},transparent)`,zIndex:2,pointerEvents:"none"}}/>
+    <div style={{position:"absolute",right:0,top:0,bottom:0,width:48,background:`linear-gradient(to left,${P.surface},transparent)`,zIndex:2,pointerEvents:"none"}}/>
+    <div tabIndex={-1} style={{whiteSpace:"nowrap"}}>
+      <div style={{display:"inline-flex",gap:28,alignItems:"baseline",fontFamily:mono,fontSize,fontVariantNumeric:"tabular-nums",animation:`tickerScroll ${MARQUEE_DURATION_S}s linear infinite`,animationPlayState:paused?"paused":"running",willChange:"transform"}}>
+        {[...items,...items].map((it,i)=><span key={i} style={{display:"inline-flex",alignItems:"baseline",gap:14}}><Item it={it}/><span style={{color:P.txF}} aria-hidden="true">•</span></span>)}
+      </div>
+    </div>
+  </div>;
+}
+
 // ═══ HOME PAGE ═══
 function HomePage({onNav,user}){
   const[openFaq,setOpenFaq]=useState(null);
   const[legalModal,setLegalModal]=useState(null);
-  const[livePrices,setLivePrices]=useState(null);
-  useEffect(()=>{
-    // Delay price fetch so browser renders page first (reduces main-thread blocking)
-    const timer=setTimeout(async()=>{
-      try{
-        const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
-        const p={};
-        if(mp){p.gold=mp.gold;p.silver=mp.silver;p.platinum=mp.platinum;p.palladium=mp.palladium}
-        if(cp){if(cp.BTC)p.btc=cp.BTC.price;if(cp.ETH)p.eth=cp.ETH.price;if(cp.SOL)p.sol=cp.SOL.price;
-          if(cp.BTC)p.btcChg=cp.BTC.change;if(cp.ETH)p.ethChg=cp.ETH.change;if(cp.SOL)p.solChg=cp.SOL.change}
-        if(Object.keys(p).length>0)setLivePrices(p);
-      }catch(e){}
-    },800); // 800ms delay — let browser render first
-    return()=>clearTimeout(timer);
-  },[]);
   const faqs=[
     ["Do I need to create an account?","No. You can try the full dashboard as a guest with demo data — no sign-up required. Sign in with Google when you want cloud sync and cross-device access."],
     ["Where do the live prices come from?","Metal prices (gold, silver, platinum, palladium) are pulled from metals.dev in real-time. Crypto prices (BTC, ETH, SOL, and 10+ coins) come from CoinGecko's API."],
@@ -292,16 +403,7 @@ function HomePage({onNav,user}){
       </div>
     </nav>
 
-    <div style={{padding:"8px 40px",background:P.surface,borderBottom:"1px solid "+P.border,display:"flex",justifyContent:"center",gap:24,alignItems:"center",fontSize:12,fontFamily:mono,overflow:"hidden"}}>
-      <span style={{color:P.txM}}>LIVE</span><div style={{width:5,height:5,borderRadius:3,background:livePrices?P.green:P.txM,animation:"pulseGlow 2s ease-in-out infinite"}}/>
-      {(livePrices?[
-        ["Au",livePrices.gold],["Ag",livePrices.silver],["Pt",livePrices.platinum],
-        ["BTC",livePrices.btc,livePrices.btcChg],["ETH",livePrices.eth,livePrices.ethChg],["SOL",livePrices.sol,livePrices.solChg]
-      ].map(([s,v,chg],i)=>{const p=v>999?"$"+Math.round(v).toLocaleString():"$"+(v||0).toFixed(2);return<span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.text}}>{p}</span>{chg!=null&&<span style={{color:chg>=0?P.green:P.red,fontSize:11,textShadow:chg>=0?"0 0 8px rgba(0,255,136,0.5)":"0 0 8px rgba(255,68,68,0.5)"}}> {chg>=0?"+":""}{chg.toFixed(1)}%</span>}</span>})
-      :[["Au","—"],["Ag","—"],["Pt","—"],["BTC","—"],["ETH","—"],["SOL","—"]].map(([s,v],i)=>
-        <span key={i}><span style={{color:P.txM}}>{s}</span> <span style={{color:P.txM}}>{v}</span></span>
-      ))}
-    </div>
+    <LivePriceTicker/>
 
     {/* Hero */}
     <div style={{textAlign:"center",padding:"80px 40px 60px",position:"relative",overflow:"hidden"}}>

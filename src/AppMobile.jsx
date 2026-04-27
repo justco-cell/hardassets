@@ -107,6 +107,128 @@ function Btn({children,onClick,variant="gold",full,style:s}){const vs={gold:{bac
 // ═══ SPONSOR AUTOCOMPLETE ═══
 function SponsorInput({value,onChange,synds}){const[show,setShow]=useState(false);const existing=[...new Set(synds.map(s=>s.sponsor).filter(Boolean))];const filtered=existing.filter(s=>s.toLowerCase().includes((value||"").toLowerCase())&&s!==value);return<div style={{position:"relative",marginBottom:14}}><label style={{display:"block",fontSize:12,fontWeight:600,color:P.txS,marginBottom:6}}>Sponsor</label><input value={value} onChange={e=>{onChange(e.target.value);setShow(true)}} onFocus={()=>setShow(true)} onBlur={()=>setTimeout(()=>setShow(false),200)} placeholder="e.g. Bergman" style={{width:"100%",background:P.bg,border:`1px solid ${P.border}`,borderRadius:12,color:P.text,fontSize:14,padding:"12px 14px",outline:"none",fontFamily:ff,boxSizing:"border-box"}}/>{show&&filtered.length>0&&<div style={{position:"absolute",top:"100%",left:0,right:0,background:P.elevated,border:`1px solid ${P.border}`,borderRadius:12,marginTop:4,zIndex:10,overflow:"hidden"}}>{filtered.slice(0,5).map(s=><div key={s} onMouseDown={()=>{onChange(s);setShow(false)}} style={{padding:"10px 14px",fontSize:13,color:P.text,cursor:"pointer",borderBottom:`1px solid ${P.border}`}}>{s}</div>)}</div>}</div>}
 
+// ═══ LIVE PRICE TICKER ═══
+// Only consumer of fetch{Metal,Crypto}Prices on the mobile landing page. Dashboard's
+// refreshPrices() runs only on user action (login/demo/refresh button) and only after
+// view==="app" — never concurrent with this ticker since landing and dashboard are
+// mutually exclusive views. No shared cache needed.
+function LivePriceTicker({mobile=true}){
+  const REFRESH_INTERVAL_MS=60_000;
+  const STALE_THRESHOLD_MS=5*60_000;
+  const HIDE_AFTER_FAILURE_MS=5*60_000;
+  const MARQUEE_DURATION_S=50;
+  const REDUCED_MOTION_CYCLE_MS=5_000;
+
+  const[items,setItems]=useState(null);
+  const[lastSuccess,setLastSuccess]=useState(null);
+  const[firstFailure,setFirstFailure]=useState(null);
+  const[paused,setPaused]=useState(false);
+  const[reducedMotion,setReducedMotion]=useState(false);
+  const[staticIndex,setStaticIndex]=useState(0);
+
+  useEffect(()=>{
+    if(typeof window==="undefined"||!window.matchMedia)return;
+    const m=window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(m.matches);
+    const h=e=>setReducedMotion(e.matches);
+    m.addEventListener?.("change",h);
+    return()=>m.removeEventListener?.("change",h);
+  },[]);
+
+  useEffect(()=>{
+    let alive=true;
+    const load=async()=>{
+      const[mp,cp]=await Promise.all([fetchMetalPrices(),fetchCryptoPrices()]);
+      if(!alive)return;
+      const next=[];
+      if(mp){
+        if(mp.gold)next.push({sym:"GOLD",price:mp.gold,chg:mp.goldChg,type:"metal"});
+        if(mp.silver)next.push({sym:"SILVER",price:mp.silver,chg:mp.silverChg,type:"metal"});
+        if(mp.platinum)next.push({sym:"PLAT",price:mp.platinum,chg:mp.platChg,type:"metal"});
+        if(mp.palladium)next.push({sym:"PALL",price:mp.palladium,chg:mp.palladiumChg,type:"metal"});
+      }
+      if(cp){
+        for(const sym of COINS){
+          if(cp[sym])next.push({sym,price:cp[sym].price,chg:cp[sym].change,type:"crypto"});
+        }
+      }
+      if(next.length>0){setItems(next);setLastSuccess(Date.now());setFirstFailure(null);}
+      else setFirstFailure(prev=>prev||Date.now());
+    };
+    const t=setTimeout(load,400);
+    const id=setInterval(load,REFRESH_INTERVAL_MS);
+    return()=>{alive=false;clearTimeout(t);clearInterval(id);};
+  },[]);
+
+  useEffect(()=>{
+    if(!reducedMotion||!items||items.length===0)return;
+    const id=setInterval(()=>setStaticIndex(i=>(i+1)%items.length),REDUCED_MOTION_CYCLE_MS);
+    return()=>clearInterval(id);
+  },[reducedMotion,items]);
+
+  const now=Date.now();
+  if(firstFailure&&!items&&now-firstFailure>HIDE_AFTER_FAILURE_MS)return null;
+  if(items&&lastSuccess&&firstFailure&&now-lastSuccess>HIDE_AFTER_FAILURE_MS)return null;
+
+  const isStale=lastSuccess&&(now-lastSuccess)>STALE_THRESHOLD_MS;
+  const fontSize=mobile?12:13;
+  const padY=mobile?7:8;
+  const padX=mobile?16:40;
+
+  const fmtPrice=it=>{
+    if(it.type==="metal")return"$"+it.price.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+"/oz";
+    if(it.price>=1)return"$"+it.price.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    if(it.price>=0.01)return"$"+it.price.toFixed(4);
+    return"$"+it.price.toFixed(6);
+  };
+
+  if(!items){
+    return<div aria-label="Live price ticker" role="region" style={{padding:`${padY}px ${padX}px`,background:P.surface,borderBottom:`1px solid ${P.border}`,overflow:"hidden"}}>
+      <div style={{display:"flex",gap:18,alignItems:"center",fontFamily:mono,fontSize}}>
+        <span style={{color:P.txM}}>LIVE</span>
+        <div style={{width:5,height:5,borderRadius:3,background:P.txM,animation:"pulse 2s ease-in-out infinite"}}/>
+        {[0,1,2,3].map(i=><span key={i} style={{display:"inline-block",height:fontSize+4,width:mobile?70:90,borderRadius:4,background:`linear-gradient(90deg,${P.elevated},rgba(148,163,184,0.18),${P.elevated})`,backgroundSize:"200% 100%",animation:"shimmer 1.6s linear infinite"}}/>)}
+      </div>
+    </div>;
+  }
+
+  const Item=({it})=>{
+    const up=(it.chg||0)>=0;
+    return<span style={{display:"inline-flex",alignItems:"baseline",gap:6,whiteSpace:"nowrap",fontVariantNumeric:"tabular-nums"}}>
+      <span style={{color:P.txM,fontWeight:600}}>{it.sym}</span>
+      <span style={{color:P.text}}>{fmtPrice(it)}</span>
+      {it.chg!=null&&<span style={{color:up?P.green:P.red,fontSize:fontSize-1}}>{up?"▲":"▼"} {Math.abs(it.chg).toFixed(2)}%</span>}
+    </span>;
+  };
+
+  if(reducedMotion){
+    const visible=mobile?3:6;
+    const slice=[];
+    for(let i=0;i<visible;i++)slice.push(items[(staticIndex+i)%items.length]);
+    return<div aria-label="Live price ticker" role="region" style={{padding:`${padY}px ${padX}px`,background:P.surface,borderBottom:`1px solid ${P.border}`,overflow:"hidden",opacity:isStale?0.6:1,transition:"opacity 0.5s"}}>
+      <div style={{display:"flex",justifyContent:"center",gap:14,alignItems:"center",fontFamily:mono,fontSize}}>
+        <span style={{color:P.txM}}>LIVE</span>
+        <div style={{width:5,height:5,borderRadius:3,background:P.green}}/>
+        {slice.map((it,i)=><span key={`${it.sym}-${i}`} style={{display:"inline-flex",gap:14,alignItems:"baseline"}}><Item it={it}/>{i<slice.length-1&&<span style={{color:P.txF}} aria-hidden="true">•</span>}</span>)}
+      </div>
+    </div>;
+  }
+
+  const onTouch=()=>setPaused(p=>!p);
+  return<div aria-label="Live price ticker" role="region"
+    onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)} onTouchStart={onTouch}
+    style={{padding:`${padY}px 0`,background:P.surface,borderBottom:`1px solid ${P.border}`,overflow:"hidden",position:"relative",opacity:isStale?0.65:1,transition:"opacity 0.5s"}}>
+    <style>{`@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+    <div style={{position:"absolute",left:0,top:0,bottom:0,width:32,background:`linear-gradient(to right,${P.surface},transparent)`,zIndex:2,pointerEvents:"none"}}/>
+    <div style={{position:"absolute",right:0,top:0,bottom:0,width:32,background:`linear-gradient(to left,${P.surface},transparent)`,zIndex:2,pointerEvents:"none"}}/>
+    <div tabIndex={-1} style={{whiteSpace:"nowrap"}}>
+      <div style={{display:"inline-flex",gap:24,alignItems:"baseline",fontFamily:mono,fontSize,fontVariantNumeric:"tabular-nums",animation:`tickerScroll ${MARQUEE_DURATION_S}s linear infinite`,animationPlayState:paused?"paused":"running",willChange:"transform"}}>
+        {[...items,...items].map((it,i)=><span key={i} style={{display:"inline-flex",alignItems:"baseline",gap:12}}><Item it={it}/><span style={{color:P.txF}} aria-hidden="true">•</span></span>)}
+      </div>
+    </div>
+  </div>;
+}
+
 // ═══ CSV IMPORT ═══
 function CsvImport({onImport,label="Import CSV"}){const ref=useRef();return<><input ref={ref} type="file" accept=".csv,.xlsx,.xls" style={{display:"none"}} onChange={e=>{const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const text=ev.target.result;const lines=text.split("\n").filter(l=>l.trim());if(lines.length<2)return;const headers=lines[0].split(",").map(h=>h.trim().replace(/"/g,""));const rows=lines.slice(1).map(l=>{const vals=l.split(",").map(v=>v.trim().replace(/"/g,""));const obj={};headers.forEach((h,i)=>obj[h]=vals[i]||"");return obj});onImport(rows)};reader.readAsText(file);e.target.value=""}}/><Btn variant="ghost" onClick={()=>ref.current?.click()} style={{fontSize:12,padding:"8px 14px"}}>{label}</Btn></>}
 
@@ -615,6 +737,8 @@ export default function HardAssets(){
         {user?<Btn onClick={()=>setView("app")} style={{padding:"8px 16px",fontSize:12}}>Dashboard →</Btn>:<Btn onClick={()=>setView("login")} style={{padding:"8px 16px",fontSize:12}}>Get Started</Btn>}
       </div>
     </nav>
+
+    <LivePriceTicker/>
 
     {/* Hero */}
     <div style={{textAlign:"center",padding:"48px 24px 40px",position:"relative"}}>
