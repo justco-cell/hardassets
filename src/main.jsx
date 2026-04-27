@@ -12,8 +12,12 @@ const path = window.location.pathname
 
 // Minimal loading spinner matching the dark theme
 const Loader = () => (
-  <div style={{background:'#0B0F1A',minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center'}}>
-    <div style={{width:40,height:40,borderRadius:12,background:'linear-gradient(145deg,#D4A843,#B8912E)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,fontWeight:900,color:'#0B0F1A',animation:'pulse 1.5s ease-in-out infinite'}}>H</div>
+  <div style={{background:'#0e1412',minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center'}}>
+    <svg width="40" height="40" viewBox="0 0 26 26" fill="none" style={{animation:'pulse 1.5s ease-in-out infinite'}}>
+      <circle cx="13" cy="13" r="12" stroke="#c9a96a" strokeWidth="1"/>
+      <path d="M7 17 L13 6 L19 17 Z" fill="#c9a96a"/>
+      <path d="M10 13 L16 13" stroke="#0e1412" strokeWidth="1"/>
+    </svg>
     <style>{`@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.7;transform:scale(0.95)}}`}</style>
   </div>
 )
