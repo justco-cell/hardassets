@@ -1,0 +1,102 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="35" font-size="24" font-weight="bold" text-anchor="middle" fill="#D4A843" font-family="Inter, sans-serif">
+    Precious Metals Storage Options
+  </text>
+
+  <!-- Column Headers -->
+  <text x="80" y="75" font-size="13" font-weight="700" fill="#F1F5F9" font-family="Inter, sans-serif">Storage Method</text>
+  <text x="280" y="75" font-size="13" font-weight="700" fill="#F1F5F9" font-family="Inter, sans-serif">Cost/Year</text>
+  <text x="420" y="75" font-size="13" font-weight="700" fill="#F1F5F9" font-family="Inter, sans-serif">Security</text>
+  <text x="560" y="75" font-size="13" font-weight="700" fill="#F1F5F9" font-family="Inter, sans-serif">Access Speed</text>
+  <text x="720" y="75" font-size="13" font-weight="700" fill="#F1F5F9" font-family="Inter, sans-serif">Best For</text>
+
+  <!-- Row 1: Home Safe -->
+  <line x1="30" y1="95" x2="770" y2="95" stroke="#475569" stroke-width="1"/>
+  <text x="80" y="125" font-size="12" font-weight="600" fill="#D4A843" font-family="Inter, sans-serif">Home Safe</text>
+  <text x="280" y="125" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">$0-100</text>
+  <text x="420" y="125" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Good</text>
+  <text x="560" y="125" font-size="12" fill="#34D399" font-family="Inter, sans-serif">Instant</text>
+  <text x="720" y="125" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Core (70%)</text>
+
+  <!-- Row 2: Bank Box -->
+  <line x1="30" y1="145" x2="770" y2="145" stroke="#475569" stroke-width="1"/>
+  <text x="80" y="175" font-size="12" font-weight="600" fill="#D4A843" font-family="Inter, sans-serif">Bank Safety Box</text>
+  <text x="280" y="175" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">$50-200</text>
+  <text x="420" y="175" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Excellent</text>
+  <text x="560" y="175" font-size="12" fill="#F97316" font-family="Inter, sans-serif">Business hrs</text>
+  <text x="720" y="175" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Secondary (20%)</text>
+
+  <!-- Row 3: Vault -->
+  <line x1="30" y1="195" x2="770" y2="195" stroke="#475569" stroke-width="1"/>
+  <text x="80" y="225" font-size="12" font-weight="600" fill="#D4A843" font-family="Inter, sans-serif">Allocated Vault</text>
+  <text x="280" y="225" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">$100-300</text>
+  <text x="420" y="225" font-size="12" fill="#34D399" font-family="Inter, sans-serif">Military-grade</text>
+  <text x="560" y="225" font-size="12" fill="#F97316" font-family="Inter, sans-serif">3-5 days</text>
+  <text x="720" y="225" font-size="12" fill="#CBD5E1" font-family="Inter, sans-serif">Large (5-10%)</text>
+
+  <!-- Pros/Cons Section -->
+  <text x="40" y="280" font-size="14" font-weight="700" fill="#F1F5F9" font-family="Inter, sans-serif">Key Tradeoffs</text>
+
+  <!-- Home Safe Pros -->
+  <circle cx="55" cy="315" r="3" fill="#34D399"/>
+  <text x="70" y="320" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Zero fees after purchase</text>
+
+  <circle cx="55" cy="340" r="3" fill="#34D399"/>
+  <text x="70" y="345" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Instant access (emergency)</text>
+
+  <circle cx="55" cy="365" r="3" fill="#34D399"/>
+  <text x="70" y="370" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">No counterparty risk</text>
+
+  <!-- Home Safe Cons -->
+  <circle cx="55" cy="390" r="3" fill="#F97316"/>
+  <text x="70" y="395" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Theft and fire risk</text>
+
+  <circle cx="55" cy="415" r="3" fill="#F97316"/>
+  <text x="70" y="420" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Limited insurance coverage</text>
+
+  <!-- Bank Box Pros -->
+  <circle cx="380" cy="315" r="3" fill="#34D399"/>
+  <text x="395" y="320" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Bank-grade security vault</text>
+
+  <circle cx="380" cy="340" r="3" fill="#34D399"/>
+  <text x="395" y="345" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Very affordable (50-200/yr)</text>
+
+  <circle cx="380" cy="365" r="3" fill="#34D399"/>
+  <text x="395" y="370" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Better insurance than home</text>
+
+  <!-- Bank Box Cons -->
+  <circle cx="380" cy="390" r="3" fill="#F97316"/>
+  <text x="395" y="395" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Limited business hours</text>
+
+  <circle cx="380" cy="415" r="3" fill="#F97316"/>
+  <text x="395" y="420" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Bank seizure risk in crisis</text>
+
+  <!-- Vault Pros -->
+  <circle cx="705" cy="315" r="3" fill="#34D399"/>
+  <text x="720" y="320" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Military-grade security</text>
+
+  <circle cx="705" cy="340" r="3" fill="#34D399"/>
+  <text x="720" y="345" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Full insurance included</text>
+
+  <!-- Vault Cons -->
+  <circle cx="705" cy="365" r="3" fill="#F97316"/>
+  <text x="720" y="370" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">High annual fees</text>
+
+  <circle cx="705" cy="390" r="3" fill="#F97316"/>
+  <text x="720" y="395" font-size="11" fill="#CBD5E1" font-family="Inter, sans-serif">Counterparty risk</text>
+
+  <!-- Recommendation Box -->
+  <rect x="40" y="450" width="720" height="110" fill="rgba(212, 168, 67, 0.1)" stroke="#D4A843" stroke-width="2" rx="8"/>
+
+  <text x="60" y="475" font-size="13" font-weight="700" fill="#D4A843" font-family="Inter, sans-serif">Recommended Split Strategy</text>
+
+  <text x="60" y="500" font-size="12" fill="#F1F5F9" font-family="Inter, sans-serif">70% in Home Safe: Your core position, instant access</text>
+
+  <text x="60" y="525" font-size="12" fill="#F1F5F9" font-family="Inter, sans-serif">25% in Bank Box: Backup, outside your home, low cost</text>
+
+  <text x="60" y="550" font-size="12" fill="#F1F5F9" font-family="Inter, sans-serif">5% in Vault (optional): Large positions or geographic diversification</text>
+</svg>
