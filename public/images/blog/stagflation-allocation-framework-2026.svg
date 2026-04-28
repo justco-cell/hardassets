@@ -1,0 +1,82 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-size="22" font-weight="bold" text-anchor="middle" fill="#D4A843" font-family="Inter, sans-serif">
+    A 2026 Stagflation Portfolio Allocation Framework
+  </text>
+  <text x="400" y="62" font-size="12" text-anchor="middle" fill="#94A3B8" font-family="Inter, sans-serif">
+    One way to position when growth slows and inflation runs hot
+  </text>
+
+  <!-- Donut chart — Center (320, 320), radius 140 inner 75 -->
+  <!-- Slices computed from cumulative percentages, starting at 12 o'clock -->
+  <!-- 25% Gold (90deg) -->
+  <path d="M 320 180 A 140 140 0 0 1 460 320 L 320 320 Z" fill="#D4A843"/>
+  <!-- 15% Silver (54deg) -->
+  <path d="M 460 320 A 140 140 0 0 1 402.65 433.18 L 320 320 Z" fill="#CBD5E1"/>
+  <!-- 20% Real Estate / Syndications (72deg) -->
+  <path d="M 402.65 433.18 A 140 140 0 0 1 222.96 422.69 L 320 320 Z" fill="#34D399"/>
+  <!-- 10% Energy / MLPs (36deg) -->
+  <path d="M 222.96 422.69 A 140 140 0 0 1 180.86 367.58 L 320 320 Z" fill="#F59E0B"/>
+  <!-- 10% Bitcoin (36deg) -->
+  <path d="M 180.86 367.58 A 140 140 0 0 1 180.86 272.42 L 320 320 Z" fill="#A78BFA"/>
+  <!-- 15% Equities (54deg) -->
+  <path d="M 180.86 272.42 A 140 140 0 0 1 269.10 187.49 L 320 320 Z" fill="#60A5FA"/>
+  <!-- 5% Cash (18deg) -->
+  <path d="M 269.10 187.49 A 140 140 0 0 1 320 180 L 320 320 Z" fill="#94A3B8"/>
+
+  <!-- Inner hole -->
+  <circle cx="320" cy="320" r="75" fill="#0B0F1A"/>
+  <text x="320" y="318" font-size="14" font-weight="700" text-anchor="middle" fill="#F1F5F9" font-family="Inter, sans-serif">Hard Assets</text>
+  <text x="320" y="338" font-size="14" font-weight="700" text-anchor="middle" fill="#D4A843" font-family="Inter, sans-serif">~80%</text>
+
+  <!-- Legend right side -->
+  <g font-family="Inter, sans-serif">
+    <!-- Gold 25% -->
+    <rect x="510" y="120" width="16" height="16" fill="#D4A843"/>
+    <text x="535" y="133" font-size="13" font-weight="700" fill="#F1F5F9">Gold — 25%</text>
+    <text x="535" y="150" font-size="11" fill="#94A3B8">Core monetary hedge, central bank tailwind</text>
+
+    <!-- Silver 15% -->
+    <rect x="510" y="170" width="16" height="16" fill="#CBD5E1"/>
+    <text x="535" y="183" font-size="13" font-weight="700" fill="#F1F5F9">Silver — 15%</text>
+    <text x="535" y="200" font-size="11" fill="#94A3B8">Higher beta, structural supply deficit</text>
+
+    <!-- Real Estate 20% -->
+    <rect x="510" y="220" width="16" height="16" fill="#34D399"/>
+    <text x="535" y="233" font-size="13" font-weight="700" fill="#F1F5F9">Real Estate / Syndications — 20%</text>
+    <text x="535" y="250" font-size="11" fill="#94A3B8">Cash flow + inflation pass-through</text>
+
+    <!-- Energy 10% -->
+    <rect x="510" y="270" width="16" height="16" fill="#F59E0B"/>
+    <text x="535" y="283" font-size="13" font-weight="700" fill="#F1F5F9">Energy / MLPs — 10%</text>
+    <text x="535" y="300" font-size="11" fill="#94A3B8">Direct hedge to oil-driven CPI</text>
+
+    <!-- Bitcoin 10% -->
+    <rect x="510" y="320" width="16" height="16" fill="#A78BFA"/>
+    <text x="535" y="333" font-size="13" font-weight="700" fill="#F1F5F9">Bitcoin — 10%</text>
+    <text x="535" y="350" font-size="11" fill="#94A3B8">Asymmetric debasement bet</text>
+
+    <!-- Equities 15% -->
+    <rect x="510" y="370" width="16" height="16" fill="#60A5FA"/>
+    <text x="535" y="383" font-size="13" font-weight="700" fill="#F1F5F9">Quality Equities — 15%</text>
+    <text x="535" y="400" font-size="11" fill="#94A3B8">Pricing power, dividends, low debt</text>
+
+    <!-- Cash 5% -->
+    <rect x="510" y="420" width="16" height="16" fill="#94A3B8"/>
+    <text x="535" y="433" font-size="13" font-weight="700" fill="#F1F5F9">Cash / T-Bills — 5%</text>
+    <text x="535" y="450" font-size="11" fill="#94A3B8">Dry powder for dislocations</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="400" y="540" font-size="11" text-anchor="middle" fill="#475569" font-family="Inter, sans-serif">
+    Illustrative framework. Adjust to age, income, and risk tolerance.
+  </text>
+  <text x="400" y="558" font-size="11" text-anchor="middle" fill="#475569" font-family="Inter, sans-serif">
+    Inspired by Morgan Stanley's 60/20/20 framework — tilted further into hard assets for a stagflation regime.
+  </text>
+  <text x="400" y="582" font-size="11" font-weight="600" text-anchor="middle" fill="#D4A843" font-family="Inter, sans-serif">
+    Track all of it in one dashboard at HardAssets.io
+  </text>
+</svg>

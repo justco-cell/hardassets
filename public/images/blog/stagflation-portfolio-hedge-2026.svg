@@ -1,0 +1,68 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#0B0F1A"/>
+
+  <!-- Title -->
+  <text x="400" y="38" font-size="22" font-weight="bold" text-anchor="middle" fill="#D4A843" font-family="Inter, sans-serif">
+    Stagflation Performance: 1970s Real Returns by Asset Class
+  </text>
+  <text x="400" y="62" font-size="12" text-anchor="middle" fill="#94A3B8" font-family="Inter, sans-serif">
+    Annualized inflation-adjusted return, 1973–1979 (US, peak-stagflation decade)
+  </text>
+
+  <!-- Chart Frame -->
+  <line x1="180" y1="110" x2="180" y2="500" stroke="#475569" stroke-width="1"/>
+  <line x1="180" y1="500" x2="760" y2="500" stroke="#475569" stroke-width="1"/>
+
+  <!-- Zero Line -->
+  <line x1="180" y1="380" x2="760" y2="380" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="170" y="384" font-size="10" text-anchor="end" fill="#94A3B8" font-family="Inter, sans-serif">0%</text>
+
+  <!-- Y-axis labels -->
+  <text x="170" y="124" font-size="10" text-anchor="end" fill="#94A3B8" font-family="Inter, sans-serif">+30%</text>
+  <text x="170" y="184" font-size="10" text-anchor="end" fill="#94A3B8" font-family="Inter, sans-serif">+20%</text>
+  <text x="170" y="244" font-size="10" text-anchor="end" fill="#94A3B8" font-family="Inter, sans-serif">+15%</text>
+  <text x="170" y="304" font-size="10" text-anchor="end" fill="#94A3B8" font-family="Inter, sans-serif">+10%</text>
+  <text x="170" y="364" font-size="10" text-anchor="end" fill="#94A3B8" font-family="Inter, sans-serif">+5%</text>
+  <text x="170" y="424" font-size="10" text-anchor="end" fill="#94A3B8" font-family="Inter, sans-serif">-5%</text>
+  <text x="170" y="468" font-size="10" text-anchor="end" fill="#94A3B8" font-family="Inter, sans-serif">-10%</text>
+
+  <!-- Bars: scale = 12px per percentage point. Zero=380. -->
+  <!-- Gold +35.0% (capped to 30 visual = top) -->
+  <rect x="210" y="80" width="70" height="300" fill="#D4A843"/>
+  <text x="245" y="74" font-size="13" font-weight="700" text-anchor="middle" fill="#D4A843" font-family="Inter, sans-serif">+35.0%</text>
+  <text x="245" y="520" font-size="12" font-weight="600" text-anchor="middle" fill="#F1F5F9" font-family="Inter, sans-serif">Gold</text>
+
+  <!-- Silver +24.6% -->
+  <rect x="305" y="184" width="70" height="196" fill="#CBD5E1"/>
+  <text x="340" y="178" font-size="13" font-weight="700" text-anchor="middle" fill="#CBD5E1" font-family="Inter, sans-serif">+24.6%</text>
+  <text x="340" y="520" font-size="12" font-weight="600" text-anchor="middle" fill="#F1F5F9" font-family="Inter, sans-serif">Silver</text>
+
+  <!-- Real Estate (US Housing) +5.4% -->
+  <rect x="400" y="316" width="70" height="64" fill="#34D399"/>
+  <text x="435" y="310" font-size="13" font-weight="700" text-anchor="middle" fill="#34D399" font-family="Inter, sans-serif">+5.4%</text>
+  <text x="435" y="520" font-size="12" font-weight="600" text-anchor="middle" fill="#F1F5F9" font-family="Inter, sans-serif">Real Estate</text>
+
+  <!-- Oil/Energy +14.1% -->
+  <rect x="495" y="211" width="70" height="169" fill="#F59E0B"/>
+  <text x="530" y="205" font-size="13" font-weight="700" text-anchor="middle" fill="#F59E0B" font-family="Inter, sans-serif">+14.1%</text>
+  <text x="530" y="520" font-size="12" font-weight="600" text-anchor="middle" fill="#F1F5F9" font-family="Inter, sans-serif">Energy</text>
+
+  <!-- Stocks (S&P 500) -1.4% -->
+  <rect x="590" y="380" width="70" height="17" fill="#EF4444"/>
+  <text x="625" y="412" font-size="13" font-weight="700" text-anchor="middle" fill="#EF4444" font-family="Inter, sans-serif">-1.4%</text>
+  <text x="625" y="520" font-size="12" font-weight="600" text-anchor="middle" fill="#F1F5F9" font-family="Inter, sans-serif">S&amp;P 500</text>
+
+  <!-- Bonds (10Y Treasury) -3.8% -->
+  <rect x="685" y="380" width="70" height="46" fill="#EF4444"/>
+  <text x="720" y="442" font-size="13" font-weight="700" text-anchor="middle" fill="#EF4444" font-family="Inter, sans-serif">-3.8%</text>
+  <text x="720" y="520" font-size="12" font-weight="600" text-anchor="middle" fill="#F1F5F9" font-family="Inter, sans-serif">Bonds</text>
+
+  <!-- Footnote -->
+  <text x="400" y="555" font-size="11" text-anchor="middle" fill="#475569" font-family="Inter, sans-serif">
+    Sources: World Gold Council, Silver Institute, Federal Reserve historical data. Real returns net of CPI.
+  </text>
+  <text x="400" y="575" font-size="11" text-anchor="middle" fill="#475569" font-family="Inter, sans-serif">
+    Hard assets crushed paper assets in the last sustained stagflation. The pattern repeats.
+  </text>
+</svg>

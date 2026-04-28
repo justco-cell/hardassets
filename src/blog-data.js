@@ -2,6 +2,126 @@
 // Content is HTML strings for zero-dependency rendering
 export const POSTS = [
   {
+    slug: "stagflation-portfolio-hedge-2026",
+    title: "Stagflation Portfolio Playbook: Hedging With Hard Assets in 2026",
+    date: "2026-04-28",
+    excerpt: "The Fed meets today with inflation rising and growth slowing. Here's how to build a stagflation portfolio with gold, silver, real estate, and Bitcoin — including a full allocation framework.",
+    metaDescription: "Build a stagflation portfolio for 2026. Gold, silver, real estate, energy, and Bitcoin allocation framework to hedge growth-inflation squeeze.",
+    thumbnail: "/images/blog/stagflation-portfolio-hedge-2026.svg",
+    heroImage: "/images/blog/stagflation-portfolio-hedge-2026.svg",
+    content: `
+      <p>The FOMC kicked off a two-day meeting this morning. Brent crude is back above $104. Gold is hovering near $4,689 after touching record highs last week, and silver pulled back to $73.46 in early trading. Bitcoin slipped under $77,000. The headline that ties it all together: a Dallas Fed paper now projects core PCE could reach 4% by year-end — double the Fed's 2% target — even as the labor market visibly softens.</p>
+
+      <p>That word — <em>stagflation</em> — is back. And if you're holding a traditional 60/40 portfolio of stocks and bonds, you have a problem. A <strong>stagflation portfolio</strong> is built differently. This guide walks through the data, the history, and a concrete allocation framework you can use to position your hard assets before the next leg of this cycle plays out.</p>
+
+      <h2>What Stagflation Means (and Why 2026 Looks Like It)</h2>
+
+      <p>Stagflation is the simultaneous combination of three things: persistent above-target inflation, slowing or negative real GDP growth, and rising unemployment. It's the scenario investors fear most because the standard playbook breaks: stocks struggle because earnings compress, bonds get crushed because rates have to stay high, and cash loses purchasing power.</p>
+
+      <p>The 2026 setup is textbook. The Iran war fuel crisis pushed Brent crude through $100 in March and the Strait of Hormuz disruption is still rippling through global supply chains even after the April 8 ceasefire. The Dallas Fed estimates the conflict alone will add roughly 0.8% to global inflation through 2026. Meanwhile, hiring has stalled, manufacturing PMIs are contracting, and the yield curve is doing something between flat and inverted.</p>
+
+      <p>Powell is widely expected to hold the federal funds rate at 3.50–3.75% at tomorrow's announcement — the third consecutive pause. The CME FedWatch tool shows a <a href="https://www.cbsnews.com/news/fed-rate-decision-april-2026-powell-final-meeting/" target="_blank" rel="noopener">100% probability of no change</a>. The Fed is stuck: cut and you re-ignite inflation; hike and you accelerate the slowdown. That's the trap a stagflation hedge has to navigate.</p>
+
+      <h2>How Hard Assets Performed in the Last Stagflation</h2>
+
+      <p>The 1970s are the most cited stagflation reference point in the historical record, and they offer hard data on what worked and what didn't. From 1973 to 1979 — the peak stagflation window — annualized real returns (net of CPI) tell a brutal story for paper portfolios:</p>
+
+      <ul>
+        <li><strong>Gold: +35% annualized real return.</strong> The single best-performing major asset.</li>
+        <li><strong>Silver: +24.6% annualized.</strong> Volatile but a clear winner.</li>
+        <li><strong>Energy / oil: +14% annualized.</strong> Direct beneficiary of the supply shock.</li>
+        <li><strong>Real estate: +5.4% real return.</strong> Cash flows and rents repriced with inflation.</li>
+        <li><strong>S&amp;P 500: -1.4% real return.</strong> Nominally flat, but you lost purchasing power every year.</li>
+        <li><strong>10-year Treasuries: -3.8% real return.</strong> The classic "safe" asset destroyed in stagflation.</li>
+      </ul>
+
+      <p>The <a href="https://www.gold.org/" target="_blank" rel="noopener">World Gold Council's</a> stagflation framework, drawing on quarterly performance data going back to 1973, identifies stagflation as historically gold's most favorable backdrop — better than disinflation, better than reflation, better than goldilocks. The reason is mechanical: gold's price reflects real interest rates and currency debasement risk, and stagflation crushes the first while accelerating the second.</p>
+
+      <p>If you want a deeper look at how monetary debasement specifically drives metals, our <a href="/blog/hedge-inflation-gold-silver-2026">guide to hedging inflation with gold and silver</a> walks through the mechanics in detail.</p>
+
+      <h2>How Should You Hedge a Stagflation Portfolio?</h2>
+
+      <p>To hedge a stagflation portfolio, allocate roughly 70–80% to hard assets that benefit from inflation and currency debasement: gold (25%), silver (15%), real estate or syndications (20%), energy and MLPs (10%), and Bitcoin (10%). Keep 15% in quality equities with pricing power and 5% in short-duration cash for dry powder. Rebalance annually.</p>
+
+      <p>That's the short answer. The longer answer requires understanding why each piece is in the portfolio — because when one of these assets gets dislocated, you need the conviction to add to it rather than panic-sell.</p>
+
+      <h2>Silver in Stagflation: Industrial Headwind, Monetary Tailwind</h2>
+
+      <p>Silver is the most misunderstood asset in a stagflation portfolio. It's both an industrial metal and a monetary metal, and in stagflation those two demand drivers pull in opposite directions.</p>
+
+      <p>The industrial side is a headwind. If global growth slows materially, demand for silver in solar panels, electronics, and EV components softens. The Silver Institute's most recent supply/demand outlook still projects a <a href="/blog/silver-supply-deficit-2026">structural deficit through 2026</a>, but a sharp recession could trim 10–15% from industrial demand and pull silver back into the mid-$60s before a base forms.</p>
+
+      <p>The monetary side is a tailwind. Silver is historically the higher-beta version of gold during currency-debasement regimes. From 1976 to 1980, silver ran from $4.50 to $49 — an 11x move that dwarfed gold's 5x in the same window. Stackers who held through the volatility were rewarded.</p>
+
+      <p>The current gold-to-silver ratio sits near 64:1, well below its 5-year average of around 80:1 but above the historical mean of 47:1. That's a key signal — when the ratio is elevated and gold is leading, silver tends to play catch-up violently. Our <a href="/blog/gold-silver-ratio-what-it-means">explainer on the gold-to-silver ratio</a> breaks down how to use it as a position-sizing tool.</p>
+
+      <p>Practical takeaway: keep silver in the portfolio, but understand you're going to ride more volatility for the asymmetric upside. Don't size it like gold. Size it like a higher-beta version of gold — meaningful but not dominant.</p>
+
+      <h2>Real Estate, Energy, and Bitcoin: The Diversifiers That Actually Work</h2>
+
+      <p>Metals alone aren't a complete stagflation hedge. Three other asset categories matter, and each plays a specific role.</p>
+
+      <p><strong>Real estate and syndications.</strong> Direct real estate — particularly cash-flowing multifamily, industrial, and self-storage — has the rare property of inflation pass-through via rent escalation. In the 1970s, US housing delivered a +5.4% real return while stocks went negative. Today, well-structured private real estate syndications (preferred return + GP promote) can offer 6–9% preferred yields with depreciation tax shields. The catch: liquidity. Money is locked up for 5–10 years. That's a feature, not a bug, in stagflation — you're not tempted to sell at the bottom.</p>
+
+      <p><strong>Energy and MLPs.</strong> If oil-driven CPI is the proximate cause of inflation, owning the producers is a direct hedge. MLPs (master limited partnerships) generated outsized real returns in the 1970s and again from 2000–2008. They throw off cash distributions, benefit from pipeline tariff escalators tied to PPI, and sell at low multiples relative to growth equities.</p>
+
+      <p><strong>Bitcoin.</strong> The asymmetric piece. Bitcoin doesn't have 50 years of stagflation data — only the post-2020 inflation episode, where it ran from $5K to $69K then crashed and rebuilt to today's $77K. The bull case is straightforward: fixed supply (21M cap), the April 2024 halving, and accelerating ETF inflows. <a href="https://finance.yahoo.com/personal-finance/investing/article/bitcoin-and-ethereum-prices-today-tuesday-april-28-2026-values-falling-ahead-of-fed-meeting-114535390.html" target="_blank" rel="noopener">Spot Bitcoin ETFs logged eight straight days of net inflows totaling $2.1 billion</a> through April 23, with BlackRock's IBIT capturing about 75% of the flow. Treat Bitcoin as a small, asymmetric debasement bet — not a core position. Our <a href="/blog/bitcoin-hard-asset-inflation-hedge-2026">deep dive on Bitcoin as an inflation hedge</a> covers the volatility math.</p>
+
+      <h2>A 2026 Stagflation Portfolio Allocation Framework</h2>
+
+      <p>Here's a concrete framework you can adapt. Morgan Stanley's CIO recently endorsed a 60/20/20 portfolio (60% stocks, 20% bonds, 20% gold) — a mainstream nod to gold as a core position. For an active stagflation regime, we'd tilt further:</p>
+
+      <p><img src="/images/blog/stagflation-allocation-framework-2026.svg" alt="2026 stagflation portfolio allocation framework — gold, silver, real estate, energy, Bitcoin, equities, cash" style="width:100%;border-radius:12px;border:1px solid rgba(148,163,184,0.08);margin:8px 0 18px"/></p>
+
+      <ul>
+        <li><strong>Gold — 25%.</strong> Core monetary hedge. Central bank buying remains the dominant flow, with sovereigns adding net 1,000+ tonnes annually for the third year running. See our <a href="/blog/central-bank-gold-buying-2026">central bank gold buying analysis</a> for the breakdown.</li>
+        <li><strong>Silver — 15%.</strong> Higher-beta exposure with a structural supply deficit. Expect more volatility than gold.</li>
+        <li><strong>Real estate / syndications — 20%.</strong> Cash flow plus inflation pass-through. Mix of direct ownership and LP positions.</li>
+        <li><strong>Energy / MLPs — 10%.</strong> Direct hedge to oil-driven CPI. Distributions cushion drawdowns.</li>
+        <li><strong>Bitcoin — 10%.</strong> Asymmetric debasement bet. Size to a level you can hold through 50% drawdowns.</li>
+        <li><strong>Quality equities — 15%.</strong> Pricing power, low debt, dividend growth. Energy majors, defense, consumer staples.</li>
+        <li><strong>Cash / T-Bills — 5%.</strong> Dry powder. Short duration only — long bonds get destroyed in stagflation.</li>
+      </ul>
+
+      <p>That's roughly 80% in hard or hard-adjacent assets and 20% in liquid optionality. It's an aggressive tilt, but the historical data and current macro setup justify it. Adjust to age, income, and risk tolerance — a 35-year-old earning W-2 income can run heavier on illiquid syndications and Bitcoin than a 65-year-old drawing down a portfolio.</p>
+
+      <p>The single biggest mistake stackers make is letting one position drift dramatically out of band. Gold rallies 30%, silver lags, and suddenly you're at 35% gold and 8% silver. Rebalance annually. Sell what's worked, buy what's lagged. That's how you compound.</p>
+
+      <h2>What to Watch Through the Rest of 2026</h2>
+
+      <p>A stagflation thesis isn't a one-and-done trade — it plays out over quarters and years. Three signals will tell you whether the regime is intensifying or breaking:</p>
+
+      <ul>
+        <li><strong>Core PCE trajectory.</strong> If it stays above 3% through Q3, the Fed is cornered and metals push higher. If it cracks back toward 2.5%, paper assets get a bid and metals consolidate.</li>
+        <li><strong>Real yields (10Y TIPS).</strong> Gold is inversely correlated to real yields. Real yields below 1% have historically been rocket fuel for gold.</li>
+        <li><strong>Oil price.</strong> Brent above $100 keeps the inflation engine running. A sustained drop below $80 takes pressure off the Fed and the trade.</li>
+      </ul>
+
+      <p>Watch the Fed press conference Wednesday at 2:30 p.m. ET. Powell's tone matters more than the rate decision itself — markets are looking for any hint of dovishness as the cover for a metals run, or hawkishness that triggers a final flush.</p>
+
+      <h2>How to Track Your Stagflation Portfolio in One Dashboard</h2>
+
+      <p>The hardest part of running a hard-asset-tilted portfolio isn't picking the assets — it's tracking them. Your gold and silver are in a home safe and a vault. Your syndications are in PDF subscription docs and quarterly K-1s. Your energy and equity exposure is in a brokerage. Your Bitcoin is in a hardware wallet. Your real estate is in a separate spreadsheet.</p>
+
+      <p><strong><a href="/">HardAssets.io</a></strong> was built for exactly this problem. It's a free portfolio dashboard that tracks every asset class in your stagflation hedge in one place:</p>
+
+      <ul>
+        <li><strong>Precious metals</strong> — gold, silver, platinum, palladium with live spot prices from metals.dev and full cost-basis tracking.</li>
+        <li><strong>Crypto</strong> — Bitcoin, Ethereum, and alt holdings with live CoinGecko prices.</li>
+        <li><strong>Real estate syndications</strong> — track sponsor, capital invested, preferred rate, IRR, hold period, and distributions across all your LP positions.</li>
+        <li><strong>Private notes and debt</strong> — track yield, term, and accrued interest.</li>
+        <li><strong>Collectibles and other hard assets</strong> — fill in the gaps mainstream trackers miss.</li>
+        <li><strong>Target allocations</strong> — set your stagflation framework targets and see live drift across asset classes.</li>
+      </ul>
+
+      <p>It installs as a PWA on iOS and Android, runs encrypted on Supabase, and never tracks portfolio dollar amounts in analytics. <strong><a href="/?demo=1">Start tracking your stagflation portfolio for free at HardAssets.io →</a></strong></p>
+
+      <p>If you're new to thinking about hard assets as a category, our <a href="/blog/why-track-hard-assets-separately">primer on why hard assets need separate tracking</a> is a good follow-up read.</p>
+
+      <p><em>This content is for informational purposes only and does not constitute financial advice. Always consult a qualified financial advisor before making investment decisions.</em></p>
+    `
+  },
+  {
     slug: "how-store-gold-silver-home-safely",
     title: "How to Store Physical Gold and Silver Safely at Home",
     date: "2026-04-27",
