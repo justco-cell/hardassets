@@ -2,6 +2,95 @@
 // Content is HTML strings for zero-dependency rendering
 export const POSTS = [
   {
+    slug: "silver-surging-geopolitical-risk-2026",
+    title: "Why Silver Is Surging Right Now (And What It Means for Your Portfolio)",
+    date: "2026-04-28",
+    excerpt: "Silver jumped 33% to $75.67/oz in one week due to US-Iran tensions and inflation fears. Learn why geopolitical risk drives precious metals prices and how to position your portfolio.",
+    metaDescription: "Silver surging to $75.67 due to geopolitical risk and inflation concerns. Why silver prices rise during crises and how to manage precious metals allocation.",
+    thumbnail: "/images/blog/silver-surge-geopolitical-2026.svg",
+    heroImage: "/images/blog/silver-surge-geopolitical-2026.svg",
+    content: `
+      <p>Silver just did something remarkable. In a single week, it surged from $57 to $75.67 per ounce — a 33% gain. That's the kind of move that catches headlines and panics portfolio managers. But for hard asset investors, it's a signal. And if you're tracking your portfolio in real time, you're asking: what just happened, and should I adjust my allocation?</p>
+
+      <p>The answer starts with geopolitics. The US-Iran conflict escalated this week, pushing oil prices higher and triggering a chain reaction through commodities. Energy prices spiked. Inflation expectations rose. Central banks appeared ready to hold rates higher for longer. And in that uncertainty, investors turned to the oldest hedge in the book: precious metals.</p>
+
+      <p><strong>But silver moved harder than gold.</strong> While gold fell 2%, silver surged 33%. That divergence matters. It tells you something important about what's driving the market right now — and what it means for your hard asset strategy going forward.</p>
+
+      <h2>Why Silver Reacted So Violently to Geopolitical Risk</h2>
+
+      <p>Silver's 33% surge isn't a fluke. It's a textbook response to the specific type of crisis unfolding this week. Here's why:</p>
+
+      <p><strong>1. Energy prices spiked, igniting inflation fears.</strong> When US-Iran tensions escalate, the Strait of Hormuz (through which 20% of global oil passes) becomes a risk. Even the *rumor* of supply disruption sends oil higher. Oil jumped from $83 to $91 per barrel in four days. Higher energy costs ripple through the entire economy — food, transportation, manufacturing — and inflation expectations rise fast. Silver, unlike gold, has industrial demand. When inflation rises and investors fear real returns are eroding, both the safe-haven demand (gold) and industrial-use demand (silver) increase. Silver gets both tailwinds at once.</p>
+
+      <p><strong>2. Risk-off sentiment sent investors into hard assets.</strong> When geopolitical risk spikes, equities sell off and bonds sell off. Investors need a safe place. Gold is the classic safe haven, but silver benefits from the same flight-to-safety dynamic, plus it's more volatile (which means bigger percentage gains when sentiment shifts).</p>
+
+      <p><strong>3. Silver is cheaper, so it offers better leverage.** If you have $5,000 to deploy and are fearful, you can buy 3.2 ounces of gold ($1,550/oz) OR 65 ounces of silver ($75/oz). The silver position gives you 20x more ounces, which psychologically feels more defensive and offers more leverage if silver rallies further. Retail investors and stackers poured into silver.</p>
+
+      <p><strong>4. Central bank signals were dovish (relatively).</strong> The FOMC met this week and held rates steady at 3.50–3.75%. The tone wasn't hawkish, which normally would be negative for metals. But in the context of geopolitical risk spiking, it meant the Fed wouldn't fight the crisis too hard with tightening. That kept real yields from rising, which is supportive for non-yielding metals like silver.</p>
+
+      <h2>What Does This Mean for the Gold-to-Silver Ratio?</h2>
+
+      <p>The gold-to-silver ratio is a useful metric for tracking relative value. It tells you how many ounces of silver equal one ounce of gold.</p>
+
+      <p>At the start of this week (April 21), the ratio was around 60:1 (gold at $4,700, silver at $78). Now it's closer to 62:1 (gold at $4,709, silver at $75.67). The ratio widened, meaning gold became relatively scarce. This happens in risk-off events — investors flee to the most liquid, safest metal.</p>
+
+      <p>But here's the nuance: <strong>a 62:1 ratio is still historically tight.</strong> Over the past 20 years, the ratio averaged 70:1. So even though gold held up better than silver this week, silver is still historically rich relative to gold. If the geopolitical situation stabilizes, the ratio could widen back toward 70:1, meaning silver would underperform gold on the way down.</p>
+
+      <p><strong>What does this mean for your portfolio?</strong> If you're 50/50 gold and silver and want to maintain that allocation through volatility, this week's move was a reminder to rebalance. When silver rallies hard, take some profits and rotate back into gold. Or if you believe the geopolitical situation will worsen, hold the higher silver allocation.</p>
+
+      <h2>Is This a Buying Opportunity or a Sell Signal?</h2>
+
+      <p>The big question every stacker is asking: at $75.67, is silver a buy or a short-term top?</p>
+
+      <p><strong>The bullish case:</strong> If US-Iran tensions persist, energy stays elevated, and central banks stay accommodative, silver could move higher. Bank of America's 2026 forecast has silver ranging from $75 to $135 per ounce. We're right in the middle of that range. Industrial demand from AI chips, solar panels, and electric vehicles is rising. You're stacking into global derisking, not just speculation.</p>
+
+      <p><strong>The cautious case:</strong> Silver's 33% rally in one week is unsustainable without new catalysts. Geopolitical conflicts resolve (see: Iran's reported peace proposal this week). Central banks may tighten if inflation keeps rising. And at $75, silver is above its 10-year median of $18. Buying at all-time highs is risky. You'd want to see the geopolitical situation deteriorate further before adding more.</p>
+
+      <p><strong>The smart approach:</strong> Dollar-cost average. If you believe silver is part of your long-term portfolio (inflation hedge, geopolitical insurance), buy on a regular schedule regardless of price. Don't try to time the top of a 33% rally. But if you're already holding significant silver and this rally pushed you above your target allocation, rebalance into gold or other hard assets. Lock in gains.</p>
+
+      <h2>How to Track This in Your Portfolio</h2>
+
+      <p>Moves like this week's silver surge are where real-time portfolio tracking becomes essential. If you're managing metals across multiple storage locations (home safe, bank box, vault), in different forms (bars, coins, rounds), purchased at different times and prices, you need a dashboard to see the big picture instantly.</p>
+
+      <p><strong>HardAssets.io</strong> tracks all your precious metals holdings with live prices updated hourly:</p>
+
+      <ul>
+        <li>Record gold, silver, platinum, palladium by type and storage location</li>
+        <li>See real-time spot prices so you know your portfolio value changes as silver rallies or falls</li>
+        <li>Calculate your gold-to-silver ratio and allocation drift (are you still 50/50 or has silver's 33% gain pushed you to 60/40?)</li>
+        <li>Track cost basis per holding so you know your unrealized gains</li>
+        <li>Export a snapshot when you rebalance, for your records</li>
+        <li>Track geopolitical events and market moves without manual price updates</li>
+      </ul>
+
+      <p>When silver spikes 33%, you want to know immediately: does this move shift my portfolio away from my target allocation? Did my unrealized gains increase enough that I should take some profit? This week's move, tracked in real time, might have shown you that you're now 65% silver / 35% gold instead of your planned 50/50 split. That's valuable information for rebalancing decisions.</p>
+
+      <h2>The Geopolitical Risk Premium Is Real</h2>
+
+      <p>Here's the deeper lesson: <strong>silver moves harder than gold during geopolitical crises because it's both a safe haven AND an industrial commodity.</strong> When the world gets scary, both demand drivers activate at once. Stackers understand this. They know that precious metals aren't just stores of value — they're insurance policies. Insurance premiums spike when the world looks risky. This week, silver insurance got expensive. That's not a bug in the system; it's a feature.</p>
+
+      <p>If you're holding metals as part of a macro portfolio, this week's move is validation of your strategy, even if it's volatile. You're holding an asset that responds exactly when you need it — when geopolitical risk spikes and the dollar weakens and inflation accelerates. That's the whole point.</p>
+
+      <h2>Action Items for This Week</h2>
+
+      <p><strong>1. Check your allocation.</strong> Log into HardAssets.io and review your gold-to-silver ratio. If silver's 33% rally pushed you significantly off your target split, decide: are you comfortable with more silver exposure, or do you want to rebalance?</p>
+
+      <p><strong>2. Assess your geopolitical outlook.</strong> Does the US-Iran situation feel like it will escalate further (bullish for silver) or resolve (neutral to bearish)? Let that inform your rebalancing decision.</p>
+
+      <p><strong>3. Review your cost basis.</strong> If you sold any silver this week, record the sale price vs. your cost basis. This week's gains might be taxable (if held under 1 year) or long-term capital gains (if held over 1 year). Know your tax position before year-end.</p>
+
+      <p><strong>4. Don't panic-sell the dip.</strong> If silver falls back to $65 over the next month, remember: you have insurance for a reason. Geopolitical risk doesn't go away; it cycles.</p>
+
+      <h2>The Bottom Line: Volatility Is the Price of Insurance</h2>
+
+      <p>Silver's 33% surge in one week isn't comfortable. But that's exactly why it works as a hedge. When the world gets uncertain, risky assets sell off and boring assets (metals) catch bids. You hold metals not because they always go up — they don't — but because they behave differently than stocks and bonds when crises hit. This week proved it. Gold held flat while equities sold off. Silver surged. That divergence is the insurance payoff. Sure, you'll give some gains back when the crisis passes. That's the trade-off for having exposure to an asset that rallies when everything else falls apart.</p>
+
+      <div style="margin-top: 40px; padding: 20px; background: rgba(212, 168, 67, 0.05); border-left: 3px solid #D4A843; border-radius: 8px;">
+        <strong>Financial Disclaimer:</strong> This content is for informational purposes only and does not constitute financial advice. Past performance does not guarantee future results. Precious metals are volatile and geopolitical situations change rapidly. Always consult a qualified financial advisor before making allocation decisions. Allocate to precious metals based on your risk tolerance, time horizon, and financial goals, not market timing.
+      </div>
+    `
+  },
+  {
     slug: "how-store-gold-silver-home-safely",
     title: "How to Store Physical Gold and Silver Safely at Home",
     date: "2026-04-27",

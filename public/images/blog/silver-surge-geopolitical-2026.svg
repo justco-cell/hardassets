@@ -1,0 +1,82 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .chart-bg { fill: #111827; }
+      .chart-grid { stroke: #1E293B; stroke-width: 1; }
+      .axis-text { font-family: Inter, sans-serif; font-size: 13px; fill: #94A3B8; }
+      .value-text { font-family: Inter, sans-serif; font-size: 14px; font-weight: 600; fill: #F1F5F9; }
+      .label-text { font-family: Inter, sans-serif; font-size: 12px; fill: #CBD5E1; }
+      .header-text { font-family: Inter, sans-serif; font-size: 20px; font-weight: 700; fill: #F1F5F9; }
+      .bar-silver { fill: #C0C0C0; }
+      .bar-fear { fill: #DC2626; }
+      .legend-box { fill: none; stroke: #94A3B8; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="chart-bg" width="800" height="500"/>
+
+  <!-- Title -->
+  <text class="header-text" x="40" y="35">Silver Surge Drivers — April 2026</text>
+  <line x1="40" y1="45" x2="760" y2="45" stroke="#D4A843" stroke-width="2"/>
+
+  <!-- Y-axis label -->
+  <text class="label-text" x="15" y="120" text-anchor="end">Impact</text>
+
+  <!-- Grid lines and labels -->
+  <line class="chart-grid" x1="60" y1="80" x2="760" y2="80"/>
+  <text class="axis-text" x="50" y="85">High</text>
+
+  <line class="chart-grid" x1="60" y1="180" x2="760" y2="180"/>
+  <text class="axis-text" x="50" y="185">Medium</text>
+
+  <line class="chart-grid" x1="60" y1="280" x2="760" y2="280"/>
+  <text class="axis-text" x="50" y="285">Low</text>
+
+  <!-- Bar 1: Geopolitical Risk -->
+  <rect class="bar-fear" x="100" y="70" width="80" height="210"/>
+  <text class="value-text" x="140" y="295">Geopolitical</text>
+  <text class="value-text" x="140" y="310">Risk</text>
+  <text class="label-text" x="140" y="330" text-anchor="middle">US-Iran</text>
+  <text class="label-text" x="140" y="343" text-anchor="middle">Tensions</text>
+
+  <!-- Bar 2: Energy Prices -->
+  <rect class="bar-fear" x="220" y="100" width="80" height="180"/>
+  <text class="value-text" x="260" y="295">Energy</text>
+  <text class="value-text" x="260" y="310">Prices</text>
+  <text class="label-text" x="260" y="330" text-anchor="middle">Oil Supply</text>
+  <text class="label-text" x="260" y="343" text-anchor="middle">Shock</text>
+
+  <!-- Bar 3: Inflation Concerns -->
+  <rect class="bar-fear" x="340" y="110" width="80" height="170"/>
+  <text class="value-text" x="380" y="295">Inflation</text>
+  <text class="value-text" x="380" y="310">Concerns</text>
+  <text class="label-text" x="380" y="330" text-anchor="middle">Rising</text>
+  <text class="label-text" x="380" y="343" text-anchor="middle">Costs</text>
+
+  <!-- Bar 4: Monetary Policy -->
+  <rect class="bar-silver" x="460" y="130" width="80" height="150"/>
+  <text class="value-text" x="500" y="295">Monetary</text>
+  <text class="value-text" x="500" y="310">Policy</text>
+  <text class="label-text" x="500" y="330" text-anchor="middle">FOMC Hold</text>
+  <text class="label-text" x="500" y="343" text-anchor="middle">Rates</text>
+
+  <!-- Bar 5: Safe Haven Demand -->
+  <rect class="bar-silver" x="580" y="120" width="80" height="160"/>
+  <text class="value-text" x="620" y="295">Safe Haven</text>
+  <text class="value-text" x="620" y="310">Demand</text>
+  <text class="label-text" x="620" y="330" text-anchor="middle">Flight to</text>
+  <text class="label-text" x="620" y="343" text-anchor="middle">Metals</text>
+
+  <!-- Legend -->
+  <rect class="legend-box" x="50" y="380" width="700" height="90"/>
+  <rect class="bar-fear" x="70" y="395" width="16" height="16"/>
+  <text class="label-text" x="95" y="407">Primary Drivers (Negative Catalysts)</text>
+
+  <rect class="bar-silver" x="70" y="425" width="16" height="16"/>
+  <text class="label-text" x="95" y="437">Supporting Factors (Positive for Metals)</text>
+
+  <!-- Key stat -->
+  <text class="value-text" x="600" y="460" font-size="16">↑33% | $57 → $75.67</text>
+  <text class="label-text" x="600" y="478">Silver Rally (1 week)</text>
+</svg>
